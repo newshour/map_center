@@ -1,0 +1,45 @@
+#map, #chart {
+    height: 495px;
+    width: 768px;
+}
+#lower_chart {
+    height: 150px;
+    width: 768px;
+}
+#sidebar {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 225px;
+}
+    #map_view {display: block;}
+    #legend {
+        position: relative;
+        width: 100%;
+    }
+        #main_legend caption {font-weight: bold;}
+        #main_legend td {
+            padding-bottom: 0.25em;
+            vertical-align: top;
+        }
+        #main_legend .legend_color {
+            display: block;
+            margin-left: 0.5em;
+            width: 1.5em;
+        }
+
+.color-default {fill: #eee;}
+.color-red {fill: #900;}
+.color-blue {fill: #009;}
+.color-green {fill: #090;}
+.color-purple {fill: #609;}
+.color-black {fill: #000;}
+.color-white {fill: #fff;}
+.color-gray {fill: #999;}
+.color-yellow {fill: #ffb90f;}
+.color-magenta {fill: #909;}
+.color-cyan {fill: #099;}
+.color-orange {fill: #ff8c00;}
+
+#nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
+

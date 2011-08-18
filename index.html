@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>Map center Raphael test</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="lib/raphael/raphael-min.js"></script>
+        <script type="text/javascript" src="lib/highcharts/highcharts.js"></script>
+        <script type="text/javascript" src="lib/maps/us_geo.js"></script>
+        <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/senate_historical.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+    </head>
+    <body>
+        <div id="sidebar">
+            <select id="map_view">
+                <option value="us_all">Entire U.S. (friendly)</option>
+                <!--<option value="us_geo">Entire U.S. (accurate)</option>-->
+                <!--<option value="conus">Lower 48 states</option>-->
+                <option value="al">Alabama</option>
+                <option value="ak">Alaska</option>
+                <option value="az">Arizona</option>
+                <option value="ar">Arkansas</option>
+                <option value="ca">California</option>
+                <option value="co">Colorado</option>
+                <option value="ct">Connecticut</option>
+                <option value="de">Delaware</option>
+                <option value="fl">Florida</option>
+                <option value="ga">Georgia</option>
+                <option value="hi">Hawaii</option>
+                <option value="id">Idaho</option>
+                <option value="il">Illinois</option>
+                <option value="in">Indiana</option>
+                <option value="ia">Iowa</option>
+                <option value="ks">Kansas</option>
+                <option value="ky">Kentucky</option>
+                <option value="la">Louisiana</option>
+                <option value="me">Maine</option>
+                <option value="md">Maryland</option>
+                <option value="ma">Massachusetts</option>
+                <option value="mi">Michigan</option>
+                <option value="mn">Minnesota</option>
+                <option value="ms">Mississippi</option>
+                <option value="mo">Missouri</option>
+                <option value="mt">Montana</option>
+                <option value="ne">Nebraska</option>
+                <option value="nv">Nevada</option>
+                <option value="nh">New Hampshire</option>
+                <option value="nj">New Jersey</option>
+                <option value="nm">New Mexico</option>
+                <option value="ny">New York</option>
+                <option value="nc">North Carolina</option>
+                <option value="nd">North Dakota</option>
+                <option value="oh">Ohio</option>
+                <option value="ok">Oklahoma</option>
+                <option value="or">Oregon</option>
+                <option value="pa">Pennsylvania</option>
+                <option value="ri">Rhode Island</option>
+                <option value="sc">South Carolina</option>
+                <option value="sd">South Dakota</option>
+                <option value="tn">Tennessee</option>
+                <option value="tx">Texas</option>
+                <option value="ut">Utah</option>
+                <option value="vt">Vermont</option>
+                <option value="va">Virginia</option>
+                <option value="wa">Washington</option>
+                <option value="wv">West Virginia</option>
+                <option value="wi">Wisconsin</option>
+                <option value="wy">Wyoming</option>
+            </select>
+            <ul id="main_controls">
+                <li id="view_chart"><a href="#">Switch to chart view</a></li>
+                <li id="view_map"><a href="#">Switch to map view</a></li>
+                <li id="clear_map"><a href="#">Clear map</a></li>
+            </ul>
+            <ul id="displays"></ul>
+            <div id="legend"></div>
+        </div>
+        <div id="map"></div>
+        <div id="chart"></div>
+        <div id="lower_chart"></div>
+    </body>
+</html>
