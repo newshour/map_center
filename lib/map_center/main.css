@@ -2,6 +2,15 @@
     height: 495px;
     width: 768px;
 }
+#loading {
+    height: 300px;
+    filter: alpha(opacity=75);
+    opacity: 0.75;
+    position: absolute;
+    top: 98px;
+    left: 234px;
+    width: 300px;
+}
 #lower_chart {
     height: 150px;
     width: 768px;
