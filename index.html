@@ -8,6 +8,10 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
         <script type="text/javascript" src="lib/raphael/raphael-min.js"></script>
         <script type="text/javascript" src="lib/highcharts/highcharts.js"></script>
+        <!-- Namespace factory, courtesy of http://blogger.ziesemer.com/2008/05/javascript-namespace-function.html -->
+        <script type="text/javascript">
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+        </script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/us_geo.js"></script>
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
