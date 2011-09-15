@@ -10,6 +10,7 @@
     top: 98px;
     left: 234px;
     width: 300px;
+    z-index: 500;
 }
 #lower_chart {
     height: 150px;
