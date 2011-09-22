@@ -27,12 +27,12 @@
         position: relative;
         width: 100%;
     }
-        #main_legend caption {font-weight: bold;}
-        #main_legend td {
+        .legend caption {font-weight: bold;}
+        .legend td {
             padding-bottom: 0.25em;
             vertical-align: top;
         }
-        #main_legend .legend_color {
+        .legend .legend_color {
             display: block;
             margin-left: 0.5em;
             width: 1.5em;
