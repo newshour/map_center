@@ -1,3 +1,7 @@
+v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image, v\:shape, v\:group, v\:skew, v\:stroke, v\:fill {
+    behavior: url(#default#VML);
+    display: inline-block;
+}
 #map, #chart {
     height: 495px;
     width: 768px;
