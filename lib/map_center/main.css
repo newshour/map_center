@@ -3,7 +3,7 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
     display: inline-block;
 }
 #map, #chart {
-    height: 495px;
+    height: 486px;
     width: 768px;
 }
 #loading {
