@@ -4,13 +4,26 @@
         <title>Map Center</title>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <!-- JS libraries -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
         <script type="text/javascript" src="lib/highcharts/highcharts.js"></script>
-        <!-- Namespace factory, courtesy of http://blogger.ziesemer.com/2008/05/javascript-namespace-function.html -->
         <script type="text/javascript">
+            // Defining helper functions here
+            
+            // Namespace factory: http://blogger.ziesemer.com/2008/05/
+            // javascript-namespace-function.html
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            // Add Object.keys support for length checking in associative 
+            // arrays: https://developer.mozilla.org/en/JavaScript/Reference/
+            // Global_Objects/Object/keys
+            if(!Object.keys) Object.keys = function(o){
+                if (o !== Object(o))
+                    throw new TypeError('Object.keys called on non-object');
+                var ret=[],p;
+                for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
+                return ret;
+            }
         </script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/us_geo.js"></script>
@@ -22,11 +35,10 @@
         <script type="text/javascript" src="lib/map_center/modules/senate_historical.js"></script>
         <script type="text/javascript" src="lib/map_center/modules/patchwork_nation.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
-        <!-- Named colors listed in main.js (lines 31 to 42) and main.css 
+        <!-- Named colors listed in main.js (lines 35 to 46) and main.css 
         (lines 45 to 56). Default fill and stroke for states and counties 
-        listed in main.js (lines 46 to 47). Default map dimensions listed in 
-        main.js (lines 21 to 22) and main.css (lines 6 to 7); keep these 
-        proportional, of course. -->
+        listed in main.js (lines 50 to 51). Map dimensions listed in main.css 
+        (lines 6 to 7); keep these proportional, of course. -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
     </head>
