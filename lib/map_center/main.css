@@ -23,7 +23,6 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
 #sidebar {
     position: absolute;
     right: 10px;
-    top: 10px;
     width: 225px;
 }
     #map_view {display: block;}
@@ -54,6 +53,43 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
 .color-magenta {fill: #909;}
 .color-cyan {fill: #099;}
 .color-orange {fill: #ff8c00;}
+
+#nav {
+    background-color: #e1e1e1;
+    height: 76px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    position: relative;
+    width: 1024px;
+}
+    #nav_container {
+        margin: 0;
+        position: relative;
+    }
+        .nav_option {
+            background-color: #0f2451;
+            border: 3px solid #fff;
+            border-radius: 10px;
+            font: normal 11pt/13pt Arial, "Helvetica Neue", Helvetica, sans-serif;
+            float: left;
+            height: 50px;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+            text-transform: uppercase;
+            width: 90px;
+        }
+            .nav_option a {
+                color: #fff;
+                text-decoration: none;
+            }
+    .nav_control {
+        background-color: #333;
+        color: #999;
+        cursor: pointer;
+        height: 76px;
+        width: 30px;
+    }
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
 
