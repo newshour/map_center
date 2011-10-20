@@ -5,6 +5,8 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
 body {
     margin: 0;
     padding: 0;
+    position: relative;
+    width: 1024px;
 }
 #map, #chart {
     height: 486px;
@@ -20,6 +22,22 @@ body {
     width: 300px;
     z-index: 500;
 }
+
+#content_area {
+    background-color: #dcdcdc;
+    border-top: #bbb;
+    clear: both;
+    padding-top: 10px;
+}
+    #instructions {
+        color: #666;
+        font-size: 12pt;
+        font-weight: normal;
+        margin: 0 0 10px 0;
+        padding: 0 0 0 25px;
+        text-transform: uppercase;
+    }
+
 #lower_chart {
     height: 150px;
     width: 768px;
@@ -119,11 +137,11 @@ body {
                 text-decoration: none;
                 width: 96px;
             }
-            #nav_container .nav_option_featured {background-color: #8b080d;}
-            #nav_container .nav_option_active {
+            .nav_option_featured {background-color: #8b080d;}
+            .nav_option_active {
                 background-color: #fff;
             }
-                #nav_container .nav_option_active a {color: #0f2451;}
+                .nav_option_active a {color: #0f2451;}
     .nav_control {
         background-color: #333;
         color: #999;
@@ -132,6 +150,47 @@ body {
         height: 76px;
         width: 30px;
     }
+
+#view_info h1 {
+    color: #8b080d;
+    float: left;
+    font-size: 24pt;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 25px;
+    text-transform: uppercase;
+    width: 400px;
+}
+.view_tab {
+    background-color: #fff;
+    border-top: 5px solid #0f2451;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    float: left;
+    height: 29px;
+    margin: 0 3px;
+    padding-top: 10px;
+    width: 125px;
+}
+    .view_tab a {
+        color: #0f2451;
+        display: block;
+        font-size: 16pt;
+        height: 39px;
+        margin-top: -10px;
+        padding-top: 6px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        width: 125px;
+    }
+    .view_tab_active {
+        background-color: #dcdcdc;
+        border-top: 5px solid #7e7e7e;
+        border-left: 1px solid #9c9c9c;
+        border-right: 1px solid #9c9c9c;
+    }
+        .view_tab_active a {color: #000;}
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
 
