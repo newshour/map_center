@@ -27,7 +27,6 @@ body {
 #sidebar {
     position: absolute;
     right: 10px;
-    top: 100px;
     width: 225px;
 }
     #map_view {display: block;}
