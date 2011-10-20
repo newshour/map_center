@@ -59,11 +59,30 @@ body {
 .color-cyan {fill: #099;}
 .color-orange {fill: #ff8c00;}
 
+#nav_outermost {
+    margin-bottom: 10px;
+    position: relative;
+    width: 1024px;
+}
+    #nav_toggle {
+        background-color: #333;
+        margin-left: 900px;
+        padding: 3px;
+        width: 50px;
+    }
+        #nav_toggle a {
+            color: #999;
+            display: block;
+            font-size: 10pt;
+            height: 100%;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+        }
 #nav {
     background-color: #e1e1e1;
     float: left;
     height: 76px;
-    margin-bottom: 10px;
     overflow: hidden;
     position: relative;
     width: 950px;
