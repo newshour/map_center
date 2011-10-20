@@ -65,6 +65,12 @@ body {
 }
     #nav_toggle {
         background-color: #333;
+        -webkit-border-bottom-right-radius: 5px;
+        -moz-border-radius-bottomright: 5px;
+        border-bottom-right-radius: 5px;
+        -webkit-border-bottom-left-radius: 5px;
+        -moz-border-radius-bottomleft: 5px;
+        border-bottom-left-radius: 5px;
         margin-left: 900px;
         padding: 3px;
         width: 50px;
@@ -93,6 +99,8 @@ body {
         .nav_option {
             background-color: #0f2451;
             border: 3px solid #fff;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
             border-radius: 10px;
             font: normal 11pt/13pt Arial, "Helvetica Neue", Helvetica, sans-serif;
             float: left;
@@ -111,6 +119,11 @@ body {
                 text-decoration: none;
                 width: 96px;
             }
+            #nav_container .nav_option_featured {background-color: #8b080d;}
+            #nav_container .nav_option_active {
+                background-color: #fff;
+            }
+                #nav_container .nav_option_active a {color: #0f2451;}
     .nav_control {
         background-color: #333;
         color: #999;
