@@ -51,6 +51,7 @@ a {
     color: inherit;
     text-decoration: none;
 }
+.clear {clear: both;}
 #map, #chart {
     height: 486px;
     width: 768px;
@@ -70,6 +71,7 @@ a {
     background-color: #dcdcdc;
     border-top: #bbb;
     clear: both;
+    padding-bottom: 10px;
     padding-top: 10px;
 }
     #instructions {
@@ -93,10 +95,9 @@ a {
     -webkit-border-top-left-radius: 5px;
     -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
+    float: right;
     margin: 0;
     padding: 0 20px;
-    position: absolute;
-    right: 0;
     width: 185px;
 }
     #sidebar h3 {
