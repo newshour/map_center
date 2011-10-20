@@ -1,8 +1,20 @@
+@font-face {
+    font-family: 'MuseoSans500';
+    src: url('fonts/museosans_500_macroman/MuseoSans_500-webfont.eot');
+    src: url('fonts/museosans_500_macroman/MuseoSans_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/museosans_500_macroman/MuseoSans_500-webfont.woff') format('woff'),
+         url('fonts/museosans_500_macroman/MuseoSans_500-webfont.ttf') format('truetype'),
+         url('fonts/museosans_500_macroman/MuseoSans_500-webfont.svg#MuseoSans500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image, v\:shape, v\:group, v\:skew, v\:stroke, v\:fill {
     behavior: url(#default#VML);
     display: inline-block;
 }
 body {
+    font-family: 'MuseoSans500', Arial, "Helvetica Neue", Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     position: relative;
@@ -120,7 +132,7 @@ body {
             -webkit-border-radius: 10px;
             -moz-border-radius: 10px;
             border-radius: 10px;
-            font: normal 11pt/13pt Arial, "Helvetica Neue", Helvetica, sans-serif;
+            font: normal 11pt/13pt 'MuseoSans500', Arial, "Helvetica Neue", Helvetica, sans-serif;
             float: left;
             height: 50px;
             margin: 5px;
