@@ -87,7 +87,11 @@ body {
         }
             .nav_option a {
                 color: #fff;
+                display: block;
+                height: 56px;
+                margin: -3px;
                 text-decoration: none;
+                width: 96px;
             }
     .nav_control {
         background-color: #333;
