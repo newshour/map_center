@@ -2,6 +2,10 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
     behavior: url(#default#VML);
     display: inline-block;
 }
+body {
+    margin: 0;
+    padding: 0;
+}
 #map, #chart {
     height: 486px;
     width: 768px;
@@ -56,11 +60,12 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
 
 #nav {
     background-color: #e1e1e1;
+    float: left;
     height: 76px;
     margin-bottom: 10px;
     overflow: hidden;
     position: relative;
-    width: 1024px;
+    width: 950px;
 }
     #nav_container {
         margin: 0;
@@ -87,6 +92,7 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
         background-color: #333;
         color: #999;
         cursor: pointer;
+        float: left;
         height: 76px;
         width: 30px;
     }
