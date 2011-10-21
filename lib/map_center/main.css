@@ -37,7 +37,6 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
     display: inline-block;
 }
 body {
-    background-color: #fff;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
     font-family: 'AvenirLTStd', Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -214,6 +213,7 @@ a {
     }
 
 #view_info h1 {
+    background-color: #fff;
     color: #8b080d;
     float: left;
     font-size: 24pt;
