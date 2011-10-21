@@ -69,7 +69,6 @@ a {
 
 #content_area {
     background-color: #dcdcdc;
-    border-top: #bbb;
     clear: both;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -100,7 +99,7 @@ a {
     padding: 0 20px;
     width: 185px;
 }
-    #sidebar h3 {
+    #sidebar_title {
         background-color: #eee;
         border-bottom: 1px solid #ddd;
         -webkit-border-top-left-radius: 5px;
@@ -212,6 +211,10 @@ a {
         width: 30px;
     }
 
+#view_info {
+    border-bottom: 1px solid #bbb;
+    height: 44px;
+}
 #view_info h1 {
     background-color: #fff;
     color: #8b080d;
@@ -244,11 +247,25 @@ a {
     }
     .view_tab_active {
         background-color: #dcdcdc;
-        border-top: 5px solid #7e7e7e;
+        border-bottom: 1px solid #dcdcdc;
         border-left: 1px solid #9c9c9c;
+        border-top: 5px solid #7e7e7e;
         border-right: 1px solid #9c9c9c;
     }
         .view_tab_active a {color: #000;}
+    .view_tab_more a {
+        float: left;
+        width: 95px;
+    }
+        #view_tab_more_toggle {
+            border-left: 1px dotted #000;
+            color: #8b080d;
+            font-size: 12pt;
+            height: 20px;
+            margin: -3px 0 0 0;
+            padding: 0 0 0 5px;
+            width: 20px;
+        }
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
 

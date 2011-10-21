@@ -8,7 +8,7 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
-        <script type="text/javascript" src="lib/highcharts/highcharts.js"></script>
+        <script type="text/javascript" src="lib/highcharts.js"></script>
         <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
         <script type="text/javascript">
             // Defining helper functions here
@@ -119,13 +119,13 @@
                 <div class="view_tab view_tab_active"><a href="#">Tab 1</a></div>
                 <div class="view_tab"><a href="#">Tab 2</a></div>
                 <div class="view_tab"><a href="#">Tab 3</a></div>
-                <div class="view_tab"><a href="#">Tab 4</a></div>
+                <div class="view_tab view_tab_more"><a href="#">Tab 4</a><a href="#" id="view_tab_more_toggle">&darr;</a></div>
             </div>
         </div>
         <div id="content_area">
             <h2 id="instructions">Instructions go here</h2>
             <div id="sidebar">
-                <h3>Sidebar title</h3>
+                <h3 id="sidebar_title">Sidebar title</h3>
                 <select id="map_view">
                     <option value="us_all">U.S. by state</option>
                     <option value="us_counties">U.S. by county</option>
