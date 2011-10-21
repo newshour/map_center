@@ -272,6 +272,7 @@ a {
             border-style: solid;
             border-width: 1px;
             clear: both;
+            display: none;
             left: -1px;
             list-style: none;
             margin: 0;
