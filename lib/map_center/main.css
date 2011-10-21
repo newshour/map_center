@@ -266,6 +266,31 @@ a {
             padding: 0 0 0 5px;
             width: 20px;
         }
+        #view_tab_more_menu {
+            background-color: #fff;
+            border-color: transparent #000 #000 #000;
+            border-style: solid;
+            border-width: 1px;
+            clear: both;
+            left: -1px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            top: -6px;
+            width: 125px;
+            z-index: 9001;
+        }
+            #view_tab_more_menu li {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+                #view_tab_more_menu li a {
+                    float: none;
+                    margin-top: 0;
+                    width: 125px;
+                }
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
 
