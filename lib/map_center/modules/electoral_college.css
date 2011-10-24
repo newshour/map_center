@@ -1,0 +1,47 @@
+#ec_tally {
+    color: #707070;
+    text-align: center;
+}
+
+.ec_name {
+    font-size: 12pt;
+    margin: 0;
+    padding: 0;
+}
+    #ec_name_d, #ec_total_d {color: #0d265e;}
+    #ec_name_r, #ec_total_r {color: #8d060c;}
+    #ec_name_t, #ec_total_t {color: #9c8e0b;}
+
+.ec_detail {
+    border: 1px solid #ddd;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin: 5px 0 20px 0;
+    position: relative;
+}
+    .ec_total {
+        display: block;
+        font-size: 30pt;
+        font-weight: bold;
+    }
+    .ec_win {
+        color: #090;
+        display: none;
+        margin-top: -0.5em;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+    }
+
+#sidebar h5 {
+    color: #666;
+    margin: 0 auto;
+    padding: 0 10px;
+    text-align: center;
+    width: auto;
+}
+
+#lower_chart {
+    display: block;
+}

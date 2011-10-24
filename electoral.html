@@ -37,6 +37,7 @@
         (lines 57 to 58); keep these proportional, of course. -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
     </head>
     <body>
         <div id="nav_outermost">
@@ -113,29 +114,46 @@
         <div id="view_info">
             <h1>Past election results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_active"><a href="#">2008</a></div>
-                <div class="view_tab"><a href="#">2004</a></div>
-                <div class="view_tab"><a href="#">2000</a></div>
-                <div class="view_tab view_tab_more"><a href="#">1996</a><a href="#" id="view_tab_more_toggle">&darr;</a>
+                <div class="view_tab view_tab_active"><a href="#" class="view_tab_option">2008</a></div>
+                <div class="view_tab"><a href="#" class="view_tab_option">2004</a></div>
+                <div class="view_tab"><a href="#" class="view_tab_option">2000</a></div>
+                <div class="view_tab view_tab_more"><a href="#" id="view_tab_more_shown" class="view_tab_option">1996</a><a href="#" id="view_tab_more_toggle">&darr;</a>
                     <ul id="view_tab_more_menu">
-                        <li><a href="#">1992</a></li>
-                        <li><a href="#">1988</a></li>
-                        <li><a href="#">1984</a></li>
-                        <li><a href="#">1980</a></li>
-                        <li><a href="#">1976</a></li>
-                        <li><a href="#">1972</a></li>
-                        <li><a href="#">1968</a></li>
-                        <li><a href="#">1964</a></li>
+                        <li style="display: none;"><a href="#" class="view_tab_option">1996</a></li>
+                        <li><a href="#" class="view_tab_option">1992</a></li>
+                        <li><a href="#" class="view_tab_option">1988</a></li>
+                        <li><a href="#" class="view_tab_option">1984</a></li>
+                        <li><a href="#" class="view_tab_option">1980</a></li>
+                        <li><a href="#" class="view_tab_option">1976</a></li>
+                        <li><a href="#" class="view_tab_option">1972</a></li>
+                        <li><a href="#" class="view_tab_option">1968</a></li>
+                        <li><a href="#" class="view_tab_option">1964</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div id="content_area">
-            <h2 id="instructions">Click state to change vote</h2>
+            <h2 id="instructions">Click map to start 2012 prediction</h2>
             <div id="sidebar">
-                <h3 id="sidebar_title">Sidebar title</h3>
-                <ul id="displays"></ul>
-                <div id="legend"></div>
+                <h3 id="sidebar_title">Electoral results</h3>
+                <div id="ec_tally">
+                    <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                    <div id="ec_detail_d" class="ec_detail">
+                        <span id="ec_total_d" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_d" class="ec_win">&#x2713;</div>
+                    </div>
+                    <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                    <div id="ec_detail_r" class="ec_detail">
+                        <span id="ec_total_r" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_r" class="ec_win">&#x2713;</div>
+                    </div>
+                    <h4 id="ec_name_t" class="ec_name">All other parties</h4>
+                    <div id="ec_detail_t" class="ec_detail">
+                        <span id="ec_total_t" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_t" class="ec_win">&#x2713;</div>
+                    </div>
+                </div>
+                <h5>270 or bust</h5>
                 <div id="lower_chart"></div>
                 <input name="map_view" id="map_view" type="hidden" value="us_all" />
             </div>
