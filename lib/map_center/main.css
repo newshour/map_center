@@ -126,19 +126,6 @@ a {
             width: 1.5em;
         }
 
-.color-default {fill: #eee;}
-.color-red {fill: #900;}
-.color-blue {fill: #009;}
-.color-green {fill: #090;}
-.color-purple {fill: #609;}
-.color-black {fill: #000;}
-.color-white {fill: #fff;}
-.color-gray {fill: #999;}
-.color-yellow {fill: #ffb90f;}
-.color-magenta {fill: #909;}
-.color-cyan {fill: #099;}
-.color-orange {fill: #ff8c00;}
-
 #nav_outermost {
     margin-bottom: 10px;
     position: relative;
