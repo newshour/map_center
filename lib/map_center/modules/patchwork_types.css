@@ -1,0 +1,13 @@
+#patchwork_legend, #patchwork_legend li {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#patchwork_legend li {margin-bottom: 5px;}
+
+#patchwork_legend .control_all {
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
