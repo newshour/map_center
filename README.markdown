@@ -14,7 +14,5 @@ Things this does have:
 
 Things this doesn't have:
 
-* Decent IE<9 support (exists in theory, but not quite there)
-* An actual UI design (i.e., more than needed to test basic functionality)
 * Functionality from deadlines other than October 31 (unfunded)
 * Connections to server-side data sources
