@@ -139,7 +139,6 @@ a {
         -webkit-border-bottom-left-radius: 5px;
         -moz-border-radius-bottomleft: 5px;
         border-bottom-left-radius: 5px;
-        height: 25px;
         margin-left: 900px;
         padding: 3px;
         width: 50px;
@@ -149,7 +148,6 @@ a {
             display: block;
             font-size: 10pt;
             height: 100%;
-            padding-top: 5px;
             text-align: center;
             width: 100%;
         }
