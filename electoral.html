@@ -6,7 +6,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0" />
         <!-- Internet Explorer settings, including Chrome Frame -->
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
         <!-- JS libraries -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
@@ -37,6 +37,22 @@
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
+        <!-- Chrome Frame -->
+        <!--[if lte IE 8]>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+        <style type="text/css">
+            .chromeFrameInstallDefaultStyle {
+                border: 1px solid #666;
+                padding: 5px;
+                z-index: 15000;
+            }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                CFInstall.check();
+            });
+        </script>
+        <![endif]-->
     </head>
     <body>
         <div id="nav_outermost">
