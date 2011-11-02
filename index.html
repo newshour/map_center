@@ -13,7 +13,7 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
         <script type="text/javascript" src="lib/highcharts.js"></script>
         <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
-        <script type="text/javascript">
+        <script type="text/javascript">//<![CDATA[
             // Defining helper functions here
             
             // Namespace factory
@@ -26,7 +26,7 @@
                 for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
                 return ret;
             }
-        </script>
+        //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/us_geo.js"></script>
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
@@ -46,18 +46,18 @@
         <!-- Chrome Frame -->
         <!--[if lte IE 8]>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
-        <style type="text/css">
+        <style type="text/css">/*<![CDATA[*/
             .chromeFrameInstallDefaultStyle {
                 border: 1px solid #666;
                 padding: 5px;
                 z-index: 15000;
             }
-        </style>
-        <script type="text/javascript">
+        /*]]>*/</style>
+        <script type="text/javascript">//<![CDATA[
             $(document).ready(function() {
                 CFInstall.check();
             });
-        </script>
+        //]]></script>
         <![endif]-->
     </head>
     <body>
