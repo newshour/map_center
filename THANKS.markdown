@@ -7,3 +7,5 @@ Scripts we're happy other people already wrote:
 * Roto, for easy touch-based scrolling: https://github.com/rdallasgray/roto
 * namespace, for helping to organize our code: http://blogger.ziesemer.com/2008/05/javascript-namespace-function.html
 * The Object.keys implementation from MDN: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/keys
+* add2home, for encouraging iOS home screen installation: http://cubiq.org/add-to-home-screen
+* Chrome Frame, for the less browser-fortunate among us: http://code.google.com/chrome/chromeframe/
