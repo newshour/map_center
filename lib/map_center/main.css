@@ -43,9 +43,9 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
-    text-transform: uppercase;
     width: 1024px;
 }
+#nav_outermost, #view_info, #content_area {text-transform: uppercase;}
 h1, h2, h3, h4, h5, h6 {font-weight: bold;}
 a {
     color: inherit;
