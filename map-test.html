@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0" />
+        <meta name="viewport" content="initial-scale=1.0, minimum-scale=0.3125, maximum-scale=10.0" />
         <!-- Internet Explorer settings, including Chrome Frame -->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
         <!-- JS libraries -->
@@ -14,6 +14,7 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
         <script type="text/javascript" src="lib/highcharts.js"></script>
         <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
+        <script type="text/javascript" src="lib/add2home/add2home.js"></script>
         <script type="text/javascript">//<![CDATA[
             // Defining helper functions here
             
@@ -36,6 +37,7 @@
         <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/add2home/add2home.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
         <!-- Chrome Frame -->
@@ -76,12 +78,13 @@
         <div id="view_info">
             <h1>Past election results</h1>
             <div id="view_tabs">
+                <div class="view_tab"><a href="#" class="view_tab_option">2012</a></div>
                 <div class="view_tab view_tab_active"><a href="#" class="view_tab_option">2008</a></div>
                 <div class="view_tab"><a href="#" class="view_tab_option">2004</a></div>
-                <div class="view_tab"><a href="#" class="view_tab_option">2000</a></div>
-                <div class="view_tab view_tab_more"><a href="#" id="view_tab_more_shown" class="view_tab_option">1996</a><a href="#" id="view_tab_more_toggle">&darr;</a>
+                <div class="view_tab view_tab_more"><a href="#" id="view_tab_more_shown" class="view_tab_option">2000</a><a href="#" id="view_tab_more_toggle">&darr;</a>
                     <ul id="view_tab_more_menu">
-                        <li style="display: none;"><a href="#" class="view_tab_option">1996</a></li>
+                        <li style="display: none;"><a href="#" class="view_tab_option">2000</a></li>
+                        <li><a href="#" class="view_tab_option">1996</a></li>
                         <li><a href="#" class="view_tab_option">1992</a></li>
                         <li><a href="#" class="view_tab_option">1988</a></li>
                         <li><a href="#" class="view_tab_option">1984</a></li>
@@ -90,7 +93,6 @@
                         <li><a href="#" class="view_tab_option">1972</a></li>
                         <li><a href="#" class="view_tab_option">1968</a></li>
                         <li><a href="#" class="view_tab_option">1964</a></li>
-                        <li><a href="#" class="view_tab_option">Blank</a></li>
                     </ul>
                 </div>
             </div>

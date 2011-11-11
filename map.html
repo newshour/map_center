@@ -4,9 +4,9 @@
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<title></title>
-	<meta name="description" content="">
-	<meta name="author" content="">
+	<title>2012 Political Map Center | PBS NewsHour</title>
+	<meta name="description" content="The map features an electoral college calculator which includes historical data going back to the 1964 election">
+	<meta name="author" content="map, politics, 2012 election, electoral college calculator">
 	<link rel="stylesheet" href="css/style.css">
 
 	 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
@@ -68,7 +68,10 @@
 	<script src="js/libs/modernizr-2.0.6.min.js"></script>
 </head>
 <body>
-		<div id="head-pbs"></div>
+		<div id="head-pbs">
+    <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
+  
+</div>
 
 <div id="container">
 
@@ -98,7 +101,7 @@
 			<li><a href="http://www.pbs.org/newshour/rundown">The Rundown <span>blog</span></a></li>
 			<li>/</li>
 
-			<li class="on"><a href="http://www.pbs.org/newshour/live">Live</a></li>
+			<li class="off"><a href="http://www.pbs.org/newshour/live">Live</a></li>
 			<li>/</li>
 			<li><a href="http://www.pbs.org/newshour/extra">Teachers</a></li>
 
@@ -153,17 +156,17 @@
                     <h4 id="ec_name_d" class="ec_name">Democrats</h4>
                     <div id="ec_detail_d" class="ec_detail">
                         <span id="ec_total_d" class="ec_total">0</span> electoral votes
-                        <div id="ec_win_d" class="ec_win">&#x2713;</div>
+                        <div id="ec_win_d" class="ec_win"><img src="check.png" alt="Democrats win" /></div>
                     </div>
                     <h4 id="ec_name_r" class="ec_name">Republicans</h4>
                     <div id="ec_detail_r" class="ec_detail">
                         <span id="ec_total_r" class="ec_total">0</span> electoral votes
-                        <div id="ec_win_r" class="ec_win">&#x2713;</div>
+                        <div id="ec_win_r" class="ec_win"><img src="check.png" alt="Republicans win" /></div>
                     </div>
                     <h4 id="ec_name_t" class="ec_name">All other parties</h4>
                     <div id="ec_detail_t" class="ec_detail">
                         <span id="ec_total_t" class="ec_total">0</span> electoral votes
-                        <div id="ec_win_t" class="ec_win">&#x2713;</div>
+                        <div id="ec_win_t" class="ec_win"><img src="check.png" alt="Other party wins" /></div>
                     </div>
                 </div>
                 <h5>270 or bust</h5>
@@ -233,7 +236,7 @@
         </div>
     <div id="footer-sub">
 
-    	<div class="copyright">Copyright © 1996-<script type="JavaScript">today = new Date(); document.write(today.getFullYear());</script> MacNeil/Lehrer Productions. All Rights Reserved.</div> 
+    	<div class="copyright">Copyright 1996-<script type="JavaScript">today = new Date(); document.write(today.getFullYear());</script> MacNeil/Lehrer Productions. All Rights Reserved.</div> 
     		<ul class="column5">            	
                 <li><a href="http://www.pbs.org/newshour/aboutus/">About Us</a></li>
                 <li>/</li>
@@ -252,11 +255,23 @@
 	</footer>
 </div> <!--! end of #container -->
 
-<script>
-	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']]; // Change UA-XXXXX-X to be your site's ID
-	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-	s.parentNode.insertBefore(g,s)}(document,'script'));
+<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
+
+<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
+
+</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
+
+</script><!-- ClickTale end of Bottom part -->
+
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-5do3OH0wrSfK6"
+};
 </script>
-</body>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
+<!-- End Quantcast tag --></body>
 </html>

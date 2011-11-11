@@ -35,6 +35,7 @@
 v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image, v\:shape, v\:group, v\:skew, v\:stroke, v\:fill {
     behavior: url(#default#VML);
     display: inline-block;
+    cursor: pointer;
 }
 /*body {
     border-left: 1px solid #000;
@@ -52,6 +53,8 @@ a {
     text-decoration: none; */
 }
 .clear {clear: both;}
+
+path  {cursor: pointer;}
 #map, #chart {
     height: 486px;
     width: 768px;
@@ -192,11 +195,14 @@ a {
                 .nav_option_active a {color: #0f2451;}
     .nav_control {
         background-color: #333;
-        color: #999;
+        color: #fff;
         cursor: pointer;
         float: left;
-        height: 76px;
+        height: 54px;
         width: 30px;
+        font-size: 2em;
+        padding: 15px 0 7px 0;
+        text-align: center;
     }
 
 #view_info {

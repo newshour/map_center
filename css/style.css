@@ -51,6 +51,7 @@ body, button, input, select, textarea { font-family: sans-serif; color: #222; }
 
 a { color: #0f2452; text-decoration: none; }
 a:focus { outline: thin dotted; }
+a:visited {color:inherit; background-color: transparent;}
 
 /* Improve readability when focused and hovered in all browsers: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: 0; }
@@ -322,7 +323,7 @@ table { border-collapse: collapse; border-spacing: 0; }
    Author: 
    ========================================================================== */
 
-#head-pbs { background-image: url('/newshour/images/primary2/common/pbs-hdr-shadow.png'); background-repeat: repeat-x; height: 61px; }
+#head-pbs { background-image: url('/newshour/images/primary2/common/pbs-hdr-shadow.png'); background-repeat: repeat-x; background-position: bottom; height: 8px; z-index: -1; }
 
 
 #container { width: 1000px; margin: 0 auto;   }
@@ -332,16 +333,21 @@ table { border-collapse: collapse; border-spacing: 0; }
 #social-links li {display: inline; margin: 0 0 0 10px;}
 #social-links img {margin:0 0 -3px 0;}
 nav {  padding: 15px 0 15px 15px; font: 1.2em/1em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif; text-transform: uppercase; color:#868686; }
-nav a, a:visited {color:#b00402; }
+nav a {color:#b00402; }
+nav a:visited {color:#b00402; }
 nav a:hover  {color: #d33c3b;}
-nav .logo {background-image:url('/newshour/images/primary2/common/logo.png'); background-repeat: no-repeat;  margin:0 35px 0 0; width: 270px; height: 41px;}
+nav .logo {background-image:url('/newshour/images/primary2/common/logo.png'); background-repeat: no-repeat;  margin:0 35px 0 0; width: 270px; height: 41px;  display: block;}
+nav .logo a {width: 270px; height: 41px; display: block;}
+
 nav li {display: inline; float: left; margin:15px 15px 0 0;}
 #main { border: 1px solid #000; }
 nav span {text-transform: lowercase; font-family: 'MuseoSans300', sans-serif; color: #868686;}
-.off a, a:visited { color:#868686; }
-.on a, a:visited {background-color:#b00402; color: #fafcc4; padding: 1px 4px;  font-family: 'MuseoSans700', sans-serif;  }
+.off a { color:#868686; }
+.off a:visited { color:#868686; }
+.on a { background-color:#b00402; color: #fafcc4; padding: 1px 4px;  font-family: 'MuseoSans700', sans-serif;}
+.on a:visited { background-color:#b00402; color: #fafcc4; padding: 1px 4px;  font-family: 'MuseoSans700', sans-serif; }
 .on a:hover { color: #fbed54;}
-
+#content {font-family: 'MuseoSans500', "Helvetica Neue", Helvetica, sans-serif; }
 #vote2012-map { height: 78px; width: 998px;  }
 #vote2012-map .title {width: 761px; height: 78px; background-image: url('/newshour/images/primary2/common/12map-hdr.png'); float: left;}
 #vote2012-map .map { width:237px; height: 78px;float: left; background-image: url('/newshour/images/primary2/common/12map-hdr.png'); background-position: right top;}
@@ -359,14 +365,19 @@ footer { margin: 30px 0 0 0;}
 #topics-list ul li a:hover { color: #fbed54;}
 #topics-list { background-color: #1c3342; padding: 17px; width: 968px; }
 #topics-list ul{width: 150px; float: left; border-right; 1px solid #8e8e8e; padding: 0 25px 0 0; font: 1.1em/1.3em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif; color: #fff;  text-shadow: 1px 1px 1px #000; letter-spacing: .05em;  }
-#topics-list ul li a, a:visited {color: #fff;}
+#topics-list ul li a {color: #fff;}
+#topics-list ul li a:visited {color: #fff;}
 #topics-list li {margin: 7px 0;}
 #footer-sub {background-color:#bebebe; height: 25px; width: 1002px;}
 #footer-sub ul {width: 500px; float: left; margin: 4px 0 0 15px; }
 #footer-sub li {float: left; font: 1.0em/1.3em 'MuseoSans300',"Helvetica Neue", Helvetica, sans-serif; color: #fff;  margin: 1px 7px 0 0; }
 #footer-sub .copyright { float:right;font: .8em/1.3em 'MuseoSans300',"Helvetica Neue", Helvetica, sans-serif; color: #fff; letter-spacing: .05em; text-transform: uppercase; padding: 7px 15px 0 0;  }
+#footer-sub li a {color: #fff;   }
+#footer-sub li a:visited {color: #fff;  }
+
 #footer-sub-sub {font: .8em/1.3em 'MuseoSans300',"Helvetica Neue", Helvetica, sans-serif; color: #fff; letter-spacing: .05em; text-transform: uppercase; padding: 25px 0 25px 0; text-align: center; color: #666; }
-#footer-sub-sub a, a:visited {color: #666;}
+#footer-sub-sub a {color: #666;}
+#footer-sub-sub a:visited {color: #666;}
 
 /* =============================================================================
    Non-semantic helper classes
