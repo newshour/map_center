@@ -1,0 +1,262 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title></title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="stylesheet" href="css/style.css">
+
+	 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Safari (iOS) settings -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="initial-scale=1.0, minimum-scale=0.3125, maximum-scale=10.0" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+        <!-- JS libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
+        <script type="text/javascript" src="lib/highcharts.js"></script>
+        <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
+        <script type="text/javascript" src="lib/add2home/add2home.js"></script>
+        <script type="text/javascript">//<![CDATA[
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            // Add Object.keys support for length checking in associative arrays
+            if(!Object.keys) Object.keys = function(o){
+                if (o !== Object(o))
+                    throw new TypeError('Object.keys called on non-object');
+                var ret=[],p;
+                for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
+                return ret;
+            }
+        //]]></script>
+        <!-- Map Center core -->
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
+        <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <!-- Individual Map Center modules -->
+        <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/add2home/add2home.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
+        <!-- Chrome Frame -->
+        <!--[if lte IE 8]>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+        <style type="text/css">/*<![CDATA[*/
+            .chromeFrameInstallDefaultStyle {
+                border: 1px solid #666;
+                padding: 5px;
+                z-index: 15000;
+            }
+        /*]]>*/</style>
+        <script type="text/javascript">//<![CDATA[
+            $(document).ready(function() {
+                CFInstall.check({mode: 'overlay'});
+            });
+        //]]></script>
+        <![endif]-->
+
+
+	<script src="js/libs/modernizr-2.0.6.min.js"></script>
+</head>
+<body>
+		<div id="head-pbs"></div>
+
+<div id="container">
+
+	<header>
+	<div id="social-links" class="clearfix">
+
+	<ul>
+		<li> <a href="http://www.facebook.com/newshour"><img src="/newshour/images/primary2/common/facebook.png"> Facebook</a></li>
+		<li> <a href="http://www.twitter.com/newshour"><img src="/newshour/images/primary2/common/twitter.png"> Twitter</a></li>
+		<li> <a href="http://www.youtube.com/pbsnewshour"><img src="/newshour/images/primary2/common/youtube.png"> YouTube</a></li>
+		<li> <a href="http://www.tumblr.com/newshour"><img src="/newshour/images/primary2/common/tumblr.png"> Tumblr</a></li>
+	</ul>
+</div>
+
+	</header>
+	<div id="main" role="main">
+	<nav class="clearfix">
+		<ul>
+			<li class="logo ir"><a href="http://www.pbs.org/newshour/">PBS NewsHour</a></li> 
+
+			<li><a href="http://www.pbs.org/newshour/topics">Topics</a></li> 
+			<li>/</li>
+
+			<li><a href="http://www.pbs.org/newshour/video">Recent Programs</a></li>
+			<li>/</li>
+
+			<li><a href="http://www.pbs.org/newshour/rundown">The Rundown <span>blog</span></a></li>
+			<li>/</li>
+
+			<li class="on"><a href="http://www.pbs.org/newshour/live">Live</a></li>
+			<li>/</li>
+			<li><a href="http://www.pbs.org/newshour/extra">Teachers</a></li>
+
+		</ul>
+	</nav>
+	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
+<div id="content">
+ <div id="nav_outermost">
+            <div id="nav_outer">
+                <div id="nav-main-prev" class="nav_control">&laquo;</div>
+                <div id="nav-main">
+                    <div id="nav_container">
+                        <div class="nav_option nav_option_active">
+                            <a href="index.html" id="map_2">Electoral College calculator</a>
+                        </div>
+                        <div class="nav_option">
+                            <a href="patchwork_types.html" id="map_3">Patchwork Nation counties</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="nav-main-next" class="nav_control">&raquo;</div>
+            </div>
+            <div id="nav_toggle" class="open"><a href="#">Close</a></div>
+        </div>
+        <div id="view_info">
+            <h1>Past election results</h1>
+            <div id="view_tabs">
+                <div class="view_tab"><a href="#" class="view_tab_option">2012</a></div>
+                <div class="view_tab view_tab_active"><a href="#" class="view_tab_option">2008</a></div>
+                <div class="view_tab"><a href="#" class="view_tab_option">2004</a></div>
+                <div class="view_tab view_tab_more"><a href="#" id="view_tab_more_shown" class="view_tab_option">2000</a><a href="#" id="view_tab_more_toggle">&darr;</a>
+                    <ul id="view_tab_more_menu">
+                        <li style="display: none;"><a href="#" class="view_tab_option">2000</a></li>
+                        <li><a href="#" class="view_tab_option">1996</a></li>
+                        <li><a href="#" class="view_tab_option">1992</a></li>
+                        <li><a href="#" class="view_tab_option">1988</a></li>
+                        <li><a href="#" class="view_tab_option">1984</a></li>
+                        <li><a href="#" class="view_tab_option">1980</a></li>
+                        <li><a href="#" class="view_tab_option">1976</a></li>
+                        <li><a href="#" class="view_tab_option">1972</a></li>
+                        <li><a href="#" class="view_tab_option">1968</a></li>
+                        <li><a href="#" class="view_tab_option">1964</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="content_area">
+            <h2 id="instructions">Click map to start 2012 prediction</h2>
+            <div id="sidebar">
+                <h3 id="sidebar_title">Electoral results</h3>
+                <div id="ec_tally">
+                    <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                    <div id="ec_detail_d" class="ec_detail">
+                        <span id="ec_total_d" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_d" class="ec_win">&#x2713;</div>
+                    </div>
+                    <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                    <div id="ec_detail_r" class="ec_detail">
+                        <span id="ec_total_r" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_r" class="ec_win">&#x2713;</div>
+                    </div>
+                    <h4 id="ec_name_t" class="ec_name">All other parties</h4>
+                    <div id="ec_detail_t" class="ec_detail">
+                        <span id="ec_total_t" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_t" class="ec_win">&#x2713;</div>
+                    </div>
+                </div>
+                <h5>270 or bust</h5>
+                <div id="lower_chart"></div>
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
+            </div>
+            <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
+            <div id="map"></div>
+            <div id="chart"></div>
+            <div class="clear"></div>
+        </div>
+
+</div>
+<div id="featured-content" class="clearfix">
+	<div id="popular">
+	<h3>Most Popular</h3>
+	<img src="http://newshour.s3.amazonaws.com:80/photos/2011/11/07/131415882_1_topics.jpg"/>
+	<p><a href="#">Poll Shows Why Romney Isn't Gaining Traction With GOP Voters</a></p>
+	</div>
+	<div class="slideshow"><h3>Photo Essays</h3>
+	<img src="http://newshour.s3.amazonaws.com:80/photos/2011/11/07/131415882_1_topics.jpg"/>
+	<p><a href="#">Poll Shows Why Romney Isn't Gaining Traction With GOP Voters</a></p>
+
+	</div>
+	<div class="slideshow"><img src="http://newshour.s3.amazonaws.com:80/photos/2011/11/07/131415882_1_topics.jpg"/>
+	<p><a href="#">Poll Shows Why Romney Isn't Gaining Traction With GOP Voters</a></p>
+</div>
+	<div class="ad"><p>Support For PBS Provided by</p><img src="http://s0.2mdn.net/viewad/3408773/ARG_PBSwb_300x250_FC_30.gif"></div>
+</div>
+	</div>
+	<footer>
+	<div id="topics-list" class="clearfix">
+		<div class="title"><h3>Topics</h3></div>	
+
+        				<ul>
+   	    		<li><a href="http://www.pbs.org/newshour/topic/entertainment/">Arts &amp; Entertainment</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/business/">Business &amp; Economy</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/education/">Education</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/environment/">Environment</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/government_programs/">Government Programs</a></li>
+       		</ul>
+            <ul>
+
+            	<li><a href="http://www.pbs.org/newshour/topic/health/">Health</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/remember/">In Memoriam</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/international/">International Orgs.</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/law/">Law</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/media/">Media</a></li>
+            </ul>
+
+            <ul>
+            	<li><a href="http://www.pbs.org/newshour/topic/military/">Military</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/politics/">Politics</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/religion/">Religion</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/science/">Science &amp; Technology</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/social_issues/">Social Issues</a></li>
+
+            </ul>
+            <ul>            	
+                <li><a href="http://www.pbs.org/newshour/topic/sports/">Sports</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/terrorism/">Terrorism</a></li>
+                <li><a href="http://www.pbs.org/newshour/topic/transportation/">Transportation</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/white_house/">U.S Presidency</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/weather/">Weather &amp; Natural Disasters</a></li>
+
+            </ul>  
+        </div>
+    <div id="footer-sub">
+
+    	<div class="copyright">Copyright © 1996-<script type="JavaScript">today = new Date(); document.write(today.getFullYear());</script> MacNeil/Lehrer Productions. All Rights Reserved.</div> 
+    		<ul class="column5">            	
+                <li><a href="http://www.pbs.org/newshour/aboutus/">About Us</a></li>
+                <li>/</li>
+                <li><a href="http://www.pbs.org/newshour/letters.html">Feedback</a></li>
+                <li>/</li>
+				<li><a href="http://www.pbs.org/newshour/subscriptions.html">Subscriptions and Feeds</a></li>
+				<li>/</li>
+                <li><a href="http://www.pbs.org/aboutsite/aboutsite_privacy.html">Privacy</a></li>
+<li>/</li>
+				<!--<li><a href="http://www.pbs.org/newshour/aboutus/faq.html">FAQ</a></li>-->
+				<li class="end"><a href="http://www.pbs.org/newshour/aboutus/openings/">Job Openings</a></li>
+            </ul>
+    </div>   
+	<div id="footer-sub-sub">Support the kind of journalism done by the NewsHour...<a href="http://www.pbs.org/newshour/pledge.html">Become a member of your local PBS station.</a></div>
+
+	</footer>
+</div> <!--! end of #container -->
+
+<script>
+	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']]; // Change UA-XXXXX-X to be your site's ID
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+</body>
+</html>

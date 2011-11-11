@@ -36,7 +36,7 @@ v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image
     behavior: url(#default#VML);
     display: inline-block;
 }
-body {
+/*body {
     border-left: 1px solid #000;
     border-right: 1px solid #000;
     font-family: 'AvenirLTStd', Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -44,12 +44,12 @@ body {
     padding: 0;
     position: relative;
     width: 1024px;
-}
-#nav_outermost, #view_info, #content_area {text-transform: uppercase;}
+} */
+#nav_outermost, #view_info, #content_area {text-transform: uppercase; font-family: 'MuseoSans500', sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight: bold;}
 a {
-    color: inherit;
-    text-decoration: none;
+   /* color: inherit;
+    text-decoration: none; */
 }
 .clear {clear: both;}
 #map, #chart {
@@ -129,7 +129,7 @@ a {
 #nav_outermost {
     margin-bottom: 10px;
     position: relative;
-    width: 1024px;
+    width: 998px;
 }
     #nav_toggle {
         background-color: #333;
@@ -151,13 +151,13 @@ a {
             text-align: center;
             width: 100%;
         }
-#nav {
+#nav-main {
     background-color: #e1e1e1;
     float: left;
     height: 76px;
     overflow: hidden;
     position: relative;
-    width: 964px;
+    width: 938px;
 }
     #nav_container {
         margin: 0;

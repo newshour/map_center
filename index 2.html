@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:svg="http://www.w3.org/2000/svg" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>
+        <title>Map Center | Electoral College calculator</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Safari (iOS) settings -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+        <!-- JS libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
+        <script type="text/javascript" src="lib/highcharts.js"></script>
+        <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
+        <script type="text/javascript">//<![CDATA[
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            // Add Object.keys support for length checking in associative arrays
+            if(!Object.keys) Object.keys = function(o){
+                if (o !== Object(o))
+                    throw new TypeError('Object.keys called on non-object');
+                var ret=[],p;
+                for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
+                return ret;
+            }
+        //]]></script>
+        <!-- Map Center core -->
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
+        <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <!-- Individual Map Center modules -->
+        <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
+        <!-- Chrome Frame -->
+        <!--[if lte IE 8]>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+        <style type="text/css">/*<![CDATA[*/
+            .chromeFrameInstallDefaultStyle {
+                border: 1px solid #666;
+                padding: 5px;
+                z-index: 15000;
+            }
+        /*]]>*/</style>
+        <script type="text/javascript">//<![CDATA[
+            $(document).ready(function() {
+                CFInstall.check({mode: 'overlay'});
+            });
+        //]]></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div id="nav_outermost">
+            <div id="nav_outer">
+                <div id="nav-prev" class="nav_control">&laquo;</div>
+                <div id="nav">
+                    <div id="nav_container">
+                        <div class="nav_option nav_option_active">
+                            <a href="index.html" id="map_2">Electoral College calculator</a>
+                        </div>
+                        <div class="nav_option">
+                            <a href="patchwork_types.html" id="map_3">Patchwork Nation counties</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="nav-next" class="nav_control">&raquo;</div>
+            </div>
+            <div id="nav_toggle" class="open"><a href="#">Close</a></div>
+        </div>
+        <div id="view_info">
+            <h1>Past election results</h1>
+            <div id="view_tabs">
+                <div class="view_tab view_tab_active"><a href="#" class="view_tab_option">2008</a></div>
+                <div class="view_tab"><a href="#" class="view_tab_option">2004</a></div>
+                <div class="view_tab"><a href="#" class="view_tab_option">2000</a></div>
+                <div class="view_tab view_tab_more"><a href="#" id="view_tab_more_shown" class="view_tab_option">1996</a><a href="#" id="view_tab_more_toggle">&darr;</a>
+                    <ul id="view_tab_more_menu">
+                        <li style="display: none;"><a href="#" class="view_tab_option">1996</a></li>
+                        <li><a href="#" class="view_tab_option">1992</a></li>
+                        <li><a href="#" class="view_tab_option">1988</a></li>
+                        <li><a href="#" class="view_tab_option">1984</a></li>
+                        <li><a href="#" class="view_tab_option">1980</a></li>
+                        <li><a href="#" class="view_tab_option">1976</a></li>
+                        <li><a href="#" class="view_tab_option">1972</a></li>
+                        <li><a href="#" class="view_tab_option">1968</a></li>
+                        <li><a href="#" class="view_tab_option">1964</a></li>
+                        <li><a href="#" class="view_tab_option">Blank</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="content_area">
+            <h2 id="instructions">Click map to start 2012 prediction</h2>
+            <div id="sidebar">
+                <h3 id="sidebar_title">Electoral results</h3>
+                <div id="ec_tally">
+                    <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                    <div id="ec_detail_d" class="ec_detail">
+                        <span id="ec_total_d" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_d" class="ec_win">&#x2713;</div>
+                    </div>
+                    <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                    <div id="ec_detail_r" class="ec_detail">
+                        <span id="ec_total_r" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_r" class="ec_win">&#x2713;</div>
+                    </div>
+                    <h4 id="ec_name_t" class="ec_name">All other parties</h4>
+                    <div id="ec_detail_t" class="ec_detail">
+                        <span id="ec_total_t" class="ec_total">0</span> electoral votes
+                        <div id="ec_win_t" class="ec_win">&#x2713;</div>
+                    </div>
+                </div>
+                <h5>270 or bust</h5>
+                <div id="lower_chart"></div>
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
+            </div>
+            <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
+            <div id="map"></div>
+            <div id="chart"></div>
+            <div class="clear"></div>
+        </div>
+    </body>
+</html>
