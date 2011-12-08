@@ -1,18 +1,18 @@
-#patchwork_legend, #patchwork_legend li {
+#static_legend, #static_legend li {
     list-style: none;
     margin-left: 0;
     padding-left: 0;
 }
 
-#patchwork_legend li {margin-bottom: 5px;}
+#static_legend li {margin-bottom: 5px;}
 
-#patchwork_legend .control_all {
+#static_legend .control_all {
     float: left;
     margin-bottom: 10px;
     margin-right: 10px;
 }
 
-#patchwork_legend .selected {
+#static_legend .selected {
     font-weight: bold;
 }
 

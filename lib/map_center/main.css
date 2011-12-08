@@ -288,7 +288,3 @@ path  {cursor: pointer;}
                 }
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
-
-#patchwork_legend .selected {
-    font-weight: bold;
-}
