@@ -288,3 +288,23 @@ path  {cursor: pointer;}
                 }
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
+
+#tooltip {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    
+    padding: 5px;
+    position: absolute;
+    width: 160px;
+}
+    #tooltip h3 {
+        clear: both;
+        font-size: 14pt;
+        margin-top: 0;
+        text-align: center;
+    }
+    #tooltip p {
+        margin-bottom: 5px;
+        text-align: center;
+    }
+    #tooltip_close {float: right;}
