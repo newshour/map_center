@@ -1,0 +1,35 @@
+#live_legend, #live_legend li {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#live_legend li {margin-bottom: 5px;}
+
+#live_legend .control_all {
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+#live_legend .selected {
+    font-weight: bold;
+}
+
+#tooltip_results thead {font-weight: bold;}
+    .tooltip_results_candidate {width: 75%;}
+
+.view_tab {
+    float: right;
+    width: 250px;
+}
+    .view_tab a {width: 250px;}
+    .view_tab_option {width: 250px;}
+    .view_tab_more a {width: 220px;}
+    #view_tab_more_menu {
+        height: 500px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 250px;
+    }
+        #view_tab_more_menu li a {width: 220px;}
