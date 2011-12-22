@@ -3,18 +3,31 @@
     margin-left: 0;
     padding-left: 0;
 }
+    #live_legend li {margin-bottom: 5px;}
 
-#live_legend li {margin-bottom: 5px;}
-
-#live_legend .control_all {
+.control_all {
     float: left;
     margin-bottom: 10px;
     margin-right: 10px;
 }
 
-#live_legend .selected {
-    font-weight: bold;
+#live_legend, #live_legend tr, #live_legend td {border: 0;}
+.live_legend_control_visibility {
+    margin: 0;
+    padding: 0;
+    width: 15px;
 }
+    .live_legend_control_visibility a {
+        background-color: #fff;
+        display: block;
+    }
+    .live_legend_candidate_name, .live_legend_candidate_votes, .live_legend_candidate_won {
+        padding-bottom: 5px;
+        padding-left: 5px;
+    }
+    #live_legend .selected {
+        background-color: transparent !important;
+    }
 
 #tooltip_results thead {font-weight: bold;}
     .tooltip_results_candidate {width: 75%;}
