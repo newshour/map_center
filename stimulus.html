@@ -119,7 +119,10 @@
                             <a href="unemployment.html" id="map_4">Jobless in Iowa</a>
                         </div>
                         <div class="nav_option">
-                            <a href="live-ia.html" id="map_4">Live Iowa caucus results</a>
+                            <a href="stimulus.html" id="map_5">Follow the stimulus money</a>
+                        </div>
+                        <div class="nav_option">
+                            <a href="live-ia.html" id="map_6">Live Iowa caucus results</a>
                         </div>
                     </div>
                 </div>
@@ -130,9 +133,9 @@
         <div id="view_info">
             <h1>Stimulus money</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#ia" id="view_tab_more_shown" class="view_tab_option">Iowa</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#us_counties" id="view_tab_more_shown" class="view_tab_option">U.S.</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
-                        <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
+                        <li style="display: none;"><a href="#us_counties" class="view_tab_option">U.S.</a></li>
                         <!-- FIXME: us_all doesn't work as a non-default view. -->
                         <!--
                         <li><a href="#us_all" class="view_tab_option">U.S. (by state)</a></li>
@@ -151,7 +154,7 @@
                         <li><a href="#id" class="view_tab_option">Idaho</a></li>
                         <li><a href="#il" class="view_tab_option">Illinois</a></li>
                         <li><a href="#in" class="view_tab_option">Indiana</a></li>
-                        <li style="display: none;"><a href="#ia" class="view_tab_option">Iowa</a></li>
+                        <li><a href="#ia" class="view_tab_option">Iowa</a></li>
                         <li><a href="#ks" class="view_tab_option">Kansas</a></li>
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
@@ -197,7 +200,7 @@
             <div id="sidebar">
                 <h3 id="sidebar_title">Stimulus expenditures per capita as of Q4 2010</h3>
                 <div id="legend"></div>
-                <input name="map_view" id="map_view" type="hidden" value="ia" />
+                <input name="map_view" id="map_view" type="hidden" value="us_counties" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map"></div>
