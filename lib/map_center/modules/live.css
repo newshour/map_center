@@ -1,15 +1,10 @@
 #live_legend, #live_legend li {
     list-style: none;
+    margin-bottom: 10px;
     margin-left: 0;
     padding-left: 0;
 }
     #live_legend li {margin-bottom: 5px;}
-
-.control_all {
-    float: left;
-    margin-bottom: 10px;
-    margin-right: 10px;
-}
 
 #live_legend, #live_legend tr, #live_legend td {border: 0;}
 .live_legend_control_visibility {
