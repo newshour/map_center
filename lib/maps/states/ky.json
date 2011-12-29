@@ -1,7 +1,7 @@
 loadCounties({
     "cities": {
-        "Frankfort": [[476, 192], 0],
-        "Louisville": [[392, 190], 1],
+        "Frankfort": [[478, 192], 0],
+        "Louisville": [[390, 190], 1],
         "Lexington": [[517, 211], 2]
     },
     "counties": {

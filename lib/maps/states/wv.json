@@ -1,6 +1,6 @@
 loadCounties({
     "cities": {
-        "Charleston": [[230, 322], 0],
+        "Charleston": [[233, 326], 0],
         "Huntington": [[144, 314], 1],
         "Parkersburg": [[235, 196], 2]
     },
