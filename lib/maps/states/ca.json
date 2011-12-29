@@ -2,7 +2,7 @@ loadCounties({
     "cities": {
         "Sacramento": [[301, 175], 0],
         "Los Angeles": [[417, 398], 1],
-        "San Diego": [[469, 462], 1]
+        "San Diego": [[469, 462], 1],
         "San Francisco": [[261, 217], 2]
     },
     "counties": {
