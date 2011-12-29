@@ -9,25 +9,15 @@
     font-style: normal;
 
 }
-@font-face {
-    font-family: 'AvenirLTStd';
-    src: url('fonts/avenir/avenirltstd-medium-webfont.eot');
-    src: url('fonts/avenir/avenirltstd-medium-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/avenir/avenirltstd-medium-webfont.woff') format('woff'),
-         url('fonts/avenir/avenirltstd-medium-webfont.ttf') format('truetype'),
-         url('fonts/avenir/avenirltstd-medium-webfont.svg#AvenirLTStd65Medium') format('svg');
-    font-weight: normal;
-    font-style: normal;
 
-}
 @font-face {
-    font-family: 'AvenirLTStd';
-    src: url('fonts/avenir/avenirltstd-heavy-webfont.eot');
-    src: url('fonts/avenir/avenirltstd-heavy-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/avenir/avenirltstd-heavy-webfont.woff') format('woff'),
-         url('fonts/avenir/avenirltstd-heavy-webfont.ttf') format('truetype'),
-         url('fonts/avenir/avenirltstd-heavy-webfont.svg#AvenirLTStd85Heavy') format('svg');
-    font-weight: bold;
+    font-family: 'MuseoSans300';
+    src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot');
+    src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.woff') format('woff'),
+         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.ttf') format('truetype'),
+         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.svg#MuseoSans300') format('svg');
+    font-weight: normal;
     font-style: normal;
 
 }
@@ -143,11 +133,12 @@ path  {cursor: pointer;}
         -moz-border-radius-bottomleft: 5px;
         border-bottom-left-radius: 5px;
         margin-left: 900px;
-        padding: 3px;
+        padding: 7px;
         width: 50px;
+		clear:both;
     }
         #nav_toggle a {
-            color: #999;
+            color: #fff;
             display: block;
             font-size: 10pt;
             height: 100%;
@@ -155,31 +146,40 @@ path  {cursor: pointer;}
             width: 100%;
         }
 #nav-main {
-    background-color: #e1e1e1;
+    background-color: #e5e5e5;
     float: left;
-    height: 76px;
+    height: 85px;
     overflow: hidden;
     position: relative;
     width: 938px;
+	border-bottom:#d2d2d2 3px solid;
+	background-image:url('/newshour/vote2012/.map_test/lib/images/nav-bg.png');
+	background-repeat:repeat-x;
 }
     #nav_container {
         margin: 0;
         position: relative;
     }
         .nav_option {
+			font-family: 'MuseoSans500';
             background-color: #0f2451;
             border: 3px solid #fff;
             -webkit-border-radius: 10px;
             -moz-border-radius: 10px;
             border-radius: 10px;
-            font-size: 11pt;
+            font-size: 1em;
             float: left;
             height: 50px;
-            line-height: 13pt;
-            margin: 5px;
-            padding: 5px;
+            line-height: 1.2em;
+            margin: 7px 7px 10px 7px;
+            padding: 9px 5px 0 5px;
             text-align: center;
             width: 90px;
+			shadow: 1px 1px 3px #fff;
+			-webkit-box-shadow: 0px 5px 0px rgba(167, 168, 170, 1);
+-moz-box-shadow:    0px 5px 0px rgba(167, 168, 170, 1);
+box-shadow:         0px 5px 0px rgba(167, 168, 170, 1);
+
         }
             .nav_option a {
                 color: #fff;
@@ -191,6 +191,11 @@ path  {cursor: pointer;}
             .nav_option_featured {background-color: #8b080d;}
             .nav_option_active {
                 background-color: #fff;
+				border:3px solid #a7a8aa; 
+				-webkit-box-shadow: 0px 3px 5px rgba(167, 168, 170, 1);
+-moz-box-shadow:    0px 3px 5px rgba(167, 168, 170, 1);
+box-shadow:         0px 3px 5px rgba(167, 168, 170, 1);
+margin-top:11px;
             }
                 .nav_option_active a {color: #0f2451;}
     .nav_control {
@@ -198,11 +203,13 @@ path  {cursor: pointer;}
         color: #fff;
         cursor: pointer;
         float: left;
-        height: 54px;
+        height: 63px;
         width: 30px;
         font-size: 2em;
         padding: 15px 0 7px 0;
         text-align: center;
+			border-bottom:#d2d2d2 3px solid;
+
     }
 
 #view_info {
