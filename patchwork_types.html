@@ -27,14 +27,6 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
-            // Add Object.keys support for length checking in associative arrays
-            if(!Object.keys) Object.keys = function(o){
-                if (o !== Object(o))
-                    throw new TypeError('Object.keys called on non-object');
-                var ret=[],p;
-                for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
-                return ret;
-            }
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
@@ -133,7 +125,7 @@
             <div id="view_tabs">
                 <div class="view_tab view_tab_more view_tab_active"><a href="#us_counties" id="view_tab_more_shown" class="view_tab_option">U.S.</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
-                        <li style="display: none;"><a href="#us_counties" class="view_tab_option">U.S.</a></li>
+                        <![if gte IE 9]><li style="display: none;"><a href="#us_counties" class="view_tab_option">U.S.</a></li><![endif]>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
                         <li><a href="#az" class="view_tab_option">Arizona</a></li>
@@ -194,7 +186,8 @@
             <div id="sidebar">
                 <h3 id="sidebar_title">County types</h3>
                 <div id="legend"></div>
-                <input name="map_view" id="map_view" type="hidden" value="us_counties" />
+                <![if gte IE 9]><input name="map_view" id="map_view" type="hidden" value="us_counties" /><![endif]>
+                <!--[if lt IE 9]><input name="map_view" id="map_view" type="hidden" value="ia" /><![endif]-->
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map"></div>

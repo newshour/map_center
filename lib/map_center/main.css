@@ -156,7 +156,8 @@ box-shadow:   inset      0px 2px 2px rgba(118, 118, 118, 0.75);
     overflow: hidden;
     position: relative;
     width: 938px;
-	background-image:url('/newshour/vote2012/.map_test/lib/images/bg-nav.jpg');
+	border-bottom:#d2d2d2 3px solid;
+	background-image:url('../images/bg-nav.jpg');
 	background-repeat:repeat-x;
 	position:relative;
 z-index:0;
@@ -219,7 +220,8 @@ margin-top:11px;
 		padding: 25px 0 0 0;
 
         text-align: center;
-            background-image:url('/newshour/vote2012/.map_test/lib/images/bg-control.jpg');
+			 border-bottom:#d2d2d2 2px solid;
+            background-image:url('../images/bg-control.jpg');
     background-repeat:repeat-x;
 	
 	
