@@ -50,13 +50,11 @@ path  {cursor: pointer;}
     width: 768px;
 }
 #loading {
-    height: 300px;
     filter: alpha(opacity=75);
     opacity: 0.75;
     position: absolute;
-    top: 98px;
-    left: 234px;
-    width: 300px;
+    top: 40%;
+    left: 40%;
     z-index: 500;
 }
 
@@ -103,6 +101,8 @@ path  {cursor: pointer;}
         padding: 6px;
         text-align: center;
     }
+	
+	#sidebar_title span {color:9f1c20;}
     #map_view {display: block;}
     #legend {
         position: relative;
@@ -123,6 +123,7 @@ path  {cursor: pointer;}
     margin-bottom: 10px;
     position: relative;
     width: 998px;
+
 }
     #nav_toggle {
         background-color: #b20000;
@@ -136,6 +137,9 @@ path  {cursor: pointer;}
         padding: 7px;
         width: 50px;
 		clear:both;
+		-webkit-box-shadow:inset 0px 2px 2px rgba(118, 118, 118, 0.75);
+-moz-box-shadow: inset   0px 2px 2px rgba(118, 118, 118, 0.75);
+box-shadow:   inset      0px 2px 2px rgba(118, 118, 118, 0.75);
     }
         #nav_toggle a {
             color: #fff;
@@ -152,11 +156,11 @@ path  {cursor: pointer;}
     overflow: hidden;
     position: relative;
     width: 938px;
-	border-bottom:#d2d2d2 3px solid;
 	background-image:url('/newshour/vote2012/.map_test/lib/images/bg-nav.jpg');
 	background-repeat:repeat-x;
 	position:relative;
 z-index:0;
+border-bottom:1px solid #d2d2d2;
 
 	
 
@@ -215,7 +219,6 @@ margin-top:11px;
 		padding: 25px 0 0 0;
 
         text-align: center;
-			 border-bottom:#d2d2d2 2px solid;
             background-image:url('/newshour/vote2012/.map_test/lib/images/bg-control.jpg');
     background-repeat:repeat-x;
 	
@@ -225,16 +228,16 @@ margin-top:11px;
 
     }
 	
-	#nav-main-next {-webkit-box-shadow: -2px 0px 2px rgba(118, 118, 118, 1);
--moz-box-shadow:    -2px 0px 2px rgba(118, 118, 118, 1);
-box-shadow:         -2px 0px 2px rgba(118, 118, 118, 1);
+	#nav-main-next {--webkit-box-shadow: -2px 0px 2px rgba(118, 118, 118, 0.75);
+-moz-box-shadow:    -2px 0px 2px rgba(118, 118, 118, 0.75);
+box-shadow:         -2px 0px 2px rgba(118, 118, 118, 0.75);
 position:relative;
 	z-index:2;
 
 }
-	#nav-main-prev {-webkit-box-shadow: 2px 0px 2px rgba(118, 118, 118, 1);
--moz-box-shadow:    2px 0px 2px rgba(118, 118, 118, 1);
-box-shadow:         2px 0px 2px rgba(118, 118, 118, 1);
+	#nav-main-prev {-webkit-box-shadow: 2px 0px 2px rgba(118, 118, 118, 0.75);
+-moz-box-shadow:    2px 0px 2px rgba(118, 118, 118, 0.75);
+box-shadow:         2px 0px 2px rgba(118, 118, 118, 0.75);
 position:relative;
 	z-index:2;
 
