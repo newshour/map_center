@@ -41,3 +41,18 @@
         width: 250px;
     }
         #view_tab_more_menu li a {width: 220px;}
+
+.live_refresh_inactive {
+    cursor: pointer;
+    font-weight: normal;
+}
+.live_refresh_active {
+    color: inherit;
+    cursor: default;
+}
+
+#updated_info {
+    color: #666;
+    font-size: 10pt;
+    padding: 0 0 0 25px;
+}
