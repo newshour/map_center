@@ -187,8 +187,38 @@
         <div id="content_area">
             <h2 id="instructions">Auto-refresh <a href="#" id="live_refresh_on" class="live_refresh_inactive">on</a> | <a href="#" id="live_refresh_off" class="live_refresh_active">off</a></h2>
             <div id="sidebar">
-                <h3 id="sidebar_title">Statewide results</h3>
-                <div id="legend"></div>
+                <h3 id="sidebar_title"><span id="precincts_percent">0</span>% of precincts reporting</h3>
+                <!--
+                    Other <span> ids you might be interested in:
+                        precincts_reporting
+                        precincts_total
+                -->
+                <div id="legend">
+                    <div id="legend_templates">
+                        <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
+                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
+                        <div class="candidate_big">
+                            <div class="candidate_color">&nbsp;</div>
+                            <img class="candidate_image" src="candidate_placeholder_50x75.png" />
+                            <div class="candidate_name">
+                                <span class="candidate_name_first">Firstname</span>
+                                <span class="candidate_name_last">Lastname</span>
+                            </div>
+                            <div class="candidate_votes"></div>
+                            <div class="candidate_won">Won</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="candidate_small">
+                            <div class="candidate_color">&nbsp;</div>
+                            <div class="candidate_name">
+                                <span class="candidate_name_first">Firstname</span>
+                                <span class="candidate_name_last">Lastname</span>
+                            </div>
+                            <div class="candidate_votes"></div>
+                        </div>
+                    </div>
+                    <div id="legend_candidates"></div>
+                </div>
                 <input name="map_view" id="map_view" type="hidden" value="ia" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>

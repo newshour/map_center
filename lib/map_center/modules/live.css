@@ -1,29 +1,3 @@
-#live_legend, #live_legend li {
-    list-style: none;
-    margin-bottom: 10px;
-    margin-left: 0;
-    padding-left: 0;
-}
-    #live_legend li {margin-bottom: 5px;}
-
-#live_legend, #live_legend tr, #live_legend td {border: 0;}
-.live_legend_control_visibility {
-    margin: 0;
-    padding: 0;
-    width: 15px;
-}
-    .live_legend_control_visibility a {
-        background-color: #fff;
-        display: block;
-    }
-    .live_legend_candidate_name, .live_legend_candidate_votes, .live_legend_candidate_won {
-        padding-bottom: 5px;
-        padding-left: 5px;
-    }
-    #live_legend .selected {
-        background-color: transparent;
-    }
-
 #tooltip_results thead {font-weight: bold;}
     .tooltip_results_candidate {width: 75%;}
 
@@ -41,6 +15,62 @@
         width: 250px;
     }
         #view_tab_more_menu li a {width: 220px;}
+
+#legend_candidates {margin-bottom: 10px;}
+#legend_templates {display: none;}
+    
+    .candidate_big, .candidate_small {
+        padding: 5px 5px 5px 10px;
+        position: relative;
+    }
+    .candidate_big {
+        background-color: #ccc;
+        border: 1px solid #777;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        clear: both;
+        color: #333;
+        margin-bottom: 3px;
+    }
+    .candidate_small {
+        background-color: #777;
+        clear: both;
+        color: #eee;
+        margin-bottom: 1px;
+    }
+        .candidate_image {
+            float: left;
+            margin-right: 10px;
+        }
+        .candidate_name_first {display: none;}
+        .candidate_color {
+            height: 85%;
+            left: -5px;
+            position: absolute;
+            top: 7.5%;
+            width: 10px;
+        }
+        .candidate_won {
+            display: none;
+            position: absolute;
+            right: -16px;
+            top: -8px;
+        }
+        
+        .candidate_big .candidate_name {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 1em;
+            text-align: center;
+        }
+        .candidate_big .candidate_votes {
+            margin-top: 0.5em;
+            text-align: center;
+        }
+        
+        .candidate_small .candidate_name {float: left;}
+        .candidate_small .candidate_votes {text-align: right;}
 
 .live_refresh_inactive {
     cursor: pointer;
