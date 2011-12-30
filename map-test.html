@@ -21,14 +21,6 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
-            // Add Object.keys support for length checking in associative arrays
-            if(!Object.keys) Object.keys = function(o){
-                if (o !== Object(o))
-                    throw new TypeError('Object.keys called on non-object');
-                var ret=[],p;
-                for(p in o) if(Object.prototype.hasOwnProperty.call(o,p)) ret.push(p);
-                return ret;
-            }
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/states_only.js"></script>
