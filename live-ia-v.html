@@ -98,27 +98,24 @@
 <div id="content">
  <div id="nav_outermost">
             <div id="nav_outer">
-                <div id="nav-main-prev" class="nav_control left">&laquo;</div>
+                <div id="nav-main-prev" class="nav_control">&laquo;</div>
                 <div id="nav-main">
                     <div id="nav_container">
                         <div class="nav_option nav_option_featured">
-                            <a href="index.html" id="map_2">Electoral College calculator</a>
+                            <a href="index.html" id="nav_option_electoral">Electoral College calculator</a>
                         </div>
                         <div class="nav_option">
-                            <a href="patchwork_types.html" id="map_3">Patchwork Nation counties</a>
+                            <a href="patchwork_types.html" id="nav_option_patchwork">Patchwork Nation counties</a>
                         </div>
                         <div class="nav_option">
-                            <a href="unemployment.html" id="map_4">Jobless in Iowa</a>
-                        </div>
-                        <div class="nav_option">
-                            <a href="stimulus.html" id="map_5">Follow the stimulus money</a>
+                            <a href="unemployment.html" id="nav_option_jobless">Jobless in Iowa</a>
                         </div>
                         <div class="nav_option nav_option_active">
-                            <a href="live-ia.html" id="map_6">Live Iowa caucus results</a>
+                            <a href="live-ia.html" id="nav_option_live_ia">Live Iowa caucus results</a>
                         </div>
                     </div>
                 </div>
-                <div id="nav-main-next" class="nav_control right">&raquo;</div>
+                <div id="nav-main-next" class="nav_control">&raquo;</div>
             </div>
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
@@ -190,7 +187,7 @@
         <div id="content_area">
             <h2 id="instructions">Auto-refresh <a href="#" id="live_refresh_on" class="live_refresh_inactive">on</a> | <a href="#" id="live_refresh_off" class="live_refresh_active">off</a></h2>
             <div id="sidebar">
-                <h3 id="sidebar_title"><span id="precincts_percent">0</span>% of precincts reporting</h3>
+                <h3 id="sidebar_title"><span id="precincts_percent">0</span>% precincts reporting</h3>
                 <!--
                     Other <span> ids you might be interested in:
                         precincts_reporting
@@ -202,13 +199,13 @@
                         <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
                         <div class="candidate_big">
                             <div class="candidate_color">&nbsp;</div>
-                            <img class="candidate_image" src="candidate_placeholder_50x75.png" />
+                            <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                             <div class="candidate_name">
                                 <span class="candidate_name_first">Firstname</span>
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
                             <div class="candidate_votes"></div>
-                            <div class="candidate_won">Won</div>
+                            <div class="candidate_won"><img src="lib/images/won.png" /></div>
                             <div class="clear"></div>
                         </div>
                         <div class="candidate_small">

@@ -32,6 +32,7 @@
         clear: both;
         color: #333;
         margin-bottom: 3px;
+		text-align:left;
     }
     .candidate_small {
         background-color: #777;
@@ -43,7 +44,7 @@
             float: left;
             margin-right: 10px;
         }
-        .candidate_name_first {display: none;}
+        .candidate_name_first {}
         .candidate_color {
             height: 85%;
             left: -5px;
@@ -54,19 +55,19 @@
         .candidate_won {
             display: none;
             position: absolute;
-            right: -16px;
-            top: -8px;
+            right: 5px;
+            top: -25px;
         }
         
         .candidate_big .candidate_name {
-            font-size: 12pt;
+            font-size: 1.2em;
             font-weight: bold;
             margin-top: 1em;
-            text-align: center;
+            text-align: left;
         }
         .candidate_big .candidate_votes {
             margin-top: 0.5em;
-            text-align: center;
+            text-align: left;
         }
         
         .candidate_small .candidate_name {float: left;}
@@ -86,3 +87,6 @@
     font-size: 10pt;
     padding: 0 0 0 25px;
 }
+
+#map {width:714px !important; padding:60px 0 0 0; margin: 0 0 0 -10px;}
+#sidebar { width:250px !important;}
