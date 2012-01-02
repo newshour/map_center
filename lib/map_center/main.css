@@ -145,9 +145,9 @@ path  {cursor: pointer;}
         -webkit-border-bottom-left-radius: 5px;
         -moz-border-radius-bottomleft: 5px;
         border-bottom-left-radius: 5px;
-        margin-left: 900px;
+        margin-left: 880px;
         padding: 7px;
-        width: 75px;
+        width: 85px;
 		clear:both;
 		-webkit-box-shadow:inset 0px 2px 2px rgba(118, 118, 118, 0.75);
 -moz-box-shadow: inset   0px 2px 2px rgba(118, 118, 118, 0.75);
