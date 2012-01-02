@@ -1,0 +1,6 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#loading, #footer, #featured-content, #head-pbs, header, nav, footer {display:none;}
+
+#main { border: none; }
