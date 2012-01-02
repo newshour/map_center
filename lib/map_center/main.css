@@ -22,6 +22,18 @@
 
 }
 
+@font-face {
+    font-family: 'MuseoSans700';
+    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot');
+    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.woff') format('woff'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.ttf') format('truetype'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.svg#MuseoSans300') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image, v\:shape, v\:group, v\:skew, v\:stroke, v\:fill {
     behavior: url(#default#VML);
     display: inline-block;

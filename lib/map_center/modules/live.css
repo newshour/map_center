@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'MuseoSans700';
+    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot');
+    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.woff') format('woff'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.ttf') format('truetype'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.svg#MuseoSans300') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 #tooltip_results thead {font-weight: bold;}
     .tooltip_results_candidate {width: 75%;}
 
@@ -22,10 +34,11 @@
     .candidate_big, .candidate_small {
         padding: 5px 5px 5px 10px;
         position: relative;
+		font-family:Arial, Helvetica, sans-serif;
     }
     .candidate_big {
-        background-color: #ccc;
-        border: 1px solid #777;
+        background-color: #efefef;
+        border: 1px solid #c5c5c5;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
@@ -33,12 +46,15 @@
         color: #333;
         margin-bottom: 3px;
 		text-align:left;
+		font-size:1.1em;
     }
     .candidate_small {
-        background-color: #777;
+        background-color: #d1d0d0;
         clear: both;
-        color: #eee;
+        color: #3f3f3f;
         margin-bottom: 1px;
+		font-family:'MuseoSans700';
+		font-size:1.1em;
     }
         .candidate_image {
             float: left;
@@ -68,6 +84,8 @@
         .candidate_big .candidate_votes {
             margin-top: 0.5em;
             text-align: left;
+			color:#9f1c20;
+			font-size:1.1em;
         }
         
         .candidate_small .candidate_name {float: left;}
@@ -90,3 +108,4 @@
 
 #map {width:714px !important; padding:60px 0 0 0; margin: 0 0 0 -10px;}
 #sidebar { width:250px !important;}
+#pbs-head {display:none;}
