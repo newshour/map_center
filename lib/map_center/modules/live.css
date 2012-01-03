@@ -53,7 +53,7 @@
         clear: both;
         color: #3f3f3f;
         margin-bottom: 1px;
-		font-family:'MuseoSans700';
+		font-family: Arial, Helvetica, sans-serif;
 		font-size:1.1em;
     }
         .candidate_image {
@@ -112,3 +112,12 @@
 #map {width:714px !important; padding:20px 0 0 0; margin: 0 0 0 -10px;}
 #sidebar { width:250px !important;}
 #pbs-head {display:none;}
+
+.city_label { opacity:.75;filter: 
+alpha(opacity=75); 
+-moz-opacity: 0.75;
+background: #000000;
+padding-bottom:2px;
+}
+.city_label text {margin-top:-2px;}
+
