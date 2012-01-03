@@ -5,14 +5,13 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>2012 Political Map Center | PBS NewsHour</title>
-	<meta name="description" content="The map features an electoral college calculator which includes historical data going back to the 1964 election" />
-	<meta name="author" content="map, politics, 2012 election, electoral college calculator" />
+	<meta name="description" content="The map features unemployment data from October 2011" />
+	<meta name="author" content="map, politics, 2012 election, unemployment" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<link rel="stylesheet" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0" />
+        <meta name="viewport" content="initial-scale=1.028, minimum-scale=1.0, maximum-scale=10.0" />
         <!-- Internet Explorer settings, including Chrome Frame -->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
         <!-- JS libraries -->
@@ -34,11 +33,14 @@
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
         <script type="text/javascript" src="lib/map_center/modules/static_maps.js"></script>
-        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/patchwork_types.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/unemployment.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/static_maps.css" />
+                        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/iowa-broadcast.css" />
+
+        
         <!-- Chrome Frame -->
         <!--[if lte IE 8]>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
@@ -56,10 +58,7 @@
         //]]></script>
         <![endif]-->
     </head><body>
-		<div id="head-pbs">
-    <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
-  
-</div>
+		
 
 <div id="container">
 
@@ -102,17 +101,17 @@
                 <div id="nav-main-prev" class="nav_control">&laquo;</div>
                 <div id="nav-main">
                     <div id="nav_container">
-                        <div class="nav_option nav_option_featured">
-                            <a href="calc.html" id="nav_option_electoral">Electoral College calculator</a>
-                        </div>
-                        <div class="nav_option nav_option_active">
-                            <a href="patchwork_types.html" id="nav_option_patchwork">Patchwork Nation counties</a>
+                             <div class="nav_option nav_option_featured">
+                            <a href="calc-broadcast.html" id="nav_option_electoral">Electoral College calculator</a>
                         </div>
                         <div class="nav_option">
-                            <a href="unemployment.html" id="nav_option_jobless">Jobless in Iowa</a>
+                            <a href="patchwork_types-broadcast.html" id="nav_option_patchwork">Patchwork Nation counties</a>
+                        </div>
+                        <div class="nav_option  nav_option_active">
+                            <a href="unemployment-broadcast.html" id="nav_option_jobless">Jobless in Iowa</a>
                         </div>
                         <div class="nav_option">
-                            <a href="index.html" id="nav_option_live_ia">Live Iowa caucus results</a>
+                            <a href="live-broadcast.html" id="nav_option_live_ia">Live Iowa caucus results</a>
                         </div>
                     </div>
                 </div>
@@ -121,11 +120,11 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Patchwork Nation</h1>
+            <h1>Unemployment</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#us_counties" id="view_tab_more_shown" class="view_tab_option">U.S.</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#ia" id="view_tab_more_shown" class="view_tab_option">Iowa</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
-                        <![if gte IE 9]><li style="display: none;"><a href="#us_counties" class="view_tab_option">U.S.</a></li><![endif]>
+                        <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
                         <li><a href="#az" class="view_tab_option">Arizona</a></li>
@@ -140,7 +139,7 @@
                         <li><a href="#id" class="view_tab_option">Idaho</a></li>
                         <li><a href="#il" class="view_tab_option">Illinois</a></li>
                         <li><a href="#in" class="view_tab_option">Indiana</a></li>
-                        <li><a href="#ia" class="view_tab_option">Iowa</a></li>
+                        <li style="display: none;"><a href="#ia" class="view_tab_option">Iowa</a></li>
                         <li><a href="#ks" class="view_tab_option">Kansas</a></li>
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
@@ -182,12 +181,11 @@
             </div>
         </div>
         <div id="content_area">
-            <h2 id="instructions">Turn county types on and off using list at right</h2>
+            <h2 id="instructions">Source: <a href="http://www.bls.gov/lau/" target="_blank">U.S. Bureau of Labor Statistics</a></h2>
             <div id="sidebar">
-                <h3 id="sidebar_title">County types</h3>
+                <h3 id="sidebar_title">Unemployment rate, October 2011</h3>
                 <div id="legend"></div>
-                <![if gte IE 9]><input name="map_view" id="map_view" type="hidden" value="us_counties" /><![endif]>
-                <!--[if lt IE 9]><input name="map_view" id="map_view" type="hidden" value="ia" /><![endif]-->
+                <input name="map_view" id="map_view" type="hidden" value="ia" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map"></div>
