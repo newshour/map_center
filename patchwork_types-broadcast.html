@@ -184,7 +184,19 @@
             <h2 id="instructions">Turn county types on and off using list at right</h2>
             <div id="sidebar">
                 <h3 id="sidebar_title">County types</h3>
-                <div id="legend"></div>
+                <div id="legend">
+                    <div id="legend_templates">
+                        <div class="category_entry">
+                            <div class="entry_color">&nbsp;</div>
+                            <div class="category_name"></div>
+                        </div>
+                        <div class="break_entry">
+                            <div class="entry_color">&nbsp;</div>
+                            <div class="break_text"></div>
+                        </div>
+                    </div>
+                    <div id="legend_entries"></div>
+                </div>
                 <![if gte IE 9]><input name="map_view" id="map_view" type="hidden" value="us_counties" /><![endif]>
                 <!--[if lt IE 9]><input name="map_view" id="map_view" type="hidden" value="ia" /><![endif]-->
             </div>
