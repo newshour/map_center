@@ -5,9 +5,9 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>2012 Political Map Center | PBS NewsHour</title>
-	<meta name="description" content="The map features live election results for the New Hampshire primary">
-	<meta name="author" content="map, politics, 2012 election, new hampshire primary">
-	<link rel="stylesheet" href="css/style.css">
+	<meta name="description" content="The map features live election results for the New Hampshire primary" />
+	<meta name="author" content="map, politics, 2012 election, new hampshire primary" />
+	<link rel="stylesheet" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,6 @@
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
         <script type="text/javascript" src="lib/map_center/modules/live.js"></script>
-        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/unemployment.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
@@ -66,10 +65,10 @@
 	<div id="social-links" class="clearfix">
 
 	<ul>
-		<li> <a href="http://www.facebook.com/newshour"><img src="/newshour/images/primary2/common/facebook.png"> Facebook</a></li>
-		<li> <a href="http://www.twitter.com/newshour"><img src="/newshour/images/primary2/common/twitter.png"> Twitter</a></li>
-		<li> <a href="http://www.youtube.com/pbsnewshour"><img src="/newshour/images/primary2/common/youtube.png"> YouTube</a></li>
-		<li> <a href="http://newshour.tumblr.com"><img src="/newshour/images/primary2/common/tumblr.png"> Tumblr</a></li>
+		<li> <a href="http://www.facebook.com/newshour"><img src="/newshour/images/primary2/common/facebook.png" /> Facebook</a></li>
+		<li> <a href="http://www.twitter.com/newshour"><img src="/newshour/images/primary2/common/twitter.png" /> Twitter</a></li>
+		<li> <a href="http://www.youtube.com/pbsnewshour"><img src="/newshour/images/primary2/common/youtube.png" /> YouTube</a></li>
+		<li> <a href="http://newshour.tumblr.com"><img src="/newshour/images/primary2/common/tumblr.png" /> Tumblr</a></li>
 	</ul>
 </div>
 
@@ -102,7 +101,7 @@
                 <div id="nav-main">
                     <div id="nav_container">
                         <div class="nav_option nav_option_featured">
-                            <a href="index.html" id="nav_option_electoral">Electoral College calculator</a>
+                            <a href="calc.html" id="nav_option_electoral">Electoral College calculator</a>
                         </div>
                         <div class="nav_option">
                             <a href="patchwork_types.html" id="nav_option_patchwork">Patchwork Nation counties</a>
@@ -111,7 +110,7 @@
                             <a href="unemployment.html" id="nav_option_jobless">Jobless in Iowa</a>
                         </div>
                         <div class="nav_option">
-                            <a href="live-ia.html" id="nav_option_live_ia">Live Iowa caucus results</a>
+                            <a href="index.html" id="nav_option_live_ia">Live Iowa caucus results</a>
                         </div>
                     </div>
                 </div>
@@ -122,7 +121,7 @@
         <div id="view_info">
             <h1>Live results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#nh" id="view_tab_more_shown" class="view_tab_option">New Hampshire</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
+                <div class="view_tab view_tab_more view_tab_active"><a href="#nh" id="view_tab_more_shown" class="view_tab_option">New Hampshire</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <!--
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
@@ -140,7 +139,9 @@
                         <li><a href="#id" class="view_tab_option">Idaho</a></li>
                         <li><a href="#il" class="view_tab_option">Illinois</a></li>
                         <li><a href="#in" class="view_tab_option">Indiana</a></li>
+                        -->
                         <li><a href="#ia" class="view_tab_option">Iowa</a></li>
+                        <!--
                         <li><a href="#ks" class="view_tab_option">Kansas</a></li>
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
@@ -185,9 +186,9 @@
             </div>
         </div>
         <div id="content_area">
-            <h2 id="instructions">Auto-refresh <a href="#" id="live_refresh_on" class="live_refresh_inactive">on</a> | <a href="#" id="live_refresh_off" class="live_refresh_active">off</a></h2>
+            
             <div id="sidebar">
-                <h3 id="sidebar_title"><span id="precincts_percent">0</span>% of precincts reporting</h3>
+                <h3 id="sidebar_title"><span id="precincts_percent">0</span>% precincts reporting</h3>
                 <!--
                     Other <span> ids you might be interested in:
                         precincts_reporting
@@ -199,13 +200,13 @@
                         <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
                         <div class="candidate_big">
                             <div class="candidate_color">&nbsp;</div>
-                            <img class="candidate_image" src="candidate_placeholder_50x75.png" />
+                            <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                             <div class="candidate_name">
                                 <span class="candidate_name_first">Firstname</span>
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
                             <div class="candidate_votes"></div>
-                            <div class="candidate_won">Won</div>
+                            <div class="candidate_won"><img src="lib/images/won.png" /></div>
                             <div class="clear"></div>
                         </div>
                         <div class="candidate_small">
