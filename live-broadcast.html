@@ -5,8 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>Vote 2012 Map</title>
-	<meta name="description" content="The map features live election results for the Iowa caucuses" />
-	<meta name="author" content="map, politics, 2012 election, iowa caucuses" />
+	<meta name="description" content="The map features live election results for the New Hampshire primary" />
+	<meta name="author" content="map, politics, 2012 election, new hampshire primary" />
 	<link rel="stylesheet" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
@@ -64,7 +64,7 @@
                         <div class="nav_option">
                             <a href="unemployment-broadcast.html" id="nav_option_jobless">Jobless in Iowa</a>
                         </div>
-                        <div class="nav_option nav_option_active">
+                        <div class="nav_option">
                             <a href="live-broadcast.html" id="nav_option_live_ia">Live Iowa caucus results</a>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
         <div id="view_info">
             <h1>Live results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#ia" id="view_tab_more_shown" class="view_tab_option">Iowa</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
+                <div class="view_tab view_tab_more view_tab_active"><a href="#nh" id="view_tab_more_shown" class="view_tab_option">New Hampshire</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <!--
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
@@ -95,7 +95,7 @@
                         <li><a href="#il" class="view_tab_option">Illinois</a></li>
                         <li><a href="#in" class="view_tab_option">Indiana</a></li>
                         -->
-                        <li style="display: none;"><a href="#ia" class="view_tab_option">Iowa</a></li>
+                        <li><a href="#ia" class="view_tab_option">Iowa</a></li>
                         <!--
                         <li><a href="#ks" class="view_tab_option">Kansas</a></li>
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
@@ -110,7 +110,9 @@
                         <li><a href="#mt" class="view_tab_option">Montana</a></li>
                         <li><a href="#ne" class="view_tab_option">Nebraska</a></li>
                         <li><a href="#nv" class="view_tab_option">Nevada</a></li>
-                        <li><a href="#nh" class="view_tab_option">New Hampshire</a></li>
+                        -->
+                        <li style="display: none;"><a href="#nh" class="view_tab_option">New Hampshire</a></li>
+                        <!--
                         <li><a href="#nj" class="view_tab_option">New Jersey</a></li>
                         <li><a href="#nm" class="view_tab_option">New Mexico</a></li>
                         <li><a href="#ny" class="view_tab_option">New York</a></li>
@@ -151,7 +153,7 @@
                 <div id="legend">
                     <div id="legend_templates">
                         <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
-                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
+                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 20); .candidate_small is for the rest. -->
                         <div class="candidate_big">
                             <div class="candidate_color">&nbsp;</div>
                             <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
@@ -173,7 +175,7 @@
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="ia" />
+                <input name="map_view" id="map_view" type="hidden" value="nh" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map" style="width: 714px;"></div>
