@@ -90,9 +90,22 @@
 			font-size:1.8em;
 			font-weight:bold;
         }
+        .candidate_big .candidate_vote_count {
+            bottom: 10px;
+            position: absolute;
+            right: 10px;
+        }
         
         .candidate_small .candidate_name {float: left;}
         .candidate_small .candidate_votes {text-align: right;}
+        .candidate_small .candidate_vote_count {
+            float: left;
+            font-size: 0.75em;
+            margin-top: 0.125em;
+            position: absolute;
+            right: 75px;
+            text-align: right;
+        }
 
 .live_refresh_inactive {
     cursor: pointer;
