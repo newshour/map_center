@@ -90,9 +90,22 @@
 			font-size:1.8em;
 			font-weight:bold;
         }
+        .candidate_big .candidate_vote_count {
+            bottom: 10px;
+            position: absolute;
+            right: 10px;
+        }
         
         .candidate_small .candidate_name {float: left;}
         .candidate_small .candidate_votes {text-align: right;}
+        .candidate_small .candidate_vote_count {
+            float: left;
+            font-size: 0.75em;
+            margin-top: 0.125em;
+            position: absolute;
+            right: 65px;
+            text-align: right;
+        }
 
 .live_refresh_inactive {
     cursor: pointer;
@@ -112,12 +125,3 @@
 #map {width:714px !important; padding:20px 0 0 0; margin: 0 0 0 -10px;}
 #sidebar { width:250px !important;}
 #pbs-head {display:none;}
-
-.city_label { opacity:.75;filter: 
-alpha(opacity=75); 
--moz-opacity: 0.75;
-background: #000000;
-padding-bottom:2px;
-}
-.city_label text {margin-top:-2px;}
-

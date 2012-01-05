@@ -1,20 +1,21 @@
-#static_legend, #static_legend li {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-#static_legend li {margin-bottom: 5px;}
-
-#static_legend .control_all {
-    float: left;
-    margin-bottom: 10px;
-    margin-right: 10px;
-}
-
-#static_legend .selected {
-    font-weight: bold;
-}
+#legend_templates {display: none;}
+#legend_entries {margin-bottom: 10px;}
+    .category_entry, .break_entry {
+        background-color: #d1d0d0;
+        color: #3f3f3f;
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:1.1em;
+        margin-bottom: 1px;
+        padding: 5px 5px 5px 10px;
+        position: relative;
+    }
+        .entry_color {
+            height: 85%;
+            left: -5px;
+            position: absolute;
+            top: 7.5%;
+            width: 10px;
+        }
 
 .view_tab {
     float: right;
