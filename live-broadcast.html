@@ -28,6 +28,27 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            // Map-specific overrides to nhmc.config
+            //   This can be copied to other map pages and edited there, too.
+            //   If you take anything out of here, no problem--it'll just use
+            //   the default value found in lib/map_center/main.js.
+            var nhmc_config = {
+                defaultAttributes: {
+                    'fill': '#f7f5f5',
+                    'stroke': '#b2b4b3'
+                },
+                cityLabels: {
+                    backgroundOpacity: 0.75,
+                    backgroundPadding: [2, -2, 5, 5],  // top, right (text end), bottom, left (circle end)
+                    hideBackgrounds: false,
+                    labelNudge: -3,  // pixels to move the text label (positive is down)
+                    labelOpacity: 0.75,
+                    labelSize: 18,  // font size of city label text in pixels
+                    markerOpacity: 0.75,
+                    markerRadius: 4
+                }
+            };
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
