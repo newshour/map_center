@@ -354,10 +354,10 @@ nav span {text-transform: lowercase; font-family: 'MuseoSans300', sans-serif; co
 #featured-content {background-color: #bebebe; border:1px solid #9c9c9c; border-left:none; border-right:none; padding: 15px; width:968px; }
 #popular {height: 246px; background-color: #d5d4d4; border: 1px solid #9c9c9c; border-right:1px solid #cccccc; background-image: url('/newshour/images/primary2/common/popular.png'); width: 160px; margin: 0 40px 0 25px; padding: 11px; float: left;}
 #popular h3 {color: #fff; font: 1.3em/.6em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif; text-shadow: 1px 1px 2px #333; text-transform: uppercase; text-align: center; margin-top: 0px;  }
-#popular p  {text-shadow: 1px 1px 1px #fff; font: 1.2em/1.3em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif; }
+#popular p  {text-shadow: 1px 1px 1px #fff; font: 1.2em/1.3em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif; margin-top:5px; }
 .slideshow { width: 160px; height: 246px; float: left; margin: 38px 20px 0 0; }
 .slideshow h3 {color: #4f4f4f; font: 1.3em/.6em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif; text-shadow: 1px 1px 1px #fff; text-transform: uppercase; text-align: left; margin: -27px 0 17px 0 ; }
-.slideshow p {text-shadow: 1px 1px 1px #fff; font: 1.2em/1.3em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif;}
+.slideshow p {text-shadow: 1px 1px 1px #fff; font: 1.2em/1.3em 'MuseoSans700',"Helvetica Neue", Helvetica, sans-serif;margin-top:5px;}
 .ad p {font: .8em/1.3em 'MuseoSans300',"Helvetica Neue", Helvetica, sans-serif; text-transform: uppercase;}
 .ad {margin: -10px 0 0 50px;; float: left; height: 300px; width: 250px;}
 footer { margin: 30px 0 0 0;}
