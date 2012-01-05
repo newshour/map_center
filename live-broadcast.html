@@ -35,13 +35,13 @@
             //   the default value found in lib/map_center/main.js.
             var nhmc_config = {
                 defaultAttributes: {
-                    'fill': '#f7f5f5',
-                    'stroke': '#b2b4b3'
+                    'fill': '#f7f5f5',  // default county/state fill
+                    'stroke': '#b2b4b3'  // county/state stroke
                 },
                 cityLabels: {
                     backgroundOpacity: 0.75,
                     backgroundPadding: [2, -2, 5, 5],  // top, right (text end), bottom, left (circle end)
-                    hideBackgrounds: false,
+                    hideBackgrounds: true,
                     labelNudge: -3,  // pixels to move the text label (positive is down)
                     labelOpacity: 0.75,
                     labelSize: 18,  // font size of city label text in pixels
@@ -49,13 +49,29 @@
                     markerRadius: 4
                 }
             };
+            
+            // Map-specific overrides to live.js config
+            var nhmc_live_config = {
+                bigCandidates: 6,
+                condenseCandidates: true,
+                showCandidates: [
+                    "Mitt Romney",
+                    "Rick Santorum",
+                    "Ron Paul",
+                    "Jon Huntsman",
+                    "Michele Bachmann",
+                    "Newt Gingrich",
+                    "Rick Perry"
+                ],
+                tooltipsEnabled: false
+            };
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
-        <script type="text/javascript" src="lib/map_center/modules/live-broadcast.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/live.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
