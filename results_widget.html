@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Results</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+        <script type="text/javascript">//<![CDATA[
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+        //]]></script>
+        <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/results_widget.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/results_widget.css" />
+    </head>
+    <body>
+        <h1>
+            <div id="state">
+                <div id="state_selected">
+                    <a href="#" class="state_option"></a>
+                </div>
+            </div>
+            &nbsp;<span id="data_status">results</span>
+        </h1>
+        <ul id="state_menu">
+            <!--
+            <li><a href="#us_counties" class="state_option">U.S.</a></li>
+            <li><a href="#al" class="state_option">Alabama</a></li>
+            <li><a href="#ak" class="state_option">Alaska</a></li>
+            <li><a href="#az" class="state_option">Arizona</a></li>
+            <li><a href="#ar" class="state_option">Arkansas</a></li>
+            <li><a href="#ca" class="state_option">California</a></li>
+            <li><a href="#co" class="state_option">Colorado</a></li>
+            <li><a href="#ct" class="state_option">Connecticut</a></li>
+            <li><a href="#de" class="state_option">Delaware</a></li>
+            <li><a href="#fl" class="state_option">Florida</a></li>
+            <li><a href="#ga" class="state_option">Georgia</a></li>
+            <li><a href="#hi" class="state_option">Hawaii</a></li>
+            <li><a href="#id" class="state_option">Idaho</a></li>
+            <li><a href="#il" class="state_option">Illinois</a></li>
+            <li><a href="#in" class="state_option">Indiana</a></li>
+            -->
+            <li><a href="#ia" class="state_option">Iowa</a></li>
+            <!--
+            <li><a href="#ks" class="state_option">Kansas</a></li>
+            <li><a href="#ky" class="state_option">Kentucky</a></li>
+            <li><a href="#la" class="state_option">Louisiana</a></li>
+            <li><a href="#me" class="state_option">Maine</a></li>
+            <li><a href="#md" class="state_option">Maryland</a></li>
+            <li><a href="#ma" class="state_option">Massachusetts</a></li>
+            <li><a href="#mi" class="state_option">Michigan</a></li>
+            <li><a href="#mn" class="state_option">Minnesota</a></li>
+            <li><a href="#ms" class="state_option">Mississippi</a></li>
+            <li><a href="#mo" class="state_option">Missouri</a></li>
+            <li><a href="#mt" class="state_option">Montana</a></li>
+            <li><a href="#ne" class="state_option">Nebraska</a></li>
+            <li><a href="#nv" class="state_option">Nevada</a></li>
+            -->
+            <li><a href="#nh" class="state_option">New Hampshire</a></li>
+            <!--
+            <li><a href="#nj" class="state_option">New Jersey</a></li>
+            <li><a href="#nm" class="state_option">New Mexico</a></li>
+            <li><a href="#ny" class="state_option">New York</a></li>
+            <li><a href="#nc" class="state_option">North Carolina</a></li>
+            <li><a href="#nd" class="state_option">North Dakota</a></li>
+            <li><a href="#oh" class="state_option">Ohio</a></li>
+            <li><a href="#ok" class="state_option">Oklahoma</a></li>
+            <li><a href="#or" class="state_option">Oregon</a></li>
+            <li><a href="#pa" class="state_option">Pennsylvania</a></li>
+            <li><a href="#ri" class="state_option">Rhode Island</a></li>
+            <li><a href="#sc" class="state_option">South Carolina</a></li>
+            <li><a href="#sd" class="state_option">South Dakota</a></li>
+            <li><a href="#tn" class="state_option">Tennessee</a></li>
+            <li><a href="#tx" class="state_option">Texas</a></li>
+            <li><a href="#ut" class="state_option">Utah</a></li>
+            <li><a href="#vt" class="state_option">Vermont</a></li>
+            <li><a href="#va" class="state_option">Virginia</a></li>
+            <li><a href="#wa" class="state_option">Washington</a></li>
+            <li><a href="#dc" class="state_option">Washington, D.C.</a></li>
+            <li><a href="#wv" class="state_option">West Virginia</a></li>
+            <li><a href="#wi" class="state_option">Wisconsin</a></li>
+            <li><a href="#wy" class="state_option">Wyoming</a></li>
+            -->
+        </ul>
+        <p id="attribution">All data from AP | Last updated <span id="last_updated"></span></p>
+        <p id="precincts"><span id="precincts_percent">0</span>% precincts reporting</p>
+        <div id="content">
+            <div id="results_templates">
+                <div class="result">
+                    <div class="candidate_name">
+                        <span class="candidate_name_first">Firstname</span>
+                        <span class="candidate_name_last">Lastname</span>
+                    </div>
+                    <div class="candidate_vote_count"></div>
+                    <div class="candidate_votes"></div>
+                    <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div id="results"></div>
+        </div>
+    </body>
+</html>
