@@ -32,11 +32,12 @@
 #legend_templates {display: none;}
     
     .candidate_big, .candidate_small {
-        padding: 5px 5px 5px 10px;
         position: relative;
 		font-family:Arial, Helvetica, sans-serif;
     }
     .candidate_big {
+		        padding: 0px 5px 5px 20px;
+
         background-color: #efefef;
         border: 1px solid #c5c5c5;
         -webkit-border-radius: 5px;
@@ -44,29 +45,31 @@
         border-radius: 5px;
         clear: both;
         color: #333;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
 		text-align:left;
-		font-size:1.1em;
+		font-size:1.4em;
     }
     .candidate_small {
+		        padding: 5px 5px 5px 10px;
+
         background-color: #d1d0d0;
         clear: both;
         color: #3f3f3f;
-        margin-bottom: 1px;
+        margin-bottom: 3px;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size:1.1em;
     }
         .candidate_image {
             float: left;
-            margin-right: 10px;
+            margin:0 15px 5px 0;
         }
         .candidate_name_first { font-weight:normal; text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);}
         .candidate_color {
             height: 85%;
-            left: -5px;
+            left: -10px;
             position: absolute;
             top: 7.5%;
-            width: 10px;
+            width: 15px;
         }
         .candidate_won {
             display: none;
@@ -77,23 +80,25 @@
         
         .candidate_big .candidate_name {
 			text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: bold;
-            margin-top: 2px;
             text-align: left;
 			line-height:1.1em;
+			margin:2px 0 2px 0;
         }
         .candidate_big .candidate_votes {
-            margin-top: 3px;
+            margin: 3px 0 0 0;
             text-align: left;
 			color:#9f1c20;
-			font-size:1.8em;
 			font-weight:bold;
+			            font-size: 2em;
+
         }
         .candidate_big .candidate_vote_count {
-            bottom: 10px;
-            position: absolute;
-            right: 10px;
+						font-size:1em;
+						margin:0 0 0 2px;
+
+			
         }
         
         .candidate_small .candidate_name {float: left;}
