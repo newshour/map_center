@@ -54,6 +54,7 @@
             var nhmc_live_config = {
                 bigCandidates: 6,
                 condenseCandidates: true,
+                flyouts: 'nw',
                 showCandidates: [
                     "Mitt Romney",
                     "Rick Santorum",
@@ -62,8 +63,7 @@
                     "Michele Bachmann",
                     "Newt Gingrich",
                     "Rick Perry"
-                ],
-                tooltipsEnabled: false
+                ]
             };
         //]]></script>
         <!-- Map Center core -->
@@ -219,6 +219,28 @@
                 <input name="map_view" id="map_view" type="hidden" value="nh" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
+            <div id="flyout">
+                <div class="flyout_content">
+                    <h2 class="flyout_name"></h2>
+                    <h3 class="flyout_title"><span class="flyout_precincts_reporting">0</span> of <span class="flyout_precincts_total">0</span> precincts reporting</h3>
+                    <!--
+                        Other <span> classes you might be interested in:
+                            flyout_precincts_percent
+                    -->
+                    <div class="flyout_templates">
+                        <div class="flyout_candidate">
+                            <div class="flyout_candidate_color">&nbsp;</div>
+                            <div class="flyout_candidate_name">
+                                <span class="flyout_candidate_name_first">Firstname</span>
+                                <span class="flyout_candidate_name_last">Lastname</span>
+                            </div>
+                            <div class="flyout_candidate_vote_count"></div>
+                            <div class="flyout_candidate_votes"></div>
+                        </div>
+                    </div>
+                    <div class="flyout_candidates"></div>
+                </div>
+            </div>
             <div id="map" style="width: 714px;"></div>
             <div id="chart"></div>
             <div id="nh-logo">newshour.pbs.org</div>

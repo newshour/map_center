@@ -28,6 +28,9 @@
     }
         #view_tab_more_menu li a {width: 220px;}
 
+#flyout {display: none;}
+    .flyout_templates {display: none;}
+
 #legend_candidates {margin-bottom: 10px;}
 #legend_templates {display: none;}
     
