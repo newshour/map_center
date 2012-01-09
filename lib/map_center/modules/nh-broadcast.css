@@ -23,11 +23,12 @@
 	
 	.candidate_big .candidate_name {
 			text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
-            font-size: 1.1em;
-            font-weight: bold;
-            margin-top: 7px;
+            font-size: 1.2em;
+            font-weight: normal;
             text-align: left;
 			line-height:1em;
+			margin-top:7px;
+			font-family:'MuseoSans300', arial, sans-serif;
 			
         }
         .candidate_big .candidate_votes {
@@ -37,8 +38,12 @@
 			color:#9f1c20;
 			font-size:2em;
 			font-weight:normal;
+						font-family:'MuseoSans700', arial, sans-serif;
+
         }
+		.candidate_name_last {font-family: 'MuseoSans700';}
         
 	
 #nh-logo { color:#898686; text-shadow: 1px 1px 3px rgba(255, 255, 255, 1); font-family:'MuseoSans700'; font-size:4em; margin: 30px auto 0 auto; text-align:center; }
 
+#map {width:714px !important; padding:20px 0 0 0; margin: 0 0 0 -10px;}
