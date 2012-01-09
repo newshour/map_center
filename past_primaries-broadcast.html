@@ -4,14 +4,16 @@
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<title>2012 Political Map Center | PBS NewsHour</title>
-	<meta name="description" content="The map features live election results for the Iowa caucuses" />
-	<meta name="author" content="map, politics, 2012 election, iowa caucuses" />
+	<title>Vote 2012 Map</title>
+	<meta name="description" content="The map features past results for the 2012 presidential primaries and caucuses" />
+	<meta name="author" content="map, politics, 2012 election, caucuses, primaries" />
 	<link rel="stylesheet" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0" />
+        <meta name="viewport" content="initial-scale=1.02828, minimum-scale=1.0, maximum-scale=10.0" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png" />
+
         <!-- Internet Explorer settings, including Chrome Frame -->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
         <!-- JS libraries -->
@@ -26,6 +28,44 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            // Map-specific overrides to nhmc.config
+            //   This can be copied to other map pages and edited there, too.
+            //   If you take anything out of here, no problem--it'll just use
+            //   the default value found in lib/map_center/main.js.
+            var nhmc_config = {
+                defaultAttributes: {
+                    'fill': '#f7f5f5',  // default county/state fill
+                    'stroke': '#b2b4b3'  // county/state stroke
+                },
+                cityLabels: {
+                    backgroundOpacity: 0.75,
+                    backgroundPadding: [2, -2, 5, 5],  // top, right (text end), bottom, left (circle end)
+                    hideBackgrounds: true,
+                    labelNudge: -3,  // pixels to move the text label (positive is down)
+                    labelOpacity: 0.75,
+                    labelSize: 18,  // font size of city label text in pixels
+                    markerOpacity: 0.75,
+                    markerRadius: 4
+                }
+            };
+            
+            // Map-specific overrides to live.js config
+            var nhmc_live_config = {
+                autoRefresh: false,
+                bigCandidates: 6,
+                condenseCandidates: true,
+                flyouts: 'nw',
+                showCandidates: [
+                    "Mitt Romney",
+                    "Rick Santorum",
+                    "Ron Paul",
+                    "Jon Huntsman",
+                    "Michele Bachmann",
+                    "Newt Gingrich",
+                    "Rick Perry"
+                ]
+            };
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
@@ -37,62 +77,15 @@
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/live.css" />
-        <!-- Chrome Frame -->
-        <!--[if lte IE 8]>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
-        <style type="text/css">/*<![CDATA[*/
-            .chromeFrameInstallDefaultStyle {
-                border: 1px solid #666;
-                padding: 5px;
-                z-index: 15000;
-            }
-        /*]]>*/</style>
-        <script type="text/javascript">//<![CDATA[
-            $(document).ready(function() {
-                CFInstall.check({mode: 'overlay'});
-            });
-        //]]></script>
-        <![endif]-->
+                <link rel="stylesheet" type="text/css" href="lib/map_center/modules/iowa-broadcast.css" />
+	
     </head><body>
-		<div id="head-pbs">
-    <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
-  
-</div>
-
+		
 <div id="container">
 
-	<header>
-	<div id="social-links" class="clearfix">
-
-	<ul>
-		<li> <a href="http://www.facebook.com/newshour"><img src="/newshour/images/primary2/common/facebook.png" /> Facebook</a></li>
-		<li> <a href="http://www.twitter.com/newshour"><img src="/newshour/images/primary2/common/twitter.png" /> Twitter</a></li>
-		<li> <a href="http://www.youtube.com/pbsnewshour"><img src="/newshour/images/primary2/common/youtube.png" /> YouTube</a></li>
-		<li> <a href="http://newshour.tumblr.com"><img src="/newshour/images/primary2/common/tumblr.png" /> Tumblr</a></li>
-	</ul>
-</div>
-
-	</header>
+	
 	<div id="main" role="main">
-	<nav class="clearfix">
-		<ul>
-			<li class="logo ir"><a href="http://www.pbs.org/newshour/">PBS NewsHour</a></li> 
-
-			<li><a href="http://www.pbs.org/newshour/topics">Topics</a></li> 
-			<li>/</li>
-
-			<li><a href="http://www.pbs.org/newshour/video">Recent Programs</a></li>
-			<li>/</li>
-
-			<li><a href="http://www.pbs.org/newshour/rundown">The Rundown <span>blog</span></a></li>
-			<li>/</li>
-
-			<!--#include virtual="/newshour/mobile_ads/link.html" -->
-			<li>/</li>
-			<li><a href="http://www.pbs.org/newshour/extra">Teachers</a></li>
-
-		</ul>
-	</nav>
+	
 	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
 <div id="content">
  <div id="nav_outermost">
@@ -101,19 +94,19 @@
                 <div id="nav-main">
                     <div id="nav_container">
                         <div class="nav_option nav_option_featured">
-                            <a href="calc.html" id="nav_option_electoral">Electoral College calculator</a>
+                            <a href="calc-broadcast.html" id="nav_option_electoral">Electoral College calculator</a>
                         </div>
                         <div class="nav_option">
-                            <a href="patchwork_types.html" id="nav_option_patchwork">Patchwork Nation counties</a>
+                            <a href="patchwork_types-broadcast.html" id="nav_option_patchwork">Patchwork Nation counties</a>
                         </div>
                         <div class="nav_option">
-                            <a href="unemployment.html" id="nav_option_jobless">Jobless by county</a>
+                            <a href="unemployment-broadcast.html" id="nav_option_jobless">Jobless by county</a>
+                        </div>
+                        <div class="nav_option nav_option_active">
+                            <a href="past_primaries-broadcast.html" id="nav_option_past">Past primary and caucus results</a>
                         </div>
                         <div class="nav_option">
-                            <a href="past_primaries.html" id="nav_option_past">Past primary and caucus results</a>
-                        </div>
-                        <div class="nav_option">
-                            <a href="index.html" id="nav_option_live">Live NH primary results</a>
+                            <a href="live-broadcast.html" id="nav_option_live">Live NH primary results</a>
                         </div>
                     </div>
                 </div>
@@ -122,7 +115,7 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Live results</h1>
+            <h1>Past results</h1>
             <div id="view_tabs">
                 <div class="view_tab view_tab_more view_tab_active"><a href="#ia" id="view_tab_more_shown" class="view_tab_option">Iowa</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
@@ -187,8 +180,9 @@
             </div>
         </div>
         <div id="content_area">
-            <h2 id="instructions">Auto-refresh <a href="#" id="live_refresh_on" class="live_refresh_inactive">on</a> | <a href="#" id="live_refresh_off" class="live_refresh_active">off</a></h2>
-            <div id="sidebar">
+            
+            <div id="sidebar" style="padding: 0 20px;
+    width: 205px;">
                 <h3 id="sidebar_title"><span id="precincts_percent">0</span>% precincts reporting</h3>
                 <!--
                     Other <span> ids you might be interested in:
@@ -198,7 +192,7 @@
                 <div id="legend">
                     <div id="legend_templates">
                         <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
-                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
+                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 20); .candidate_small is for the rest. -->
                         <div class="candidate_big">
                             <div class="candidate_color">&nbsp;</div>
                             <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
@@ -206,6 +200,8 @@
                                 <span class="candidate_name_first">Firstname</span>
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
+                            <!-- .candidate_vote_count gives the total number of votes cast; .candidate_votes expresses that vote as a percentage. -->
+                            <div class="candidate_vote_count"></div>
                             <div class="candidate_votes"></div>
                             <div class="candidate_won"><img src="lib/images/won.png" /></div>
                             <div class="clear"></div>
@@ -216,6 +212,7 @@
                                 <span class="candidate_name_first">Firstname</span>
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
+                            <div class="candidate_vote_count"></div>
                             <div class="candidate_votes"></div>
                         </div>
                     </div>
@@ -224,102 +221,36 @@
                 <input name="map_view" id="map_view" type="hidden" value="ia" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
-            <div id="map"></div>
+            <div id="flyout">
+                <div class="flyout_content">
+                    <h2 class="flyout_name"></h2>
+                    <h3 class="flyout_title"><span class="flyout_precincts_reporting">0</span> of <span class="flyout_precincts_total">0</span> precincts reporting</h3>
+                    <!--
+                        Other <span> classes you might be interested in:
+                            flyout_precincts_percent
+                    -->
+                    <div class="flyout_templates">
+                        <div class="flyout_candidate">
+                            <div class="flyout_candidate_color">&nbsp;</div>
+                            <div class="flyout_candidate_name">
+                                <span class="flyout_candidate_name_first">Firstname</span>
+                                <span class="flyout_candidate_name_last">Lastname</span>
+                            </div>
+                            <div class="flyout_candidate_vote_count"></div>
+                            <div class="flyout_candidate_votes"></div>
+                        </div>
+                    </div>
+                    <div class="flyout_candidates"></div>
+                </div>
+            </div>
+            <div id="map" style="width: 714px;"></div>
             <div id="chart"></div>
+            <div id="nh-logo">newshour.pbs.org</div>
             <div class="clear"></div>
-            <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
         </div>
 </div>
-<div id="featured-content" class="clearfix">
-	<div id="popular">
-	<h3>Most Popular</h3>
-	<!--#include virtual="/newshour/scripts/adminfiles/feeds/popular-politics.html" -->
-	</div>
-	<div class="slideshow"><h3>Politics</h3>
-	<!--#include virtual="/newshour/scripts/adminfiles/feeds/politics1.html" -->
-
-	</div>
-	<div class="slideshow"><!--#include virtual="/newshour/scripts/adminfiles/feeds/politics2.html" -->
-</div>
-	<div class="ad"><p>Support For PBS Provided by</p><!--#include virtual="/newshour/scripts2/common/ad_300x250.html" --></div>
-</div>
-	</div>
-	<footer>
-	<div id="topics-list" class="clearfix">
-		<div class="title"><h3>Topics</h3></div>	
-
-        				<ul>
-   	    		<li><a href="http://www.pbs.org/newshour/topic/entertainment/">Arts &amp; Entertainment</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/business/">Business &amp; Economy</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/education/">Education</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/environment/">Environment</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/government_programs/">Government Programs</a></li>
-       		</ul>
-            <ul>
-
-            	<li><a href="http://www.pbs.org/newshour/topic/health/">Health</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/remember/">In Memoriam</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/international/">International Orgs.</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/law/">Law</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/media/">Media</a></li>
-            </ul>
-
-            <ul>
-            	<li><a href="http://www.pbs.org/newshour/topic/military/">Military</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/politics/">Politics</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/religion/">Religion</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/science/">Science &amp; Technology</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/social_issues/">Social Issues</a></li>
-
-            </ul>
-            <ul>            	
-                <li><a href="http://www.pbs.org/newshour/topic/sports/">Sports</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/terrorism/">Terrorism</a></li>
-                <li><a href="http://www.pbs.org/newshour/topic/transportation/">Transportation</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/white_house/">U.S Presidency</a></li>
-				<li><a href="http://www.pbs.org/newshour/topic/weather/">Weather &amp; Natural Disasters</a></li>
-
-            </ul>  
-        </div>
-    <div id="footer-sub">
-
-    	<div class="copyright">Copyright 1996-<script type="text/JavaScript">var today = new Date(); document.write(today.getFullYear());</script> MacNeil/Lehrer Productions. All Rights Reserved.</div> 
-    		<ul class="column5">            	
-                <li><a href="http://www.pbs.org/newshour/aboutus/">About Us</a></li>
-                <li>/</li>
-                <li><a href="http://www.pbs.org/newshour/letters.html">Feedback</a></li>
-                <li>/</li>
-				<li><a href="http://www.pbs.org/newshour/subscriptions.html">Subscriptions and Feeds</a></li>
-				<li>/</li>
-                <li><a href="http://www.pbs.org/aboutsite/aboutsite_privacy.html">Privacy</a></li>
-<li>/</li>
-				<!--<li><a href="http://www.pbs.org/newshour/aboutus/faq.html">FAQ</a></li>-->
-				<li class="end"><a href="http://www.pbs.org/newshour/aboutus/openings/">Job Openings</a></li>
-            </ul>
-    </div>   
-	<div id="footer-sub-sub">Support the kind of journalism done by the NewsHour...<a href="http://www.pbs.org/newshour/pledge.html">Become a member of your local PBS station.</a></div>
-
-	</footer>
+	
+	
 </div> 
-<!--! end of #container -->
-
-<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
-
-<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
-
-</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
-
-</script><!-- ClickTale end of Bottom part -->
-
-
-<!-- Start Quantcast tag -->
-<script type="text/javascript">
-_qoptions={
-qacct:"p-5do3OH0wrSfK6"
-};
-</script>
-<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
-<noscript>
-<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
-<!-- End Quantcast tag --></body>
+</body>
 </html>
