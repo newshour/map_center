@@ -86,8 +86,9 @@ path  {cursor: pointer;}
 #lower_chart {
     display: none;
     height: 60px;
-    width: 195px;
+    width: 185px;
 }
+
 #sidebar {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -100,8 +101,8 @@ path  {cursor: pointer;}
     border-top-left-radius: 5px;
     float: right;
     margin: 0;
-    padding: -10px 10px 0 20px ;
-    width: 195px;
+    padding: 0 10px 0 20px;
+    width: 185px;
 }
     #sidebar_title {
         background-color: #eee;
@@ -113,8 +114,35 @@ path  {cursor: pointer;}
         padding: 6px;
         text-align: center;
     }
-	
+
 	#sidebar_title span {color:9f1c20;}
+	/*#sidebar {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-right: none;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-left-radius: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+    float: right;
+    margin: 0;
+    padding: -10px 10px 0 20px ;
+    width: 185px;
+}
+    #sidebar_title {
+        background-color: #eee;
+        border-bottom: 1px solid #ddd;
+        -webkit-border-top-left-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        border-top-left-radius: 5px;
+        margin: 0 -10px 15px -20px;
+        padding: 6px;
+        text-align: center;
+    }
+	
+	#sidebar_title span {color:9f1c20;} */
     #map_view {display: block;}
     #legend {
         position: relative;

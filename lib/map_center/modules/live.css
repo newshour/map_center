@@ -167,10 +167,9 @@
 }
 /*#map {width:714px !important; padding:20px 0 0 0; margin: 0 0 0 -10px;} */
 
-#map {width:784px !important; padding:30px 0 0 0; margin: 0 0 0 -80px;}
-#sidebar { width:260px !important;}
+#map {width:764px !important; padding:30px 0 0 0; margin: 0 0 0 -60px;}
 #pbs-head {display:none;}
-
+#sidebar {width:260px !important;}
 #other_tooltip {
     background-color: #fff;
     border: 1px solid #ccc;
