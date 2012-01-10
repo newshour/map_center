@@ -34,7 +34,7 @@
     width: 0;
 }
     #tooltip.tooltip_flyout .flyout_content {
-		text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+
         width: 200px;
     }
     #tooltip.tooltip_flyout h3 {
