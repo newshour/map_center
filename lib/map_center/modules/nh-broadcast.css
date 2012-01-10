@@ -56,6 +56,6 @@
 
 #map {width:764px !important; padding:30px 0 0 0; margin: 0 0 0 -80px;}
 
-.ui-icon-closethick {background-image:		url('../../images/close.png'); background-repeat:no-repeat;}
+.ui-icon-closethick {background-image:		url('../../images/close.png'); background-repeat:no-repeat; background-position: 0 0; height: 24px; width: 24px;}
 
 
