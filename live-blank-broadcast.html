@@ -35,7 +35,7 @@
             //   the default value found in lib/map_center/main.js.
             var nhmc_config = {
                 defaultAttributes: {
-                    'fill': '#f7f5f5',  // default county/state fill
+                    'fill': '#fff',  // default county/state fill
                     'stroke': '#b2b4b3'  // county/state stroke
                 },
                 cityLabels: {
@@ -55,7 +55,8 @@
                 bigCandidates: 6,
                 blankMap: true,
                 condenseCandidates: true,
-                flyouts: 'nw',
+                flyouts: false,
+				tooltipsEnabled: false,
                 showCandidates: [
                     "Mitt Romney",
                     "Rick Santorum",
@@ -77,7 +78,10 @@
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/live.css" />
                 <link rel="stylesheet" type="text/css" href="lib/map_center/modules/nh-broadcast.css" />
-              
+              <style type="text/css">
+			  .candidate_big .candidate_name {			line-height:.9em;
+			  }
+			  </style>
 
 	
     </head><body>
@@ -116,7 +120,7 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Live results</h1>
+            <h1>New Hampshire Primary</h1>
             <div id="view_tabs">
                 <div class="view_tab view_tab_more view_tab_active"><a href="#nh" id="view_tab_more_shown" class="view_tab_option">New Hampshire</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
@@ -198,49 +202,21 @@
                             <div class="candidate_color">&nbsp;</div>
                             <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                             <div class="candidate_name">
+                                                            <span class="candidate_name_first">Firstname</span><br>
+
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
-                            <div class="candidate_votes"></div>
                             <div class="candidate_won"><img src="lib/images/won.png" /></div>
                             <div class="clear"></div>
                         </div>
-                        <div class="candidate_small">
-                            <div class="candidate_color">&nbsp;</div>
-                            <div class="candidate_name">
-                                <span class="candidate_name_first">Firstname</span>
-                                <span class="candidate_name_last">Lastname</span>
-                            </div>
-                            <div class="candidate_votes"></div>
-                        </div>
+                       
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
                 <input name="map_view" id="map_view" type="hidden" value="nh" />
             </div>
-            <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
-            <div id="flyout">
-                <div class="flyout_content">
-                    <h2 class="flyout_name"></h2>
-                    <h3 class="flyout_title"><span class="flyout_precincts_reporting">0</span> of <span class="flyout_precincts_total">0</span> reporting</h3>
-                    <!--
-                        Other <span> classes you might be interested in:
-                            flyout_precincts_percent
-                    -->
-                    <div class="flyout_templates">
-                        <div class="flyout_candidate">
-                            <div class="flyout_candidate_color">&nbsp;</div>
-                            <div class="flyout_candidate_name">
-                                <span class="flyout_candidate_name_first">Firstname</span>
-                                <span class="flyout_candidate_name_last">Lastname</span>
-                            </div>
-                            <div class="flyout_candidate_vote_count"></div>
-                            <div class="flyout_candidate_votes"></div>
-                        </div>
-                    </div>
-                    <div class="flyout_candidates"></div>
-                </div>
-            </div>
-            <div id="map" style="width: 714px;"></div>
+          
+            <div id="map" style="width: 714px; height:500px;"></div>
             <div id="chart"></div>
             <div class="clear"></div>
         </div>
