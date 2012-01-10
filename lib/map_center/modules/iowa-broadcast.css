@@ -12,9 +12,6 @@
 
 #content_area {margin-bottom:0; padding-bottom:130px;}
 
-#tooltip.tooltip_flyout {font-size: 14pt;}
-    #tooltip.tooltip_flyout h2 {font-size: 18pt;}
-    #tooltip.tooltip_flyout h3 {font-size: 14pt;}
 
     #sidebar_title {
         
@@ -26,7 +23,7 @@
 	
 	.candidate_big .candidate_name {
 			text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
-            font-size: 1.1em;
+            font-size: 1.6em;
             font-weight: bold;
             margin-top: 7px;
             text-align: left;

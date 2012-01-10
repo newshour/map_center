@@ -100,7 +100,7 @@ path  {cursor: pointer;}
     border-top-left-radius: 5px;
     float: right;
     margin: 0;
-    padding: 0 10px 0 20px;
+    padding: 0 20px;
     width: 185px;
 }
     #sidebar_title {
@@ -109,7 +109,7 @@ path  {cursor: pointer;}
         -webkit-border-top-left-radius: 5px;
         -moz-border-radius-topleft: 5px;
         border-top-left-radius: 5px;
-        margin: 0 -10px 15px -20px;
+        margin: 0 -20px 25px -20px;
         padding: 6px;
         text-align: center;
     }
