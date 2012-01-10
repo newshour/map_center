@@ -86,7 +86,7 @@ path  {cursor: pointer;}
 #lower_chart {
     display: none;
     height: 60px;
-    width: 185px;
+    width: 195px;
 }
 #sidebar {
     background-color: #fff;
@@ -100,8 +100,8 @@ path  {cursor: pointer;}
     border-top-left-radius: 5px;
     float: right;
     margin: 0;
-    padding: 0 20px;
-    width: 185px;
+    padding: -10px 10px 0 20px ;
+    width: 195px;
 }
     #sidebar_title {
         background-color: #eee;
@@ -109,7 +109,7 @@ path  {cursor: pointer;}
         -webkit-border-top-left-radius: 5px;
         -moz-border-radius-topleft: 5px;
         border-top-left-radius: 5px;
-        margin: 0 -20px 25px -20px;
+        margin: 0 -10px 10px -20px;
         padding: 6px;
         text-align: center;
     }
