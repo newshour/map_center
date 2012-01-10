@@ -32,23 +32,24 @@
     overflow: hidden;
     text-transform: uppercase;
     width: 0;
+	padding:10px;
 }
     #tooltip.tooltip_flyout .flyout_content {
         width: 200px;
     }
     #tooltip.tooltip_flyout h3 {
-        font-size: 10pt;
+        font-size: .8em;
         font-weight: normal;
         text-align: left;
     }
     #tooltip.tooltip_flyout .flyout_candidate {
-        padding: 0 0 2px 20px;
+        padding: 0 0 4px 30px;
         position: relative;
     }
         #tooltip.tooltip_flyout .flyout_candidate_color {
             left: 0;
             position: absolute;
-            width: 15px;
+            width: 25px;
         }
         #tooltip.tooltip_flyout .flyout_candidate_name {float: left;}
         #tooltip.tooltip_flyout .flyout_candidate_name_first {display: none;}
