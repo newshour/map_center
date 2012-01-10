@@ -21,7 +21,7 @@
         <script type="text/javascript" src="lib/highcharts.js"></script>
         <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
         <script src="js/libs/modernizr-2.0.6.min.js"></script>
-        <script type="text/javascript">//<![CDATA[
+               <script type="text/javascript">//<![CDATA[
             // Defining helper functions here
             
             // Namespace factory
@@ -29,7 +29,26 @@
             
             // Map-specific overrides to live.js config
             var nhmc_live_config = {
-                autoRefresh: false
+                bigCandidates: 3,
+                condenseCandidates: true,
+				hoverExpandOther: true
+            };
+			 var nhmc_config = {
+                defaultAttributes: {
+                    'fill': '#e5e5e5',  // default county/state fill
+                    'stroke': '#fff'  // county/state stroke
+                },
+                cityLabels: {
+                    backgroundOpacity: 0.75,
+                    backgroundPadding: [2, -2, 5, 5],  // top, right (text end), bottom, left (circle end)
+					labelFill: (255,255,255),
+                    hideBackgrounds: true,
+                    labelNudge: -3,  // pixels to move the text label (positive is down)
+                    labelOpacity: 0.75,
+                    labelSize: 14,  // font size of city label text in pixels
+                    markerOpacity: 0.75,
+                    markerRadius: 4
+                }
             };
         //]]></script>
         <!-- Map Center core -->
@@ -206,12 +225,15 @@
                         <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
                         <div class="candidate_big">
                             <div class="candidate_color">&nbsp;</div>
-                            <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                             <div class="candidate_name">
                                 <span class="candidate_name_first">Firstname</span>
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
-                            <div class="candidate_votes"></div>
+                            <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                            
+                           <div class="candidate_votes"></div>
+                                                        <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span> votes</div>
+
                             <div class="candidate_won"><img src="lib/images/won.png" /></div>
                             <div class="clear"></div>
                         </div>
@@ -229,7 +251,7 @@
                 <input name="map_view" id="map_view" type="hidden" value="ia" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
-            <div id="map"></div>
+            <div id="map" ></div>
             <div id="chart"></div>
             <div class="clear"></div>
             <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
