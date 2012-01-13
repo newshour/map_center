@@ -319,19 +319,19 @@ position:relative;
         text-align: center;
         width: 125px;
     }
-    .view_tab_active {
+    .view_tab_active, .view_tab_always_active {
         background-color: #dcdcdc;
         border-bottom: 1px solid #dcdcdc;
         border-left: 1px solid #9c9c9c;
         border-top: 5px solid #7e7e7e;
         border-right: 1px solid #9c9c9c;
     }
-        .view_tab_active a {color: #000;}
-    .view_tab_more a {
+        .view_tab_active a, .view_tab_always_active a {color: #000;}
+    .view_tab_more a, .view_tab_options_more a {
         float: left;
         width: 95px;
     }
-        #view_tab_more_toggle {
+        #view_tab_more_toggle, #view_tab_options_more_toggle {
             border-left: 1px dotted #000;
             color: #8b080d;
             font-size: 12pt;
@@ -340,7 +340,7 @@ position:relative;
             padding: 0 0 0 5px;
             width: 20px;
         }
-        #view_tab_more_menu {
+        #view_tab_more_menu, #view_tab_options_more_menu {
             background-color: #fff;
             border-color: transparent #000 #000 #000;
             border-style: solid;
@@ -356,12 +356,12 @@ position:relative;
             width: 125px;
             z-index: 9001;
         }
-            #view_tab_more_menu li {
+            #view_tab_more_menu li, #view_tab_options_more_menu li {
                 list-style: none;
                 margin: 0;
                 padding: 0;
             }
-                #view_tab_more_menu li a {
+                #view_tab_more_menu li a, #view_tab_options_more_menu li a {
                     float: none;
                     margin-top: 0;
                     width: 125px;
