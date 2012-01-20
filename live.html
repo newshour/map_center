@@ -5,24 +5,22 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>2012 Political Map Center | PBS NewsHour</title>
-	<meta name="description" content="The map features past results for the 2012 presidential primaries and caucuses" />
-	<meta name="author" content="map, politics, 2012 election, caucuses, primaries" />
+	<meta name="description" content="The map features live election results for the South Carolina primary" />
+	<meta name="author" content="map, politics, 2012 election, new hampshire primary" />
 	<link rel="stylesheet" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <!-- Internet Explorer settings, including Chrome Frame -->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-<meta property="og:title" content="PBS NewsHour Map Center | Past 2012 GOP Primary Results" /> 
-		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
-		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
+        <!-- JS libraries -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
         <script type="text/javascript" src="lib/highcharts.js"></script>
         <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
         <script src="js/libs/modernizr-2.0.6.min.js"></script>
-               <script type="text/javascript">//<![CDATA[
+        <script type="text/javascript">//<![CDATA[
             // Defining helper functions here
             
             // Namespace factory
@@ -32,24 +30,17 @@
             var nhmc_live_config = {
                 bigCandidates: 3,
                 condenseCandidates: true,
-				hoverExpandOther: true
-            };
-			 var nhmc_config = {
-                defaultAttributes: {
-                    'fill': '#e5e5e5',  // default county/state fill
-                    'stroke': '#fff'  // county/state stroke
-                },
-                cityLabels: {
-                    backgroundOpacity: 0.75,
-                    backgroundPadding: [2, -2, 5, 5],  // top, right (text end), bottom, left (circle end)
-					labelFill: (255,255,255),
-                    hideBackgrounds: true,
-                    labelNudge: -3,  // pixels to move the text label (positive is down)
-                    labelOpacity: 0.75,
-                    labelSize: 14,  // font size of city label text in pixels
-                    markerOpacity: 0.75,
-                    markerRadius: 4
-                }
+                hoverExpandOther: true,
+                showCandidates: [
+                    "Mitt Romney",
+                    "Rick Santorum",
+                    "Ron Paul",
+                    "Jon Huntsman",
+                    "Michele Bachmann",
+                    "Newt Gingrich",
+                    "Rick Perry"
+                ],
+                tooltipsEnabled: true
             };
         //]]></script>
         <!-- Map Center core -->
@@ -140,10 +131,10 @@
                         <div class="nav_option">
                             <a href="ethnicity.html" id="nav_option_ethnicity">Ethnic backgrounds</a>
                         </div>
-                        <div class="nav_option nav_option_active">
-                            <a href="past_primaries.html" id="nav_option_past">Past primary and caucus results</a>
-                        </div>
                         <div class="nav_option">
+                            <a href="index.html" id="nav_option_past">Past primary and caucus results</a>
+                        </div>
+                        <div class="nav_option nav_option_active">
                             <a href="index.html" id="nav_option_live">Live primary results</a>
                         </div>
                     </div>
@@ -153,9 +144,9 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Past results</h1>
+            <h1>Live results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#nh" id="view_tab_more_shown" class="view_tab_option">New Hampshire</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
+                <div class="view_tab view_tab_more view_tab_active"><a href="#sc" id="view_tab_more_shown" class="view_tab_option">South Carolina</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
                         <!--
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
@@ -173,9 +164,7 @@
                         <li><a href="#id" class="view_tab_option">Idaho</a></li>
                         <li><a href="#il" class="view_tab_option">Illinois</a></li>
                         <li><a href="#in" class="view_tab_option">Indiana</a></li>
-                        -->
                         <li><a href="#ia" class="view_tab_option">Iowa</a></li>
-                        <!--
                         <li><a href="#ks" class="view_tab_option">Kansas</a></li>
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
@@ -189,9 +178,7 @@
                         <li><a href="#mt" class="view_tab_option">Montana</a></li>
                         <li><a href="#ne" class="view_tab_option">Nebraska</a></li>
                         <li><a href="#nv" class="view_tab_option">Nevada</a></li>
-                        -->
-                        <li style="display: none;"><a href="#nh" class="view_tab_option">New Hampshire</a></li>
-                        <!--
+                        <li><a href="#nh" class="view_tab_option">New Hampshire</a></li>
                         <li><a href="#nj" class="view_tab_option">New Jersey</a></li>
                         <li><a href="#nm" class="view_tab_option">New Mexico</a></li>
                         <li><a href="#ny" class="view_tab_option">New York</a></li>
@@ -202,7 +189,9 @@
                         <li><a href="#or" class="view_tab_option">Oregon</a></li>
                         <li><a href="#pa" class="view_tab_option">Pennsylvania</a></li>
                         <li><a href="#ri" class="view_tab_option">Rhode Island</a></li>
-                        <li><a href="#sc" class="view_tab_option">South Carolina</a></li>
+                        -->
+                        <li style="display: none;"><a href="#sc" class="view_tab_option">South Carolina</a></li>
+                        <!--
                         <li><a href="#sd" class="view_tab_option">South Dakota</a></li>
                         <li><a href="#tn" class="view_tab_option">Tennessee</a></li>
                         <li><a href="#tx" class="view_tab_option">Texas</a></li>
@@ -231,17 +220,18 @@
                 <div id="legend">
                     <div id="legend_templates">
                         <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
-                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
+                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 20); .candidate_small is for the rest. -->
                         <div class="candidate_big">
                             <div class="candidate_color">&nbsp;</div>
                             <div class="candidate_name">
-                                <span class="candidate_name_first">Firstname</span>
-                                <span class="candidate_name_last">Lastname</span>
+                                <span class="candidate_name_first"></span>
+                                <span class="candidate_name_last"></span>
                             </div>
                             <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                             
-                           <div class="candidate_votes"></div>
-                                                        <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span> votes</div>
+                            <!-- .candidate_vote_count gives the total number of votes cast; .candidate_votes expresses that vote as a percentage. -->
+                            <div class="candidate_votes"></div>
+                            <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span> votes</div>
 
                             <div class="candidate_won"><img src="lib/images/won.png" /></div>
                             <div class="clear"></div>
@@ -252,15 +242,38 @@
                                 <span class="candidate_name_first">Firstname</span>
                                 <span class="candidate_name_last">Lastname</span>
                             </div>
+                            <div class="candidate_vote_count"></div>
                             <div class="candidate_votes"></div>
                         </div>
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="nh" />
+                <input name="map_view" id="map_view" type="hidden" value="sc" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
-            <div id="map" ></div>
+            <div id="flyout">
+                <div class="flyout_content">
+                    <h2 class="flyout_name"></h2>
+                    <h3 class="flyout_title"><span class="flyout_precincts_reporting">0</span> of <span class="flyout_precincts_total">0</span> precincts reporting</h3>
+                    <!--
+                        Other <span> classes you might be interested in:
+                            flyout_precincts_percent
+                    -->
+                    <div class="flyout_templates">
+                        <div class="flyout_candidate">
+                            <div class="flyout_candidate_color">&nbsp;</div>
+                            <div class="flyout_candidate_name">
+                                <span class="flyout_candidate_name_first">Firstname</span>
+                                <span class="flyout_candidate_name_last">Lastname</span>
+                            </div>
+                            <div class="flyout_candidate_vote_count"></div>
+                            <div class="flyout_candidate_votes"></div>
+                        </div>
+                    </div>
+                    <div class="flyout_candidates"></div>
+                </div>
+            </div>
+            <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
             <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
