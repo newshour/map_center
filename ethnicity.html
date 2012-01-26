@@ -134,7 +134,7 @@
         <div id="view_info">
             <h1>Ethnicity: <span class="static_map_name"></span></h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active view_tab_always_active"><a href="#ia" id="view_tab_more_shown" class="view_tab_option">Iowa</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active view_tab_always_active"><a href="#fl" id="view_tab_more_shown" class="view_tab_option">Florida</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
@@ -145,13 +145,13 @@
                         <li><a href="#co" class="view_tab_option">Colorado</a></li>
                         <li><a href="#ct" class="view_tab_option">Connecticut</a></li>
                         <li><a href="#de" class="view_tab_option">Delaware</a></li>
-                        <li><a href="#fl" class="view_tab_option">Florida</a></li>
+                        <li style="display: none;"><a href="#fl" class="view_tab_option">Florida</a></li>
                         <li><a href="#ga" class="view_tab_option">Georgia</a></li>
                         <li><a href="#hi" class="view_tab_option">Hawaii</a></li>
                         <li><a href="#id" class="view_tab_option">Idaho</a></li>
                         <li><a href="#il" class="view_tab_option">Illinois</a></li>
                         <li><a href="#in" class="view_tab_option">Indiana</a></li>
-                        <li style="display: none;"><a href="#ia" class="view_tab_option">Iowa</a></li>
+                        <li><a href="#ia" class="view_tab_option">Iowa</a></li>
                         <li><a href="#ks" class="view_tab_option">Kansas</a></li>
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
@@ -196,8 +196,10 @@
                         <li><a href="#static_1" class="view_tab_option">Black</a></li>
                         <li style="display: none;"><a href="#static_2" class="view_tab_option">Hispanic</a></li>
                         <li><a href="#static_3" class="view_tab_option">Asian</a></li>
-                        <li><a href="#static_4" class="view_tab_option">Native Hawaiian and other Pacific Islander</a></li>
-                        <li><a href="#static_5" class="view_tab_option">American Indian and Alaska Native</a></li>
+                        <!--
+                        <li><a href="#static_4" class="view_tab_option">Pacific Islander</a></li>
+                        <li><a href="#static_5" class="view_tab_option">American Indian</a></li>
+                        -->
                     </ul>
                 </div>
             </div>
@@ -219,7 +221,7 @@
                     </div>
                     <div id="legend_entries"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="ia" />
+                <input name="map_view" id="map_view" type="hidden" value="fl" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map"></div>
