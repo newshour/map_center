@@ -46,6 +46,7 @@
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
         <script type="text/javascript" src="lib/map_center/modules/live.js"></script>
@@ -115,31 +116,7 @@
             <div id="nav_outer">
                 <div id="nav-main-prev" class="nav_control">&laquo;</div>
                 <div id="nav-main">
-                    <div id="nav_container">
-                        <div class="nav_option nav_option_featured">
-                            <a href="calc.html" id="nav_option_electoral">Electoral College calculator</a>
-                        </div>
-                        <div class="nav_option">
-                            <a href="patchwork_types.html" id="nav_option_patchwork">Patchwork Nation counties</a>
-                        </div>
-                        <div class="nav_option">
-                            <a href="unemployment.html" id="nav_option_jobless">Jobless by county</a>
-                        </div>
-                        <!--
-                        <div class="nav_option">
-                            <a href="population_density.html" id="nav_option_population">Population density</a>
-                        </div>
-                        <div class="nav_option">
-                            <a href="ethnicity.html" id="nav_option_ethnicity">Ethnic backgrounds</a>
-                        </div>
-                        -->
-                        <div class="nav_option">
-                            <a href="index.html" id="nav_option_past">Past primary and caucus results</a>
-                        </div>
-                        <div class="nav_option nav_option_active">
-                            <a href="index.html" id="nav_option_live">Live primary results</a>
-                        </div>
-                    </div>
+                    <div id="nav_container"><!-- Navigation options now loaded in lib/map_center/navigation.js --></div>
                 </div>
                 <div id="nav-main-next" class="nav_control">&raquo;</div>
             </div>
