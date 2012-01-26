@@ -26,6 +26,16 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            $(document).ready(function() {
+                $('#diversity_explain_dialog').dialog({
+                    autoOpen: false
+                });
+                $('.diversity_explain').click(function() {
+                    $('#diversity_explain_dialog').dialog('open');
+                    return false;
+                });
+            });
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
@@ -149,7 +159,7 @@
         <div id="content_area">
             <h2 id="instructions">Source: <a href="http://2010.census.gov/2010census/data/redistricting-data.php" target="_blank">U.S. Census Bureau</a></h2>
             <div id="sidebar">
-                <h3 id="sidebar_title">Diversity index</h3>
+                <h3 id="sidebar_title">Diversity index <a href="#" class="diversity_explain">(?)</a></h3>
                 <div id="legend">
                     <div id="legend_templates">
                         <div class="category_entry">
@@ -169,6 +179,10 @@
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
+        </div>
+        <div id="diversity_explain_dialog" title="Diversity index explained">
+            <p>The U.S. Census Bureau calculated this diversity index <a href="http://www.census.gov/population/cen2000/atlas/censr01-104.pdf" target="_blank">for the 2000 Census</a> and explained it as "the percentage of times two randomly selected people would differ by race/ethnicity."</p>
+            <p>We have updated the index using data from the 2010 Census for both counties and states.</p>
         </div>
 </div>
 
