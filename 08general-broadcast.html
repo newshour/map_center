@@ -58,6 +58,29 @@
                 
                 return tooltipText.join('');
             };
+            
+            // Overriding legend break text
+            var nhmcStaticBreakFormatter = function(thisBreak, prevBreak, isLastBreak, breakPrefix, breakSuffix, breakDecimals) {
+                function formatBreak(currentBreak) {
+                    return breakPrefix + currentBreak.toFixed(breakDecimals) + breakSuffix;
+                }
+                
+                if (thisBreak >= 0 && prevBreak >= 0) {
+                    if (isLastBreak) {
+                        return 'Obama won by ' + formatBreak(prevBreak) + ' or more';
+                    } else {
+                        return 'Obama won by ' + formatBreak(prevBreak) + ' to ' + formatBreak(thisBreak);
+                    }
+                } else if (thisBreak <= 0 && prevBreak <= 0) {
+                    if (prevBreak) {
+                        return 'McCain won by ' + formatBreak(-thisBreak) + ' to ' + formatBreak(-prevBreak);
+                    } else {
+                        return 'McCain won by ' + formatBreak(-thisBreak) + ' or more';
+                    }
+                } else if (thisBreak >= 0 && prevBreak <= 0) {
+                    return 'McCain won by ' + formatBreak(-prevBreak) + ' to Obama won by ' + formatBreak(thisBreak);
+                }
+            };
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
