@@ -27,6 +27,21 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            // Overriding tooltip formatter
+            var nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, countyOnly, currentData) {
+                var tooltipText = [];
+                
+                if (countyOnly) {
+                    tooltipText.push('<p>' + thisCounty + ': <br />');
+                } else {
+                    tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+                }
+                
+                tooltipText.push((currentData.prefix || '') + currentData.areas[thisFIPS].toFixed(currentData.decimalPlaces || 0) + (currentData.suffix || '') + '</p>');
+                
+                return tooltipText.join('');
+            };
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
