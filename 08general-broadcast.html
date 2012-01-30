@@ -66,13 +66,17 @@
                 }
                 
                 if (thisBreak >= 0 && prevBreak >= 0) {
-                    if (isLastBreak) {
+                    if (prevBreak == 0) {
+                        return 'Obama won by up to ' + formatBreak(thisBreak);
+                    } else if (isLastBreak) {
                         return 'Obama won by ' + formatBreak(prevBreak) + ' or more';
                     } else {
                         return 'Obama won by ' + formatBreak(prevBreak) + ' to ' + formatBreak(thisBreak);
                     }
                 } else if (thisBreak <= 0 && prevBreak <= 0) {
-                    if (prevBreak) {
+                    if (thisBreak == 0) {
+                        return 'McCain won by up to ' + formatBreak(-prevBreak);
+                    } else if (prevBreak) {
                         return 'McCain won by ' + formatBreak(-thisBreak) + ' to ' + formatBreak(-prevBreak);
                     } else {
                         return 'McCain won by ' + formatBreak(-thisBreak) + ' or more';
