@@ -31,3 +31,9 @@
         width: 250px;
     }
         #view_tab_more_menu li a, #view_tab_options_more_menu li a {width: 220px;}
+
+#static_data_source {
+    color: #666;
+    font-size: 10pt;
+    padding: 0 0 0 25px;
+}
