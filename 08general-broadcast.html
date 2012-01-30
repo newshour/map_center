@@ -46,9 +46,9 @@
                 var dataValue = currentData.areas[thisFIPS];
                 var decimalPlaces = currentData.decimalPlaces || 0;
                 if (dataValue > 0) {
-                    tooltipText.push('Obama won by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
+                    tooltipText.push('Obama by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
                 } else if (dataValue < 0) {
-                    tooltipText.push('McCain won by ' + (-dataValue).toFixed(decimalPlaces) + (currentData.suffix || ''));
+                    tooltipText.push('McCain by ' + (-dataValue).toFixed(decimalPlaces) + (currentData.suffix || ''));
                 } else if (dataValue == 0) {
                     tooltipText.push('Tie');
                 } else {
@@ -67,22 +67,22 @@
                 
                 if (thisBreak >= 0 && prevBreak >= 0) {
                     if (prevBreak == 0) {
-                        return 'Obama won by up to ' + formatBreak(thisBreak);
+                        return 'Obama by up to ' + formatBreak(thisBreak);
                     } else if (isLastBreak) {
-                        return 'Obama won by ' + formatBreak(prevBreak) + ' or more';
+                        return 'Obama by ' + breakPrefix + prevBreak.toFixed(breakDecimals) + '+' + breakSuffix;
                     } else {
-                        return 'Obama won by ' + formatBreak(prevBreak) + ' to ' + formatBreak(thisBreak);
+                        return 'Obama by ' + prevBreak.toFixed(breakDecimals) + ' to ' + formatBreak(thisBreak);
                     }
                 } else if (thisBreak <= 0 && prevBreak <= 0) {
                     if (thisBreak == 0) {
-                        return 'McCain won by up to ' + formatBreak(-prevBreak);
+                        return 'McCain by up to ' + formatBreak(-prevBreak);
                     } else if (prevBreak) {
-                        return 'McCain won by ' + formatBreak(-thisBreak) + ' to ' + formatBreak(-prevBreak);
+                        return 'McCain by ' + (-thisBreak).toFixed(breakDecimals) + ' to ' + formatBreak(-prevBreak);
                     } else {
-                        return 'McCain won by ' + formatBreak(-thisBreak) + ' or more';
+                        return 'McCain by ' + breakPrefix + (-thisBreak).toFixed(breakDecimals) + '+' + breakSuffix;
                     }
                 } else if (thisBreak >= 0 && prevBreak <= 0) {
-                    return 'McCain won by ' + formatBreak(-prevBreak) + ' to Obama won by ' + formatBreak(thisBreak);
+                    return 'McCain by ' + formatBreak(-prevBreak) + ' to Obama by ' + formatBreak(thisBreak);
                 }
             };
         //]]></script>
@@ -99,6 +99,9 @@
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/static_maps.css" />
                         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/iowa-broadcast.css" />
+        <style type="text/css">
+            #view_info h1 {width: 600px;}
+        </style>
 
     </head><body>
 		
@@ -121,7 +124,7 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>2008 Results</h1>
+            <h1>2008 presidential results</h1>
             <div id="view_tabs">
                 <div class="view_tab view_tab_more view_tab_active"><a href="#fl" id="view_tab_more_shown" class="view_tab_option">Florida</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
@@ -182,9 +185,8 @@
             </div>
         </div>
         <div id="content_area">
-            <h2 id="instructions">Source: <a href="http://nationalatlas.gov/mld/popul08.html" target="_blank">U.S. Geological Survey</a></h2>
             <div id="sidebar">
-                <h3 id="sidebar_title">Win margin in presidential race, 2008 general election</h3>
+                <h3 id="sidebar_title">Win margin in general election</h3>
                 <div id="legend">
                     <div id="legend_templates">
                         <div class="category_entry">
@@ -204,6 +206,7 @@
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
+            <h2 id="static_data_source">Source: <a href="http://nationalatlas.gov/mld/popul08.html" target="_blank">U.S. Geological Survey</a></h2>
         </div>
 </div>
 
