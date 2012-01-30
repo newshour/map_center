@@ -38,7 +38,19 @@
                     tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
                 }
                 
-                tooltipText.push((currentData.prefix || '') + currentData.areas[thisFIPS].toFixed(currentData.decimalPlaces || 0) + (currentData.suffix || '') + '</p>');
+                tooltipText.push((currentData.prefix || ''));
+                var dataValue = currentData.areas[thisFIPS];
+                var decimalPlaces = currentData.decimalPlaces || 0;
+                if (dataValue > 0) {
+                    tooltipText.push('Obama won by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
+                } else if (dataValue < 0) {
+                    tooltipText.push('McCain won by ' + (-dataValue).toFixed(decimalPlaces) + (currentData.suffix || ''));
+                } else if (dataValue == 0) {
+                    tooltipText.push('Tie');
+                } else {
+                    tooltipText.push('Unavailable');
+                }
+                tooltipText.push('</p>');
                 
                 return tooltipText.join('');
             };
