@@ -31,12 +31,10 @@
 #tooltip.tooltip_flyout {
     overflow: hidden;
     text-transform: uppercase;
-    width: 0;
-	padding:10px;
+	padding: 10px;
+    left: 132px;
+    top: 273px;
 }
-    #tooltip.tooltip_flyout .flyout_content {
-        width: 200px;
-    }
     #tooltip.tooltip_flyout h3 {
         font-size: .8em;
         font-weight: normal;

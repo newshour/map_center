@@ -17,6 +17,13 @@
             width: 10px;
         }
 
+#tooltip.tooltip_flyout {
+    overflow: hidden;
+    text-transform: uppercase;
+	padding: 10px;
+    left: 132px;
+    top: 273px;
+}
 .view_tab {
     float: right;
     width: 250px;
