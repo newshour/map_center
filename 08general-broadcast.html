@@ -67,22 +67,22 @@
                 
                 if (thisBreak >= 0 && prevBreak >= 0) {
                     if (prevBreak == 0) {
-                        return 'Obama by up to ' + formatBreak(thisBreak);
+                        return '<strong>Obama</strong> &#8804; ' + formatBreak(thisBreak);
                     } else if (isLastBreak) {
-                        return 'Obama by ' + breakPrefix + prevBreak.toFixed(breakDecimals) + '+' + breakSuffix;
+                        return '<strong>Obama</strong> by ' + breakPrefix + prevBreak.toFixed(breakDecimals) + '+' + breakSuffix;
                     } else {
-                        return 'Obama by ' + prevBreak.toFixed(breakDecimals) + ' to ' + formatBreak(thisBreak);
+                        return '<strong>Obama</strong> by ' + prevBreak.toFixed(breakDecimals) + ' - ' + formatBreak(thisBreak);
                     }
                 } else if (thisBreak <= 0 && prevBreak <= 0) {
                     if (thisBreak == 0) {
-                        return 'McCain by up to ' + formatBreak(-prevBreak);
+                        return '<strong>McCain</strong> &#8804; ' + formatBreak(-prevBreak);
                     } else if (prevBreak) {
-                        return 'McCain by ' + (-thisBreak).toFixed(breakDecimals) + ' to ' + formatBreak(-prevBreak);
+                        return '<strong>McCain</strong> by ' + (-thisBreak).toFixed(breakDecimals) + ' - ' + formatBreak(-prevBreak);
                     } else {
-                        return 'McCain by ' + breakPrefix + (-thisBreak).toFixed(breakDecimals) + '+' + breakSuffix;
+                        return '<strong>McCain</strong> by ' + breakPrefix + (-thisBreak).toFixed(breakDecimals) + '+' + breakSuffix;
                     }
                 } else if (thisBreak >= 0 && prevBreak <= 0) {
-                    return 'McCain by ' + formatBreak(-prevBreak) + ' to Obama by ' + formatBreak(thisBreak);
+                    return '<strong>McCain</strong> by ' + formatBreak(-prevBreak) + ' to Obama by ' + formatBreak(thisBreak);
                 }
             };
         //]]></script>
