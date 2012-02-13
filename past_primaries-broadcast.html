@@ -102,7 +102,7 @@
         <div id="view_info">
             <h1>Past results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#co" id="view_tab_more_shown" class="view_tab_option">Colorado</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#me_empty" id="view_tab_more_shown" class="view_tab_option">Maine</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <!--
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
@@ -131,6 +131,9 @@
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
                         <li><a href="#me" class="view_tab_option">Maine</a></li>
+                        -->
+                        <li style="display: none;"><a href="#me_empty" class="view_tab_option">Maine</a></li>
+                        <!--
                         <li><a href="#md" class="view_tab_option">Maryland</a></li>
                         <li><a href="#ma" class="view_tab_option">Massachusetts</a></li>
                         <li><a href="#mi" class="view_tab_option">Michigan</a></li>
@@ -144,7 +147,7 @@
                         <li><a href="#mt" class="view_tab_option">Montana</a></li>
                         <li><a href="#ne" class="view_tab_option">Nebraska</a></li>
                         -->
-                        <li style="display: none;"><a href="#nv" class="view_tab_option">Nevada</a></li>
+                        <li><a href="#nv" class="view_tab_option">Nevada</a></li>
                         <li><a href="#nh" class="view_tab_option">New Hampshire</a></li>
                         <!--
                         <li><a href="#nj" class="view_tab_option">New Jersey</a></li>
@@ -210,7 +213,7 @@
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="co" />
+                <input name="map_view" id="map_view" type="hidden" value="me_empty" />
             </div>
             <div id="flyout">
                 <div class="flyout_content">
