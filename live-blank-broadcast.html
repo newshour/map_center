@@ -5,8 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>Vote 2012 Map</title>
-	<meta name="description" content="The map features live election results for the Nevada caucuses" />
-	<meta name="author" content="map, politics, 2012 election, nevada caucuses" />
+    <meta name="description" content="The map features live election results for presidential primaries and caucuses" />
+    <meta name="author" content="map, politics, 2012 election, presidential primaries, presidential caucuses" />
 	<link rel="stylesheet" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
@@ -107,16 +107,14 @@
         <div id="view_info">
             <h1></h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#az" id="view_tab_more_shown" class="view_tab_option">Arizona</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#wa" id="view_tab_more_shown" class="view_tab_option">Washington</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
                         <!--
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
                         <li><a href="#ak_empty" class="view_tab_option">Alaska</a></li>
-                        -->
-                        <li style="display: none;"><a href="#az" class="view_tab_option">Arizona</a></li>
-                        <!--
+                        <li><a href="#az" class="view_tab_option">Arizona</a></li>
                         <li><a href="#ar" class="view_tab_option">Arkansas</a></li>
                         <li><a href="#ca" class="view_tab_option">California</a></li>
                         <li><a href="#co" class="view_tab_option">Colorado</a></li>
@@ -136,9 +134,7 @@
                         <li><a href="#me_empty" class="view_tab_option">Maine</a></li>
                         <li><a href="#md" class="view_tab_option">Maryland</a></li>
                         <li><a href="#ma" class="view_tab_option">Massachusetts</a></li>
-                        -->
                         <li><a href="#mi" class="view_tab_option">Michigan</a></li>
-                        <!--
                         <li><a href="#mn" class="view_tab_option">Minnesota</a></li>
                         <li><a href="#ms" class="view_tab_option">Mississippi</a></li>
                         <li><a href="#mo" class="view_tab_option">Missouri</a></li>
@@ -164,7 +160,9 @@
                         <li><a href="#ut" class="view_tab_option">Utah</a></li>
                         <li><a href="#vt" class="view_tab_option">Vermont</a></li>
                         <li><a href="#va" class="view_tab_option">Virginia</a></li>
-                        <li><a href="#wa" class="view_tab_option">Washington</a></li>
+                        -->
+                        <li style="display: none;"><a href="#wa" class="view_tab_option">Washington</a></li>
+                        <!--
                         <li><a href="#dc" class="view_tab_option">Washington, D.C.</a></li>
                         <li><a href="#wv" class="view_tab_option">West Virginia</a></li>
                         <li><a href="#wi" class="view_tab_option">Wisconsin</a></li>
@@ -203,7 +201,7 @@
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="az" />
+                <input name="map_view" id="map_view" type="hidden" value="wa" />
             </div>
           
             <div id="map" style="width: 714px; height:500px;"></div>
