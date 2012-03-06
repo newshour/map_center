@@ -164,7 +164,7 @@
     font-size: 10pt;
     padding: 0 0 0 25px;
 }
-#map {width:714px; padding:20px 0 0 0; margin: 0 0 0 -10px;} 
+#map {width:695px; padding:20px 0 0 0; margin: 0 0 0 8px;} 
 
 #pbs-head {display:none;}
 #sidebar {width:260px !important;}
@@ -193,3 +193,24 @@
     .other_tooltip_results_candidate {width: 75%;}
 
 #tooltip {-webkit-box-shadow: 0 0 10px #949494;}
+
+#lower_secondary_nav, #lower_secondary_nav li {
+    list-style: none;
+    text-indent: 0;
+    margin: 0;
+    padding: 0;
+    width: 650px;
+}
+    #lower_secondary_nav li {
+        float: left;
+        font-size: 14pt;
+        height: 30px;
+        text-align: center;
+        width: 130px;
+    }
+        #lower_secondary_nav li a {
+            color: #666;
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
