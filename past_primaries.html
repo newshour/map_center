@@ -63,22 +63,6 @@
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/live.css" />
-        <!-- Chrome Frame -->
-        <!--[if lte IE 8]>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
-        <style type="text/css">/*<![CDATA[*/
-            .chromeFrameInstallDefaultStyle {
-                border: 1px solid #666;
-                padding: 5px;
-                z-index: 15000;
-            }
-        /*]]>*/</style>
-        <script type="text/javascript">//<![CDATA[
-            $(document).ready(function() {
-                CFInstall.check({mode: 'overlay'});
-            });
-        //]]></script>
-        <![endif]-->
     </head><body>
 		<div id="head-pbs">
     <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
@@ -134,13 +118,15 @@
         <div id="view_info">
             <h1>Past results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#me_empty" id="view_tab_more_shown" class="view_tab_option">Maine</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#wa" id="view_tab_more_shown" class="view_tab_option">Washington</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <!--
                         <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
+                        -->
                         <li><a href="#az" class="view_tab_option">Arizona</a></li>
+                        <!--
                         <li><a href="#ar" class="view_tab_option">Arkansas</a></li>
                         <li><a href="#ca" class="view_tab_option">California</a></li>
                         -->
@@ -164,12 +150,12 @@
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
                         <li><a href="#me" class="view_tab_option">Maine</a></li>
                         -->
-                        <li style="display: none;"><a href="#me_empty" class="view_tab_option">Maine</a></li>
+                        <li><a href="#me_empty" class="view_tab_option">Maine</a></li>
                         <!--
                         <li><a href="#md" class="view_tab_option">Maryland</a></li>
                         <li><a href="#ma" class="view_tab_option">Massachusetts</a></li>
-                        <li><a href="#mi" class="view_tab_option">Michigan</a></li>
                         -->
+                        <li><a href="#mi" class="view_tab_option">Michigan</a></li>
                         <li><a href="#mn" class="view_tab_option">Minnesota</a></li>
                         <!--
                         <li><a href="#ms" class="view_tab_option">Mississippi</a></li>
@@ -201,7 +187,9 @@
                         <li><a href="#ut" class="view_tab_option">Utah</a></li>
                         <li><a href="#vt" class="view_tab_option">Vermont</a></li>
                         <li><a href="#va" class="view_tab_option">Virginia</a></li>
-                        <li><a href="#wa" class="view_tab_option">Washington</a></li>
+                        -->
+                        <li style="display: none;"><a href="#wa" class="view_tab_option">Washington</a></li>
+                        <!--
                         <li><a href="#dc" class="view_tab_option">Washington, D.C.</a></li>
                         <li><a href="#wv" class="view_tab_option">West Virginia</a></li>
                         <li><a href="#wi" class="view_tab_option">Wisconsin</a></li>
@@ -249,7 +237,7 @@
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="me_empty" />
+                <input name="map_view" id="map_view" type="hidden" value="wa" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map" ></div>

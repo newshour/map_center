@@ -51,22 +51,6 @@
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/static_maps.css" />
-        <!-- Chrome Frame -->
-        <!--[if lte IE 8]>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
-        <style type="text/css">/*<![CDATA[*/
-            .chromeFrameInstallDefaultStyle {
-                border: 1px solid #666;
-                padding: 5px;
-                z-index: 15000;
-            }
-        /*]]>*/</style>
-        <script type="text/javascript">//<![CDATA[
-            $(document).ready(function() {
-                CFInstall.check({mode: 'overlay'});
-            });
-        //]]></script>
-        <![endif]-->
     </head><body>
 		<div id="head-pbs">
     <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
@@ -122,13 +106,13 @@
         <div id="view_info">
             <h1>Diversity index</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#az" id="view_tab_more_shown" class="view_tab_option">Arizona</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#oh" id="view_tab_more_shown" class="view_tab_option">Ohio</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S. (by county)</a></li><![endif]>
                         <li><a href="#us_all" class="view_tab_option">U.S. (by state)</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
-                        <li style="display: none;"><a href="#az" class="view_tab_option">Arizona</a></li>
+                        <li><a href="#az" class="view_tab_option">Arizona</a></li>
                         <li><a href="#ar" class="view_tab_option">Arkansas</a></li>
                         <li><a href="#ca" class="view_tab_option">California</a></li>
                         <li><a href="#co" class="view_tab_option">Colorado</a></li>
@@ -160,7 +144,7 @@
                         <li><a href="#ny" class="view_tab_option">New York</a></li>
                         <li><a href="#nc" class="view_tab_option">North Carolina</a></li>
                         <li><a href="#nd" class="view_tab_option">North Dakota</a></li>
-                        <li><a href="#oh" class="view_tab_option">Ohio</a></li>
+                        <li style="display: none;"><a href="#oh" class="view_tab_option">Ohio</a></li>
                         <li><a href="#ok" class="view_tab_option">Oklahoma</a></li>
                         <li><a href="#or" class="view_tab_option">Oregon</a></li>
                         <li><a href="#pa" class="view_tab_option">Pennsylvania</a></li>
@@ -197,7 +181,7 @@
                     </div>
                     <div id="legend_entries"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="az" />
+                <input name="map_view" id="map_view" type="hidden" value="oh" />
             </div>
             <div id="loading"><img src="lib/map_center/loading.gif" alt="Loading" /></div>
             <div id="map"></div>
