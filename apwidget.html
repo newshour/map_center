@@ -20,7 +20,7 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 #apresults #header { height:22px; background-color:#a7b0b6; font: 1.8em/1em 'MuseoSans700', arial; color:#fff; text-transform:uppercase; text-shadow: 1px 1px 1px #444; padding:2px 5px; }
 #apresults #header span {font-family:'MuseoSans900';}
 #apresults .wrap { margin-bottom:15px; }
-#apresults table {width:48%; float:left;  margin-right:9px;  border-collapse: collapse; }
+#apresults table {width:47%; float:left;  margin-right:9px;  border-collapse: collapse; }
 #apresults table th {text-align:left; padding:5px; }
 #apresults .state  { font: 1.8em/.8em 'MuseoSans500'; color:#9e1611; text-transform:uppercase; }
 #apresults .state .state_name {color: inherit;}
@@ -32,11 +32,11 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 #apresults table td.votes {font: .9em/1em 'MuseoSans500'; text-align:center;}
 #apresults   .winner {background-color:#b6eab8 !important;}
 
-#apresults .dots {margin-top:10px;}
+#apresults .dots {margin-top:10px; clear:both; }
 #apresults  .dots ul {list-style:none; list-style-image:none; margin-left:33%; width:70px;  }
 #apresults  .dots li {display:inline; padding-right: 1px;}
-#apresults .ap-date {color:#a9a9a9; font:.8em/1em Arial, Helvetica, sans-serif; float:right; text-transform:uppercase;}
-#apresults .playpause {margin-top:-25px; float: left; } 
+#apresults .ap-date {color:#a9a9a9; font:.8em/1em Arial, Helvetica, sans-serif;    text-transform:uppercase;   float:right; width:300px; text-align:right; margin-top:-15px; }
+#apresults .playpause {margin-top:-35px; float: left; width:35px; margin-top:-15px; margin-left:10px;  } 
   .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
@@ -66,13 +66,13 @@ $(document).ready(function() {
         // Pixel value to tweak scroll positioning
         rowHeightTweak: 0,
         // Images to use for scroll dots
-        scrollDotOffImage: 'lib/images/dot.png',
-        scrollDotOnImage: 'lib/images/on-dot.png',
+        scrollDotOffImage: '/newshour/vote2012/map/lib/images/dot.png',
+        scrollDotOnImage: '/newshour/vote2012/map/lib/images/on-dot.png',
         // Time (in milliseconds) to scroll from one row to another
         scrollDuration: 250,
         // Images to use for scroll toggle link
-        scrollPlayImage: 'lib/images/play.png',
-        scrollPauseImage: 'lib/images/pause.png',
+        scrollPlayImage: '/newshour/vote2012/map/lib/images/play.png',
+        scrollPauseImage: '/newshour/vote2012/map/lib/images/pause.png',
         // States to display, in order
         statesToShow: [
             'GA', 'OH', 'TN', 'VA', 'OK', 'MA', 'ID', 'ND', 'AK', 'VT'
@@ -478,7 +478,7 @@ $(document).ready(function() {
     </tr>
 </table>
 <ul>
-<li class="dot"><a href="#"><img src="lib/images/dot.png" /></a></li>
+<li class="dot"><a href="#"><img src="/newshour/vote2012/map/lib/images/dot.png" /></a></li>
 </ul>
 </div>
 <div id="apresults">
@@ -490,9 +490,10 @@ $(document).ready(function() {
 <div class="dots">
 <ul>
 </ul>
-<div class="playpause"><a href="#"><img src="lib/images/pause.png" /></a>
-<div class="ap-date">AP Updated <span id="ap-date-updated">8:19 p.m.</span> EST</div>
+
 </div>
+<div class="playpause"><a href="#"><img src="/newshour/vote2012/map/lib/images/pause.png" /></a></div>
+<div class="ap-date">AP Updated <span id="ap-date-updated">8:19 p.m.</span> EST</div>
 
 
 

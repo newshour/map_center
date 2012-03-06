@@ -55,11 +55,14 @@
 	
 #nh-logo { color:#898686; text-shadow: 1px 1px 3px rgba(255, 255, 255, 1); font-family:'MuseoSans700'; font-size:4em; margin: 30px auto 0 auto; text-align:center; }
 
-#map {width:784px; padding:0px 0 0 0; margin: 0 0 0 20px; position:realtive; top:90px;}
+#map {width:784px; padding:0px 0 0 0; margin: 0 0 0 35px; position:realtive; top:90px;}
 
 .ui-icon-closethick {background-image:		url('../../images/close.png'); background-repeat:no-repeat; background-position: 0 0; height: 24px; width: 24px;}
 
 #map {
-    margin: 0 0 0 8px;
-    width: 695px;
+    margin: 0 0 0 13px;
+    width: 680px;
 }
+
+#lower_secondary_nav { margin-top:50px;}
+
