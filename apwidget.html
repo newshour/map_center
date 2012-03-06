@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+html { font-size: 62.5%; overflow-y: scroll; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-text-size-adjust: 62.5%; -ms-text-size-adjust: 62.5%; }
+body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
+@font-face { font-family: 'MuseoSans500'; src: url('/newshour/fonts/museosans_500/MuseoSans_500-webfont.eot'); src: url('/newshour/fonts/museosans_500/MuseoSans_500-webfont.eot?#iefix') format('embedded-opentype'), url('/newshour/fonts/museosans_500/MuseoSans_500-webfont.woff') format('woff'), url('/newshour/fonts/museosans_500/MuseoSans_500-webfont.ttf') format('truetype'), url('/newshour/fonts/museosans_500/MuseoSans_500-webfont.svg#MuseoSans500') format('svg'); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: 'MuseoSans100'; src: url('/newshour/fonts/museosans_100/MuseoSans_100-webfont.eot'); src: url('/newshour/fonts/museosans_100/MuseoSans_100-webfont.eot?#iefix') format('embedded-opentype'), url('/newshour/fonts/museosans_100/MuseoSans_100-webfont.woff') format('woff'), url('/newshour/fonts/museosans_100/MuseoSans_100-webfont.ttf') format('truetype'), url('/newshour/fonts/museosans_100/MuseoSans_100-webfont.svg#MuseoSans500') format('svg'); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: 'MuseoSans700'; src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot'); src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot?#iefix') format('embedded-opentype'), url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.woff') format('woff'), url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.ttf') format('truetype'), url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.svg#MuseoSans700') format('svg'); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: 'MuseoSans900'; src: url('/newshour/fonts/museosans_900/MuseoSans_900-webfont.eot'); src: url('/newshour/fonts/museosans_900/MuseoSans_900-webfont.eot?#iefix') format('embedded-opentype'), url('/newshour/fonts/museosans_900/MuseoSans_900-webfont.woff') format('woff'), url('/newshour/fonts/museosans_900/MuseoSans_900-webfont.ttf') format('truetype'), url('/newshour/fonts/museosans_900/MuseoSans_900-webfont.svg#MuseoSans900') format('svg'); font-weight: normal; font-style: normal; }
+
+@font-face { font-family: 'MuseoSans300'; src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot'); src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot?#iefix') format('embedded-opentype'), url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.woff') format('woff'), url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.ttf') format('truetype'), url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.svg#MuseoSans300') format('svg'); font-weight: normal; font-style: normal; }
+
+#apresults {position:relative; background-color:#fff;}
+#apresults #header { height:22px; background-color:#a7b0b6; font: 1.8em/1em 'MuseoSans700', arial; color:#fff; text-transform:uppercase; text-shadow: 1px 1px 1px #444; padding:2px 5px; }
+#apresults #header span {font-family:'MuseoSans900';}
+#apresults .wrap { margin-bottom:15px; }
+#apresults table {width:48%; float:left;  margin-right:9px;  border-collapse: collapse; }
+#apresults table th {text-align:left; padding:5px; }
+#apresults .state  { font: 1.8em/.8em 'MuseoSans500'; color:#9e1611; text-transform:uppercase; }
+#apresults .state span { font: .6em/1em 'MuseoSans500'; color:#5d5d5d; text-transform:uppercase; }
+#apresults .state span span {font:1.7em/1em 'MuseoSans500';  }
+#apresults table .percent {text-align:right; color:#024577;}
+#apresults table .odd {background-color:#ededed;}
+#apresults table td {font:1.4em/1em 'MuseoSans700'; text-transform:uppercase; color:#3c3c3c; padding:5px; }
+#apresults table td.votes {font: .9em/1em 'MuseoSans500'; text-align:center;}
+#apresults   .winner {background-color:#b6eab8 !important;}
+
+#apresults .dots {margin-top:10px;}
+#apresults  .dots ul {list-style:none; list-style-image:none; margin-left:33%; width:70px;  }
+#apresults  .dots li {display:inline;}
+#apresults .ap-date {color:#a9a9a9; font:.8em/1em Arial, Helvetica, sans-serif; float:right; margin-top:-15px; text-transform:uppercase;}
+#apresults .playpause {margin-top:-25px; float: left; } 
+  .clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+
+</style>
+</head>
+
+<body >
+<div id="apresults">
+<div id="header"><span>Live</span> Super Tuesday Results</div>
+<div class="wrap clearfix">
+<table>
+<tr class="state">
+        <th colspan="3">Georgia <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="winner">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Ohio <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr>
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Tenn. <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="winner">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Virginia <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr>
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Okla. <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="winner">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Mass. <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr>
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Idaho <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="winner">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">N. Dakota <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr>
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Alaska <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr>
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+<table>
+<tr class="state">
+        <th colspan="3">Vermont <span><span>2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="odd">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="winner">
+        <td >Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+    <tr class="odd">
+        <td>Santorum</td>
+        <td class="votes"> (333,333 votes) </td>
+        <td class="percent">66%</td>
+    </tr>
+</table>
+</div>
+<div class="dots">
+<ul>
+<li><a href="#"><img src="lib/images/dot.png" /></a></li>
+<li><a href="#"><img src="lib/images/dot.png" /></a></li>
+<li><a href="#"><img src="lib/images/on-dot.png" /></a></li>
+<li><a href="#"><img src="lib/images/dot.png" /></a></li>
+<li><a href="#"><img src="lib/images/dot.png" /></a></li>
+
+</ul>
+<div class="playpause"><a href="#"><img src="lib/images/play.png" /></a>
+<div class="ap-date">AP Updated 8:19 p.m. EST</div>
+</div>
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
