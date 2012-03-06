@@ -19,7 +19,7 @@
 
     #sidebar_title {
         
-        margin: 0 -20px 5px -20px;
+        margin: 0 -10px 5px -20px;
  
     }
 	
@@ -58,4 +58,7 @@
 
 .ui-icon-closethick {background-image:		url('../../images/close.png'); background-repeat:no-repeat; background-position: 0 0; height: 24px; width: 24px;}
 
-
+#map {
+    margin: 0 0 0 8px;
+    width: 695px;
+}
