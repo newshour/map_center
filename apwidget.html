@@ -34,13 +34,14 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 
 #apresults .dots {margin-top:10px;}
 #apresults  .dots ul {list-style:none; list-style-image:none; margin-left:33%; width:70px;  }
-#apresults  .dots li {display:inline;}
+#apresults  .dots li {display:inline; padding-right: 1px;}
 #apresults .ap-date {color:#a9a9a9; font:.8em/1em Arial, Helvetica, sans-serif; float:right; text-transform:uppercase;}
 #apresults .playpause {margin-top:-25px; float: left; } 
   .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 
+a img {border: 0;}
 #templates {display: none;}
 #test_data {color: inherit;}
 #apresults_viewport {position: relative; overflow: hidden;}
@@ -365,8 +366,11 @@ $(document).ready(function() {
             var scrollPos = $(this).attr('href').substring(1);
             scrollPos = parseInt(scrollPos);
             setScrollPos(scrollPos);
+            var scrollActive = autoScrollIntervalId !== null;
             stopScroll();
-            startScroll();
+            if (scrollActive) {
+                startScroll();
+            }
             return false;
         });
     };
