@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Untitled Document</title>
+<title>AP results</title>
 <style type="text/css">
 html { font-size: 62.5%; overflow-y: scroll; -webkit-overflow-scrolling: touch; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-text-size-adjust: 62.5%; -ms-text-size-adjust: 62.5%; }
 body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
@@ -23,6 +23,7 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 #apresults table {width:48%; float:left;  margin-right:9px;  border-collapse: collapse; }
 #apresults table th {text-align:left; padding:5px; }
 #apresults .state  { font: 1.8em/.8em 'MuseoSans500'; color:#9e1611; text-transform:uppercase; }
+#apresults .state .state_name {color: inherit;}
 #apresults .state span { font: .6em/1em 'MuseoSans500'; color:#5d5d5d; text-transform:uppercase; }
 #apresults .state span span {font:1.7em/1em 'MuseoSans500';  }
 #apresults table .percent {text-align:right; color:#024577;}
@@ -33,234 +34,464 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 
 #apresults .dots {margin-top:10px;}
 #apresults  .dots ul {list-style:none; list-style-image:none; margin-left:33%; width:70px;  }
-#apresults  .dots li {display:inline;}
-#apresults .ap-date {color:#a9a9a9; font:.8em/1em Arial, Helvetica, sans-serif; float:right; margin-top:-15px; text-transform:uppercase;}
+#apresults  .dots li {display:inline; padding-right: 1px;}
+#apresults .ap-date {color:#a9a9a9; font:.8em/1em Arial, Helvetica, sans-serif; float:right; text-transform:uppercase;}
 #apresults .playpause {margin-top:-25px; float: left; } 
   .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 
-
+a img {border: 0;}
+#templates {display: none;}
+#test_data {color: inherit;}
+#apresults_viewport {position: relative; overflow: hidden;}
+#apresults_results {position: absolute;}
 
 </style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    // Configuration options
+    var config = {
+        // Automatically refresh AP data
+        autoRefreshEnabled: true,
+        // Time (in seconds) between refreshes
+        autoRefreshInterval: 15,
+        // Automatically scroll from one set of states to the next
+        autoScrollEnabled: true,
+        // Time (in seconds) between scrolls
+        autoScrollInterval: 10,
+        // Number of candidates to show per state
+        candidatesPerState: 3,
+        // Pixel value to tweak scroll positioning
+        rowHeightTweak: 0,
+        // Images to use for scroll dots
+        scrollDotOffImage: 'lib/images/dot.png',
+        scrollDotOnImage: 'lib/images/on-dot.png',
+        // Time (in milliseconds) to scroll from one row to another
+        scrollDuration: 250,
+        // Images to use for scroll toggle link
+        scrollPlayImage: 'lib/images/play.png',
+        scrollPauseImage: 'lib/images/pause.png',
+        // States to display, in order
+        statesToShow: [
+            'GA', 'OH', 'TN', 'VA', 'OK', 'MA', 'ID', 'ND', 'AK', 'VT'
+        ],
+        // Location of data
+        summaryURL: 'http://www.pbs.org/newshour/vote2012/map/live_data/state_summary.json'
+    };
+    
+    // Maintaining state
+    // Interval IDs for auto-refreshing and auto-scrolling
+    var autoRefreshIntervalId = null;
+    var autoScrollIntervalId = null;
+    // Latest copy of results
+    var latestData = {};
+    // Current scrolling position
+    var scrollPos = 0;
+    // Scrolling details
+    var rowHeight = 0;
+    var rowsAvailable = 1;
+    
+    // State names and abbreviations
+    var USPSToState = {
+        'AL': 'Alabama',
+        'AK': 'Alaska',
+        'AZ': 'Arizona',
+        'AR': 'Arkansas',
+        'CA': 'California',
+        'CO': 'Colorado',
+        'CT': 'Connecticut',
+        'DE': 'Delaware',
+        'DC': 'District of Columbia',
+        'FL': 'Florida',
+        'GA': 'Georgia',
+        'HI': 'Hawaii',
+        'ID': 'Idaho',
+        'IL': 'Illinois',
+        'IN': 'Indiana',
+        'IA': 'Iowa',
+        'KS': 'Kansas',
+        'KY': 'Kentucky',
+        'LA': 'Louisiana',
+        'ME': 'Maine',
+        'MD': 'Maryland',
+        'MA': 'Massachusetts',
+        'MI': 'Michigan',
+        'MN': 'Minnesota',
+        'MS': 'Mississippi',
+        'MO': 'Missouri',
+        'MT': 'Montana',
+        'NE': 'Nebraska',
+        'NV': 'Nevada',
+        'NH': 'New Hampshire',
+        'NJ': 'New Jersey',
+        'NM': 'New Mexico',
+        'NY': 'New York',
+        'NC': 'North Carolina',
+        'ND': 'North Dakota',
+        'OH': 'Ohio',
+        'OK': 'Oklahoma',
+        'OR': 'Oregon',
+        'PA': 'Pennsylvania',
+        'RI': 'Rhode Island',
+        'SC': 'South Carolina',
+        'SD': 'South Dakota',
+        'TN': 'Tennessee',
+        'TX': 'Texas',
+        'UT': 'Utah',
+        'VT': 'Vermont',
+        'VA': 'Virginia',
+        'WA': 'Washington',
+        'WV': 'West Virginia',
+        'WI': 'Wisconsin',
+        'WY': 'Wyoming'
+    };
+    var USPSToStateAbbr = {
+        'MA': 'Mass.',
+        'ND': 'N. Dakota',
+        'OK': 'Okla.',
+        'TN': 'Tenn.'
+    };
+    
+    // Utility functions
+    var getLatestData = function() {
+        $.ajax({
+            url: config.summaryURL,
+            dataType: 'jsonp',
+            jsonpCallback: 'state_summary',
+            success: function(data) {
+                latestData = data;
+                $(document).trigger('/widget/dataUpdated');
+            }
+        });
+    };
+    var formatThousands = function(value, decimalPlaces, alwaysDecimalize) {
+        // Set default decimal formatting values if undefined
+        decimalPlaces = (typeof decimalPlaces == 'undefined') ? 1 : decimalPlaces;
+        alwaysDecimalize = (typeof alwaysDecimalize == 'undefined') ? false : alwaysDecimalize;
+        
+        var wholePart = Math.floor(Math.abs(value)) + '';  // coerce to string
+        
+        var signPart = '';
+        if (value < 0) {signPart = '-';}
+        
+        var decimalPart = '';
+        if (alwaysDecimalize || value % 1 != 0) {
+            decimalPart = (Math.abs(value) % 1).toFixed(decimalPlaces);
+            decimalPart = decimalPart.substring(1);  // remove leading zero
+        }
+        
+        var withCommas = wholePart;
+        var commasToAdd = Math.floor(withCommas.length / 3);
+        if (withCommas.length % 3 == 0) {commasToAdd -= 1;}
+        for (var i = 0; i < commasToAdd; i++) {
+            var firstComma = withCommas.indexOf(',');
+            if (firstComma >= 0) {
+                withCommas = withCommas.substring(0, firstComma-3) +
+                    ',' + withCommas.substring(firstComma-3);
+            } else {
+                withCommas = withCommas.substring(0, withCommas.length-3) +
+                    ',' + withCommas.substring(withCommas.length-3);
+            }
+        }
+        return signPart + withCommas + decimalPart;
+    };
+    var getLastName = function(candidateName) {
+        var candidateNameParts = candidateName.split(' ');
+        var candidateLastName = candidateNameParts[
+            candidateNameParts.length - 1
+        ];
+        return candidateLastName;
+    };
+    
+    // Rendering functions
+    var renderState = function(stateAbbr) {
+        var stateData = latestData[stateAbbr.toLowerCase()];
+        var stateTable = $('#templates table').clone()
+            .appendTo('#apresults_results');
+        stateTable.find('.candidate_row').remove();
+        
+        // State name (or abbreviation if available)
+        var stateName = USPSToStateAbbr[stateAbbr.toUpperCase()] || 
+            USPSToState[stateAbbr.toUpperCase()];
+        stateTable.find('.state_name').text(stateName);
+        
+        // Precincts reporting (avoid prematurely saying all are in)
+        var precinctsReporting = stateData.precincts[0];
+        var precinctsTotal = stateData.precincts[1];
+        var precinctsPercent = Math.round(
+            100 * precinctsReporting / precinctsTotal
+        );
+        if (precinctsPercent === 100 && 
+                precinctsReporting !== precinctsTotal) {
+            precinctsPercent = 99;
+        }
+        stateTable.find('.percent_reporting').text(precinctsPercent);
+        
+        // Total votes
+        var totalVotes = 0;
+        for (var i = 0, length = stateData.breakdown.length; i < length; i++) {
+            var candidateData = stateData.breakdown[i];
+            var candidateVotes = candidateData[1];
+            totalVotes += candidateVotes;
+        }
+        
+        // Candidates
+        var candidateRowCount = stateData.breakdown.length;
+        if (candidateRowCount > config.candidatesPerState) {
+            candidateRowCount = config.candidatesPerState;
+        };
+        for (var i = 0; i < candidateRowCount; i++) {
+            var candidateData = stateData.breakdown[i];
+            var candidateRow = $('#templates .candidate_row').clone()
+                .appendTo(stateTable);
+            var candidateName = candidateData[0];
+            var candidateVotes = candidateData[1];
+            
+            // Last name (or "No Preference")
+            var candidateLastName = getLastName(candidateName);
+            if (candidateLastName.toLowerCase() === 'preference') {
+                candidateLastName = candidateName;
+            }
+            candidateRow.find('.candidate_name').text(candidateLastName);
+            
+            // Number of votes
+            candidateRow.find('.votes_votes').text(
+                formatThousands(candidateVotes, 0)
+            );
+            
+            // Percent of total votes
+            candidatePercent = Math.round(100 * candidateVotes / totalVotes);
+            if (totalVotes === 0) {candidatePercent = 0;}
+            candidateRow.find('.percent_percent').text(candidatePercent);
+            
+            // Style
+            if (stateData.winner === candidateName) {
+                candidateRow.addClass('winner');
+            } else {
+                if (i % 2 === 0) {
+                    // Whee, zero-indexing
+                    candidateRow.addClass('odd');
+                }
+            }
+        }
+        if (candidateRowCount < config.candidatesPerState) {
+            var blankRows = config.candidatesPerState - candidateRowCount;
+            for (var i = 0; i < blankRows; i++) {
+                stateTable.append(
+                    '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'
+                );
+            }
+        }
+    };
+    var updateTime = function(year, month, day, hour, minute) {
+        var timeStringParts = [];
+        var monthAbbrs = {
+            // These are Python datetime month keys, not JavaScript ones
+            //  (which differ by one). Don't worry, I'm not forgetting.
+            1: 'Jan.',
+            2: 'Feb.',
+            3: 'March',
+            4: 'April',
+            5: 'May',
+            6: 'June',
+            7: 'July',
+            8: 'Aug.',
+            9: 'Sept.',
+            10: 'Oct.',
+            11: 'Nov.',
+            12: 'Dec.'
+        };
+        // Convert hour from 24-hour time
+        if (hour > 12) {timeStringParts.push((hour - 12) + '');}
+        else if (hour == 0) {timeStringParts.push('12');}
+        else {timeStringParts.push(hour + '');}
+        // Add minute, zero-padding if necessary
+        if (minute != 0) {
+            if (minute < 10) {timeStringParts.push(':0' + minute);}
+            else {timeStringParts.push(':' + minute);}
+        }
+        // Add a.m. or p.m.
+        if (hour < 12) {timeStringParts.push(' a.m., ');}
+        else {timeStringParts.push(' p.m., ');}
+        // Add month and day
+        timeStringParts.push(monthAbbrs[month] + ' ' + day);
+        // Stick it all on the page!
+        $('#ap-date-updated').text(timeStringParts.join(''));
+    };
+    
+    // Scrolling functions
+    var setRowHeight = function() {
+        rowHeight = 0;
+        var tables = $('#apresults_results table');
+        for (var i = 0, length = tables.length; i < length; i++) {
+            // Store the first top coordinate that isn't zero
+            var thisTable = $(tables[i]);
+            var thisTableTop = thisTable.position()['top'];
+            if (thisTableTop > rowHeight) {
+                rowHeight = thisTableTop + config.rowHeightTweak;
+                break;
+            }
+        }
+        $('#apresults_viewport').height(rowHeight);
+        return rowHeight;
+    };
+    var countRows = function() {
+        var rows = 1;
+        
+        var tables = $('#apresults_results table');
+        var prevTop = 0;
+        for (var i = 0, length = tables.length; i < length; i++) {
+            var thisTable = $(tables[i]);
+            var thisTableTop = thisTable.position()['top'];
+            if (thisTableTop > prevTop) {
+                prevTop = thisTableTop;
+                rows++;
+            }
+        }
+        
+        rowsAvailable = rows;
+        return rows;
+    };
+    var drawScrollDots = function() {
+        for (var i = 0; i < rowsAvailable; i++) {
+            var dot = $('#templates li').clone().appendTo('.dots ul');
+            var dotLink = dot.find('a');
+            var dotImage = dot.find('img');
+            dotLink.attr('href', '#' + i);
+            dotImage.attr('src', config.scrollDotOffImage);
+        }
+        $('.dots ul li a').click(function() {
+            var scrollPos = $(this).attr('href').substring(1);
+            scrollPos = parseInt(scrollPos);
+            setScrollPos(scrollPos);
+            var scrollActive = autoScrollIntervalId !== null;
+            stopScroll();
+            if (scrollActive) {
+                startScroll();
+            }
+            return false;
+        });
+    };
+    var setScrollPos = function(targetPos) {
+        $('#apresults_results').animate({
+            'top': -1 * targetPos * rowHeight
+        }, config.scrollDuration);
+        $('.dots ul a').find('img').attr('src', config.scrollDotOffImage);
+        $('.dots ul a[href=#' + targetPos + ']').find('img').attr('src', config.scrollDotOnImage);
+        scrollPos = targetPos;
+    };
+    var scrollNext = function() {
+        setScrollPos((scrollPos + 1) % rowsAvailable);
+    };
+    
+    // Toggle auto-refreshing and auto-scrolling
+    var startRefresh = function() {
+        if (autoRefreshIntervalId) {
+            window.clearInterval(autoRefreshIntervalId);
+        }
+        
+        autoRefreshIntervalId = window.setInterval(
+            getLatestData, config.autoRefreshInterval * 1000
+        );
+    };
+    var stopRefresh = function() {
+        if (autoRefreshIntervalId) {
+            window.clearInterval(autoRefreshIntervalId);
+        }
+        autoRefreshIntervalId = null;
+    };
+    var startScroll = function() {
+        if (autoScrollIntervalId) {
+            window.clearInterval(autoScrollIntervalId);
+        }
+        
+        autoScrollIntervalId = window.setInterval(
+            scrollNext, config.autoScrollInterval * 1000
+        );
+    };
+    var stopScroll = function() {
+        if (autoScrollIntervalId) {
+            window.clearInterval(autoScrollIntervalId);
+        }
+        autoScrollIntervalId = null;
+    };
+    $('.playpause').click(function() {
+        var thisImage = $(this).find('img');
+        if (thisImage.attr('src') === config.scrollPlayImage) {
+            thisImage.attr('src', config.scrollPauseImage);
+            startScroll();
+        } else {
+            thisImage.attr('src', config.scrollPlayImage);
+            stopScroll();
+        }
+        return false;
+    });
+    
+    // The good stuff
+    $(document).on('/widget/dataUpdated', function() {
+        // Clear existing results out
+        $('#apresults_results').empty();
+        
+        // Render state results
+        for (var i = 0, length = config.statesToShow.length; i < length; i++) {
+            var stateAbbr = config.statesToShow[i];
+            if (latestData[stateAbbr.toLowerCase()]) {renderState(stateAbbr);}
+        }
+        
+        // Update last-updated time
+        updateTime.apply(null, latestData.lastUpdated);
+        
+        // Indicate test data or not
+        if (latestData.test) {
+            $('#test_data').text(' (test)');
+        } else {
+            $('#test_data').text('');
+        }
+    });
+    
+    // Let's do this!
+    startRefresh();
+    $(document).one('/widget/dataUpdated', function() {
+        setRowHeight();
+        countRows();
+        drawScrollDots();
+        setScrollPos(0);
+        startScroll();
+    });
+    getLatestData();
+});
+</script>
 </head>
 
 <body >
+<div id="templates">
+<table>
+<tr class="state">
+        <th colspan="3"><a class="state_name">Georgia</a> <span><span class="percent_reporting">2</span>% &nbsp;reporting</span></th>
+    </tr>
+    <tr class="candidate_row">
+        <td class="candidate_name">Santorum</td>
+        <td class="votes"> (<span class="votes_votes">333,333</span> votes) </td>
+        <td class="percent"><span class="percent_percent">66</span>%</td>
+    </tr>
+</table>
+<ul>
+<li class="dot"><a href="#"><img src="lib/images/dot.png" /></a></li>
+</ul>
+</div>
 <div id="apresults">
-<div id="header"><span>Live</span> Super Tuesday Results</div>
-<div class="wrap clearfix">
-<table>
-<tr class="state">
-        <th colspan="3">Georgia <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="winner">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Ohio <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr>
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Tenn. <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="winner">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Virginia <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr>
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Okla. <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="winner">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Mass. <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr>
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Idaho <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="winner">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">N. Dakota <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr>
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Alaska <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr>
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
-<table>
-<tr class="state">
-        <th colspan="3">Vermont <span><span>2</span>% &nbsp;reporting</span></th>
-    </tr>
-    <tr class="odd">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="winner">
-        <td >Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-    <tr class="odd">
-        <td>Santorum</td>
-        <td class="votes"> (333,333 votes) </td>
-        <td class="percent">66%</td>
-    </tr>
-</table>
+<div id="header"><span>Live</span> Super Tuesday Results<a id="test_data"></a></div>
+<div class="wrap clearfix" id="apresults_viewport">
+<div id="apresults_results">
+</div>
 </div>
 <div class="dots">
 <ul>
-<li><a href="#"><img src="lib/images/dot.png" /></a></li>
-<li><a href="#"><img src="lib/images/dot.png" /></a></li>
-<li><a href="#"><img src="lib/images/on-dot.png" /></a></li>
-<li><a href="#"><img src="lib/images/dot.png" /></a></li>
-<li><a href="#"><img src="lib/images/dot.png" /></a></li>
-
 </ul>
-<div class="playpause"><a href="#"><img src="lib/images/play.png" /></a>
-<div class="ap-date">AP Updated 8:19 p.m. EST</div>
+<div class="playpause"><a href="#"><img src="lib/images/pause.png" /></a>
+<div class="ap-date">AP Updated <span id="ap-date-updated">8:19 p.m.</span> EST</div>
 </div>
 
 
@@ -269,6 +500,7 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 
 
 
+</div>
 </div>
 </body>
 </html>
