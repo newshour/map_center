@@ -252,7 +252,7 @@ $(document).ready(function() {
             // Last name (or "No Preference")
             var candidateLastName = getLastName(candidateName);
             if (candidateLastName.toLowerCase() === 'preference') {
-                candidateLastName = candidateName;
+                candidateLastName = "No Pref.";
             }
             candidateRow.find('.candidate_name').text(candidateLastName);
             
