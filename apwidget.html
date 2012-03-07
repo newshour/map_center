@@ -22,10 +22,10 @@ body { margin: 0; font: 1em/1em Arial, Helvetica, sans-serif; }
 #apresults .wrap { margin-bottom:15px; }
 #apresults table {width:47%; float:left;  margin-right:9px;  border-collapse: collapse; }
 #apresults table th {text-align:left; padding:5px; }
-#apresults .state  { font: 1.8em/.8em 'MuseoSans500'; color:#9e1611; text-transform:uppercase; }
+#apresults .state  { font: 1.7em/.8em 'MuseoSans500'; color:#9e1611; text-transform:uppercase; }
 #apresults .state .state_name {color: inherit;}
 #apresults .state span { font: .55em/1em 'MuseoSans500'; color:#5d5d5d; text-transform:uppercase; }
-#apresults .state span span {font:1.7em/1em 'MuseoSans500';  }
+#apresults .state span span {font:1.5em/1em 'MuseoSans500';  }
 #apresults table .percent {text-align:right; color:#024577;}
 #apresults table .odd {background-color:#ededed;}
 #apresults table td {font:1.4em/1em 'MuseoSans700'; text-transform:uppercase; color:#3c3c3c; padding:5px; }
@@ -303,6 +303,8 @@ $(document).ready(function() {
             11: 'Nov.',
             12: 'Dec.'
         };
+        // Add month and day
+        timeStringParts.push(monthAbbrs[month] + ' ' + day + ', ');
         // Convert hour from 24-hour time
         if (hour > 12) {timeStringParts.push((hour - 12) + '');}
         else if (hour == 0) {timeStringParts.push('12');}
@@ -313,10 +315,8 @@ $(document).ready(function() {
             else {timeStringParts.push(':' + minute);}
         }
         // Add a.m. or p.m.
-        if (hour < 12) {timeStringParts.push(' a.m., ');}
-        else {timeStringParts.push(' p.m., ');}
-        // Add month and day
-        timeStringParts.push(monthAbbrs[month] + ' ' + day);
+        if (hour < 12) {timeStringParts.push(' a.m.');}
+        else {timeStringParts.push(' p.m.');}
         // Stick it all on the page!
         $('#ap-date-updated').text(timeStringParts.join(''));
     };
