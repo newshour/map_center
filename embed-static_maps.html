@@ -1,0 +1,72 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+    	<title>2012 Political Map Center | PBS NewsHour</title>
+	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+        <!-- JS libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
+        <script type="text/javascript" src="lib/highcharts.js"></script>
+        <script src="js/libs/modernizr-2.0.6.min.js"></script>
+        <script type="text/javascript">
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            var nhmcStaticDataIndex = 1;
+        </script>
+        <!-- Map Center core -->
+        <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <!-- Individual Map Center modules -->
+        <script type="text/javascript" src="lib/map_center/modules/static_maps.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/ethnicity.js"></script>
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/embed.css" />
+    </head>
+    <body>
+        <div id="container">
+            <div id="main" role="main">
+                <div id="content">
+                    <div id="view_info">
+                        <h1>Map title</h1>
+                    </div>
+                    <div id="content_area">
+                        <h2 id="instructions">Instructions go here, if any</h2>
+                        <div id="map_container">
+                            <div id="map_aspect_ratio_enforcer"></div>
+                            <div id="map"></div>
+                        </div>
+                        <div id="sidebar">
+                            <h3 id="sidebar_title">Sidebar title</h3>
+                            <div id="legend">
+                                <div id="legend_templates">
+                                    <div class="category_entry">
+                                        <div class="entry_color">&nbsp;</div>
+                                        <div class="category_name"></div>
+                                    </div>
+                                    <div class="break_entry">
+                                        <div class="entry_color">&nbsp;</div>
+                                        <div class="break_text"></div>
+                                    </div>
+                                </div>
+                                <div id="legend_entries"></div>
+                            </div>
+                            <input name="map_view" id="map_view" type="hidden" value="la" />
+                        </div>
+                        <div class="clear"></div>
+                        <h2 id="static_data_source">Source: <a href="" target="_blank">Attribution goes here</a></h2>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </body>
+</html>

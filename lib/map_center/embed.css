@@ -1,0 +1,202 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-= EMBEDDED FONTS -=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+@font-face {
+    font-family: 'MuseoSans500';
+    src: url('fonts/museosans_500_macroman/MuseoSans_500-webfont.eot');
+    src: url('fonts/museosans_500_macroman/MuseoSans_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/museosans_500_macroman/MuseoSans_500-webfont.woff') format('woff'),
+         url('fonts/museosans_500_macroman/MuseoSans_500-webfont.ttf') format('truetype'),
+         url('fonts/museosans_500_macroman/MuseoSans_500-webfont.svg#MuseoSans500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MuseoSans300';
+    src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot');
+    src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.woff') format('woff'),
+         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.ttf') format('truetype'),
+         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.svg#MuseoSans300') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MuseoSans700';
+    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot');
+    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.woff') format('woff'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.ttf') format('truetype'),
+         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.svg#MuseoSans300') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-= VECTOR GRAPHICS =-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+v\:rect, v\:roundrect, v\:line, v\:polyline, v\:curve, v\:arc, v\:oval, v\:image, v\:shape, v\:group, v\:skew, v\:stroke, v\:fill {
+    behavior: url(#default#VML);
+    display: inline-block;
+    cursor: pointer;
+}
+path {cursor: pointer;}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-= NON-SEMANTIC CLASSES -=-=-=-=-=-=-=-=-=-=-=-=- */
+
+.clear {clear: both;}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-= MAP ASPECT RATIO -=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+#map_container {
+    display: inline-block;
+    position: relative;
+}
+    /* Aspect ratio 768/486 */
+    #map_aspect_ratio_enforcer {margin-top: 63.28125%;}
+    #map {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+    }
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=- GENERAL ELEMENT STYLES =-=-=-=-=-=-=-=-=-=-=-=- */
+
+body {
+    background-color: #dcdcdc;
+    font-family: 'MuseoSans500', sans-serif;
+    /* Setting em-based layout to default context of 16px per em */
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-= THE GOOD STUFF -=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+#view_info h1 {
+    color: #8b080d;
+    font-size: 1.375em;  /* 22px / 16px */
+    margin: 0 0 0.3125em 0;  /* 5px / 16px */
+    padding: 0;
+}
+
+#content_area {
+    padding-bottom: 0.625em;  /* 10px / 16px */
+    padding-top: 0.625em;  /* 10px / 16px */
+    position: relative;
+}
+    #content_area h2 {  /* Sets own context to 12px per em */
+        color: #666;
+        font-size: 0.75em;  /* 12px / 16px -- context set */
+    }
+        #content_area h2 a {
+            color: inherit;
+            text-decoration: none;
+        }
+    #sidebar {  /* Sets own context to 12px per em */
+        background-color: #fff;
+        border: 1px solid #ccc;
+        font-size: 0.75em;  /* 12px / 16px -- context set */
+    }
+        #sidebar_title {
+            background-color: #eee;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            padding-bottom: 0.5em;
+        }
+            #sidebar_title span {color: #9f1c20;}
+        
+        /* #legend {} */
+            #legend_templates {display: none;}
+            #legend_entries {margin-bottom: 0.833333em;}  /* 10px / 12px */
+                .category_entry, .break_entry {
+                    background-color: #d1d0d0;
+                    color: #3f3f3f;
+                    margin-bottom: 1px;
+                    padding: 0.416667em 0.416667em 0.416667em 0.833333em; /* {5px, 10px} / 12px */
+                    position: relative;
+                }
+                    .entry_color {
+                        height: 85%;
+                        left: -0.416667em;  /* -5px / 12px */
+                        position: absolute;
+                        top: 7.5%;
+                        width: 0.833333em;  /* 10px / 12px */
+                    }
+    
+    #instructions {  /* Context is 12px per em per #content_area h2 */
+        margin: 0 0 0.833333em 0;  /* 10px / 12px */
+    }
+
+#tooltip {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 0.3125em;  /* 5px / 16px */
+    position: absolute;
+    text-transform: none;
+    width: 10em;  /* 160px / 16px */
+}
+    #tooltip h3 {  /* Sets own context to 14px per em */
+        clear: both;
+        font-size: 0.875em;  /* 14px / 16px -- context set */
+        margin-top: 0;
+        text-align: center;
+    }
+    #tooltip p {  /* Sets own context to 14px per em */
+        margin-bottom: 0.357143em;  /* 5px / 14px */
+        font-size: 0.875em;  /* 14px / 16px -- context set */
+        text-align: center;
+    }
+    #tooltip_close {float: right;}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=- WIDTH-SPECIFIC STYLES -=-=-=-=-=-=-=-=-=-=-=-=- */
+
+@media screen and (max-width: 400px) {
+    #map_container {width: 100%;}
+    #sidebar {width: 100%;}
+        #legend {padding-left: 1.5em;}  /* 18px / 12px */
+        .category_entry, .break_entry {
+                display: inline-block;
+                margin-right: 1.25em;  /* 15px / 12px */
+            }
+}
+@media screen and (min-width: 400px) and (max-width: 800px) {
+    #map_container {width: 100%;}
+    #sidebar {width: 100%;}
+        #legend {padding-left: 1.5em;}  /* 18px / 12px */
+        .category_entry, .break_entry {
+                display: inline-block;
+                margin-right: 1.25em;  /* 15px / 12px */
+            }
+}
+@media screen and (min-width: 800px) {
+    #map_container {
+        width: 75%;
+        max-width: 48em;  /* 768px / 16px */
+    }
+    #sidebar {
+        border-right: none;
+        -webkit-border-bottom-left-radius: 0.416667em;  /* 5px / 12px */
+        -moz-border-radius-bottomleft: 0.416667em;
+        border-bottom-left-radius: 0.416667em;
+        -webkit-border-top-left-radius: 0.416667em;
+        -moz-border-radius-topleft: 0.416667em;
+        border-top-left-radius: 0.416667em;
+        margin: 0;
+        padding: 0 0.833333em 0 1.666667em;  /* {10px, 20px} / 12px */
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20%;
+    }
+        #sidebar_title {
+            -webkit-border-top-left-radius: 0.416667em;  /* 5px / 12px */
+            -moz-border-radius-topleft: 0.416667em;
+            border-top-left-radius: 0.416667em;
+            margin: 0 -0.833333em 0.833333em -1.333333em;  /* {10px, 16px} / 12px */
+            padding: 0.5em;
+        }
+}
