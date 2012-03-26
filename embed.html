@@ -41,9 +41,9 @@
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
         <!-- Individual Map Center modules -->
-        <script type="text/javascript" src="lib/map_center/modules/static_maps.js"></script>
-        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/population_density.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/embed.css" />
@@ -99,11 +99,39 @@
                                 </div>
                                 <div id="legend_entries"></div>
                                 <div id="legend_candidates"></div>
+                                <div id="ec_tally">
+                                    <div id="electoral_boot" class="view_tab_active"><a href="" class="view_tab_option">2008</a></div>
+                                    <div id="ec_party_d" class="ec_party">
+                                        <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                                        <h4 id="ec_name_abbr_d" class="ec_name_abbr">Dem.</h4>
+                                        <div id="ec_detail_d" class="ec_detail">
+                                            <span id="ec_total_d" class="ec_total">0</span> electoral votes
+                                            <div id="ec_win_d" class="ec_win"><img src="check.png" alt="Democrats win" /></div>
+                                        </div>
+                                    </div>
+                                    <div id="ec_party_r" class="ec_party">
+                                        <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                                        <h4 id="ec_name_abbr_r" class="ec_name_abbr">Rep.</h4>
+                                        <div id="ec_detail_r" class="ec_detail">
+                                            <span id="ec_total_r" class="ec_total">0</span> electoral votes
+                                            <div id="ec_win_r" class="ec_win"><img src="check.png" alt="Republicans win" /></div>
+                                        </div>
+                                    </div>
+                                    <div id="ec_party_t" class="ec_party">
+                                        <h4 id="ec_name_t" class="ec_name">All other parties</h4>
+                                        <h4 id="ec_name_abbr_t" class="ec_name_abbr">Other</h4>
+                                        <div id="ec_detail_t" class="ec_detail">
+                                            <span id="ec_total_t" class="ec_total">0</span> electoral votes
+                                            <div id="ec_win_t" class="ec_win"><img src="check.png" alt="Other party wins" /></div>
+                                        </div>
+                                    </div>
+                                    <div id="lower_chart"></div>
+                                </div>
                             </div>
-                            <input name="map_view" id="map_view" type="hidden" value="mo" />
+                            <input name="map_view" id="map_view" type="hidden" value="us_all" />
                         </div>
                         <div class="clear"></div>
-                        <h2 id="static_data_source">Source: <a href="" target="_blank">Attribution goes here</a></h2>
+                        <!--<h2 id="static_data_source">Source: <a href="" target="_blank">Attribution goes here</a></h2>-->
                         <!--<h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>-->
                     </div>
                 </div>

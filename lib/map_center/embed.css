@@ -229,10 +229,51 @@ body {
                         right: 4.583333em;  /* 55px / 12px */
                         text-align: right;
                     }
+            
+            #ec_tally {
+                color: #707070;
+                position: relative;
+                text-align: center;
+            }
+                #electoral_boot {display: none;}
+                .ec_name, .ec_name_abbr {
+                    margin: 0;
+                    padding: 0;
+                }
+                .ec_name_abbr {display: none;}
+                    #ec_name_d, #ec_name_abbr_d, #ec_total_d {color: #0d265e;}
+                    #ec_name_r, #ec_name_abbr_r, #ec_total_r {color: #8d060c;}
+                    #ec_name_t, #ec_name_abbr_t, #ec_total_t {color: #9c8e0b;}
+                .ec_detail {
+                    border: 1px solid #ddd;
+                    -moz-border-radius: 0.416667em;  /* 5px / 12px */
+                    -webkit-border-radius: 0.416667em;
+                    border-radius: 0.416667em;
+                    margin: 0.416667em 0 1.666667em 0;  /* {5px, 20px} / 12px */
+                    position: relative;
+                }
+                    .ec_total {
+                        display: block;
+                        font-size: 2.5em;  /* 30px / 12px */
+                        font-weight: bold;
+                    }
+                    .ec_win {
+                        color: #090;
+                        display: none;
+                        margin-top: -0.5em;  /* -6px / 12px */
+                        position: absolute;
+                        right: 0.833333em;  /* 10px / 12px */
+                        top: 50%;
+                    }
+                #lower_chart {height: 5em;}  /* 60px / 12px */
     
     #instructions {
         margin: 0 0 0.833333em 0;  /* 10px / 12px */
     }
+
+.ui-dialog {  /* Sets own context to 12px per em */
+    font-size: 0.75em;  /* 12px / 16px -- context set */
+}
 
 #tooltip, #other_tooltip {
     background-color: #fff;
@@ -342,7 +383,23 @@ body {
                 display: inline-block;
                 margin-right: 1.25em;  /* 15px / 12px */
             }
-                .candidate_image {display: none;}
+            
+            .candidate_image {display: none;}
+            
+            .ec_party {
+                margin-right: 2%;
+                float: left;
+                width: 31.333333%;
+            }
+                .ec_name {display: none;}
+                .ec_name_abbr {display: block;}
+                .ec_detail_win {background-color: #cfc;}
+                    .ec_win {display: none !important;}
+                #lower_chart {clear: both;}
+    
+    .ui-dialog {
+        width: 75%;
+    }
 }
 @media screen and (min-width: 600px) {
     #map_container {width: 55%;}
