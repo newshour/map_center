@@ -111,10 +111,13 @@ body {
         
         /* #legend {} */
             #legend_templates {display: none;}
+            #legend_templates {display: none;}
+            
             #legend_entries {margin-bottom: 0.833333em;}  /* 10px / 12px */
                 .category_entry, .break_entry {
                     background-color: #d1d0d0;
                     color: #3f3f3f;
+                    font-family:Arial, Helvetica, sans-serif;
                     margin-bottom: 1px;
                     padding: 0.416667em 0.416667em 0.416667em 0.833333em; /* {5px, 10px} / 12px */
                     position: relative;
@@ -126,55 +129,219 @@ body {
                         top: 7.5%;
                         width: 0.833333em;  /* 10px / 12px */
                     }
+                
+                .candidate_big, .candidate_small {
+                    font-family:Arial, Helvetica, sans-serif;
+                    position: relative;
+                }
+                    .candidate_big .candidate_image,
+                    .candidate_small .candidate_image {
+                        float: left;
+                    }
+                    .candidate_name_first {
+                        font-weight: normal;
+                        text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+                    }
+                    .candidate_name_last {
+                        font-weight: bold;
+                        text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+                    }
+                    
+                    .candidate_color {
+                        height: 102%;
+                        position: absolute;
+                        top: -1%;
+                    }
+                    .candidate_won {
+                        display: none;
+                        position: absolute;
+                    }
+                .candidate_big {  /* Sets own context to 18px per em */
+                    background-color: #efefef;
+                    background-image: url('../../images/bg-big.jpg');
+                    background-repeat: repeat-x;
+                    border: 1px solid #c5c5c5;
+                    -webkit-border-radius: 0.277778em;  /* 5px / 18px */
+                    -moz-border-radius: 0.277778em;
+                    border-radius: 0.277778em;
+                    clear: both;
+                    color: #333;
+                    font-size: 1.5em;  /* 18px / 12px -- context set */
+                    margin-bottom: 0.833333em;  /* 10px / 18px */
+                    padding: 0 0.277778em 0.277778em 1.666667em;  /* {5px, 30px} / 18px */
+                    text-align: left;
+                }
+                    .candidate_image {
+                        margin: 0 0.833333em 0.166667em 0;  /* {15px, 3px} / 18px */
+                        width: 3.833333em;  /* 69px / 18px */
+                    }
+                    .candidate_big .candidate_name {  /* Sets own context to 25px per em */
+                        font-size: 1.388889em;  /* 25px / 18px -- context set */
+                        font-weight: bold;
+                        margin: 0.08em 0 0.08em 0;  /* 2px / 25px */
+                        text-align: left;
+                        line-height: 1.1em;
+                        text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+                    }
+                    .candidate_big .candidate_color {
+                        left: -0.555556em;  /* -10px / 18px */
+                        width: 1.388889em;  /* 25px / 18px */
+                    }
+                    .candidate_big .candidate_won {
+                        right: 0.277778em;  /* 5px / 18px */
+                        top: -1.388889em;  /* -25px / 18px */
+                    }
+                    .candidate_big .candidate_votes {  /* Sets own context to 40px per em */
+                        color: #9f1c20;
+                        font-size: 2.222222em;  /* 40 px / 18px -- context set */
+                        font-weight: bold;
+                        text-align: left;
+                    }
+                    .candidate_big .candidate_vote_count {
+                        margin: 0 0 0 0.111111em;  /* 2px / 18px */
+                    }
+                .candidate_small {  /* Sets own context to 14px per em */
+                    background-color: #d1d0d0;
+                    clear: both;
+                    color: #3f3f3f;
+                    font-size: 1.166667em;  /* 14px / 12px -- context set */
+                    margin-bottom: 0.217286em;  /* 3px / 14px */
+                    padding: 0.357143em 0.357143em 0.357143em 0.714286em; /* {5px, 10px} / 14px */
+                }
+                    .candidate_small .candidate_color {
+                        left: -0.714286em;  /* -10px / 14px */
+                        width: 1.071429em;  /* 15px / 14px */
+                    }
+                    .candidate_small .candidate_won {
+                        right: 0.357143em;  /* 5px / 14px */
+                        top: -1.785714em;  /* -25px / 14px */
+                    }
+                    .candidate_small .candidate_name {float: left;}
+                    .candidate_small .candidate_votes {
+                        font-weight: bold;
+                        text-align: right;
+                    }
+                    .candidate_small .candidate_vote_count {
+                        float: left;
+                        font-size: 0.857143em;  /* 12px / 14px */
+                        margin-top: 0.166667em;  /* 2px / 12px */
+                        position: absolute;
+                        right: 4.583333em;  /* 55px / 12px */
+                        text-align: right;
+                    }
     
-    #instructions {  /* Context is 12px per em per #content_area h2 */
+    #instructions {
         margin: 0 0 0.833333em 0;  /* 10px / 12px */
     }
 
-#tooltip {
+#tooltip, #other_tooltip {
     background-color: #fff;
     border: 1px solid #ccc;
+    -moz-box-shadow: 0 0 0.625em #949494;  /* 10px / 16px */
+    -webkit-box-shadow: 0 0 0.625em #949494;  /* 10px / 16px */
+    box-shadow: 0 0 0.625em #949494;  /* 10px / 16px */
     padding: 0.3125em;  /* 5px / 16px */
     position: absolute;
     text-transform: none;
     width: 10em;  /* 160px / 16px */
 }
-    #tooltip h3 {  /* Sets own context to 14px per em */
+    #tooltip h3, #other_tooltip h3 {  /* Sets own context to 14px per em */
         clear: both;
         font-size: 0.875em;  /* 14px / 16px -- context set */
         margin-top: 0;
         text-align: center;
     }
-    #tooltip p {  /* Sets own context to 14px per em */
-        margin-bottom: 0.357143em;  /* 5px / 14px */
-        font-size: 0.875em;  /* 14px / 16px -- context set */
+    #tooltip p, #other_tooltip p {  /* Sets own context to 12px per em */
+        margin-bottom: 0.416667em;  /* 5px / 12px */
+        font-size: 0.75em;  /* 12px / 16px -- context set */
         text-align: center;
     }
-    #tooltip_close {float: right;}
+    #tooltip_close, #other_tooltip_close {float: right;}
+    
+    #tooltip_results thead, #other_tooltip_results thead {font-weight: bold;}
+        .tooltip_results_candidate, .other_tooltip_results_candidate {width: 75%;}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=- WIDTH-SPECIFIC STYLES -=-=-=-=-=-=-=-=-=-=-=-=- */
 
-@media screen and (max-width: 400px) {
-    #map_container {width: 100%;}
-    #sidebar {width: 100%;}
-        #legend {padding-left: 1.5em;}  /* 18px / 12px */
-        .category_entry, .break_entry {
-                display: inline-block;
-                margin-right: 1.25em;  /* 15px / 12px */
-            }
+@media screen and (max-width: 349px) {
+    /* .candidate_big = .candidate_small */
+    .candidate_big {  /* Sets own context to 14px per em */
+        background-color: #d1d0d0;
+        clear: both;
+        color: #3f3f3f;
+        font-size: 1.166667em;  /* 14px / 12px -- context set */
+        margin-bottom: 0.217286em;  /* 3px / 14px */
+        padding: 0.357143em 0.357143em 0.357143em 0.714286em; /* {5px, 10px} / 14px */
+    }
+        .candidate_big .candidate_name {
+            font-size: 1em;
+            font-weight: inherit;
+            margin: inherit;
+            text-align: left;
+            line-height: inherit;
+            text-shadow: none;
+        }
+        .candidate_big .candidate_color {
+            left: -0.714286em;  /* -10px / 14px */
+            width: 1.071429em;  /* 15px / 14px */
+        }
+        .candidate_big .candidate_won {
+            display: none !important;
+        }
+        .candidate_big .candidate_name {float: left;}
+        .candidate_big .candidate_votes {
+            font-weight: bold;
+            text-align: right;
+        }
+        .candidate_big .candidate_votes {
+            color: inherit;
+            font-size: 1em;
+            font-weight: bold;
+            text-align: right;
+        }
+        .candidate_big .candidate_vote_count_units {display: none;}
+        .candidate_big .candidate_vote_count {
+            float: left;
+            font-size: 0.857143em;  /* 12px / 14px */
+            margin-top: -1.083333em;  /* 13px / 12px */
+            position: absolute;
+            right: 4.583333em;  /* 55px / 12px */
+            text-align: right;
+        }
 }
-@media screen and (min-width: 400px) and (max-width: 800px) {
+@media screen and (max-width: 499px) {
+    .candidate_big .candidate_name_first {display: none;}
+}
+@media screen and (min-width: 350px) and (max-width: 799px) {
+    .candidate_big .candidate_votes {
+        position: absolute;
+        right: 15%;
+        text-align: right;
+        top: 10%;
+    }
+}
+@media screen and (max-width: 799px) {
     #map_container {width: 100%;}
-    #sidebar {width: 100%;}
-        #legend {padding-left: 1.5em;}  /* 18px / 12px */
-        .category_entry, .break_entry {
+    #sidebar {
+        margin-top: 2em;  /* 24px / 12px */
+    }
+        #sidebar_title {
+            margin-top: -0.5em;  /* -6px / 12px */
+            padding: 0.5em;  /* 6px / 12px */
+        }
+        #legend {
+            padding-left: 1.5em;  /* 18px / 12px */
+            padding-right: 0.75em;  /* 9px / 12px */
+        }
+            .category_entry, .break_entry {
                 display: inline-block;
                 margin-right: 1.25em;  /* 15px / 12px */
             }
+                .candidate_image {display: none;}
 }
 @media screen and (min-width: 800px) {
     #map_container {
-        width: 75%;
+        width: 65%;
         max-width: 48em;  /* 768px / 16px */
     }
     #sidebar {
@@ -190,7 +357,7 @@ body {
         position: absolute;
         right: 0;
         top: 0;
-        width: 20%;
+        width: 30%;
     }
         #sidebar_title {
             -webkit-border-top-left-radius: 0.416667em;  /* 5px / 12px */

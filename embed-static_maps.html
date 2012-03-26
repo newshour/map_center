@@ -20,14 +20,29 @@
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
             
-            var nhmcStaticDataIndex = 1;
+            // Default index for static maps with multiple data sets
+            // var nhmcStaticDataIndex = 1;
+            
+            // Map-specific overrides to live.js config
+            var nhmc_live_config = {
+                autoRefresh: false,
+                bigCandidates: 3,
+                condenseCandidates: true,
+                hoverExpandOther: true,
+                showCandidates: [
+                    "Mitt Romney",
+                    "Rick Santorum",
+                    "Ron Paul",
+                    "Newt Gingrich"
+                ],
+                tooltipsEnabled: true
+            };
         </script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
-        <script type="text/javascript" src="lib/map_center/modules/static_maps.js"></script>
-        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/ethnicity.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/live.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/embed.css" />
@@ -49,6 +64,7 @@
                             <h3 id="sidebar_title">Sidebar title</h3>
                             <div id="legend">
                                 <div id="legend_templates">
+                                    <!-- Static maps -->
                                     <div class="category_entry">
                                         <div class="entry_color">&nbsp;</div>
                                         <div class="category_name"></div>
@@ -57,13 +73,37 @@
                                         <div class="entry_color">&nbsp;</div>
                                         <div class="break_text"></div>
                                     </div>
+                                    <!-- Primaries -->
+                                    <div class="candidate_big">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first"></span>
+                                            <span class="candidate_name_last"></span>
+                                        </div>
+                                        <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                        <div class="candidate_votes"></div>
+                                        <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span><span class="candidate_vote_count_units"> votes</span></div>
+                                        <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="candidate_small">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first">Firstname</span>
+                                            <span class="candidate_name_last">Lastname</span>
+                                        </div>
+                                        <div class="candidate_vote_count"></div>
+                                        <div class="candidate_votes"></div>
+                                    </div>
                                 </div>
                                 <div id="legend_entries"></div>
+                                <div id="legend_candidates"></div>
                             </div>
-                            <input name="map_view" id="map_view" type="hidden" value="la" />
+                            <input name="map_view" id="map_view" type="hidden" value="mo" />
                         </div>
                         <div class="clear"></div>
-                        <h2 id="static_data_source">Source: <a href="" target="_blank">Attribution goes here</a></h2>
+                        <!--<h2 id="static_data_source">Source: <a href="" target="_blank">Attribution goes here</a></h2>-->
+                        <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
                     </div>
                 </div>
             </div> 
