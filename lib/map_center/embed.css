@@ -13,22 +13,22 @@
 
 @font-face {
     font-family: 'MuseoSans300';
-    src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot');
-    src: url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.woff') format('woff'),
-         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.ttf') format('truetype'),
-         url('/newshour/fonts/museosans_300/MuseoSans_300-webfont.svg#MuseoSans300') format('svg');
+    src: url('fonts/museosans_300/MuseoSans_300-webfont.eot');
+    src: url('fonts/museosans_300/MuseoSans_300-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/museosans_300/MuseoSans_300-webfont.woff') format('woff'),
+         url('fonts/museosans_300/MuseoSans_300-webfont.ttf') format('truetype'),
+         url('fonts/museosans_300/MuseoSans_300-webfont.svg#MuseoSans300') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'MuseoSans700';
-    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot');
-    src: url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.woff') format('woff'),
-         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.ttf') format('truetype'),
-         url('/newshour/fonts/museosans_700/MuseoSans_700-webfont.svg#MuseoSans300') format('svg');
+    src: url('fonts/museosans_700/MuseoSans_700-webfont.eot');
+    src: url('fonts/museosans_700/MuseoSans_700-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/museosans_700/MuseoSans_700-webfont.woff') format('woff'),
+         url('fonts/museosans_700/MuseoSans_700-webfont.ttf') format('truetype'),
+         url('fonts/museosans_700/MuseoSans_700-webfont.svg#MuseoSans300') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -107,7 +107,6 @@ body {
             text-align: center;
             padding-bottom: 0.5em;
         }
-            #sidebar_title span {color: #9f1c20;}
         
         /* #legend {} */
             #legend_templates {display: none;}
@@ -158,7 +157,7 @@ body {
                     }
                 .candidate_big {  /* Sets own context to 18px per em */
                     background-color: #efefef;
-                    background-image: url('../../images/bg-big.jpg');
+                    background-image: url('lib/images/bg-big.jpg');
                     background-repeat: repeat-x;
                     border: 1px solid #c5c5c5;
                     -webkit-border-radius: 0.277778em;  /* 5px / 18px */
@@ -405,25 +404,37 @@ body {
     #map_container {width: 55%;}
     #sidebar {
         border-right: none;
-        -webkit-border-bottom-left-radius: 0.416667em;  /* 5px / 12px */
-        -moz-border-radius-bottomleft: 0.416667em;
-        border-bottom-left-radius: 0.416667em;
-        -webkit-border-top-left-radius: 0.416667em;
-        -moz-border-radius-topleft: 0.416667em;
-        border-top-left-radius: 0.416667em;
         margin: 0;
-        padding: 0 0.833333em 0 1.666667em;  /* {10px, 20px} / 12px */
+        padding-bottom: 0;
+        padding-left: 1.666667em;  /* 20px / 12px */
+        padding-right: 0.833333em;  /* 10px / 12px */
+        padding-top: 0;
         position: absolute;
         right: 0;
         top: 0;
         width: 40%;
     }
         #sidebar_title {
+            margin-bottom: 0.833333em;  /* 10px / 12px */
+            margin-left: -1.333333em;  /* -16px / 12px */
+            margin-right: -0.833333em;  /* -10px / 12px */
+            margin-top: 0;
+            padding: 0.5em;
+        }
+}
+@media screen and (min-width: 600px) {
+    #sidebar {
+        -webkit-border-bottom-left-radius: 0.416667em;  /* 5px / 12px */
+        -moz-border-radius-bottomleft: 0.416667em;
+        border-bottom-left-radius: 0.416667em;
+        -webkit-border-top-left-radius: 0.416667em;
+        -moz-border-radius-topleft: 0.416667em;
+        border-top-left-radius: 0.416667em;
+    }
+        #sidebar_title {
             -webkit-border-top-left-radius: 0.416667em;  /* 5px / 12px */
             -moz-border-radius-topleft: 0.416667em;
             border-top-left-radius: 0.416667em;
-            margin: 0 -0.833333em 0.833333em -1.333333em;  /* {10px, 16px} / 12px */
-            padding: 0.5em;
         }
 }
 @media screen and (min-width: 600px) and (max-width: 799px) {
