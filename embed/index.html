@@ -118,7 +118,7 @@
                     } else {
                         enableMapView();
                         enableStaticMapsType();
-                        var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types", "#population_density", "unemployment"];
+                        var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types", "#population_density", "#unemployment"];
                         if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
                             $('#map_view a[href="#us_all"]').parent().hide();
                             $('#map_view a').not(':visible').removeClass('selected');
