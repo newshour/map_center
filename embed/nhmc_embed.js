@@ -100,7 +100,10 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
     iframe.width = embedWidth; iframe.height = calcHeight();
     iframe.id = makeId();
     
-    iframeSrc = "http://www.newshourapps.org/map_center/embed.php?map_module=" + mapModule + "&map_view=" + mapView;
+    iframeSrc = "http://www.newshourapps.org/map_center/embed.php?map_module=" + mapModule;
+    if (mapView) {
+        iframeSrc += "&map_view=" + mapView;
+    }
     if (staticMapsType) {
         iframeSrc += "&static_maps_type=" + staticMapsType;
     }
