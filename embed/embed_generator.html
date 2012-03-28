@@ -146,9 +146,6 @@
                     return false;
                 };
                 
-                $('.embed_option a').click(updateOptions);
-                $('#embed_width').blur(updateOptions);
-                
                 var createEmbed = function(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex) {
                     var embedParts = [
                         '<', 'script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></', 'script>\n',
@@ -209,6 +206,9 @@
                     $('#embed_code').val(createEmbed(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex));
                 };
                 
+                $('.embed_option a').click(updateOptions);
+                $('#embed_width').blur(updateOptions);
+                
                 updateOptions();
             });
         </script>
@@ -223,6 +223,9 @@
                 a.selected {
                     background-color: #cfc;
                 }
+            
+            div {clear: both;}
+            
             ul, li {
                 list-style-image: none;
                 list-style-type: none;
@@ -230,11 +233,12 @@
                 padding: 0;
                 text-indent: 0;
             }
-            div {clear: both;}
             li {
                 float: left;
                 margin: 0.1em 0.5em 0.1em 0.1em;
             }
+            
+            #embed_width {width: 4em;}
         </style>
     </head>
     <body>
