@@ -41,6 +41,8 @@ $STATIC_VIEWS_HAS_STATES = array(
     "income" => true,
     "patchwork_types" => false,
     "population_density" => false,
+    "primary_winners" => false,
+    "senate_six" => false,
     "social_security" => true,
     "unemployment" => false
 );
@@ -81,6 +83,14 @@ $STATIC_VIEWS_ATTRIB = array(
         "href" => "http://2010.census.gov/2010census/",
         "text" => "U.S. Census Bureau"
     ),
+    "primary_winners" => array(
+        "href" => "",
+        "text" => "AP"
+    ),
+    "senate_six" => array(
+        "href" => "",
+        "text" => "NewsHour staff"
+    ),
     "social_security" => array(
         "href" => "http://www.census.gov/acs/",
         "text" => "U.S. Census Bureau"
@@ -99,6 +109,8 @@ $MAP_TITLES = array(
     "income" => "Income",
     "patchwork_types" => "Patchwork Nation",
     "population_density" => "Population density",
+    "primary_winners" => "Primary winners",
+    "senate_six" => "Senate races to watch",
     "social_security" => "Social Security",
     "unemployment" => "Unemployment",
     "past_primaries" => "Past results",
@@ -113,6 +125,8 @@ $SIDEBAR_TITLES = array(
     "income" => "Median household income, 2006&ndash;2010",
     "patchwork_types" => "County types",
     "population_density" => "Population density per square mile of land area",
+    "primary_winners" => "State primary or caucus winner",
+    "senate_six" => "Senate races",
     "social_security" => "Percent of households with Social Security income",
     "unemployment" => "Unemployment rate, December 2011",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",

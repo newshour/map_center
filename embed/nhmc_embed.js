@@ -83,6 +83,8 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 'income': 'in',
                 'patchwork_types': 'pn',
                 'population_density': 'pd',
+                'primary_winners': 'pw',
+                'senate_six': 'sr',
                 'social_security': 'ss',
                 'unemployment': 'ue'
             }[staticMapsType]);

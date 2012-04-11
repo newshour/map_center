@@ -119,8 +119,18 @@
                         enableMapView();
                         enableStaticMapsType();
                         var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types", "#population_density", "#unemployment"];
+                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners"];
                         if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
                             $('#map_view a[href="#us_all"]').parent().hide();
+                            $('#map_view a').not(':visible').removeClass('selected');
+                            if ($('#map_view a.selected').length) {
+                                $('#map_view a.selected').slice(1).removeClass('selected');
+                            } else {
+                                $('#map_view a:visible').first().addClass('selected');
+                            }
+                        } else if (mapsWithOnlyUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
+                            $('#map_view .embed_option').hide();
+                            $('#map_view a[href="#us_all"]').parent().show();
                             $('#map_view a').not(':visible').removeClass('selected');
                             if ($('#map_view a.selected').length) {
                                 $('#map_view a.selected').slice(1).removeClass('selected');
@@ -333,6 +343,8 @@
                     <li class="embed_option"><a href="#income">Median household income</a></li>
                     <li class="embed_option"><a href="#patchwork_types">Patchwork Nation community types</a></li>
                     <li class="embed_option"><a href="#population_density">Population density</a></li>
+                    <li class="embed_option"><a href="#primary_winners">Primary winners</a></li>
+                    <li class="embed_option"><a href="#senate_six">Senate Six</a></li>
                     <li class="embed_option"><a href="#social_security">Social Security recipients</a></li>
                     <li class="embed_option"><a href="#unemployment">Unemployment rate</a></li>
                 </ul>
@@ -365,5 +377,7 @@
             </div>
         </form>
         <p>Questions? Problems? Let us know: jmy<a href="http://www.google.com/recaptcha/mailhide/d?k=01I3I5_TMgZOitoxJ_rywTLw==&amp;c=OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501I3I5_TMgZOitoxJ_rywTLw\75\75\46c\75OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">...</a>@newshour.org</p>
+        <script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></script>
+<script type="text/javascript">embedNHMC(480, "static_maps", "us_all", "primary_winners")</script>
     </body>
 </html>
