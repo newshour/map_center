@@ -27,6 +27,58 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            // Custom race tooltips
+            var nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, countyOnly, currentData) {
+                var incumbents = {
+                    "Virginia": "Jim Webb (D)",
+                    "Montana": "Jon Tester (D)",
+                    "Wisconsin": "Herb Kohl (D)",
+                    "New Mexico": "Jeff Bingaman (D)",
+                    "Massachusetts": "Scott Brown(R)",
+                    "Nevada": "Dean Heller (R)",
+                    "Maine": "Olympia Snowe (R)"
+                };
+                var incumbentPhotos = {
+                    "Virginia": "lib/images/senate_six/webb.jpg",
+                    "Montana": "lib/images/senate_six/tester.jpg",
+                    "Wisconsin": "lib/images/senate_six/kohl.jpg",
+                    "New Mexico": "lib/images/senate_six/bingaman.jpg",
+                    "Massachusetts": "lib/images/senate_six/brown.jpg",
+                    "Nevada": "lib/images/senate_six/heller.jpg",
+                    "Maine": "lib/images/senate_six/snowe.jpg"
+                };
+                var stateImages = {
+                    "Virginia": "lib/images/senate_six/va.png",
+                    "Montana": "lib/images/senate_six/mt.png",
+                    "Wisconsin": "lib/images/senate_six/wi.png",
+                    "New Mexico": "lib/images/senate_six/nm.png",
+                    "Massachusetts": "lib/images/senate_six/ma.png",
+                    "Nevada": "lib/images/senate_six/nv.png",
+                    "Maine": "lib/images/senate_six/me.png"
+                };
+                var categories = {
+                    "Virginia": "True tossups",
+                    "Montana": "True tossups",
+                    "Wisconsin": "Open-seat battlegrounds",
+                    "New Mexico": "Open-seat battlegrounds",
+                    "Massachusetts": "States Democrats think they can flip",
+                    "Nevada": "States Democrats think they can flip",
+                    "Maine": "Bonus state to watch"
+                };
+                
+                if (incumbents[thisState]) {
+                    return [
+                        '<h3>', thisState, '</h3>',
+                        '<h4>', categories[thisState], '</h4>',
+                        '<img src="', stateImages[thisState], '" />',
+                        '<p>', incumbents[thisState], '</p>',
+                        '<img src="', incumbentPhotos[thisState], '" />'
+                    ].join('');
+                } else {
+                    return '<p>' + thisState + '</p>';
+                }
+            };
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
@@ -94,7 +146,7 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Senate races to watch</h1>
+            <h1 style="width: 500px;">Senate races to watch</h1>
             <div id="view_tabs">
                 <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S.</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
