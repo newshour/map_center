@@ -1,5 +1,7 @@
 .ui-dialog {text-transform: uppercase;}
 
+#instructions_after {display: none;}
+
 #ec_tally {
     color: #707070;
     text-align: center;

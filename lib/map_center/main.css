@@ -288,6 +288,7 @@ position:relative;
 #view_info {
     border-bottom: 1px solid #bbb;
     height: 44px;
+    position: relative;
 }
 #view_info h1 {
     background-color: #fff;
@@ -297,6 +298,10 @@ position:relative;
     margin: 0;
     padding: 0 25px;
     width: 400px;
+}
+#view_tabs {
+    position: absolute;
+    right: 10px;
 }
 .view_tab {
     background-color: #fff;
