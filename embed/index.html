@@ -3,6 +3,7 @@
     <head>
         <title>PBS NewsHour Vote 2012 Map Center &mdash; Embed Maps</title>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></script>
         <script type="text/javascript">
             if (!Array.prototype.indexOf) {
                 Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
@@ -213,11 +214,22 @@
                         }
                     }
                     
+                    // Generate the embed code and put it in the <textarea>.
                     $('#embed_code').val(createEmbed(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex));
+                    
+                    // Remove any existing embed previews.
+                    $('#embed_preview iframe').remove();
+                    
+                    // Show a new preview of the selected options.
+                    embedNHMC(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex);
                 };
                 
                 $('.embed_option a').click(updateOptions);
                 $('#embed_width').blur(updateOptions);
+                $('#embed_form').submit(function() {
+                    updateOptions();
+                    return false;
+                });
                 
                 updateOptions();
             });
@@ -251,7 +263,7 @@
             
             #embed_width {width: 4em;}
             
-            label {
+            label, #embed_preview p {
                 font-size: 1.1em;
                 font-weight: bold;
             }
@@ -374,6 +386,12 @@
             <div id="embed_code_parent">
                 <p><label for="embed_code">Embed code: </label></p>
                 <textarea id="embed_code" name="embed_code" cols="40" rows="8"></textarea>
+            </div>
+            
+            <div id="embed_preview">
+                <p>Preview:</p>
+                <!-- Hey, embedNHMC: I got your last <script> right here! -->
+                <script type="text/plain"></script>
             </div>
         </form>
         <p>Questions? Problems? Let us know: jmy<a href="http://www.google.com/recaptcha/mailhide/d?k=01I3I5_TMgZOitoxJ_rywTLw==&amp;c=OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501I3I5_TMgZOitoxJ_rywTLw\75\75\46c\75OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">...</a>@newshour.org</p>
