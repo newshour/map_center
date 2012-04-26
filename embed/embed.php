@@ -44,7 +44,7 @@ $STATIC_VIEWS_HAS_STATES = array(
     "primary_winners" => false,
     "senate_six" => false,
     "social_security" => true,
-    "unemployment" => false
+    "unemployment" => true
 );
 $STATIC_VIEWS_MAX_INDEX = array(
     "ethnicity" => 3,
