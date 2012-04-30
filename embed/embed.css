@@ -61,12 +61,18 @@ path {cursor: pointer;}
         right: 0;
         top: 0;
 		padding:1em;
+		background-image:url(map-bg.png); 
+		background-repeat:repeat-x;
+		-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+margin:0 2%;
+border:1px solid #d3d1d1;
     }
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=- GENERAL ELEMENT STYLES =-=-=-=-=-=-=-=-=-=-=-=- */
 
 body {
-    background-color: #dcdcdc;
     font-family: 'MuseoSans500', sans-serif;
     /* Setting em-based layout to default context of 16px per em */
     font-size: 100%;
@@ -80,7 +86,7 @@ body {
 #view_info h1 {
     color: #8b080d;
     font-size: 1.375em;  /* 22px / 16px */
-    margin: 0.5em 0.5em 0.5125em 0.5em;  /* 5px / 16px */
+    margin: 0.5em 0.5em 0 0.5em;  /* 5px / 16px */
     padding: 0;
 	
 	
@@ -308,7 +314,13 @@ body {
     #tooltip td, #other_tooltip td {  /* Sets own context to 12px per em */
         font-size: 0.75em;  /* 12px / 16px -- context set */
     }
-
+	
+	#emheader {width:100%; background-color:#c0c0c0; border-bottom:4px solid #b00402;}
+	#emlogo {width:100%; float:left; max-width:659px;}
+	#emlogo img {width:96%;  margin:2% 2% 1% 2%;}
+	#emtitle { width: 50%; float:left;  max-width:227px;}
+	#emtitle img { width:96%; margin:2%;}
+	
 /* -=-=-=-=-=-=-=-=-=-=-=-=- WIDTH-SPECIFIC STYLES -=-=-=-=-=-=-=-=-=-=-=-=- */
 
 @media screen and (max-width: 349px) {
@@ -357,20 +369,25 @@ body {
             text-align: right;
         }
     .candidate_winner {background-color: #cfc;}
+		#emtitle h2 {font-size:.9em;}
+
 }
 @media screen and (max-width: 499px) {
     .candidate_big .candidate_name_first {display: none;}
     #tooltip, #other_tooltip {width: 7em;}  /* 112px / 16px */
 }
-@media screen and (min-width: 350px) and (max-width: 599px) {
+@media screen and (min-width: 350px) and (max-width: 799px) {
     .candidate_big .candidate_votes {
         position: absolute;
         right: 15%;
         text-align: right;
         top: 10%;
+		
     }
+			#emtitle h2 {font-size:1.4em;}
+
 }
-@media screen and (max-width: 599px) {
+@media screen and (max-width: 799px) {
     #map_container {width: 100%;}
     #sidebar {
         margin-top: 2em;  /* 24px / 12px */
@@ -405,7 +422,7 @@ body {
         width: 75%;
     }
 }
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 800px) {
     #map_container {width: 55%;}
     #sidebar {
         border-right: none;
@@ -427,7 +444,7 @@ body {
             padding: 0.5em;
         }
 }
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 800px) {
     #sidebar {
         -webkit-border-bottom-left-radius: 0.416667em;  /* 5px / 12px */
         -moz-border-radius-bottomleft: 0.416667em;
@@ -442,13 +459,29 @@ body {
             border-top-left-radius: 0.416667em;
         }
 }
-@media screen and (min-width: 600px) and (max-width: 799px) {
+/*@media screen and (min-width: 600px) and (max-width: 799px) {
     #content_area h2 {width: 55%;}
-}
+}*/
 @media screen and (min-width: 800px) {
     #map_container {
         width: 65%;
         max-width: 48em;  /* 768px / 16px */
     }
     #sidebar {width: 30%;}
+}
+
+/* For modern browsers */
+.cf:before,
+.cf:after {
+    content:"";
+    display:table;
+}
+
+.cf:after {
+    clear:both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+.cf {
+    zoom:1;
 }

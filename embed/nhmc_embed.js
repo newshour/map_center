@@ -61,8 +61,8 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
             rightHeight = 0;
         }
         var maxHeight = Math.max(leftHeight, rightHeight);
-        
-        return maxHeight;
+        return 1000;
+        //return maxHeight;
     };
     
     var makeId = function() {
