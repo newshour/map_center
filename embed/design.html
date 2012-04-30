@@ -1,0 +1,101 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+<title>2012 Political Map Center | PBS NewsHour</title>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+<!-- Internet Explorer settings, including Chrome Frame -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+<!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="embed.css" />
+<script type="text/javascript" src="respond.min.js"></script>
+<!-- JS libraries -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/highcharts.js"></script>
+<script src="http://www.pbs.org/newshour/vote2012/map/js/libs/modernizr-2.0.6.min.js"></script>
+<script type="text/javascript">
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+                      // Default index for static maps with multiple data sets
+            var nhmcStaticDataIndex = 0;
+                            $(document).ready(function() {
+                $('#diversity_explain_dialog').dialog({
+                    autoOpen: false
+                });
+                $('.diversity_explain').click(function() {
+                    $('#diversity_explain_dialog').dialog('open');
+                    return false;
+                });
+            });
+                                  </script>
+<!-- Map Center core -->
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/usps_fips.js"></script>
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/main.js"></script>
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/maps/states_only.js"></script>
+
+<!-- Individual Map Center modules -->
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/static_maps.js"></script>
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/static_maps_data/diversity.js"></script>
+<script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-24888947-3']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+</head>
+<body>
+<div id="container">
+  <div id="main" role="main">
+    <div id="content">
+      <div id="view_info">
+        <h1>Diversity index</h1>
+      </div>
+      <div id="content_area">
+        <div id="map_container">
+          <div id="map_aspect_ratio_enforcer"></div>
+          <div id="map"></div>
+        </div>
+        <div id="sidebar">
+          <h3 id="sidebar_title" class="static_map_name">Diversity index <a href="#" class="diversity_explain">(?)</a></h3>
+          <div id="legend">
+            <div id="legend_templates"> 
+              <!-- Static maps -->
+              <div class="category_entry">
+                <div class="entry_color">&nbsp;</div>
+                <div class="category_name"></div>
+              </div>
+              <div class="break_entry">
+                <div class="entry_color">&nbsp;</div>
+                <div class="break_text"></div>
+              </div>
+              <!-- Primaries --> 
+            </div>
+            <div id="legend_entries"></div>
+          </div>
+          <input name="map_view" id="map_view" type="hidden" value="us_all" />
+        </div>
+        <div class="clear"></div>
+        <h2 id="static_data_source">Source: <a href="http://2010.census.gov/2010census/data/redistricting-data.php" target="_blank">U.S. Census Bureau</a></h2>
+      </div>
+      <div id="diversity_explain_dialog" title="Diversity index explained">
+        <p>The U.S. Census Bureau calculated this diversity index <a href="http://www.census.gov/population/cen2000/atlas/censr01-104.pdf" target="_blank">for the 2000 Census</a> and explained it as "the percentage of times two randomly selected people would differ by race/ethnicity."</p>
+        <p>We have updated the index using data from the 2010 Census for both counties and states.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
