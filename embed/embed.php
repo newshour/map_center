@@ -308,14 +308,14 @@ if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
         <div id="container">
             <div id="main" role="main">
                 <div id="content">
-                <div id="emheader" class="cf">
-    	<div id="emlogo"><img src="logo.png"></div>
-    </div>
+                    <div id="emheader" class="cf">
+    	                <div id="emlogo"><img src="logo.png"></div>
+                    </div>
                     <div id="view_info">
                         <h1><?php echo $map_title; ?></h1>
                     </div>
                     <div id="content_area">
-                      <?php if ($instructions || $map_module == 'electoral_college') { ?>
+                      <?php if ($instructions) { ?>
                         <h2 id="instructions"><?php echo $instructions; ?></h2>
                       <?php } ?>
                         <div id="map_container">
