@@ -368,8 +368,11 @@ body {
             text-align: right;
         }
     .candidate_winner {background-color: #cfc;}
-		#emtitle h2 {font-size:.9em;}
-
+    
+    .ec_name {display: none;}
+    .ec_name_abbr {display: block;}
+	
+    #emtitle h2 {font-size:.9em;}
 }
 @media screen and (max-width: 499px) {
     .candidate_big .candidate_name_first {display: none;}
@@ -412,8 +415,6 @@ body {
                 float: left;
                 width: 31.333333%;
             }
-                .ec_name {display: none;}
-                .ec_name_abbr {display: block;}
                 .ec_detail_win {background-color: #cfc;}
                     .ec_win {display: none !important;}
                 #lower_chart {clear: both;}
