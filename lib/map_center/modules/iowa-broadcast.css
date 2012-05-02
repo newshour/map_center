@@ -10,7 +10,15 @@
 
 #view_info { margin-top:-30px;}
 
-#content_area {margin-bottom:0; padding-bottom:130px;}
+#content_area {
+    margin-bottom:0;
+    padding-bottom:130px;
+    background-color: #bbb;
+}
+.view_tab_active {
+    background-color: #bbb;
+    border-bottom-color: #bbb;
+}
 
 #tooltip.tooltip_flyout {font-size: 14pt;}
     #tooltip.tooltip_flyout h2 {font-size: 18pt;}
