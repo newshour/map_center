@@ -385,8 +385,8 @@ if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
                                         </div>
                                     </div>
                                     <div id="ec_party_t" class="ec_party">
-                                        <h4 id="ec_name_t" class="ec_name">All other parties</h4>
-                                        <h4 id="ec_name_abbr_t" class="ec_name_abbr">Other</h4>
+                                        <h4 id="ec_name_t" class="ec_name">Tossup</h4>
+                                        <h4 id="ec_name_abbr_t" class="ec_name_abbr">Tossup</h4>
                                         <div id="ec_detail_t" class="ec_detail">
                                             <span id="ec_total_t" class="ec_total">0</span> electoral votes
                                             <div id="ec_win_t" class="ec_win"><img src="http://www.pbs.org/newshour/vote2012/map/check.png" alt="Other party wins" /></div>
