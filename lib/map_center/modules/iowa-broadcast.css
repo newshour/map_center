@@ -1,20 +1,65 @@
 @charset "UTF-8";
 /* CSS Document */
 
-#loading, #footer, #featured-content, #head-pbs, header, nav, footer { display:none; width:998px; margin:0 auto; }
+#loading, #footer, #featured-content, #head-pbs, header, nav, footer {display:none; width:998px; margin:0 auto;}
+
 #main { border: none; }
-#nav_toggle { margin-left: 620px !important; }
-#view_info { margin-top:-30px; }
-#content_area { margin-bottom:0; padding-bottom:130px; background-color:#bbb; }
-.view_tab_active { background-color:#bbb; border-bottom-color:#bbb; }
-#tooltip.tooltip_flyout { font-size: 14pt; }
-#tooltip.tooltip_flyout h2 { font-size: 18pt; }
-#tooltip.tooltip_flyout h3 { font-size: 14pt; }
-#sidebar_title { margin: 0 -1  0px 5px -20px; }
-#sidebar_title span { color:9f1c20; }
-.candidate_big { margin:0 0 7px 0; padding-left:30px; }
-.candidate_big .candidate_name { text-shadow: 1px 1px 2px rgba(255, 255, 255, 1); font-size: 1.3em; font-weight: bold; margin-top: 9px; text-align: left; line-height:.8em; }
-.candidate_big .candidate_votes { text-shadow: 1px 1px 2px rgba(255, 255, 255, 1); margin-top: 3px; text-align: left; color:#9f1c20; font-size:2.1em; font-weight:bold; line-height:1em; }
-.candidate_image { margin-top:5px; margin-bottom:0px; margin-right:8px; }
-.candidate_color { height: 103%; left: -10px; position: absolute; top: -2%; width: 35px; }
+
+#nav_toggle {margin-left: 620px !important;}
+
+
+#view_info { margin-top:-30px;}
+
+#content_area {
+    margin-bottom:0;
+    padding-bottom:130px;
+    background-color: #bbb;
+}
+.view_tab_active {
+    background-color: #bbb;
+    border-bottom-color: #bbb;
+}
+
+#tooltip.tooltip_flyout {font-size: 14pt;}
+    #tooltip.tooltip_flyout h2 {font-size: 18pt;}
+    #tooltip.tooltip_flyout h3 {font-size: 14pt;}
+
+   #sidebar_title {
+        
+        margin: 0 -1
+		0px 5px -20px;
+ 
+    }
+	
+	#sidebar_title span {color:9f1c20;}
+	.candidate_big {margin:0 0 7px 0 ; padding-left:30px;}
+	.candidate_big .candidate_name {
+			text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 9px;
+            text-align: left;
+			line-height:.8em;
+			
+        }
+        .candidate_big .candidate_votes {
+			text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
+            margin-top: 3px;
+            text-align: left;
+			color:#9f1c20;
+			font-size:2.1em;
+			font-weight:bold;
+			line-height:1em;
+        }
+		.candidate_image {margin-top:5px; margin-bottom:0px; margin-right:8px;}
+		    .candidate_color {
+            height: 103%;
+            left: -10px;
+            position: absolute;
+            top: -2%;
+            width: 35px;
+        }
+        
+	
 #nh-logo { color:#898686; text-shadow: 1px 1px 3px rgba(255, 255, 255, 1); font-family:'MuseoSans700'; font-size:4em; margin: 30px auto 0 auto; text-align:center; }
+
