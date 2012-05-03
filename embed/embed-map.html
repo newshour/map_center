@@ -1,0 +1,539 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title>2012 Political Map Center | PBS NewsHour</title>
+	<meta name="description" content="The map features unemployment data from February 2012" />
+	<meta name="author" content="map, politics, 2012 election, unemployment" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></script>
+        <script type="text/javascript">
+            if (!Array.prototype.indexOf) {
+                Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
+                    "use strict";
+                    if (this == null) {
+                        throw new TypeError();
+                    }
+                    var t = Object(this);
+                    var len = t.length >>> 0;
+                    if (len === 0) {
+                        return -1;
+                    }
+                    var n = 0;
+                    if (arguments.length > 0) {
+                        n = Number(arguments[1]);
+                        if (n != n) { // shortcut for verifying if it's NaN
+                            n = 0;
+                        } else if (n != 0 && n != Infinity && n != -Infinity) {
+                            n = (n > 0 || -1) * Math.floor(Math.abs(n));
+                        }
+                    }
+                    if (n >= len) {
+                        return -1;
+                    }
+                    var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+                    for (; k < len; k++) {
+                        if (k in t && t[k] === searchElement) {
+                            return k;
+                        }
+                    }
+                    return -1;
+                }
+            }
+            
+            $(document).ready(function() {
+                var disableMapView = function() {
+                    $('#map_view_parent').hide();
+                    $('#map_view a').removeClass('selected');
+                };
+                var enableMapView = function() {
+                    $('#map_view_parent').show();
+                    $('#map_view li').show();
+                    if ($('#map_view a.selected').length) {
+                        $('#map_view a.selected').slice(1).removeClass('selected');
+                    } else {
+                        $('#map_view a:visible').first().addClass('selected');
+                    }
+                };
+                
+                var disableStaticMapsType = function() {
+                    $('#static_maps_type_parent').hide();
+                    $('#static_maps_type a').removeClass('selected');
+                    
+                    disableEthnicity();
+                    disableForeclosures();
+                };
+                var enableStaticMapsType = function() {
+                    $('#static_maps_type_parent').show();
+                    if ($('#static_maps_type a.selected').length) {
+                        $('#static_maps_type a.selected').slice(1).removeClass('selected');
+                    } else {
+                        $('#static_maps_type a:visible').first().addClass('selected');
+                    }
+                };
+                
+                var disableEthnicity = function() {
+                    $('#static_maps_index_ethnicity_parent').hide();
+                    $('#static_maps_index_ethnicity a').removeClass('selected');
+                };
+                var enableEthnicity = function() {
+                    $('#static_maps_index_ethnicity_parent').show();
+                    if ($('#static_maps_index_ethnicity a.selected').length) {
+                        $('#static_maps_index_ethnicity a.selected').slice(1).removeClass('selected');
+                    } else {
+                        $('#static_maps_index_ethnicity a').first().addClass('selected');
+                    }
+                };
+                
+                var disableForeclosures = function() {
+                    $('#static_maps_index_foreclosures_parent').hide();
+                    $('#static_maps_index_foreclosures a').removeClass('selected');
+                };
+                var enableForeclosures = function() {
+                    $('#static_maps_index_foreclosures_parent').show();
+                    if ($('#static_maps_index_foreclosures a.selected').length) {
+                        $('#static_maps_index_foreclosures a.selected').slice(1).removeClass('selected');
+                    } else {
+                        $('#static_maps_index_foreclosures a').first().addClass('selected');
+                    }
+                };
+                
+                var updateOptions = function() {
+                    $(this).parent().siblings().find('a').removeClass('selected');
+                    $(this).addClass('selected');
+                    
+                    if ($('#map_module a.selected').attr('href') == '#past_primaries') {
+                        var primaryStates = ["al", "ak", "az", "co", "ct", "de", "dc", "fl", "ga", "hi", "id", "il", "ia", "ks", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "nv", "nh", "nd", "ny", "oh", "ok", "pa", "ri", "sc", "tn", "vt", "va", "wa", "wi", "wy"];
+                        $('#map_view_parent').show();
+                        $('#map_view a').parent().hide();
+                        for (var i = 0, length = primaryStates.length; i < length; i++) {
+                            $('#map_view a[href="#' + primaryStates[i] + '"]').parent().show();
+                        }
+                        $('#map_view a').not(':visible').removeClass('selected');
+                        if ($('#map_view a.selected').length) {
+                            $('#map_view a.selected').slice(1).removeClass('selected');
+                        } else {
+                            $('#map_view a:visible').first().addClass('selected');
+                        }
+                        disableStaticMapsType();
+                    } else if ($('#map_module a.selected').attr('href') == '#electoral_college') {
+                        disableMapView();
+                        disableStaticMapsType();
+                    } else {
+                        enableMapView();
+                        enableStaticMapsType();
+                        var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types", "#population_density"];
+                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners"];
+                        if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
+                            $('#map_view a[href="#us_all"]').parent().hide();
+                            $('#map_view a').not(':visible').removeClass('selected');
+                            if ($('#map_view a.selected').length) {
+                                $('#map_view a.selected').slice(1).removeClass('selected');
+                            } else {
+                                $('#map_view a:visible').first().addClass('selected');
+                            }
+                        } else if (mapsWithOnlyUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
+                            $('#map_view .embed_option').hide();
+                            $('#map_view a[href="#us_all"]').parent().show();
+                            $('#map_view a').not(':visible').removeClass('selected');
+                            if ($('#map_view a.selected').length) {
+                                $('#map_view a.selected').slice(1).removeClass('selected');
+                            } else {
+                                $('#map_view a:visible').first().addClass('selected');
+                            }
+                        }
+                        
+                        if ($('#static_maps_type a.selected').attr('href') == '#ethnicity') {
+                            enableEthnicity();
+                            disableForeclosures();
+                        } else if ($('#static_maps_type a.selected').attr('href') == '#foreclosures') {
+                            disableEthnicity();
+                            enableForeclosures();
+                        } else {
+                            disableEthnicity();
+                            disableForeclosures();
+                        }
+                    }
+                    
+                    updateCode();
+                    
+                    return false;
+                };
+                
+                var createEmbed = function(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex) {
+                    var embedParts = [
+                        '<', 'script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></', 'script>\n',
+                        '<', 'script type="text/javascript">embedNHMC('
+                    ];
+                    embedParts.push(embedWidth);
+                    embedParts.push(', "');
+                    embedParts.push(mapModule);
+                    
+                    if (mapView) {
+                        embedParts.push('", "');
+                        embedParts.push(mapView);
+                    }
+                    if (staticMapsType) {
+                        embedParts.push('", "');
+                        embedParts.push(staticMapsType);
+                    }
+                    
+                    if (staticMapsIndex != null) {
+                        embedParts.push('", ');
+                        embedParts.push(staticMapsIndex);
+                        embedParts.push(')</' + 'script>');
+                    } else {
+                        embedParts.push('")</' + 'script>');
+                    }
+                    
+                    return embedParts.join('');
+                };
+                
+                var updateCode = function() {
+                    if ($('#map_module a.selected').length) {
+                        $('#map_module a.selected').slice(1).removeClass('selected');
+                    } else {
+                        $('#map_module a:visible').first().addClass('selected');
+                    }
+                    
+                    var embedWidth = parseInt($('#embed_width').val(), 10);
+                    var mapModule = $('#map_module a.selected').attr('href').substring(1);
+                    
+                    if (mapModule == 'electoral_college') {
+                        var mapView = null;
+                        var staticMapsType = null;
+                        var staticMapsIndex = null;
+                    } else if (mapModule == 'past_primaries') {
+                        var mapView = $('#map_view a.selected').attr('href').substring(1);
+                        var staticMapsType = null;
+                        var staticMapsIndex = null;
+                    } else {
+                        var mapView = $('#map_view a.selected').attr('href').substring(1);
+                        var staticMapsType = $('#static_maps_type a.selected').attr('href').substring(1);
+                        if (staticMapsType == 'ethnicity' || staticMapsType == 'foreclosures') {
+                            var staticMapsIndex = parseInt($('#static_maps_index_ethnicity a.selected, #static_maps_index_foreclosures a.selected').attr('href').substring(1), 10);
+                        } else {
+                            var staticMapsIndex = null;
+                        }
+                    }
+                    
+                    // Generate the embed code and put it in the <textarea>.
+                    $('#embed_code').val(createEmbed(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex));
+                    
+                    // Remove any existing embed previews.
+                    $('#embed_preview iframe').remove();
+                    
+                    // Show a new preview of the selected options.
+                    embedNHMC(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex);
+                };
+                
+                $('.embed_option a').click(updateOptions);
+                $('#embed_width').blur(updateOptions);
+                $('#embed_form').submit(function() {
+                    updateOptions();
+                    return false;
+                });
+                
+                updateOptions();
+            });
+        </script>
+        <style type="text/css">
+		
+		.embed { padding: 20px;}
+            
+            .embed form a {
+                color: #000;
+                text-decoration: none;
+                height: 100%;
+                display: block;
+                padding: 0.5em 0 0.5em 0.5em;
+                width: 100%;
+            }
+                a.selected {background-color: #cfc;}
+            
+            .embed div {clear: both; margin:20px 0;}
+            
+            .embed ul, li {
+                list-style-image: none;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                text-indent: 0;
+            }
+            .embed li {
+                float: left;
+                margin: 0.1em 0.5em 0.1em 0.1em;
+            }
+            
+            #embed_width {width: 4em;}
+            
+            .embed label, #embed_preview p {
+                font-size: 1.1em;
+                font-weight: bold;
+            }
+        </style>
+    </head><body>
+		<div id="head-pbs">
+    <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
+  
+</div>
+
+<div id="container">
+
+	<header>
+	<div id="social-links" class="clearfix">
+
+	<ul>
+		<li> <a href="http://www.facebook.com/newshour"><img src="/newshour/images/primary2/common/facebook.png" /> Facebook</a></li>
+		<li> <a href="http://www.twitter.com/newshour"><img src="/newshour/images/primary2/common/twitter.png" /> Twitter</a></li>
+		<li> <a href="http://www.youtube.com/pbsnewshour"><img src="/newshour/images/primary2/common/youtube.png" /> YouTube</a></li>
+		<li> <a href="http://newshour.tumblr.com"><img src="/newshour/images/primary2/common/tumblr.png" /> Tumblr</a></li>
+	</ul>
+</div>
+
+	</header>
+	<div id="main" role="main">
+	<nav class="clearfix">
+		<ul>
+			<li class="logo ir"><a href="http://www.pbs.org/newshour/">PBS NewsHour</a></li> 
+
+			<li><a href="http://www.pbs.org/newshour/topics">Topics</a></li> 
+			<li>/</li>
+
+			<li><a href="http://www.pbs.org/newshour/video">Recent Programs</a></li>
+			<li>/</li>
+
+			<li><a href="http://www.pbs.org/newshour/rundown">The Rundown <span>blog</span></a></li>
+			<li>/</li>
+
+			<!--#include virtual="/newshour/mobile_ads/link.html" -->
+			<li>/</li>
+			<li><a href="http://www.pbs.org/newshour/extra">Teachers</a></li>
+
+		</ul>
+	</nav>
+	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
+<div id="content" class="embed">
+  <h1>Embed maps</h1>
+        <form id="embed_form">
+            <div id="embed_width_parent">
+                <label for="embed_width">Width: </label>
+                <input id="embed_width" name="embed_width" type="text" value="480" />
+                (Minimum supported size is 280px)
+            </div>
+            
+            <div id="map_module_parent">
+                <label>Map type: </label>
+                <ul id="map_module">
+                    <li class="embed_option"><a href="#static_maps">Data sets</a></li>
+                    <li class="embed_option"><a href="#electoral_college">Electoral College calculator</a></li>
+                    <li class="embed_option"><a href="#past_primaries">Past primaries</a></li>
+                </ul>
+            </div>
+            
+            <div id="map_view_parent">
+                <label>View: </label>
+                <ul id="map_view">
+                    <li class="embed_option"><a href="#us_all">All states</a></li>
+                    <li class="embed_option"><a href="#al">Ala.</a></li>
+                    <li class="embed_option"><a href="#ak">Alaska</a></li>
+                    <li class="embed_option"><a href="#az">Ariz.</a></li>
+                    <li class="embed_option"><a href="#ar">Ark.</a></li>
+                    <li class="embed_option"><a href="#ca">Calif.</a></li>
+                    <li class="embed_option"><a href="#co">Colo.</a></li>
+                    <li class="embed_option"><a href="#ct">Conn.</a></li>
+                    <li class="embed_option"><a href="#de">Del.</a></li>
+                    <li class="embed_option"><a href="#fl">Fla.</a></li>
+                    <li class="embed_option"><a href="#ga">Ga.</a></li>
+                    <li class="embed_option"><a href="#hi">Hawaii</a></li>
+                    <li class="embed_option"><a href="#id">Idaho</a></li>
+                    <li class="embed_option"><a href="#il">Ill.</a></li>
+                    <li class="embed_option"><a href="#in">Ind.</a></li>
+                    <li class="embed_option"><a href="#ia">Iowa</a></li>
+                    <li class="embed_option"><a href="#ks">Kan.</a></li>
+                    <li class="embed_option"><a href="#ky">Ky.</a></li>
+                    <li class="embed_option"><a href="#la">La.</a></li>
+                    <li class="embed_option"><a href="#me">Maine</a></li>
+                    <li class="embed_option"><a href="#md">Md.</a></li>
+                    <li class="embed_option"><a href="#ma">Mass.</a></li>
+                    <li class="embed_option"><a href="#mi">Mich.</a></li>
+                    <li class="embed_option"><a href="#mn">Minn.</a></li>
+                    <li class="embed_option"><a href="#ms">Miss.</a></li>
+                    <li class="embed_option"><a href="#mo">Mo.</a></li>
+                    <li class="embed_option"><a href="#mt">Mont.</a></li>
+                    <li class="embed_option"><a href="#ne">Neb.</a></li>
+                    <li class="embed_option"><a href="#nv">Nev.</a></li>
+                    <li class="embed_option"><a href="#nh">N.H.</a></li>
+                    <li class="embed_option"><a href="#nj">N.J.</a></li>
+                    <li class="embed_option"><a href="#nm">N.M.</a></li>
+                    <li class="embed_option"><a href="#ny">N.Y.</a></li>
+                    <li class="embed_option"><a href="#nc">N.C.</a></li>
+                    <li class="embed_option"><a href="#nd">N.D.</a></li>
+                    <li class="embed_option"><a href="#oh">Ohio</a></li>
+                    <li class="embed_option"><a href="#ok">Okla.</a></li>
+                    <li class="embed_option"><a href="#or">Ore.</a></li>
+                    <li class="embed_option"><a href="#pa">Pa.</a></li>
+                    <li class="embed_option"><a href="#ri">R.I.</a></li>
+                    <li class="embed_option"><a href="#sc">S.C.</a></li>
+                    <li class="embed_option"><a href="#sd">S.D.</a></li>
+                    <li class="embed_option"><a href="#tn">Tenn.</a></li>
+                    <li class="embed_option"><a href="#tx">Texas</a></li>
+                    <li class="embed_option"><a href="#ut">Utah</a></li>
+                    <li class="embed_option"><a href="#vt">Vt.</a></li>
+                    <li class="embed_option"><a href="#va">Va.</a></li>
+                    <li class="embed_option"><a href="#wa">Wash.</a></li>
+                    <li class="embed_option"><a href="#dc">D.C.</a></li>
+                    <li class="embed_option"><a href="#wv">W.Va.</a></li>
+                    <li class="embed_option"><a href="#wi">Wis.</a></li>
+                    <li class="embed_option"><a href="#wy">Wyo.</a></li>
+                </ul>
+            </div>
+            
+            <div id="static_maps_type_parent">
+                <label>Category: </label>
+                <ul id="static_maps_type">
+                    <li class="embed_option"><a href="#08general">2008 general election results</a></li>
+                    <li class="embed_option"><a href="#bachelors">Bachelor's degree holders 25 and older</a></li>
+                    <li class="embed_option"><a href="#diversity">Diversity index</a></li>
+                    <li class="embed_option"><a href="#ethnicity">Ethnicity</a></li>
+                    <li class="embed_option"><a href="#foreclosures">Foreclosures</a></li>
+                    <li class="embed_option"><a href="#income">Median household income</a></li>
+                    <li class="embed_option"><a href="#patchwork_types">Patchwork Nation community types</a></li>
+                    <li class="embed_option"><a href="#population_density">Population density</a></li>
+                    <li class="embed_option"><a href="#primary_winners">Primary winners</a></li>
+                    <li class="embed_option"><a href="#senate_six">Senate Six</a></li>
+                    <li class="embed_option"><a href="#social_security">Social Security recipients</a></li>
+                    <li class="embed_option"><a href="#unemployment">Unemployment rate</a></li>
+                </ul>
+            </div>
+            
+            <div id="static_maps_index_ethnicity_parent">
+                <label>Subcategory: </label>
+                <ul id="static_maps_index_ethnicity">
+                    <li class="embed_option"><a href="#0">White</a></li>
+                    <li class="embed_option"><a href="#1">Black</a></li>
+                    <li class="embed_option"><a href="#2">Hispanic</a></li>
+                    <li class="embed_option"><a href="#3">Asian</a></li>
+                    <li class="embed_option"><a href="#4">Native Hawaiian or Other Pacific Islander</a></li>
+                    <li class="embed_option"><a href="#5">American Indian or Alaska Native</a></li>
+                </ul>
+            </div>
+            
+            <div id="static_maps_index_foreclosures_parent">
+                <label>Subcategory: </label>
+                <ul id="static_maps_index_foreclosures">
+                    <li class="embed_option"><a href="#0">Sales</a></li>
+                    <li class="embed_option"><a href="#1">2009&ndash;2011 rate change</a></li>
+                    <li class="embed_option"><a href="#2">2007&ndash;2011 rate change</a></li>
+                </ul>
+            </div>
+            
+            <div id="embed_code_parent">
+                <p><label for="embed_code">Embed code: </label></p>
+                <textarea id="embed_code" name="embed_code" cols="40" rows="8"></textarea>
+            </div>
+            
+            <div id="embed_preview">
+                <p>Preview:</p>
+                <!-- Hey, embedNHMC: I got your last <script> right here! -->
+                <script type="text/plain"></script>
+            </div>
+        </form>
+        <p>Questions? Problems? Let us know: jmy<a href="http://www.google.com/recaptcha/mailhide/d?k=01I3I5_TMgZOitoxJ_rywTLw==&amp;c=OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js=" onClick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501I3I5_TMgZOitoxJ_rywTLw\75\75\46c\75OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">...</a>@newshour.org</p>
+</div>
+<div id="featured-content" class="clearfix">
+	<div id="popular">
+	<h3>Most Popular</h3>
+	<!--#include virtual="/newshour/scripts/adminfiles/feeds/popular-politics.html" -->
+	</div>
+	<div class="slideshow"><h3>Politics</h3>
+	<!--#include virtual="/newshour/scripts/adminfiles/feeds/politics1.html" -->
+
+	</div>
+	<div class="slideshow"><!--#include virtual="/newshour/scripts/adminfiles/feeds/politics2.html" -->
+</div>
+	<div class="ad"><p>Support For PBS Provided by</p><!--#include virtual="/newshour/scripts2/common/ad_300x250.html" --></div>
+</div>
+	</div>
+	<footer>
+	<div id="topics-list" class="clearfix">
+		<div class="title"><h3>Topics</h3></div>	
+
+        				<ul>
+   	    		<li><a href="http://www.pbs.org/newshour/topic/entertainment/">Arts &amp; Entertainment</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/business/">Business &amp; Economy</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/education/">Education</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/environment/">Environment</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/government_programs/">Government Programs</a></li>
+       		</ul>
+            <ul>
+
+            	<li><a href="http://www.pbs.org/newshour/topic/health/">Health</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/remember/">In Memoriam</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/international/">International Orgs.</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/law/">Law</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/media/">Media</a></li>
+            </ul>
+
+            <ul>
+            	<li><a href="http://www.pbs.org/newshour/topic/military/">Military</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/politics/">Politics</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/religion/">Religion</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/science/">Science &amp; Technology</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/social_issues/">Social Issues</a></li>
+
+            </ul>
+            <ul>            	
+                <li><a href="http://www.pbs.org/newshour/topic/sports/">Sports</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/terrorism/">Terrorism</a></li>
+                <li><a href="http://www.pbs.org/newshour/topic/transportation/">Transportation</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/white_house/">U.S Presidency</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/weather/">Weather &amp; Natural Disasters</a></li>
+
+            </ul>  
+        </div>
+    <div id="footer-sub">
+
+    	<div class="copyright">Copyright 1996-<script type="text/JavaScript">var today = new Date(); document.write(today.getFullYear());</script> MacNeil/Lehrer Productions. All Rights Reserved.</div> 
+    		<ul class="column5">            	
+                <li><a href="http://www.pbs.org/newshour/aboutus/">About Us</a></li>
+                <li>/</li>
+                <li><a href="http://www.pbs.org/newshour/letters.html">Feedback</a></li>
+                <li>/</li>
+				<li><a href="http://www.pbs.org/newshour/subscriptions.html">Subscriptions and Feeds</a></li>
+				<li>/</li>
+                <li><a href="http://www.pbs.org/aboutsite/aboutsite_privacy.html">Privacy</a></li>
+<li>/</li>
+				<!--<li><a href="http://www.pbs.org/newshour/aboutus/faq.html">FAQ</a></li>-->
+				<li class="end"><a href="http://www.pbs.org/newshour/aboutus/openings/">Job Openings</a></li>
+            </ul>
+    </div>   
+	<div id="footer-sub-sub">Support the kind of journalism done by the NewsHour...<a href="http://www.pbs.org/newshour/pledge.html">Become a member of your local PBS station.</a></div>
+
+	</footer>
+</div> 
+<!--! end of #container -->
+
+<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
+
+<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
+
+</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
+
+</script><!-- ClickTale end of Bottom part -->
+
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-5do3OH0wrSfK6"
+};
+</script>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
+<!-- End Quantcast tag --></body>
+</html>
