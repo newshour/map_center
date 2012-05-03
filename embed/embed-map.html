@@ -227,7 +227,7 @@
                     $('#embed_preview iframe').remove();
                     
                     // Show a new preview of the selected options.
-                    embedNHMC(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex);
+                    $('#embed_preview').append(embedNHMC(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex, true));
                 };
                 
                 $('.embed_option a').click(updateOptions);
