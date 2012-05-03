@@ -1,7 +1,4 @@
-var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex, justReturnMarkup) {
-    // Coerce justReturnMarkup to false if not provided
-    justReturnMarkup = typeof(justReturnMarkup) != 'undefined' ? justReturnMarkup : false;
-    
+var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex) {
     var calcHeight = function() {
         var titleHeight = 40;  // For #view_info h1 and #view_info padding
         if (embedWidth < 660) {  // Add logo
@@ -141,7 +138,12 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
     var thisScript = scripts[scripts.length - 1];
     var scriptParent = thisScript.parentNode;
     
-    var iframeSrc = "http://www.newshourapps.org/map_center/embed.php?map_module=" + mapModule;
+    var iframe = document.createElement('iframe');
+    iframe.scrolling = 'no'; iframe.frameBorder = 0;
+    iframe.width = embedWidth; iframe.height = calcHeight();
+    iframe.id = makeId();
+    
+    iframeSrc = "http://www.newshourapps.org/map_center/embed.php?map_module=" + mapModule;
     if (mapView) {
         iframeSrc += "&map_view=" + mapView;
     }
@@ -151,15 +153,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
     if (staticMapsIndex) {
         iframeSrc += "&static_maps_index=" + staticMapsIndex;
     }
+    iframe.src = iframeSrc;
     
-    if (!justReturnMarkup) {
-        var iframe = document.createElement('iframe');
-        iframe.scrolling = 'no'; iframe.frameBorder = 0;
-        iframe.width = embedWidth; iframe.height = calcHeight();
-        iframe.id = makeId();
-        iframe.src = iframeSrc;
-        scriptParent.appendChild(iframe);
-    } else {
-        return ['<iframe src="', iframeSrc, '" scrolling="no" frameborder="0" width="', embedWidth, '" height="', calcHeight(), '" id="', makeId(), '"></iframe>'].join('');
-    }
+    scriptParent.appendChild(iframe);
 };
