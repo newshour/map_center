@@ -128,7 +128,7 @@ $SIDEBAR_TITLES = array(
     "primary_winners" => "State primary or caucus winner",
     "senate_six" => "Senate races",
     "social_security" => "Percent of households with Social Security income",
-    "unemployment" => "Unemployment rate, February 2012",
+    "unemployment" => "",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",
     "electoral_college" => "Electoral results"
 );
