@@ -119,7 +119,7 @@
                     } else {
                         enableMapView();
                         enableStaticMapsType();
-                        var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types", "#population_density"];
+                        var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types"];
                         var mapsWithOnlyUS = ["#senate_six", "#primary_winners"];
                         if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
                             $('#map_view a[href="#us_all"]').parent().hide();
@@ -221,7 +221,7 @@
                     $('#embed_preview iframe').remove();
                     
                     // Show a new preview of the selected options.
-                    embedNHMC(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex);
+                    $('#embed_preview').append(embedNHMC(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex, true));
                 };
                 
                 $('.embed_option a').click(updateOptions);

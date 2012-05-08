@@ -40,7 +40,7 @@ $STATIC_VIEWS_HAS_STATES = array(
     "foreclosures" => false,
     "income" => true,
     "patchwork_types" => false,
-    "population_density" => false,
+    "population_density" => true,
     "primary_winners" => false,
     "senate_six" => false,
     "social_security" => true,
@@ -114,7 +114,7 @@ $MAP_TITLES = array(
     "social_security" => "Social Security",
     "unemployment" => "Unemployment",
     "past_primaries" => "Past results",
-    "electoral_college" => "Past election results"
+    "electoral_college" => "Electoral calculator<br /><span class=\"smaller\">(starting with 2008 results)</span>"
 );
 $SIDEBAR_TITLES = array(
     "08general" => "Win margin in general election",

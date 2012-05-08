@@ -20,6 +20,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
         
         if (mapModule != 'electoral_college') {  // Data source attribution
             var attribHeight = 2 * 12;  // #content_area h2
+            titleHeight += 25;  // 2008 note
         } else {
             var attribHeight = 0;
         }

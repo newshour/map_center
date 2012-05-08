@@ -86,9 +86,11 @@ body {
 #view_info h1 {
     color: #8b080d;
     font-size: 1.375em;  /* 22px / 16px */
+    line-height: 0.75em;  /* 18px / 22px */
     margin: 0.5em 0.5em 0 0.5em;  /* 5px / 16px */
     padding: 0;
 }
+    #view_info h1 .smaller {font-size: 0.545em;}  /* 12px / 22px */
 #content {background-color:#f8f8f8;}
 
 #content_area {
