@@ -20,13 +20,16 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
         
         if (mapModule != 'electoral_college') {  // Data source attribution
             var attribHeight = 2 * 12;  // #content_area h2
-            titleHeight += 25;  // 2008 note
         } else {
             var attribHeight = 0;
+            titleHeight += 20;  // 2008 note
         }
         
         if (embedWidth <= 349) {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 245;}
+            if (mapModule == 'electoral_college') {
+                var sidebarHeight = 245;
+                titleHeight += 35;
+            }
             else if (mapModule == 'past_primaries') {var sidebarHeight = 210;}
             else {
                 if (staticMapsType == '08general') {
