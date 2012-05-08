@@ -142,7 +142,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
     var thisScript = scripts[scripts.length - 1];
     var scriptParent = thisScript.parentNode;
     
-    var iframeSrc = "http://www.newshourapps.org/map_center/embed.php?map_module=" + mapModule;
+    var iframeSrc = "http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=" + mapModule;
     if (mapView) {
         iframeSrc += "&map_view=" + mapView;
     }

@@ -344,7 +344,7 @@ if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
                                             <span class="candidate_name_first"></span>
                                             <span class="candidate_name_last"></span>
                                         </div>
-                                        <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                        <img class="candidate_image" src="http://www.pbs.org/newshour/vote2012/map/candidate_placeholder_50x75.png" width="66" height="69" />
                                         <div class="candidate_votes"></div>
                                         <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span><span class="candidate_vote_count_units"> votes</span></div>
                                         <div class="candidate_won"><img src="lib/images/won.png" /></div>

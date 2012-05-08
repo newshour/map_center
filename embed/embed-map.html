@@ -9,7 +9,7 @@
 	<meta name="author" content="map, politics, 2012 election, unemployment" />
 	<link rel="stylesheet" type="text/css" href="../css/style.css" />
 	 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></script>
+        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/embed/nhmc_embed.js"></script>
         <script type="text/javascript">
             if (!Array.prototype.indexOf) {
                 Array.prototype.indexOf = function (searchElement /*, fromIndex */ ) {
@@ -165,7 +165,7 @@
                 
                 var createEmbed = function(embedWidth, mapModule, mapView, staticMapsType, staticMapsIndex) {
                     var embedParts = [
-                        '<', 'script type="text/javascript" src="http://www.newshourapps.org/map_center/nhmc_embed.js"></', 'script>\n',
+                        '<', 'script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/embed/nhmc_embed.js"></', 'script>\n',
                         '<', 'script type="text/javascript">embedNHMC('
                     ];
                     embedParts.push(embedWidth);
@@ -438,8 +438,6 @@
             
             <div id="embed_preview">
                 <p>Preview:</p>
-                <!-- Hey, embedNHMC: I got your last <script> right here! -->
-                <script type="text/plain"></script>
             </div>
         </form>
         <p>Questions? Problems? Let us know: jmy<a href="http://www.google.com/recaptcha/mailhide/d?k=01I3I5_TMgZOitoxJ_rywTLw==&amp;c=OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js=" onClick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501I3I5_TMgZOitoxJ_rywTLw\75\75\46c\75OQS4UaenWyog_Q-DraUBwHdZfTYLmLDjObwAPuSI7Js\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">...</a>@newshour.org</p>
