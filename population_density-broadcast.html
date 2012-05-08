@@ -34,6 +34,7 @@
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
@@ -69,9 +70,10 @@
         <div id="view_info">
             <h1>Population density</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#pa" id="view_tab_more_shown" class="view_tab_option">Pennsylvania</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S. (by state)</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
-                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S.</a></li><![endif]>
+                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S. (by county)</a></li><![endif]>
+                        <li><a href="#us_all" class="view_tab_option">U.S. (by state)</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
                         <li><a href="#az" class="view_tab_option">Arizona</a></li>
@@ -143,7 +145,7 @@
                     </div>
                     <div id="legend_entries"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="pa" />
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
             </div>
             <div id="loading"></div>
             <div id="map"></div>
