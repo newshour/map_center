@@ -90,10 +90,7 @@ body {
     margin: 0.5em 0.5em 0 0.5em;  /* 5px / 16px */
     padding: 0;
 }
-    #view_info h1 .smaller {
-        display: block;
-        font-size: 0.545em;  /* 12px / 22px */
-    }
+#instructions .smaller {display: block;}
 #content {background-color:#f8f8f8;}
 
 #content_area {

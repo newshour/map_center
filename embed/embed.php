@@ -114,7 +114,7 @@ $MAP_TITLES = array(
     "social_security" => "Social Security",
     "unemployment" => "Unemployment",
     "past_primaries" => "Past results",
-    "electoral_college" => "Electoral calculator<br /><span class=\"smaller\">(starting with 2008 results)</span>"
+    "electoral_college" => "Electoral calculator"
 );
 $SIDEBAR_TITLES = array(
     "08general" => "Win margin in general election",
@@ -137,7 +137,11 @@ $map_view = (isset($_GET['map_view']) && array_search($_GET['map_view'], $VALID_
 $map_module = (isset($_GET['map_module']) && array_search($_GET['map_module'], $VALID_MODULES)) ? $_GET['map_module'] : 'static_maps';
 $static_maps_type = (isset($_GET['static_maps_type']) && isset($STATIC_VIEWS_ATTRIB[$_GET['static_maps_type']])) ? $_GET['static_maps_type'] : 'diversity';
 $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_MAX_INDEX[$static_maps_type]) && (int) $_GET['static_maps_index'] <= $STATIC_VIEWS_MAX_INDEX[$static_maps_type]) ? (int) $_GET['static_maps_index'] : 0;
+
 $instructions = null;  # Might use later
+if ($map_module == 'electoral_college') {
+    $instructions = '<span id="instructions_before">Click states to create your 2012 prediction<br /><span class=\"smaller\">(2008 results shown)</span></span><span id="instructions_after">Click states to change party<br /><span class=\"smaller\">(Something else goes here?)</span></span>';
+}
 
 $map_title = (isset($MAP_TITLES[$map_module])) ? $MAP_TITLES[$map_module] : $MAP_TITLES[$static_maps_type];
 $sidebar_title = (isset($SIDEBAR_TITLES[$map_module])) ? $SIDEBAR_TITLES[$map_module] : $SIDEBAR_TITLES[$static_maps_type];
