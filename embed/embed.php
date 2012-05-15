@@ -140,7 +140,7 @@ $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_M
 
 $instructions = null;  # Might use later
 if ($map_module == 'electoral_college') {
-    $instructions = '<span id="instructions_before">Click states to create your 2012 prediction<br /><span class=\"smaller\">(2008 results shown)</span></span><span id="instructions_after">Click states to change party<br /><span class=\"smaller\">(Something else goes here?)</span></span>';
+    $instructions = '<span id="instructions_before">Click states to create your 2012 prediction<br /><span class="smaller">(2008 results shown)</span></span><span id="instructions_after">Your map<br /><span class="smaller">(Click states to change party)</span></span>';
 }
 
 $map_title = (isset($MAP_TITLES[$map_module])) ? $MAP_TITLES[$map_module] : $MAP_TITLES[$static_maps_type];
