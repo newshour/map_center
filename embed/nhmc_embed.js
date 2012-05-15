@@ -41,7 +41,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 }
             }
         } else if (embedWidth <= 399) {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 225;}
+            if (mapModule == 'electoral_college') {var sidebarHeight = 235;}
             else if (mapModule == 'past_primaries') {var sidebarHeight = 340;}
             else {
                 if (staticMapsType == '08general') {
