@@ -19,14 +19,14 @@
 }
     .view_tab a {width: 250px;}
     .view_tab_option {width: 250px;}
-    .view_tab_more a {width: 220px;}
-    #view_tab_more_menu {
+    .view_tab_more a, .view_tab_options_more a {width: 220px;}
+    #view_tab_more_menu, #view_tab_options_more_menu {
         height: 500px;
         overflow-x: hidden;
         overflow-y: scroll;
         width: 250px;
     }
-        #view_tab_more_menu li a {width: 220px;}
+        #view_tab_more_menu li a, #view_tab_options_more_menu li a {width: 220px;}
 
 #tooltip.tooltip_flyout {
     overflow: hidden;
