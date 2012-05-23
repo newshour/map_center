@@ -371,7 +371,13 @@ if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
                                 <div id="legend_candidates"></div>
                               <?php } elseif ($map_module == 'electoral_college') { ?>
                                 <div id="ec_tally">
-                                    <div id="electoral_boot" class="view_tab_active"><a href="" class="view_tab_option">2008</a></div>
+                                    <div id="electoral_boot">
+                                        <div id="view_tabs">
+                                            <div class="view_tab_active">
+                                                <a href="" class="view_tab_option">2008</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div id="ec_party_d" class="ec_party">
                                         <h4 id="ec_name_d" class="ec_name">Democrats</h4>
                                         <h4 id="ec_name_abbr_d" class="ec_name_abbr">Dem.</h4>
