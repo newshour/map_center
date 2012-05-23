@@ -50,18 +50,8 @@
                 }
             };
             
-            // Map-specific overrides to live.js config
-            var nhmc_live_config = {
-                bigCandidates: 4,
-                condenseCandidates: true,
-                flyouts: 'nw',
-                showCandidates: [
-                    "Mitt Romney",
-                    "Rick Santorum",
-                    "Ron Paul",
-                    "Newt Gingrich"
-                  
-                ]
+            var nhmcOtherVotesConfig = {
+                flyoutsEnabled: true
             };
         //]]></script>
         <!-- Map Center core -->
@@ -209,28 +199,28 @@
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="in" />
+                <input name="map_view" id="map_view" type="hidden" value="ar" />
             </div>
-            <div id="flyout">
-                <div class="flyout_content">
-                    <h2 class="flyout_name"></h2>
-                    <h3 class="flyout_title"><span class="flyout_precincts_reporting">0</span> of <span class="flyout_precincts_total">0</span> reporting</h3>
+            <div id="tooltip_template">
+                <div class="tooltip_content">
+                    <h2 class="tooltip_name"></h2>
+                    <h3 class="tooltip_title"><span class="tooltip_precincts_reporting">0</span> of <span class="tooltip_precincts_total">0</span> reporting</h3>
                     <!--
                         Other <span> classes you might be interested in:
-                            flyout_precincts_percent
+                            tooltip_precincts_percent
                     -->
-                    <div class="flyout_templates">
-                        <div class="flyout_candidate">
-                            <div class="flyout_candidate_color">&nbsp;</div>
-                            <div class="flyout_candidate_name">
-                                <span class="flyout_candidate_name_first">Firstname</span>
-                                <span class="flyout_candidate_name_last">Lastname</span>
+                    <div class="tooltip_templates">
+                        <div class="tooltip_candidate">
+                            <div class="tooltip_candidate_color">&nbsp;</div>
+                            <div class="tooltip_candidate_name">
+                                <span class="tooltip_candidate_name_first">Firstname</span>
+                                <span class="tooltip_candidate_name_last">Lastname</span>
                             </div>
-                            <div class="flyout_candidate_vote_count"></div>
-                            <div class="flyout_candidate_votes"></div>
+                            <div class="tooltip_candidate_vote_count"></div>
+                            <div class="tooltip_candidate_votes"></div>
                         </div>
                     </div>
-                    <div class="flyout_candidates"></div>
+                    <div class="tooltip_candidates"></div>
                 </div>
             </div>
             <div id="map"></div>

@@ -219,28 +219,34 @@
                     </div>
                     <div id="legend_candidates"></div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="in" />
+                <input name="map_view" id="map_view" type="hidden" value="ar" />
             </div>
-            <div id="flyout">
-                <div class="flyout_content">
-                    <h2 class="flyout_name"></h2>
-                    <h3 class="flyout_title"><span class="flyout_precincts_reporting">0</span> of <span class="flyout_precincts_total">0</span> precincts reporting</h3>
+            <div id="tooltip_template">
+                <div class="tooltip_content">
+                    <h3 class="tooltip_name"></h3>
+                    <p class="tooltip_title"><span class="tooltip_precincts_reporting">0</span> of <span class="tooltip_precincts_total">0</span> precincts reporting</p>
                     <!--
                         Other <span> classes you might be interested in:
-                            flyout_precincts_percent
+                            tooltip_precincts_percent
                     -->
-                    <div class="flyout_templates">
-                        <div class="flyout_candidate">
-                            <div class="flyout_candidate_color">&nbsp;</div>
-                            <div class="flyout_candidate_name">
-                                <span class="flyout_candidate_name_first">Firstname</span>
-                                <span class="flyout_candidate_name_last">Lastname</span>
-                            </div>
-                            <div class="flyout_candidate_vote_count"></div>
-                            <div class="flyout_candidate_votes"></div>
-                        </div>
+                    <div class="tooltip_templates">
+                        <table>
+                            <tr class="tooltip_candidate">
+                                <td class="tooltip_candidate_name">
+                                    <span class="tooltip_candidate_name_first">Firstname</span>
+                                    <span class="tooltip_candidate_name_last">Lastname</span>
+                                </td>
+                                <td class="tooltip_candidate_vote_count"></td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="flyout_candidates"></div>
+                    <table class="tooltip_candidate_table">
+                        <thead>
+                            <th>Candidate</th>
+                            <th>Votes</th>
+                        </thead>
+                        <tbody class="tooltip_candidates"></tbody>
+                    </table>
                 </div>
             </div>
             <div id="map"></div>

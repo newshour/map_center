@@ -10,8 +10,8 @@
 
 }
 
-#tooltip_results thead {font-weight: bold;}
-    .tooltip_results_candidate {width: 75%;}
+#tooltip_results thead, .tooltip_candidate_table thead {font-weight: bold;}
+    .tooltip_results_candidate, .tooltip_candidate_table .tooltip_candidate_name {width: 75%;}
 
 .view_tab {
     float: right;
@@ -40,21 +40,21 @@
         font-weight: normal;
         text-align: left;
     }
-    #tooltip.tooltip_flyout .flyout_candidate {
+    #tooltip.tooltip_flyout .flyout_candidate, #tooltip.tooltip_flyout .tooltip_candidate {
         padding: 0 0 4px 30px;
         position: relative;
     }
-        #tooltip.tooltip_flyout .flyout_candidate_color {
+        #tooltip.tooltip_flyout .flyout_candidate_color, #tooltip.tooltip_flyout .tooltip_candidate_color {
             left: 0;
             position: absolute;
             width: 25px;
         }
-        #tooltip.tooltip_flyout .flyout_candidate_name {float: left;}
-        #tooltip.tooltip_flyout .flyout_candidate_name_first {display: none;}
-        #tooltip.tooltip_flyout .flyout_candidate_votes {display: none;}
-        #tooltip.tooltip_flyout .flyout_candidate_vote_count {text-align: right;}
-#flyout {display: none;}
-    .flyout_templates {display: none;}
+        #tooltip.tooltip_flyout .flyout_candidate_name, #tooltip.tooltip_flyout .tooltip_candidate_name {float: left;}
+        #tooltip.tooltip_flyout .flyout_candidate_name_first, #tooltip.tooltip_flyout .tooltip_candidate_name_first {display: none;}
+        #tooltip.tooltip_flyout .flyout_candidate_votes, #tooltip.tooltip_flyout .tooltip_candidate_votes {display: none;}
+        #tooltip.tooltip_flyout .flyout_candidate_vote_count, #tooltip.tooltip_flyout .tooltip_candidate_vote_count {text-align: right;}
+#flyout, #tooltip_template {display: none;}
+    .flyout_templates, .tooltip_templates {display: none;}
 
 #legend_candidates {margin-bottom: 10px;}
 #legend_templates {display: none;}
