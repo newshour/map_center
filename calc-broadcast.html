@@ -47,6 +47,7 @@
         <style type="text/css">
 		#nav_toggle {margin-left: 580px !important;}
 		#view_info { margin-top:-35px;}
+		#lower-chart tspan {color:#fff !important;}
 </style>
 </head>
 <body>
@@ -77,7 +78,7 @@
 	</nav>
 	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
 <div id="content">
- <div id="nav_outermost">
+ <div id="nav_outermost" style="z-index:2;">
             <div id="nav_outer">
                 <div id="nav-main-prev" class="nav_control">&laquo;</div>
                 <div id="nav-main">
@@ -130,11 +131,10 @@
                         <div id="ec_win_t" class="ec_win"><img src="check.png" alt="Other party wins" /></div>
                     </div>
                 </div>
-                <h5>270 or bust</h5>
-                <div id="lower_chart"></div>
+                <div id="lower_chart" style="position:absolute; left:-9999px !important;"></div>
                 <input name="map_view" id="map_view" type="hidden" value="us_all" />
             </div>
-            <div id="map"></div>
+            <div id="map" style="width:665px !important; padding-bottom:100px; padding-left:30px;"></div>
             <div id="chart"></div>
             <div class="clear"></div>
         </div>
