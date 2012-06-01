@@ -5,15 +5,17 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>2012 Political Map Center | PBS NewsHour</title>
-    <meta name="description" content="The map features election results for incumbent governors" />
-    <meta name="author" content="map, politics, 2012 election, governors" />
-	<link rel="stylesheet" href="css/style.css" />
+	<meta name="description" content="The map features the popular vote for incumbent governors by county" />
+	<meta name="author" content="map, politics, 2012 election, governors" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <!-- Internet Explorer settings, including Chrome Frame -->
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-        <!-- JS libraries -->
+<meta property="og:title" content="PBS NewsHour Map Center | Social Security Maps" /> 
+		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
+		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
@@ -25,18 +27,110 @@
             
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            // Candidate name customization
+            var nhmcGovernorCandidateNames = {
+                "New Mexico": {
+                    "D": "Diane Denish",
+                    "R": "Susana Martinez"
+                },
+                "Pennsylvania": {
+                    "D": "Dan Onorato",
+                    "R": "Tom Corbett"
+                },
+                "Virginia": {
+                    "D": "Creigh Deeds",
+                    "R": "Bob McDonnell"
+                },
+                "Wisconsin": {
+                    "D": "Tom Barrett",
+                    "R": "Scott Walker"
+                }
+            };
+            
+            // Overriding tooltip formatter
+            var nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, countyOnly, currentData) {
+                var tooltipText = [];
+                
+                if (countyOnly) {
+                    tooltipText.push('<p>' + thisCounty + ': <br />');
+                } else {
+                    tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+                }
+                
+                tooltipText.push((currentData.prefix || ''));
+                var dataValue = currentData.areas[thisFIPS];
+                var decimalPlaces = currentData.decimalPlaces || 0;
+                if (dataValue > 0) {
+                    var candidateName = nhmcGovernorCandidateNames[thisState].R;
+                    var candidateNameParts = candidateName.split(" ");
+                    var candidateLastName = candidateNameParts[candidateNameParts.length - 1];
+                    tooltipText.push(candidateLastName + ' by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
+                } else if (dataValue < 0) {
+                    var candidateName = nhmcGovernorCandidateNames[thisState].D;
+                    var candidateNameParts = candidateName.split(" ");
+                    var candidateLastName = candidateNameParts[candidateNameParts.length - 1];
+                    tooltipText.push(candidateLastName + ' by ' + (-dataValue).toFixed(decimalPlaces) + (currentData.suffix || ''));
+                } else if (dataValue == 0) {
+                    tooltipText.push('Tie');
+                } else {
+                    tooltipText.push('Unavailable');
+                }
+                tooltipText.push('</p>');
+                
+                return tooltipText.join('');
+            };
+            
+            // Overriding legend break text
+            var nhmcStaticBreakFormatter = function(thisBreak, prevBreak, isLastBreak, breakPrefix, breakSuffix, breakDecimals) {
+                breakDecimals = 0;  // override
+                
+                function formatBreak(currentBreak) {
+                    return breakPrefix + currentBreak.toFixed(breakDecimals) + breakSuffix;
+                }
+                
+                var thisState = nhmc.config.USPSToState[$('#map_view').val().toUpperCase()];
+                
+                var democratName = nhmcGovernorCandidateNames[thisState].D;
+                var democratNameParts = democratName.split(" ");
+                var democratLastName = democratNameParts[democratNameParts.length - 1];
+                var republicanName = nhmcGovernorCandidateNames[thisState].R;
+                var republicanNameParts = republicanName.split(" ");
+                var republicanLastName = republicanNameParts[republicanNameParts.length - 1];
+                
+                if (thisBreak >= 0 && prevBreak >= 0) {
+                    if (prevBreak == 0) {
+                        return republicanLastName + ' by up to ' + formatBreak(thisBreak);
+                    } else if (isLastBreak) {
+                        return republicanLastName + ' by ' + breakPrefix + prevBreak.toFixed(breakDecimals) + '+' + breakSuffix;
+                    } else {
+                        return republicanLastName + ' by ' + prevBreak.toFixed(breakDecimals) + ' to ' + formatBreak(thisBreak);
+                    }
+                } else if (thisBreak <= 0 && prevBreak <= 0) {
+                    if (thisBreak == 0) {
+                        return democratLastName + ' by up to ' + formatBreak(-prevBreak);
+                    } else if (prevBreak) {
+                        return democratLastName + ' by ' + (-thisBreak).toFixed(breakDecimals) + ' to ' + formatBreak(-prevBreak);
+                    } else {
+                        return democratLastName + ' by ' + breakPrefix + (-thisBreak).toFixed(breakDecimals) + '+' + breakSuffix;
+                    }
+                } else if (thisBreak >= 0 && prevBreak <= 0) {
+                    return democratLastName + ' by ' + formatBreak(-prevBreak) + ' to ' + republicanLastName + ' by ' + formatBreak(thisBreak);
+                }
+            };
         //]]></script>
         <!-- Map Center core -->
-        <script type="text/javascript" src="lib/maps/all_counties.js"></script>
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
-        <script type="text/javascript" src="lib/map_center/modules/governors.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/static_maps.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/governors.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
-        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/live.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/static_maps.css" />
     </head><body>
 		<div id="head-pbs">
     <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
@@ -92,13 +186,13 @@
         <div id="view_info">
             <h1>Governors</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#wi" id="view_tab_more_shown" class="view_tab_option">Wisconsin</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
+                <div class="view_tab view_tab_more view_tab_active"><a href="#wi" id="view_tab_more_shown" class="view_tab_option">Wisconsin</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
                         <!--
-                        <li><a href="#us_counties" class="view_tab_option">U.S.</a></li>
+                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S. (by county)</a></li><![endif]>
+                        <li><a href="#us_all" class="view_tab_option">U.S. (by state)</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
-                        <li><a href="#ak_empty" class="view_tab_option">Alaska</a></li>
                         <li><a href="#az" class="view_tab_option">Arizona</a></li>
                         <li><a href="#ar" class="view_tab_option">Arkansas</a></li>
                         <li><a href="#ca" class="view_tab_option">California</a></li>
@@ -116,7 +210,6 @@
                         <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
                         <li><a href="#la" class="view_tab_option">Louisiana</a></li>
                         <li><a href="#me" class="view_tab_option">Maine</a></li>
-                        <li><a href="#me_empty" class="view_tab_option">Maine</a></li>
                         <li><a href="#md" class="view_tab_option">Maryland</a></li>
                         <li><a href="#ma" class="view_tab_option">Massachusetts</a></li>
                         <li><a href="#mi" class="view_tab_option">Michigan</a></li>
@@ -128,15 +221,18 @@
                         <li><a href="#nv" class="view_tab_option">Nevada</a></li>
                         <li><a href="#nh" class="view_tab_option">New Hampshire</a></li>
                         <li><a href="#nj" class="view_tab_option">New Jersey</a></li>
+                        -->
                         <li><a href="#nm" class="view_tab_option">New Mexico</a></li>
+                        <!--
                         <li><a href="#ny" class="view_tab_option">New York</a></li>
                         <li><a href="#nc" class="view_tab_option">North Carolina</a></li>
                         <li><a href="#nd" class="view_tab_option">North Dakota</a></li>
-                        <li><a href="#nd_empty" class="view_tab_option">North Dakota</a></li>
                         <li><a href="#oh" class="view_tab_option">Ohio</a></li>
                         <li><a href="#ok" class="view_tab_option">Oklahoma</a></li>
                         <li><a href="#or" class="view_tab_option">Oregon</a></li>
+                        -->
                         <li><a href="#pa" class="view_tab_option">Pennsylvania</a></li>
+                        <!--
                         <li><a href="#ri" class="view_tab_option">Rhode Island</a></li>
                         <li><a href="#sc" class="view_tab_option">South Carolina</a></li>
                         <li><a href="#sd" class="view_tab_option">South Dakota</a></li>
@@ -144,7 +240,9 @@
                         <li><a href="#tx" class="view_tab_option">Texas</a></li>
                         <li><a href="#ut" class="view_tab_option">Utah</a></li>
                         <li><a href="#vt" class="view_tab_option">Vermont</a></li>
+                        -->
                         <li><a href="#va" class="view_tab_option">Virginia</a></li>
+                        <!--
                         <li><a href="#wa" class="view_tab_option">Washington</a></li>
                         <li><a href="#dc" class="view_tab_option">Washington, D.C.</a></li>
                         <li><a href="#wv" class="view_tab_option">West Virginia</a></li>
@@ -152,84 +250,33 @@
                         <li style="display: none;"><a href="#wi" class="view_tab_option">Wisconsin</a></li>
                         <!--
                         <li><a href="#wy" class="view_tab_option">Wyoming</a></li>
-                        <li><a href="#wy_empty" class="view_tab_option">Wyoming</a></li>
                         -->
                     </ul>
                 </div>
             </div>
         </div>
         <div id="content_area">
-            
             <div id="sidebar">
-                <h3 id="sidebar_title"><span id="sidebar_election_year"></span> election results</h3>
-                <!--
-                    Other <span> ids you might be interested in:
-                        precincts_reporting
-                        precincts_total
-                -->
+                <h3 id="sidebar_title">Election results</h3>
                 <div id="legend">
                     <div id="legend_templates">
-                        <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
-                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 20); .candidate_small is for the rest. -->
-                        <div class="candidate_big">
-                            <div class="candidate_color">&nbsp;</div>
-                            <div class="candidate_name">
-                                <span class="candidate_name_first"></span>
-                                <span class="candidate_name_last"></span>
-                            </div>
-                            
-                            <!-- .candidate_vote_count gives the total number of votes cast; .candidate_votes expresses that vote as a percentage. -->
-                            <div class="candidate_votes"></div>
-                            <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span> votes</div>
-
-                            <div class="candidate_won"><img src="lib/images/won.png" /></div>
-                            <div class="clear"></div>
+                        <div class="category_entry">
+                            <div class="entry_color">&nbsp;</div>
+                            <div class="category_name"></div>
                         </div>
-                        <div class="candidate_small">
-                            <div class="candidate_color">&nbsp;</div>
-                            <div class="candidate_name">
-                                <span class="candidate_name_first">Firstname</span>
-                                <span class="candidate_name_last">Lastname</span>
-                            </div>
-                            <div class="candidate_vote_count"></div>
-                            <div class="candidate_votes"></div>
+                        <div class="break_entry">
+                            <div class="entry_color">&nbsp;</div>
+                            <div class="break_text"></div>
                         </div>
                     </div>
-                    <div id="legend_candidates"></div>
+                    <div id="legend_entries"></div>
                 </div>
                 <input name="map_view" id="map_view" type="hidden" value="wi" />
-            </div>
-            <div id="tooltip_template">
-                <div class="tooltip_content">
-                    <h3 class="tooltip_name"></h3>
-                    <!--
-                        Other <span> classes you might be interested in:
-                            tooltip_precincts_percent
-                    -->
-                    <div class="tooltip_templates">
-                        <table>
-                            <tr class="tooltip_candidate">
-                                <td class="tooltip_candidate_name">
-                                    <span class="tooltip_candidate_name_first">Firstname</span>
-                                    <span class="tooltip_candidate_name_last">Lastname</span>
-                                </td>
-                                <td class="tooltip_candidate_vote_count"></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <table class="tooltip_candidate_table">
-                        <thead>
-                            <th>Candidate</th>
-                            <th>Votes</th>
-                        </thead>
-                        <tbody class="tooltip_candidates"></tbody>
-                    </table>
-                </div>
             </div>
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
-            <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
+            <h2 id="static_data_source">Source: State election authorities</h2>
         </div>
 </div>
 <div id="featured-content" class="clearfix">
