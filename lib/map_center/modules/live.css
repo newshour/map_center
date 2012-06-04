@@ -34,6 +34,7 @@
 	padding: 10px;
     left: 0;
     top: 273px;
+    width: 200px;
 }
     #tooltip.tooltip_flyout h3 {
         font-size: .8em;
