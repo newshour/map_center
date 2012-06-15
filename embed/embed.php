@@ -1,5 +1,5 @@
 <?php
-$VALID_VIEW_NAMES = array("us_all", "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj", "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt", "va", "wa", "dc", "wv", "wi", "wy");
+$VALID_VIEW_NAMES = array("us_all", "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj", "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt", "va", "wa", "dc", "wv", "wi", "wy", "ak_08general");
 $VALID_MODULES = array("static_maps", "past_primaries", "electoral_college");
 $LIVE_VIEWS_NEEDS_EMPTY = array(
     "al" => false,
@@ -149,6 +149,10 @@ $attrib = (isset($STATIC_VIEWS_ATTRIB[$static_maps_type])) ? $STATIC_VIEWS_ATTRI
 
 if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
     $map_view = $map_view . '_empty';
+}
+
+if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_view == 'ak') {
+    $map_view = 'ak_08general';
 }
 ?>
 <!doctype html>
