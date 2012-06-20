@@ -10,8 +10,8 @@
 
 }
 
-#tooltip_results thead, .tooltip_candidate_table thead {font-weight: bold;}
-    .tooltip_results_candidate, .tooltip_candidate_table .tooltip_candidate_name {width: 75%;}
+#tooltip_results thead, .tooltip_candidate_table thead, #tooltip_automated_results thead, .tooltip_automated_candidate_table thead {font-weight: bold;}
+    .tooltip_results_candidate, .tooltip_candidate_table .tooltip_candidate_name, .tooltip_automated_results_candidate, .tooltip_automated_candidate_table .tooltip_automated_candidate_name {width: 75%;}
 
 .view_tab {
     float: right;
@@ -193,7 +193,7 @@
 #other_tooltip_results thead {font-weight: bold;}
     .other_tooltip_results_candidate {width: 75%;}
 
-#tooltip {-webkit-box-shadow: 0 0 10px #949494;}
+#tooltip, #tooltip_automated {-webkit-box-shadow: 0 0 10px #949494;}
 
 #lower_secondary_nav { }
 

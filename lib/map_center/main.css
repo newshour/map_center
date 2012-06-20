@@ -369,7 +369,7 @@ position:relative;
 
 #nebraska_electoral label, #maine_electoral label {margin-right: 0.5em;}
 
-#tooltip {
+#tooltip, #tooltip_automated {
     background-color: #fff;
     border: 1px solid #ccc;
     
@@ -377,14 +377,14 @@ position:relative;
     position: absolute;
     width: 160px;
 }
-    #tooltip h3 {
+    #tooltip h3, #tooltip_automated h3 {
         clear: both;
         font-size: 14pt;
         margin-top: 0;
         text-align: center;
     }
-    #tooltip p {
+    #tooltip p, #tooltip_automated p {
         margin-bottom: 5px;
         text-align: center;
     }
-    #tooltip_close {float: right;}
+    #tooltip_close, #tooltip_automated_close {float: right;}

@@ -290,7 +290,7 @@ body {
     font-size: 0.75em;  /* 12px / 16px -- context set */
 }
 
-#tooltip, #other_tooltip {
+#tooltip, #other_tooltip, #tooltip_automated {
     background-color: #fff;
     border: 1px solid #ccc;
     -moz-box-shadow: 0 0 0.625em #949494;  /* 10px / 16px */
@@ -301,22 +301,22 @@ body {
     text-transform: none;
     width: 10em;  /* 160px / 16px */
 }
-    #tooltip h3, #other_tooltip h3 {  /* Sets own context to 14px per em */
+    #tooltip h3, #other_tooltip h3, #tooltip_automated h3 {  /* Sets own context to 14px per em */
         clear: both;
         font-size: 0.875em;  /* 14px / 16px -- context set */
         margin-top: 0;
         text-align: center;
     }
-    #tooltip p, #other_tooltip p {  /* Sets own context to 12px per em */
+    #tooltip p, #other_tooltip p, #tooltip_automated p {  /* Sets own context to 12px per em */
         margin-bottom: 0.416667em;  /* 5px / 12px */
         font-size: 0.75em;  /* 12px / 16px -- context set */
         text-align: center;
     }
-    #tooltip_close, #other_tooltip_close {float: right;}
+    #tooltip_close, #other_tooltip_close, #tooltip_automated_close {float: right;}
     
-    #tooltip_results thead, #other_tooltip_results thead {font-weight: bold;}
-        .tooltip_results_candidate, .other_tooltip_results_candidate {width: 75%;}
-    #tooltip td, #other_tooltip td {  /* Sets own context to 12px per em */
+    #tooltip_results thead, #other_tooltip_results thead, #tooltip_automated_results thead {font-weight: bold;}
+        .tooltip_results_candidate, .other_tooltip_results_candidate, .tooltip_automated_results_candidate {width: 75%;}
+    #tooltip td, #other_tooltip td, #tooltip_automated td {  /* Sets own context to 12px per em */
         font-size: 0.75em;  /* 12px / 16px -- context set */
     }
 	
@@ -382,7 +382,7 @@ body {
 }
 @media screen and (max-width: 499px) {
     .candidate_big .candidate_name_first {display: none;}
-    #tooltip, #other_tooltip {width: 7em;}  /* 112px / 16px */
+    #tooltip, #other_tooltip, #tooltip_automated {width: 7em;}  /* 112px / 16px */
 }
 @media screen and (min-width: 350px) and (max-width: 799px) {
     .candidate_big .candidate_votes {
