@@ -173,8 +173,8 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/highcharts.js"></script>
-        <script src="http://www.pbs.org/newshour/vote2012/map/js/libs/modernizr-2.0.6.min.js"></script>
+        <script type="text/javascript" src="../lib/highcharts.js"></script>
+        <script src="../js/libs/modernizr-2.0.6.min.js"></script>
         <script type="text/javascript">
             // Defining helper functions here
             
@@ -284,21 +284,21 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
           <?php } ?>
         </script>
         <!-- Map Center core -->
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/usps_fips.js"></script>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/main.js"></script>
+        <script type="text/javascript" src="../lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="../lib/map_center/main.js"></script>
         
       <?php if ($map_view == 'us_all') { ?>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/maps/states_only.js"></script>
+        <script type="text/javascript" src="../lib/maps/states_only.js"></script>
       <?php } ?>
         
         <!-- Individual Map Center modules -->
       <?php if ($map_module == 'static_maps') { ?>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/static_maps.js"></script>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/static_maps_data/<?php echo $static_maps_type; ?>.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/static_maps.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/static_maps_data/<?php echo $static_maps_type; ?>.js"></script>
       <?php } elseif ($map_module == 'past_primaries') { ?>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/live.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/live.js"></script>
       <?php } elseif ($map_module == 'electoral_college') { ?>
-        <script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/electoral_college.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/electoral_college.js"></script>
       <?php } ?>
         
         <script type="text/javascript">
@@ -352,7 +352,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                             <span class="candidate_name_first"></span>
                                             <span class="candidate_name_last"></span>
                                         </div>
-                                        <img class="candidate_image" src="http://www.pbs.org/newshour/vote2012/map/candidate_placeholder_50x75.png" width="66" height="69" />
+                                        <img class="candidate_image" src="../candidate_placeholder_50x75.png" width="66" height="69" />
                                         <div class="candidate_votes"></div>
                                         <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span><span class="candidate_vote_count_units"> votes</span></div>
                                         <div class="candidate_won"><img src="lib/images/won.png" /></div>
@@ -387,7 +387,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <h4 id="ec_name_abbr_d" class="ec_name_abbr">Dem.</h4>
                                         <div id="ec_detail_d" class="ec_detail">
                                             <span id="ec_total_d" class="ec_total">0</span> electoral votes
-                                            <div id="ec_win_d" class="ec_win"><img src="http://www.pbs.org/newshour/vote2012/map/check.png" alt="Democrats win" /></div>
+                                            <div id="ec_win_d" class="ec_win"><img src="../check.png" alt="Democrats win" /></div>
                                         </div>
                                     </div>
                                     <div id="ec_party_r" class="ec_party">
@@ -395,7 +395,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <h4 id="ec_name_abbr_r" class="ec_name_abbr">Rep.</h4>
                                         <div id="ec_detail_r" class="ec_detail">
                                             <span id="ec_total_r" class="ec_total">0</span> electoral votes
-                                            <div id="ec_win_r" class="ec_win"><img src="http://www.pbs.org/newshour/vote2012/map/check.png" alt="Republicans win" /></div>
+                                            <div id="ec_win_r" class="ec_win"><img src="../check.png" alt="Republicans win" /></div>
                                         </div>
                                     </div>
                                     <div id="ec_party_t" class="ec_party">
@@ -403,7 +403,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <h4 id="ec_name_abbr_t" class="ec_name_abbr">Tossup</h4>
                                         <div id="ec_detail_t" class="ec_detail">
                                             <span id="ec_total_t" class="ec_total">0</span> electoral votes
-                                            <div id="ec_win_t" class="ec_win"><img src="http://www.pbs.org/newshour/vote2012/map/check.png" alt="Other party wins" /></div>
+                                            <div id="ec_win_t" class="ec_win"><img src="../check.png" alt="Other party wins" /></div>
                                         </div>
                                     </div>
                                     <div id="lower_chart"></div>
