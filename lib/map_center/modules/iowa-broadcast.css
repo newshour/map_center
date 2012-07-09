@@ -5,7 +5,7 @@
 
 #main { border: none; }
 
-#nav_toggle {margin-left: 620px !important;}
+#nav_toggle {margin-left: 620px !important; display: block;}
 
 
 #view_info { margin-top:-30px;}

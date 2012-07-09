@@ -173,6 +173,7 @@ path  {cursor: pointer;}
         -webkit-border-bottom-left-radius: 5px;
         -moz-border-radius-bottomleft: 5px;
         border-bottom-left-radius: 5px;
+        display: none;
         margin-left: 880px;
         padding: 7px;
         width: 85px;
