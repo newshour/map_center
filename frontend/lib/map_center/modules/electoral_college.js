@@ -35,6 +35,7 @@ namespace("nhmc.ctrl");
         stateVotes: {},
         totals: {}
     };
+    var changedStates;
 
     /* eventBus
      * A dedicated object for subscribing to map-related events:
@@ -58,16 +59,27 @@ namespace("nhmc.ctrl");
             statusChange = true;
         }
 
+        changedStates = {};
+
         if ("stateVotes" in newStatus) {
 
             status.totals.dem = status.totals.rep = status.totals.toss = 0;
 
-            $.each(newStatus.stateVotes, function(stateName, votes) {
+            $.each(newStatus.stateVotes, function(stateName, newVotes) {
 
-                status.stateVotes[stateName] = votes;
-                status.totals.dem += votes.dem || 0;
-                status.totals.rep += votes.rep || 0;
-                status.totals.toss += votes.toss || 0;
+                $.each(newVotes, function(partyName, newVoteCount) {
+                    // Initialization case
+                    if (!status.stateVotes[stateName] ||
+                        status.stateVotes[stateName][partyName] !== newVoteCount) {
+                        changedStates[stateName] = newVotes;
+                        return false;
+                    }
+                });
+
+                status.stateVotes[stateName] = newVotes;
+                status.totals.dem += newVotes.dem || 0;
+                status.totals.rep += newVotes.rep || 0;
+                status.totals.toss += newVotes.toss || 0;
             });
 
             // Now that the totals are re-calculated, trigger an change event
@@ -85,6 +97,27 @@ namespace("nhmc.ctrl");
 
         if (statusChange) {
             mapStatus.eventBus.trigger("change", mapStatus.get());
+        }
+    };
+    /* changedStates
+     * If any states were changed in the most recent call to "set", this method
+     * will return the vote distribution of those states (formatted in the same
+     * manner as "mapStatus.stateVotes"). If no states were changed, this
+     * method will return false
+     */
+    mapStatus.changedStates = function() {
+
+        var hasStates = false;
+
+        $.each(changedStates, function() {
+            hasStates = true;
+            return false;
+        });
+
+        if (!hasStates) {
+            return false;
+        } else {
+            return changedStates;
         }
     };
     /* get
