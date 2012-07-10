@@ -171,36 +171,38 @@
             
             <div id="sidebar" style="padding: 0 10px 0 20px;
     width: 205px;">
-                <h3 id="sidebar_title"><span id="precincts_percent">0</span>% precincts reporting</h3>
-                <!--
-                    Other <span> ids you might be interested in:
-                        precincts_reporting
-                        precincts_total
-                -->
-                <div id="legend">
-                    <div id="legend_templates">
-                        <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
-                        <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
-                        <div class="candidate_big">
-                            <div class="candidate_color">&nbsp;</div>
-                            <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
-                            <div class="candidate_name">
-                                <span class="candidate_name_last">Lastname</span>
+                <div class="sidebar-info">
+                    <h3 id="sidebar_title"><span id="precincts_percent">0</span>% precincts reporting</h3>
+                    <!--
+                        Other <span> ids you might be interested in:
+                            precincts_reporting
+                            precincts_total
+                    -->
+                    <div id="legend">
+                        <div id="legend_templates">
+                            <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
+                            <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
+                            <div class="candidate_big">
+                                <div class="candidate_color">&nbsp;</div>
+                                <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                <div class="candidate_name">
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <div class="candidate_votes"></div>
+                                <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                <div class="clear"></div>
                             </div>
-                            <div class="candidate_votes"></div>
-                            <div class="candidate_won"><img src="lib/images/won.png" /></div>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="candidate_small">
-                            <div class="candidate_color">&nbsp;</div>
-                            <div class="candidate_name">
-                                <span class="candidate_name_first">Firstname</span>
-                                <span class="candidate_name_last">Lastname</span>
+                            <div class="candidate_small">
+                                <div class="candidate_color">&nbsp;</div>
+                                <div class="candidate_name">
+                                    <span class="candidate_name_first">Firstname</span>
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <div class="candidate_votes"></div>
                             </div>
-                            <div class="candidate_votes"></div>
                         </div>
+                        <div id="legend_candidates"></div>
                     </div>
-                    <div id="legend_candidates"></div>
                 </div>
                 <input name="map_view" id="map_view" type="hidden" value="ut" />
             </div>
