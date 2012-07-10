@@ -126,7 +126,7 @@
                         enableMapView();
                         enableStaticMapsType();
                         var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types"];
-                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners"];
+                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners", "#evangelical"];
                         if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
                             $('#map_view a[href="#us_all"]').parent().hide();
                             $('#map_view a').not(':visible').removeClass('selected');
@@ -402,6 +402,7 @@
                     <li class="embed_option"><a href="#bachelors">Bachelor's degree holders 25 and older</a></li>
                     <li class="embed_option"><a href="#diversity">Diversity index</a></li>
                     <li class="embed_option"><a href="#ethnicity">Ethnicity</a></li>
+                    <li class="embed_option"><a href="#evangelical">Evangelical Protestants</a></li>
                     <li class="embed_option"><a href="#foreclosures">Foreclosures</a></li>
                     <li class="embed_option"><a href="#income">Median household income</a></li>
                     <li class="embed_option"><a href="#patchwork_types">Patchwork Nation community types</a></li>

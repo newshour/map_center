@@ -127,6 +127,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 'bachelors': 'bs',
                 'diversity': 'di',
                 'ethnicity': 'et',
+                'evangelical': 'ev',
                 'foreclosures': 'fc',
                 'income': 'in',
                 'patchwork_types': 'pn',

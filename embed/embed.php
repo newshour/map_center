@@ -38,6 +38,7 @@ $STATIC_VIEWS_HAS_STATES = array(
     "diversity" => true,
     "ethnicity" => true,
     "foreclosures" => false,
+    "evangelical" => true,
     "income" => true,
     "patchwork_types" => false,
     "population_density" => true,
@@ -66,6 +67,10 @@ $STATIC_VIEWS_ATTRIB = array(
     "ethnicity" => array(
         "href" => "http://2010.census.gov/2010census/",
         "text" => "U.S. Census Bureau"
+    ),
+    "evangelical" => array(
+        "href" => "http://religions.pewforum.org/maps",
+        "text" => "Pew Forum on Religion and Public Life, 2007"
     ),
     "foreclosures" => array(
         "href" => "http://www.patchworknation.org/",
@@ -105,6 +110,7 @@ $MAP_TITLES = array(
     "bachelors" => "Education",
     "diversity" => "Diversity index",
     "ethnicity" => "Ethnicity: <span class=\"static_map_name\"></span></h1>",
+    "evangelical" => "Evangelical Protestants",
     "foreclosures" => "Foreclosures: <span class=\"static_map_name\"></span>",
     "income" => "Income",
     "patchwork_types" => "Patchwork Nation",
@@ -121,6 +127,7 @@ $SIDEBAR_TITLES = array(
     "bachelors" => "25-year-olds with a bachelor's degree or higher",
     "diversity" => "Diversity index <a href=\"#\" class=\"diversity_explain\">(?)</a>",
     "ethnicity" => "",
+    "evangelical" => "Population that affiliates with Evangelical Protestant tradition",
     "foreclosures" => "",
     "income" => "Median household income, 2006&ndash;2010",
     "patchwork_types" => "County types",
