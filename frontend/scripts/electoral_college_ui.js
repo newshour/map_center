@@ -886,12 +886,12 @@ $(document).one('coreInitialized', function() {
             $('#ec_detail_t').addClass('ec_detail_win');
         }
     };
-    mapStatus.eventBus.bind("change", function(event, status) {
+    mapStatus.on("change", function(event, status) {
         indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
     });
     
     // Color a state when it is updated.
-    mapStatus.eventBus.bind("change:state", function(event, status) {
+    mapStatus.on("change:state", function(event, status) {
         if (status.rep > 0 && status.dem == 0 && status.toss == 0) {
             nhmc.ctrl.setStateColors([status.name], 'red');
         } else if (status.rep == 0 && status.dem > 0 && status.toss == 0) {
@@ -1677,7 +1677,7 @@ $(document).one('coreInitialized', function() {
     // Let's kick things off!
     if (calculatorActive) {
         // Update fragment identifier every time map status changes
-        mapStatus.eventBus.bind("change", function(event, status) {
+        mapStatus.on("change", function(event, status) {
             nhmc.ctrl.hashParams({
                 "states": compressStateVotes(status.stateVotes)
             });
@@ -1691,7 +1691,7 @@ $(document).one('coreInitialized', function() {
         // map state.
         var apCompressed = $('#use-ap-projections').attr('href');
         apCompressed = apCompressed.substring(apCompressed.indexOf('=') + 1);
-        mapStatus.eventBus.bind("change", function(event, status) {
+        mapStatus.on("change", function(event, status) {
             var currentView = nhmc.ctrl.hashParams()["states"];
             if (currentView == apCompressed) {
                 $('#ap_projection_attribution').show();

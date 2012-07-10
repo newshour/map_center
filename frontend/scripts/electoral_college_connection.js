@@ -24,7 +24,7 @@
         socket.emit("changeVotes", status);
     };
 
-    mapStatus.eventBus.bind("change", broadcastChange);
+    mapStatus.on("change", broadcastChange);
 
     socket.on("changeVotes", function(data) {
         mapStatus.set(data);

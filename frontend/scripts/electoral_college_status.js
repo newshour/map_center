@@ -32,13 +32,34 @@
         stateVotes: {},
         totals: {}
     };
+    var eventBus = $("<div>");
     var changedStates;
 
-    /* eventBus
-     * A dedicated object for subscribing to map-related events:
-     *   "change" - triggered any time the state of the map changes
+    /* on
+     * Subscribe to map-related events.
+     * Arguments:
+     *   - eventName <string> An identifier for the type of event to listen for
+     *     (see event types below)
+     *   - handler <function> The function to be invoked when the event occurs.
+     * Events types:
+     *   - "change" - triggered any time the state of the map changes
+     *   - "change:state" - triggered each time a state changes (note that when
+     *      this event fires as part of a collection of concurrent state
+     *      changes, the status of the map will be completely set BEFORE these
+     *      events fire)
      */
-    mapStatus.eventBus = $("<div>");
+    mapStatus.on = $.proxy(eventBus.bind, eventBus);
+    /* off
+     * Unsubscribe from map-related events
+     * Arguments:
+     *   - eventName <string> An identifier for the type of event to list for
+     *   - handler <function> The function to be invoked when the event occurs.
+     *     If unspecified, all events bound to the supplied event type will be
+     *     unbound.
+     * Event types:
+     *   - (see listing in "on")
+     */
+    mapStatus.off = $.proxy(eventBus.unbind, eventBus);
     /* set
      * Set the status of the map. Re-calculates total vote counts; fires an
      * "change:state" event for each state followed by a single "change" event
@@ -82,7 +103,7 @@
             // Now that the totals are re-calculated, trigger an change event
             // for each state
             $.each(newStatus.stateVotes, function(stateName, votes) {
-                mapStatus.eventBus.trigger("change:state", {
+                eventBus.trigger("change:state", {
                     name: stateName,
                     dem: votes.dem,
                     rep: votes.rep,
@@ -93,7 +114,7 @@
         }
 
         if (statusChange) {
-            mapStatus.eventBus.trigger("change", mapStatus.get());
+            eventBus.trigger("change", mapStatus.get());
         }
     };
     /* changedStates
@@ -155,7 +176,7 @@
  *
  * // Updating the visualization...
  * // ...the map:
- * mapStatus.eventBus.bind("change:state", function(event, stateStatus) {
+ * mapStatus.on("change:state", function(event, stateStatus) {
  *     // Code consolidated from:
  *     //   - nebraskaHandler
  *     //   - maineHandler
@@ -164,13 +185,13 @@
  *
  * // ...the electoral results (numeric display)
  *
- * mapStatus.eventBus.bind("change", function(event, status) {
+ * mapStatus.on("change", function(event, status) {
  *     indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
  * });
  *
  * // Tracking map status in the document fragment
  *
- * mapStatus.eventBus.bind("change", function(event, status) {
+ * mapStatus.on("change", function(event, status) {
  *     window.location.hash = encodeURIComponent(JSON.stringify(status));
  * });
  */
