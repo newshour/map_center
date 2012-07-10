@@ -130,7 +130,7 @@ $SIDEBAR_TITLES = array(
     "social_security" => "Percent of households with Social Security income",
     "unemployment" => "",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",
-    "electoral_college" => "Electoral results"
+    "electoral_college" => "2012 prediction"
 );
 
 $map_view = (isset($_GET['map_view']) && array_search($_GET['map_view'], $VALID_VIEW_NAMES)) ? $_GET['map_view'] : 'us_all';
@@ -140,7 +140,7 @@ $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_M
 
 $instructions = null;  # Might use later
 if ($map_module == 'electoral_college') {
-    $instructions = '<span id="instructions_before">Click states to create your 2012 prediction<br /><span class="smaller">(2008 results shown)</span></span><span id="instructions_after">Your map<br /><span class="smaller">(Click states to change party)</span></span>';
+    $instructions = 'Click states to change party<br /><span class="smaller">(AP projection shown)</span>';
 }
 
 $map_title = (isset($MAP_TITLES[$map_module])) ? $MAP_TITLES[$map_module] : $MAP_TITLES[$static_maps_type];
@@ -281,6 +281,12 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                 ],
                 tooltipsEnabled: true
             };
+          <?php } elseif ($map_module == 'electoral_college') { ?>
+            $(document).ready(function() {
+                $('#map').one('click', function() {
+                    $('#instructions .smaller').css('visibility', 'hidden');
+                });
+            });
           <?php } ?>
         </script>
         <!-- Map Center core -->
@@ -375,15 +381,8 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                 <div id="legend_candidates"></div>
                               <?php } elseif ($map_module == 'electoral_college') { ?>
                                 <div id="ec_tally">
-                                    <div id="electoral_boot">
-                                        <div id="view_tabs">
-                                            <div class="view_tab_active">
-                                                <a href="" class="view_tab_option">2008</a>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div id="ec_party_d" class="ec_party">
-                                        <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                                        <h4 id="ec_name_d" class="ec_name">Obama</h4>
                                         <h4 id="ec_name_abbr_d" class="ec_name_abbr">Dem.</h4>
                                         <div id="ec_detail_d" class="ec_detail">
                                             <span id="ec_total_d" class="ec_total">0</span> electoral votes
@@ -391,7 +390,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         </div>
                                     </div>
                                     <div id="ec_party_r" class="ec_party">
-                                        <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                                        <h4 id="ec_name_r" class="ec_name">Romney</h4>
                                         <h4 id="ec_name_abbr_r" class="ec_name_abbr">Rep.</h4>
                                         <div id="ec_detail_r" class="ec_detail">
                                             <span id="ec_total_r" class="ec_total">0</span> electoral votes
@@ -406,7 +405,6 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                             <div id="ec_win_t" class="ec_win"><img src="../check.png" alt="Other party wins" /></div>
                                         </div>
                                     </div>
-                                    <div id="lower_chart"></div>
                                 </div>
                               <?php } ?>
                             </div>

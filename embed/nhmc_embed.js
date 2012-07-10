@@ -27,7 +27,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
         
         if (embedWidth <= 349) {
             if (mapModule == 'electoral_college') {
-                var sidebarHeight = 245;
+                var sidebarHeight = 185;
                 titleHeight += 35;
             }
             else if (mapModule == 'past_primaries') {var sidebarHeight = 210;}
@@ -41,7 +41,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 }
             }
         } else if (embedWidth <= 399) {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 235;}
+            if (mapModule == 'electoral_college') {var sidebarHeight = 175;}
             else if (mapModule == 'past_primaries') {var sidebarHeight = 340;}
             else {
                 if (staticMapsType == '08general') {
@@ -53,7 +53,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 }
             }
         } else if (embedWidth <= 599) {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 225;}
+            if (mapModule == 'electoral_college') {var sidebarHeight = 165;}
             else if (mapModule == 'past_primaries') {var sidebarHeight = 340;}
             else {
                 if (staticMapsType == '08general') {
@@ -65,7 +65,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 }
             }
         } else if (embedWidth <= 649) {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 220;}
+            if (mapModule == 'electoral_college') {var sidebarHeight = 160;}
             else if (mapModule == 'past_primaries') {var sidebarHeight = 470;}
             else {
                 if (staticMapsType == '08general') {
@@ -77,7 +77,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 }
             }
         } else if (embedWidth <= 840) {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 410;}
+            if (mapModule == 'electoral_college') {var sidebarHeight = 350;}
             else if (mapModule == 'past_primaries') {var sidebarHeight = 605;}
             else {
                 if (staticMapsType == '08general') {
@@ -89,7 +89,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 }
             }
         } else {
-            if (mapModule == 'electoral_college') {var sidebarHeight = 410;}
+            if (mapModule == 'electoral_college') {var sidebarHeight = 350;}
             else if (mapModule == 'past_primaries') {var sidebarHeight = 555;}
             else {
                 if (staticMapsType == '08general') {
@@ -154,6 +154,9 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
     }
     if (staticMapsIndex) {
         iframeSrc += "&static_maps_index=" + staticMapsIndex;
+    }
+    if (mapModule == 'electoral_college') {
+        iframeSrc += "#states=lrGSpRqGBlvGnqBlKp";
     }
     
     if (!justReturnMarkup) {
