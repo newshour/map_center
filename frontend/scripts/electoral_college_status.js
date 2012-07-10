@@ -3,11 +3,14 @@
     // Dependencies
     var $ = window.jQuery;
 
-    /* mapStatus
+    var ecMap = window.ecMap || {};
+    window.ecMap = ecMap;
+
+    /* ecMap.status
      * Public interface, aliased for convenience within this closure
      */
-    var mapStatus = window.mapStatus = {};
-    /* status
+    var status = ecMap.status = {};
+    /* _status
      * Private state object
      *     year <number> - The year to display. This allows for coloring
      *         according to the changing distribution of electoral votes
@@ -28,7 +31,7 @@
      *            toss: <number> - Number of tossup electoral votes
      *        }
      */
-    var status = {
+    var _status = {
         stateVotes: {},
         totals: {}
     };
@@ -48,7 +51,7 @@
      *      changes, the status of the map will be completely set BEFORE these
      *      events fire)
      */
-    mapStatus.on = $.proxy(eventBus.bind, eventBus);
+    status.on = $.proxy(eventBus.bind, eventBus);
     /* off
      * Unsubscribe from map-related events
      * Arguments:
@@ -59,21 +62,21 @@
      * Event types:
      *   - (see listing in "on")
      */
-    mapStatus.off = $.proxy(eventBus.unbind, eventBus);
+    status.off = $.proxy(eventBus.unbind, eventBus);
     /* set
      * Set the status of the map. Re-calculates total vote counts; fires an
      * "change:state" event for each state followed by a single "change" event
      * neweStatus <object> - Describes the new status of the map
-     *     year <number> - See description in "mapStatus" above
-     *     stateVotes <object> - See description in "mapStatus" above
+     *     year <number> - See description in "_status" above
+     *     stateVotes <object> - See description in "_status" above
      */
-    mapStatus.set = function(newStatus) {
+    status.set = function(newStatus) {
 
         var idx, len;
         var statusChange = false;
 
         if ("year" in newStatus) {
-            status.year = newStatus.year;
+            _status.year = newStatus.year;
             statusChange = true;
         }
 
@@ -81,23 +84,23 @@
 
         if ("stateVotes" in newStatus) {
 
-            status.totals.dem = status.totals.rep = status.totals.toss = 0;
+            _status.totals.dem = _status.totals.rep = _status.totals.toss = 0;
 
             $.each(newStatus.stateVotes, function(stateName, newVotes) {
 
                 $.each(newVotes, function(partyName, newVoteCount) {
                     // Initialization case
-                    if (!status.stateVotes[stateName] ||
-                        status.stateVotes[stateName][partyName] !== newVoteCount) {
+                    if (!_status.stateVotes[stateName] ||
+                        _status.stateVotes[stateName][partyName] !== newVoteCount) {
                         changedStates[stateName] = newVotes;
                         return false;
                     }
                 });
 
-                status.stateVotes[stateName] = newVotes;
-                status.totals.dem += newVotes.dem || 0;
-                status.totals.rep += newVotes.rep || 0;
-                status.totals.toss += newVotes.toss || 0;
+                _status.stateVotes[stateName] = newVotes;
+                _status.totals.dem += newVotes.dem || 0;
+                _status.totals.rep += newVotes.rep || 0;
+                _status.totals.toss += newVotes.toss || 0;
             });
 
             // Now that the totals are re-calculated, trigger an change event
@@ -114,16 +117,16 @@
         }
 
         if (statusChange) {
-            eventBus.trigger("change", mapStatus.get());
+            eventBus.trigger("change", status.get());
         }
     };
     /* changedStates
      * If any states were changed in the most recent call to "set", this method
      * will return the vote distribution of those states (formatted in the same
-     * manner as "mapStatus.stateVotes"). If no states were changed, this
+     * manner as "status.stateVotes"). If no states were changed, this
      * method will return false
      */
-    mapStatus.changedStates = function() {
+    status.changedStates = function() {
 
         var hasStates = false;
 
@@ -141,16 +144,16 @@
     /* get
      * Create a copy of the map state
      */
-    mapStatus.get = function() {
-        return $.extend(true, {}, status);
+    status.get = function() {
+        return $.extend(true, {}, _status);
     };
     /* modifyVotes
      * A convenience method for modifying the distribution of votes within
      * states, relative to their current value.
      */
-    mapStatus.modifyVotes = function(stateVoteDeltas) {
+    status.modifyVotes = function(stateVoteDeltas) {
 
-        var statesVotes = mapStatus.get().stateVotes;
+        var statesVotes = status.get().stateVotes;
 
         $.each(stateVoteDeltas, function(stateName, voteDelta) {
 
@@ -161,7 +164,7 @@
             stateVotes.toss += voteDelta.toss || 0;
         });
 
-        mapStatus.set({ stateVotes: statesVotes });
+        status.set({ stateVotes: statesVotes });
     };
 
 }(this));
@@ -176,7 +179,7 @@
  *
  * // Updating the visualization...
  * // ...the map:
- * mapStatus.on("change:state", function(event, stateStatus) {
+ * ecMap.status.on("change:state", function(event, stateStatus) {
  *     // Code consolidated from:
  *     //   - nebraskaHandler
  *     //   - maineHandler
@@ -185,15 +188,13 @@
  *
  * // ...the electoral results (numeric display)
  *
- * mapStatus.on("change", function(event, status) {
+ * ecMap.status.on("change", function(event, status) {
  *     indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
  * });
  *
  * // Tracking map status in the document fragment
  *
- * mapStatus.on("change", function(event, status) {
+ * ecMap.status.on("change", function(event, status) {
  *     window.location.hash = encodeURIComponent(JSON.stringify(status));
  * });
  */
-
-

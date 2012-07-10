@@ -50,7 +50,7 @@
                 // Update the contents of the URL copy dialog's input field
                 // when map state changes; also update Twitter and Facebook
                 // share buttons
-                mapStatus.on.bind("change", function(event, status) {
+                ecMap.status.on.bind("change", function(event, status) {
                     $('#copy-link-input').val(window.location.href);
                     $('a.twitter-link').attr('href', ['http://twitter.com/share?text=', encodeURIComponent("See my prediction for the election @NewsHour"), '&url=', encodeURIComponent(window.location.href)].join(''));
                     $('a.facebook-link').attr('href', ['http://www.facebook.com/sharer/sharer.php?u=', encodeURIComponent(window.location.href), '&t=', encodeURIComponent("See my prediction for the 2012 election")].join(''));

@@ -886,12 +886,12 @@ $(document).one('coreInitialized', function() {
             $('#ec_detail_t').addClass('ec_detail_win');
         }
     };
-    mapStatus.on("change", function(event, status) {
+    ecMap.status.on("change", function(event, status) {
         indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
     });
     
     // Color a state when it is updated.
-    mapStatus.on("change:state", function(event, status) {
+    ecMap.status.on("change:state", function(event, status) {
         if (status.rep > 0 && status.dem == 0 && status.toss == 0) {
             nhmc.ctrl.setStateColors([status.name], 'red');
         } else if (status.rep == 0 && status.dem > 0 && status.toss == 0) {
@@ -1001,7 +1001,7 @@ $(document).one('coreInitialized', function() {
         }
         
         // Set the new status.
-        mapStatus.set(newStatus);
+        ecMap.status.set(newStatus);
     };
     
     // Event handler for clicking on a tab (or tab sub-option) listing a year
@@ -1016,7 +1016,7 @@ $(document).one('coreInitialized', function() {
     // Event handlers and such for the calculator.
     if (calculatorActive) {
         // Grab a copy of the current status.
-        var currentStatus = mapStatus.get();
+        var currentStatus = ecMap.status.get();
         if (typeof(currentStatus.totals.dem) == 'undefined') {
             // There's no actual status object for us to manipulate. Let's put
             // together a dummy one.
@@ -1032,7 +1032,7 @@ $(document).one('coreInitialized', function() {
                     toss: 0
                 };
             }
-            mapStatus.set(currentStatus);
+            ecMap.status.set(currentStatus);
         }
         
         // Prep the dialogs for splitting states, including 
@@ -1134,7 +1134,7 @@ $(document).one('coreInitialized', function() {
             $('#nebraska_electoral').dialog('open');
             
             // Update dialog to reflect current status
-            var neVote = mapStatus.get().stateVotes["Nebraska"];
+            var neVote = ecMap.status.get().stateVotes["Nebraska"];
             if (neVote.rep >= 3) {
                 $('#nebraska_popular').val('r');
                 neVote.rep -= 3;
@@ -1173,7 +1173,7 @@ $(document).one('coreInitialized', function() {
             }
             
             var updateNebraska = function() {
-                var oldVotes = mapStatus.get().stateVotes["Nebraska"];
+                var oldVotes = ecMap.status.get().stateVotes["Nebraska"];
                 
                 // Figure out new votes.
                 var newVotes = {
@@ -1230,7 +1230,7 @@ $(document).one('coreInitialized', function() {
                 };
                 
                 // Update the map.
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             };
             
             $('#nebraska_popular').change(updateNebraska);
@@ -1241,7 +1241,7 @@ $(document).one('coreInitialized', function() {
             $('#maine_electoral').dialog('open');
             
             // Update dialog to reflect current status
-            var meVote = mapStatus.get().stateVotes["Maine"];
+            var meVote = ecMap.status.get().stateVotes["Maine"];
             if (meVote.rep >= 3) {
                 $('#maine_popular').val('r');
                 meVote.rep -= 3;
@@ -1268,7 +1268,7 @@ $(document).one('coreInitialized', function() {
             }
             
             var updateMaine = function() {
-                var oldVotes = mapStatus.get().stateVotes["Maine"];
+                var oldVotes = ecMap.status.get().stateVotes["Maine"];
                 
                 // Figure out new votes.
                 var newVotes = {
@@ -1312,7 +1312,7 @@ $(document).one('coreInitialized', function() {
                 };
                 
                 // Update the map.
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             };
             
             $('#maine_popular').change(updateMaine);
@@ -1321,7 +1321,7 @@ $(document).one('coreInitialized', function() {
         var genericHandler = function(e) {
             var stateName = this.nhmcData.state;
             var votesInPrediction = electoralVotes['2012'].states[stateName];
-            var stateVotes = mapStatus.get().stateVotes[stateName];
+            var stateVotes = ecMap.status.get().stateVotes[stateName];
             
             if (stateVotes.rep > 0 && stateVotes.dem == 0 && stateVotes.toss == 0) {
                 var stateVoteDeltas = {};
@@ -1330,7 +1330,7 @@ $(document).one('coreInitialized', function() {
                     dem: votesInPrediction,
                     toss: 0
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             } else if (stateVotes.rep == 0 && stateVotes.dem > 0 && stateVotes.toss == 0) {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1338,7 +1338,7 @@ $(document).one('coreInitialized', function() {
                     dem: -votesInPrediction,
                     toss: votesInPrediction
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             } else if (stateVotes.rep == 0 && stateVotes.dem == 0 && stateVotes.toss > 0) {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1346,7 +1346,7 @@ $(document).one('coreInitialized', function() {
                     dem: 0,
                     toss: -votesInPrediction
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             } else {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1354,7 +1354,7 @@ $(document).one('coreInitialized', function() {
                     dem: 0,
                     toss: 0
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             }
         };
         
@@ -1665,11 +1665,11 @@ $(document).one('coreInitialized', function() {
     };
     var parseHash = function() {
         var hashState = nhmc.ctrl.hashParams()['states'];
-        var currentState = compressStateVotes(mapStatus.get().stateVotes);
+        var currentState = compressStateVotes(ecMap.status.get().stateVotes);
         if (typeof(hashState) != 'undefined' && hashState != currentState) {
             var stateVotes = expandStateVotes(hashState);
             if (!$.isEmptyObject(stateVotes)) {
-                mapStatus.set({stateVotes: stateVotes});
+                ecMap.status.set({stateVotes: stateVotes});
             }
         }
     };
@@ -1677,7 +1677,7 @@ $(document).one('coreInitialized', function() {
     // Let's kick things off!
     if (calculatorActive) {
         // Update fragment identifier every time map status changes
-        mapStatus.on("change", function(event, status) {
+        ecMap.status.on("change", function(event, status) {
             nhmc.ctrl.hashParams({
                 "states": compressStateVotes(status.stateVotes)
             });
@@ -1691,7 +1691,7 @@ $(document).one('coreInitialized', function() {
         // map state.
         var apCompressed = $('#use-ap-projections').attr('href');
         apCompressed = apCompressed.substring(apCompressed.indexOf('=') + 1);
-        mapStatus.on("change", function(event, status) {
+        ecMap.status.on("change", function(event, status) {
             var currentView = nhmc.ctrl.hashParams()["states"];
             if (currentView == apCompressed) {
                 $('#ap_projection_attribution').show();
