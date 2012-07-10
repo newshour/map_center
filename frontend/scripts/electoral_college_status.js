@@ -1,5 +1,8 @@
 (function(window) {
 
+    // Dependencies
+    var $ = window.jQuery;
+
     /* mapStatus
      * Public interface, aliased for convenience within this closure
      */

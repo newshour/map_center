@@ -35,7 +35,6 @@
         <script type="text/javascript" src="lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
-        <script type="text/javascript" src="lib/map_center/modules/electoral_college_status.js"></script>
         <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
@@ -90,38 +89,21 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Electoral results</h1>
-            <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#" id="view_tab_more_shown" class="view_tab_option view_tab_keep_click">2008</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
-                    <ul id="view_tab_more_menu">
-                        <li style="display: none;"><a href="#" class="view_tab_option">2008</a></li>
-                        <li><a href="#" class="view_tab_option">2004</a></li>
-                        <li><a href="#" class="view_tab_option">2000</a></li>
-                        <li><a href="#" class="view_tab_option">1996</a></li>
-                        <li><a href="#" class="view_tab_option">1992</a></li>
-                        <li><a href="#" class="view_tab_option">1988</a></li>
-                        <li><a href="#" class="view_tab_option">1984</a></li>
-                        <li><a href="#" class="view_tab_option">1980</a></li>
-                        <li><a href="#" class="view_tab_option">1976</a></li>
-                        <li><a href="#" class="view_tab_option">1972</a></li>
-                        <li><a href="#" class="view_tab_option">1968</a></li>
-                        <li><a href="#" class="view_tab_option">1964</a></li>
-                    </ul>
-                </div>
-            </div>
+            <h1>Electoral calculator</h1>
+            <div id="view_tabs"></div>
         </div>
         <div id="content_area">
             
             <div id="sidebar">
                 <div class="sidebar-info">
-                    <h3 id="sidebar_title">Electoral results</h3>
+                    <h3 id="sidebar_title">2012 prediction</h3>
                     <div id="ec_tally">
-                        <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                        <h4 id="ec_name_d" class="ec_name">Obama</h4>
                         <div id="ec_detail_d" class="ec_detail">
                             <span id="ec_total_d" class="ec_total">0</span> electoral votes
                             <div id="ec_win_d" class="ec_win"><img src="check.png" alt="Democrats win" /></div>
                         </div>
-                        <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                        <h4 id="ec_name_r" class="ec_name">Romney</h4>
                         <div id="ec_detail_r" class="ec_detail">
                             <span id="ec_total_r" class="ec_total">0</span> electoral votes
                             <div id="ec_win_r" class="ec_win"><img src="check.png" alt="Republicans win" /></div>
@@ -139,7 +121,7 @@
             <div id="map" style="width:665px !important; padding-bottom:100px; padding-left:30px;"></div>
             <div id="chart"></div>
             <div class="clear"></div>
-            <h2 class="attribution">Source: AP</h2>
+            <h2 id="ap_projection_attribution" class="attribution">2012 Associated Press projection shown</h2>
         </div>
 
 </div>

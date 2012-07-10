@@ -1,5 +1,9 @@
 (function(window) {
 
+    // Dependencies
+    var io = window.io;
+    var mapStatus = window.mapStatus;
+
     var serviceURL = "http://localhost:8000";
     var socket = io.connect(serviceURL);
 
@@ -7,7 +11,7 @@
 
     var broadcastChange = function(event, status) {
         // Only broadcasters should emit change events to the backend
-        if (!isBroadcaster) {
+        if (!window.isBroadcaster) {
             return;
         }
 

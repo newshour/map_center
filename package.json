@@ -1,0 +1,11 @@
+{
+    "name": "newshour-map-center",
+    "author": "PBS Newshour",
+    "description": "Vote 2012 Map Center",
+    "version": "0.0.1",
+    "dependencies": {
+        "grunt": "0.3.11",
+        "socket.io": "0.9.6"
+    },
+    "engine": "node >= 0.6.18"
+}
