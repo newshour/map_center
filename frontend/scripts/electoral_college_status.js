@@ -130,10 +130,12 @@
 
         var hasStates = false;
 
-        $.each(changedStates, function() {
-            hasStates = true;
-            return false;
-        });
+        if (changedStates) {
+            $.each(changedStates, function() {
+                hasStates = true;
+                return false;
+            });
+        }
 
         if (!hasStates) {
             return false;
