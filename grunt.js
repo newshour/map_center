@@ -3,40 +3,40 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    pkg: '<json:package.json>',
+    pkg: "<json:package.json>",
     meta: {
-      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>; */'
+      banner: "/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
+        "<%= grunt.template.today('yyyy-mm-dd') %>\n" +
+        "<%= pkg.homepage ? '* ' + pkg.homepage + '\n' : '' %>" +
+        "* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author %>; */"
     },
     lint: {
       files: [
-        'grunt.js',
-        'frontend/scripts/electoral_college_connection.js',
-        'frontend/scripts/electoral_college_status.js'
+        "grunt.js",
+        "frontend/scripts/electoral_college_connection.js",
+        "frontend/scripts/electoral_college_status.js"
       ]
     },
     concat: {
       dist: {
         src: [
-            'frontend/scripts/lib/*.js',
-            'frontend/scripts/electoral_college_status.js',
-            'frontend/scripts/electoral_college_connection.js',
-            'frontend/scripts/electoral_college_ui.js'
+            "frontend/scripts/lib/*.js",
+            "frontend/scripts/electoral_college_status.js",
+            "frontend/scripts/electoral_college_connection.js",
+            "frontend/scripts/electoral_college_ui.js"
         ],
-        dest: 'frontend/dist/lib/map_center/modules/electoral_college.js'
+        dest: "frontend/dist/lib/map_center/modules/electoral_college.js"
       }
     },
     min: {
       dist: {
-        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'frontend/dist/lib/map_center/modules/electoral_college.js'
+        src: ["<banner:meta.banner>", "<config:concat.dist.dest>"],
+        dest: "frontend/dist/lib/map_center/modules/electoral_college.js"
       }
     },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint'
+      files: "<config:lint.files>",
+      tasks: "lint"
     },
     jshint: {
       options: {
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint concat min');
+  grunt.registerTask("default", "lint concat min");
   grunt.registerTask("dev", "lint concat");
 
 };
