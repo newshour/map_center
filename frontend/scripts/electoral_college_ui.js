@@ -1706,4 +1706,100 @@ $(document).one('coreInitialized', function() {
     } else {
         $('.view_tab_active .view_tab_option').first().click();
     }
+
+    // Temporary UI to demonstrate connection API and test broadcast behavior
+    // A back-end connection will only be made if the URL contains the
+    // "networked" query string parameter. If that parameter's value is
+    // "broadcaster", the UI for toggling broadcaster status will be displayed
+    (function() {
+        var match = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
+        var $sidebar;
+
+        // Do not initiate a connection if the pattern does not match
+        if (!match) {
+            return;
+        }
+
+        // Initiate a connection
+        ecMap.connection.init();
+        $sidebar = $("#sidebar");
+
+        // Do not create the broadcaster control UI if the matched pattern does
+        // not contain the string "broadcaster"
+        if (match[1] === "broadcaster") {
+            $sidebar.append(createBroadcasterUI());
+        } else {
+            $sidebar.append(createConsumerUI());
+        }
+
+        function createConsumerUI() {
+
+            var $ui = {
+                container: $("<div class='consumer-control'>"),
+                status: $("<span class='status'></span>"),
+                buttons: {
+                    showLive: $("<button>Connect LIVE to PBS</button>")
+                }
+            };
+
+            $ui.container.append($ui.status, $ui.buttons.showLive);
+
+            $ui.buttons.showLive.click(function() {
+                // detach map click handlers
+                $ui.buttons.showLive.hide();
+                $ui.status.text("Now showing live from PBS!");
+                ecMap.connection.on("changeVotes.updateMap", function(event, status) {
+                    ecMap.status.set(status);
+                });
+            });
+
+            $("#map svg").click(function() {
+                // attach map click handlers
+                $ui.buttons.showLive.show();
+                $ui.status.text("Now editing.");
+                ecMap.connection.off(".updateMap");
+            });
+
+            $ui.buttons.showLive.trigger("click");
+
+            return $ui.container;
+        }
+
+        // Create the broadcaster control UI
+        function createBroadcasterUI() {
+
+            var $ui = {
+                container: $("<div class='broadcast-control'>"),
+                status: $("<span>"),
+                buttons: {
+                    start: $("<button class='broadcast-start'>Start Broadcasting</button>"),
+                    stop: $("<button class='broadcast-stop'>Stop Broadcasting</button>")
+                }
+            };
+
+            $ui.container.append($ui.status, $ui.buttons.start, $ui.buttons.stop);
+            $ui.buttons.stop.hide();
+
+            $ui.buttons.start.click(function() {
+                $ui.buttons.start.hide();
+                $ui.buttons.stop.show();
+                ecMap.connection.startBroadcast();
+            });
+            $ui.buttons.stop.click(function() {
+                $ui.buttons.stop.hide();
+                $ui.buttons.start.show();
+                ecMap.connection.stopBroadcast();
+            });
+
+            ecMap.connection.on("disconnect", function() {
+                $ui.status.css("color", "#a00").text("Disconnected");
+            });
+            ecMap.connection.on("connect", function() {
+                $ui.status.css("color", "#000").text("Connected!");
+            });
+
+            return $ui.container;
+        }
+
+    }());
 });
