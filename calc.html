@@ -165,8 +165,8 @@
             <a class="facebook-link" style="margin-left:-8px; margin-right:2px;" href="#">F</a>
             <a class="twitter-link" href="#"   style="margin-right:2px;" data-lang="en">T</a>
 
-            <a class="copy-link"  data-toggle="modal" href="#myModal">Copy URL</a>
-            <div class="modal hide" id="myModal">
+            <a class="copy-link"  data-toggle="modal" href="#copy-url-modal">Copy URL</a>
+            <div class="modal hide" id="copy-url-modal">
                       <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3>Copy the URL Below to Share Your 2012 Prediction</h3>
@@ -286,7 +286,7 @@
 <script type="text/javascript">
 		
         $(document).ready(function(){
-	$('#myModal').modal(options),
+	$('#copy-url-modal').modal({show: false}),
 	$('.dropdown-toggle').dropdown()
 });</script>
 <!-- Start Quantcast tag -->
