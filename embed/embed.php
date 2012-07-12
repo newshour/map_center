@@ -343,7 +343,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                             <div id="map_aspect_ratio_enforcer"></div>
                             <div id="map"></div>
                         </div>
-                        <div id="sidebar">
+                        <div id="sidebar" class="cf">
                             <h3 id="sidebar_title" class="static_map_name"><?php echo $sidebar_title; ?></h3>
                             <div id="legend">
                                 <div id="legend_templates">
@@ -368,7 +368,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <img class="candidate_image" src="../candidate_placeholder_50x75.png" width="66" height="69" />
                                         <div class="candidate_votes"></div>
                                         <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span><span class="candidate_vote_count_units"> votes</span></div>
-                                        <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                        <div class="candidate_won"><img src="../lib/images/won.png" /></div>
                                         <div class="clear"></div>
                                     </div>
                                     <div class="candidate_small">
