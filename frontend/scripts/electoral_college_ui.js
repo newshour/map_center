@@ -1791,6 +1791,9 @@ $(document).one('coreInitialized', function() {
                 ecMap.connection.stopBroadcast();
             });
 
+            ecMap.connection.on("changeVotes.updateMap", function(event, status) {
+                ecMap.status.set(status);
+            });
             ecMap.connection.on("disconnect", function() {
                 $ui.status.css("color", "#a00").text("Disconnected");
             });
