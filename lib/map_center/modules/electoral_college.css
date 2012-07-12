@@ -210,6 +210,13 @@ a.copy-link:active
 	border-radius:5px;
 }
 
+h2.attribution {
+    color: #666;
+    font-size: 10pt;
+    padding: 0 0 0 25px;
+}
+#ap_projection_attribution {display: none;}
+
 .reset
 {
 	background-color:#d7d5d5;

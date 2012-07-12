@@ -30,7 +30,7 @@
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
             
-            // Setting up dialog boxes
+            // Other useful things for just this page
             $(document).ready(function() {
                 // Update the contents of the URL copy dialog's input field
                 // when map state changes
@@ -164,7 +164,7 @@
             <h3 id="sidebar_title">Reset Map</h3>
             <div class="dropdown btn-group" id="menu1"> <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#"> Choose Map <span class="caret"></span> </a>
                       <ul class="dropdown-menu" style="right: -10px; left: auto; padding:10px;">
-                                      <li><a href="calc.html#states=lrGSpRqGBlvGnqBlKp">2012 AP Projections</a></li>
+                                      <li><a href="calc.html#states=lrGSpRqGBlvGnqBlKp" id="use-ap-projections">2012 AP Projections</a></li>
 
       <li class="divider"></li>
                 <li><a href="calc.html#states=lqGCqBqGBlGGCqBlGp">2008 Election Results</a></li>
@@ -187,6 +187,7 @@
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
+            <h2 id="ap_projection_attribution" class="attribution">2012 Associated Press projection shown</h2>
         </div>
         
 
