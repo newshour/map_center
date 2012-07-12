@@ -75,6 +75,11 @@ path  {cursor: pointer;}
     clear: both;
     padding-bottom: 10px;
     padding-top: 10px;
+	background-image:url('../images/map-bg3.png');
+	background-repeat:repeat;
+	 -webkit-box-shadow:inset 0px 0px 6px 0px rgba(180, 180, 144, 0.6); /* Saf3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+          box-shadow:inset 0px 0px 6px 0px rgba(180, 180, 144, 0.6); /* Opera 10.5, IE9, FF4+, Chrome 6+, iOS 5 */
+
 }
     #instructions {
         color: #666;
@@ -90,8 +95,13 @@ path  {cursor: pointer;}
 }
 
 #sidebar {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    
+    width: 185px;
+	 float: right;
+}
+
+.sidebar-info {background-color: #fff;
+    border: 1px solid #b7b7b7;
     border-right: none;
     -webkit-border-bottom-left-radius: 5px;
     -moz-border-radius-bottomleft: 5px;
@@ -99,10 +109,13 @@ path  {cursor: pointer;}
     -webkit-border-top-left-radius: 5px;
     -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
-    float: right;
-    margin: 0;
+	background-image:url('../images/sidebar-info-bg.png');
+	background-repeat:repeat-x;
+    margin: 0 0 15px 0;
     padding: 0 10px 0 20px;
-    width: 185px;
+	-webkit-box-shadow: 0px 1px 0px rgba(50, 50, 50, 0.57);
+-moz-box-shadow:    0px 1px 0px rgba(50, 50, 50, 0.57);
+box-shadow:         0px 1px 0px rgba(50, 50, 50, 0.57);
 }
     #sidebar_title {
         background-color: #eee;
@@ -389,3 +402,4 @@ position:relative;
         text-align: center;
     }
     #tooltip_close, #tooltip_automated_close {float: right;}
+
