@@ -32,38 +32,14 @@
             
             // Setting up dialog boxes
             $(document).ready(function() {
-                // Let user copy current URL
-                // Create dialog box and don't open it
-                $('#ec-dialog-copyurl').dialog({autoOpen: false});
-                // Keep track of it for later
-                nhmc.cleanup.activeDialogs.push($('#ec-dialog-copyurl'));
-                // When we click the link to open it:
-                $('#ec-share-copyurl').click(function() {
-                    // Close all open dialog boxes (so we don't stack them on
-                    // top of each other)
-                    nhmc.cleanup.closeDialogs();
-                    // Actually open the box we want to open
-                    $('#ec-dialog-copyurl').dialog('open');
-                    // Update the contents of the text input
-                    $('#ec-dialog-copyurl-url').val(window.location.href);
-                    return false;
+                // Update the contents of the URL copy dialog's input field
+                // when map state changes
+                mapStatus.eventBus.bind("change", function(event, status) {
+                    $('#copy-link-input').val(window.location.href);
                 });
                 // Highlight entire text input when clicked
-                $('#ec-dialog-copyurl-url').click(function() {
+                $('#copy-link-input').click(function() {
                     $(this).select();
-                });
-                
-                // Let user pick a different starting map
-                $('#ec-dialog-start-over').dialog({autoOpen: false});
-                nhmc.cleanup.activeDialogs.push($('#ec-dialog-start-over'));
-                $('#ec-start-over').click(function() {
-                    nhmc.cleanup.closeDialogs();
-                    $('#ec-dialog-start-over').dialog('open');
-                    return false;
-                });
-                // Change highlighted states when dropdown menu changes
-                $('#ec-start-over-options').change(function() {
-                    nhmc.ctrl.hashParams({states: $(this).val()});
                 });
             });
         //]]></script>
@@ -178,7 +154,7 @@
                 <h3>Copy the URL Below to Share Your 2012 Prediction</h3>
               </div>
                       <div class="modal-body">
-                <pre><code>http://www.pbs.org/newshour/vote2012/map/calc.html#states=lGGqpCGGCBqGmqBBCF</code></pre>
+                <input type="text" id="copy-link-input" name="copy-link-input" />
               </div>
                       <div class="modal-footer"> <a href="#" class="btn" data-dismiss="modal">Close</a> </div>
                     </div>
