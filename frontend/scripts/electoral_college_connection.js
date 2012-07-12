@@ -8,21 +8,28 @@
     var connection = ecMap.connection = {};
 
     var eventBus = $("<div>");
+    var connectionRequested = false;
     var socket = new io.Socket({
         host: "localhost",
         port: 8000,
         // The connection status will be managed elsewhere. This allows the
         // script to be included without necessarily incurring the network
         // overhead of establishing a connection.
-        "auto connect": false
+        "auto connect": connectionRequested
     });
+    // Default socket namespace
+    var socketNs = socket.of("");
 
     // Forward the following socket.io events for use by the UI. These events
-    // are described below
-    $.each(["connect", "connecting", "disconnect", "connect_failed", "error",
+    // are detailed in the description of the "on" method below
+    $.each(["changeVotes", "connect", "connecting", "disconnect",
+        "connect_failed", "error",
         "reconnect", "reconnecting", "reconnect_failed"],
         function(idx, eventName) {
-            socket.on(eventName, function() { eventBus.trigger(eventName); });
+            socketNs.on(eventName, function() {
+                eventBus.trigger.apply(eventBus,
+                    [eventName].concat(Array.prototype.slice.call(arguments)));
+            });
         });
 
     // _broadcastChange
@@ -36,38 +43,33 @@
             return;
         }
 
-        socket.of("").emit("changeVotes", status);
+        socketNs.emit("changeVotes", status);
     };
 
-    // open
-    // Initiate a connection to the backend service and update the state of the
-    // map as change information arrives
-    // Arguments:
-    //   - options <object> A collection of connection-related options:
-    //     - isBroadcaster <boolean> An optional flag that, when set high, will
-    //       cause the client to emit local change events to the backend (which
-    //       will be forwarded to all other active clients)
-    connection.open = function(options) {
+    /* init
+     * Initiate a connection to the backend service
+     */
+    connection.init = function(options) {
 
-        // Ensure that only one connection is open at any time
-        connection.close();
+        if (!connectionRequested) {
 
-        socket.connect();
-
-        socket.of("").on("changeVotes", ecMap.status.set);
-
-        if (options && options.isBroadcaster) {
-            ecMap.status.on("change", connection._broadcastChange);
+            socket.connect();
+            connectionRequested = true;
         }
     };
 
-    // close
-    // Disconnect from the backend service
-    connection.close = function() {
+    /* startBroadcast
+     * Emit map status changes to the backend
+     */
+    connection.startBroadcast = function() {
+        ecMap.status.on("change", connection._broadcastChange);
+    };
+
+    /* stopBroadcast
+     * Prevent map status changes from being emitted to the backend
+     */
+    connection.stopBroadcast = function() {
         ecMap.status.off("change", connection._broadcastChange);
-        if (socket.connected) {
-            socket.disconnect();
-        }
     };
 
     /* on
