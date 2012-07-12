@@ -30,12 +30,30 @@
             // Namespace factory
             var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
             
-            // Other useful things for just this page
+            // Share buttons!
             $(document).ready(function() {
+                // Open contents in new window
+                $('a.facebook-link').click(function() {
+                    window.open(
+                        $(this).attr('href'), 'sharer',
+                        'toolbar=0,status=0,width=626,height=436'
+                    );
+                    return false;
+                });
+                $('a.twitter-link').click(function() {
+                    window.open(
+                        $(this).attr('href'), 'sharer',
+                        'toolbar=0,status=0,width=626,height=436'
+                    );
+                    return false;
+                });
                 // Update the contents of the URL copy dialog's input field
-                // when map state changes
+                // when map state changes; also update Twitter and Facebook
+                // share buttons
                 mapStatus.eventBus.bind("change", function(event, status) {
                     $('#copy-link-input').val(window.location.href);
+                    $('a.twitter-link').attr('href', 'http://twitter.com/share?text=' + encodeURIComponent("See my prediction for the election @NewsHour " + window.location.href));
+                    $('a.facebook-link').attr('href', ['http://www.facebook.com/sharer/sharer.php?u=', encodeURIComponent(window.location.href), '&t=', encodeURIComponent("See my prediction for the 2012 election")].join(''));
                 });
                 // Highlight entire text input when clicked
                 $('#copy-link-input').click(function() {
