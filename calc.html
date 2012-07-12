@@ -17,7 +17,7 @@
 <meta property="og:title" content="PBS NewsHour Map Center | Electoral Calculator" /> 
 		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
 		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js"></script>
         <script type="text/javascript" src="lib/highcharts.js"></script>
@@ -74,11 +74,15 @@
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
         <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
+                <script type="text/javascript" src="lib/calc-elements/js/bootstrap.js"></script>
+
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/add2home/add2home.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
+                <link rel="stylesheet" type="text/css" href="lib/calc-elements/css/bootstrap.css" />
+
 </head>
 <body>
 		<div id="head-pbs">
@@ -137,8 +141,7 @@
             <div id="view_tabs"></div>
         </div>
         <div id="content_area">
-            <h2 id="instructions">Click states to change party</h2>
-            <div id="sidebar">
+<h2 id="instructions"> <span id="instructions_before">Click states to create your 2012 prediction</span> <span id="instructions_after">Click states to change party</span> </h2>            <div id="sidebar">
                 <div class="sidebar-info">
                     <h3 id="sidebar_title">2012 prediction</h3>
                     <div id="ec_tally">
@@ -159,49 +162,57 @@
                         </div>
                     </div>
                 </div>
-                <div class="sidebar-info">
-                    <h3>Share</h3>
-                    <ul>
-                        <li><a href="#" id="ec-share-facebook">Facebook</a></li>
-                        <li><a href="#" id="ec-share-twitter">Twitter</a></li>
-                        <li><a href="#" id="ec-share-copyurl">Copy URL</a></li>
-                    </ul>
-                </div>
-                <div class="sidebar-info">
-                    <h3>Start over</h3>
-                    <ul>
-                        <li><a href="#" id="ec-start-over">Start over</a></li>
-                    </ul>
-                </div>
+                
                 <input name="map_view" id="map_view" type="hidden" value="us_all" />
-            </div>
+                      <!--End main sidebar-info -->
+                  <div class="sidebar-info" >
+            <h3 id="sidebar_title">Share Your Map</h3>
+            <div style="min-height:35px; padding-top:10px;">
+            <a class="facebook-link" style="margin-left:-8px; margin-right:2px;" href="#">F</a>
+            <a class="twitter-link" href="#"   style="margin-right:2px;" data-lang="en">T</a>
+
+            <a class="copy-link"  data-toggle="modal" href="#myModal">Copy URL</a>
+            <div class="modal hide" id="myModal">
+                      <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>Copy the URL Below to Share Your 2012 Prediction</h3>
+              </div>
+                      <div class="modal-body">
+                <pre><code>http://www.pbs.org/newshour/vote2012/map/calc.html#states=lGGqpCGGCBqGmqBBCF</code></pre>
+              </div>
+                      <div class="modal-footer"> <a href="#" class="btn" data-dismiss="modal">Close</a> </div>
+                    </div>
+                    </div>
+          </div>
+                  <div class="sidebar-info reset">
+            <h3 id="sidebar_title">Reset Map</h3>
+            <div class="dropdown btn-group" id="menu1"> <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#"> Choose Map <span class="caret"></span> </a>
+                      <ul class="dropdown-menu" style="right: -10px; left: auto; padding:10px;">
+                                      <li><a href="calc.html#states=lrGSpRqGBlvGnqBlKp">2012 AP Projections</a></li>
+
+      <li class="divider"></li>
+                <li><a href="calc.html#states=lqGCqBqGBlGGCqBlGp">2008 Election Results</a></li>
+                <li><a href="calc.html#states=lpGmplqGBlmClqBlCp">2004 Election Results</a></li>
+                <li><a href="calc.html#states=lpGmpBqGBllGlqBlCp">2000 Election Results</a></li>
+                <li><a href="calc.html#states=mFGCpCGGClqGmGBBCF">1996 Election Results</a></li>
+                <li><a href="calc.html#states=lGGqpCGGCBqGmqBBCF">1992 Election Results</a></li>
+                <li><a href="calc.html#states=llmmlBlpBllmlpBlmF">1998 Election Results</a></li>
+                <li><a href="calc.html#states=llmlllllBlllllllll">1994 Election Results</a></li>
+                <li><a href="calc.html#states=llmqlllBBlllllBllB">1990 Election Results</a></li>
+                <li><a href="calc.html#states=BBqGlmBFGllmCmFFlF">1986 Election Results</a></li>
+                <li><a href="calc.html#states=llmllllpllllllllll">1982 Election Results</a></li>
+                <li><a href="calc.html#states=RBCullWGJllmlmBpmB">1978 Election Results</a></li>
+                <li><a href="calc.html#states=pGGCGGqGCGGGGGCGGG">1974 Election Results</a></li>
+                
+              </ul>
+                    </div>
+          </div>
+                </div>
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
         </div>
-        <div id="ec-dialog-copyurl" title="Copy URL">
-            <p>Share this URL with your friends:</p>
-            <input type="text" id="ec-dialog-copyurl-url" name="ec-dialog-copyurl-url" />
-        </div>
-        <div id="ec-dialog-start-over" title="Choose a new starting point">
-            <p>Pick a map to start with:</p>
-            <select id="ec-start-over-options">
-                <option value="000000000000000000">Blank</option>
-                <option value="lrGSpRqGBlvGnqBlKp">AP projections</option>
-                <option value="lqGCqBqGBlGGCqBlGp">2008 election</option>
-                <option value="lpGmplqGBlmClqBlCp">2004 election</option>
-                <option value="lpGmpBqGBllGlqBlCp">2000 election</option>
-                <option value="mFGCpCGGClqGmGBBCF">1996 election</option>
-                <option value="lGGqpCGGCBqGmqBBCF">1992 election</option>
-                <option value="llmmlBlpBllmlpBlmF">1988 election</option>
-                <option value="llmlllllBlllllllll">1984 election</option>
-                <option value="llmqlllBBlllllBllB">1980 election</option>
-                <option value="BBqGlmBFGllmCmFFlF">1976 election</option>
-                <option value="llmllllpllllllllll">1972 election</option>
-                <option value="RBCullWGJllmlmBpmB">1968 election</option>
-                <option value="pGGCGGqGCGGGGGCGGG">1964 election</option>
-            </select>
-        </div>
+        
 
 </div>
 <div id="featured-content" class="clearfix">
@@ -275,15 +286,14 @@
 	</footer>
 </div> <!--! end of #container -->
 
-<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
+<!-- ClickTale Bottom part -->
 
-<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
-
-</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
-
-</script><!-- ClickTale end of Bottom part -->
-
-
+<script type="text/javascript">
+		
+        $(document).ready(function(){
+	$('#myModal').modal(options),
+	$('.dropdown-toggle').dropdown()
+});</script>
 <!-- Start Quantcast tag -->
 <script type="text/javascript">
 _qoptions={
