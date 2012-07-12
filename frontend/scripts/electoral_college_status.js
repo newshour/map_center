@@ -73,19 +73,20 @@
     status.set = function(newStatus) {
 
         var idx, len;
-        var statusChange = false;
+        // Flag used to determine whether a "change" event should be fired at
+        // the end of this method
+        var hasChanged = false;
 
         if ("year" in newStatus) {
             _status.year = newStatus.year;
-            statusChange = true;
+            hasChanged = true;
         }
 
         changedStates = {};
 
         if ("stateVotes" in newStatus) {
 
-            _status.totals.dem = _status.totals.rep = _status.totals.toss = 0;
-
+            // Identify and update changed states
             $.each(newStatus.stateVotes, function(stateName, newVotes) {
 
                 $.each(newVotes, function(partyName, newVoteCount) {
@@ -93,19 +94,25 @@
                     if (!_status.stateVotes[stateName] ||
                         _status.stateVotes[stateName][partyName] !== newVoteCount) {
                         changedStates[stateName] = newVotes;
+                        _status.stateVotes[stateName] = newVotes;
+                        hasChanged = true;
                         return false;
                     }
                 });
 
-                _status.stateVotes[stateName] = newVotes;
-                _status.totals.dem += newVotes.dem || 0;
-                _status.totals.rep += newVotes.rep || 0;
-                _status.totals.toss += newVotes.toss || 0;
+            });
+
+            // Re-calculate totals
+            _status.totals.dem = _status.totals.rep = _status.totals.toss = 0;
+            $.each(_status.stateVotes, function(stateName, voteCounts) {
+                _status.totals.dem += voteCounts.dem || 0;
+                _status.totals.rep += voteCounts.rep || 0;
+                _status.totals.toss += voteCounts.toss || 0;
             });
 
             // Now that the totals are re-calculated, trigger an change event
             // for each state
-            $.each(newStatus.stateVotes, function(stateName, votes) {
+            $.each(changedStates, function(stateName, votes) {
                 eventBus.trigger("change:state", {
                     name: stateName,
                     dem: votes.dem,
@@ -113,10 +120,45 @@
                     toss: votes.toss
                 });
             });
-            statusChange = true;
         }
 
-        if (statusChange) {
+        if (hasChanged) {
+            eventBus.trigger("change", status.get());
+        }
+    };
+    status.reset = function() {
+
+        // Flag used to determine whether a "change" event should be fired at
+        // the end of this method
+        var hasChanged = false;
+
+        if ("year" in _status) {
+            delete _status.year;
+            hasChanged = true;
+        }
+
+        if (_status.stateVotes) {
+
+            changedStates = $.extend(true, {}, _status.stateVotes);
+
+            $.each(_status.stateVotes, function(stateName, votes) {
+                hasChanged = true;
+                delete _status.stateVotes[stateName];
+            });
+
+            _status.totals.dem = _status.totals.rep = _status.totals.toss = 0;
+
+            $.each(changedStates, function(stateName, votes) {
+                eventBus.trigger("change:state", {
+                    name: stateName,
+                    dem: 0,
+                    rep: 0,
+                    toss: 0
+                });
+            });
+        }
+
+        if (hasChanged) {
             eventBus.trigger("change", status.get());
         }
     };
