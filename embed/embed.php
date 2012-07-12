@@ -330,7 +330,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
             <div id="main" role="main">
                 <div id="content">
                     <div id="emheader" class="cf">
-    	                <div id="emlogo"><img src="logo.png"></div>
+    	                <div id="emlogo"><a href="http://www.pbs.org/newshour/vote2012/map/"><img src="logo.png"></a></div>
                     </div>
                     <div id="view_info">
                         <h1><?php echo $map_title; ?></h1>
