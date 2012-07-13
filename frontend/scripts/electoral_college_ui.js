@@ -1720,16 +1720,29 @@ $(document).one('coreInitialized', function() {
             return;
         }
 
+        ecMap.connection.on("error", unavailableHandler);
+        ecMap.connection.on("connect", availableHandler);
+
         // Initiate a connection
         ecMap.connection.init();
         $sidebar = $("#sidebar");
 
-        // Do not create the broadcaster control UI if the matched pattern does
-        // not contain the string "broadcaster"
-        if (match[1] === "broadcaster") {
-            $sidebar.append(createBroadcasterUI());
-        } else {
-            $sidebar.append(createConsumerUI());
+        function unavailableHandler() {
+            $sidebar.append("The backend is not available at the moment.");
+        }
+
+        function availableHandler() {
+
+            ecMap.connection.off("error", unavailableHandler);
+            ecMap.connection.off("connect", availableHandler);
+
+            // Do not create the broadcaster control UI if the matched pattern does
+            // not contain the string "broadcaster"
+            if (match[1] === "broadcaster") {
+                $sidebar.append(createBroadcasterUI());
+            } else {
+                $sidebar.append(createConsumerUI());
+            }
         }
 
         function createConsumerUI() {
@@ -1758,6 +1771,22 @@ $(document).one('coreInitialized', function() {
                 $ui.buttons.showLive.show();
                 $ui.status.text("Now editing.");
                 ecMap.connection.off(".updateMap");
+            });
+
+            ecMap.connection.on("reconnecting", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Connection lost. Reconnecting...");
+            });
+            ecMap.connection.on("reconnect_failed", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Unable to reconnect.");
+            });
+            ecMap.connection.on("connect", function() {
+                $ui.status
+                    .css("color", "#000")
+                    .text("Connected!");
             });
 
             $ui.buttons.showLive.trigger("click");
@@ -1794,11 +1823,20 @@ $(document).one('coreInitialized', function() {
             ecMap.connection.on("changeVotes.updateMap", function(event, status) {
                 ecMap.status.set(status);
             });
-            ecMap.connection.on("disconnect", function() {
-                $ui.status.css("color", "#a00").text("Disconnected");
+            ecMap.connection.on("reconnecting", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Connection lost. Reconnecting...");
+            });
+            ecMap.connection.on("reconnect_failed", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Unable to reconnect.");
             });
             ecMap.connection.on("connect", function() {
-                $ui.status.css("color", "#000").text("Connected!");
+                $ui.status
+                    .css("color", "#000")
+                    .text("Connected!");
             });
 
             return $ui.container;
