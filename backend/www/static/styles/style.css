@@ -1,0 +1,7 @@
+.map-status .status {
+    height: 200px;
+    overflow-y: auto;
+}
+.broadcast-listitem .delete {
+    cursor: pointer;
+}
