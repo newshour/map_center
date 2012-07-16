@@ -12,7 +12,7 @@ var scheduleFile = {
     handle: "backend/schedule.json"
 };
 // Global array containing all known broadcast events
-var broadcastEvents;
+var broadcastSchedule;
 
 function serveStaticFile(req, res) {
     var resourceName = url.parse(req.url).path;
@@ -31,6 +31,26 @@ function serveStaticFile(req, res) {
             res.writeHead(200);
             res.end(data);
         });
+}
+
+// Create a "deep" copy of the schedule that may be modified without effecting
+// the in-memory instance (this version should not be updated until the
+// schedule has successfully been stored in the persistence layer)
+function copySchedule(schedule) {
+    return _.map(schedule, function(event) {
+        return _.clone(event);
+    });
+}
+
+// Save the schedule to a persistence layer (in this case, a flat fire)
+function saveSchedule(schedule, callback) {
+    fs.writeFile(scheduleFile.handle, JSON.stringify(schedule), function(err) {
+        if (err) {
+            throw err;
+        }
+        broadcastSchedule = schedule;
+        callback(broadcastSchedule);
+    });
 }
 
 function generateRecordingFileName() {
@@ -52,14 +72,14 @@ try {
     scheduleFile.stats = fs.lstatSync(scheduleFile.handle);
 } catch(err) {
     // File does not exist. Create an empty collection in memory
-    broadcastEvents = [];
+    broadcastSchedule = [];
 }
 
 if (scheduleFile.stats && scheduleFile.stats.isFile()) {
-    broadcastEvents = JSON.parse(fs.readFileSync(scheduleFile.handle));
+    broadcastSchedule = JSON.parse(fs.readFileSync(scheduleFile.handle));
 }
 
-var latestEvent = _.chain(broadcastEvents)
+var latestEvent = _.chain(broadcastSchedule)
     .sortBy(function(event) { return event.id; })
     .last().value();
 var eventCounter = 0;
@@ -76,10 +96,9 @@ app.get("/index.html", serveStaticFile);
 app.get("/static/*", serveStaticFile);
 
 app.param("eventId", function(req, res, next) {
-    var broadcastEvent = _.find(broadcastEvents, function(broadcastEvent) {
+    var broadcastEvent = _.find(broadcastSchedule, function(broadcastEvent) {
         return broadcastEvent.id === req.params.eventId;
     });
-    console.log(broadcastEvent, broadcastEvents);
     if (!broadcastEvent) {
         return next(new Error("failed to find broadcast event"));
     }
@@ -91,7 +110,7 @@ app.get("/broadcastevent/:eventId?", function(req, res) {
     if (req.broadcastEvent) {
         res.json(req.broadcastEvent);
     } else {
-        res.json( broadcastEvents );
+        res.json(broadcastSchedule);
     }
 });
 app.post("/broadcastevent", function(req, res) {
@@ -99,29 +118,44 @@ app.post("/broadcastevent", function(req, res) {
         id: ++eventCounter + "",
         name: req.body.name
     };
-    broadcastEvents.push(newEvent);
-    res.json(newEvent);
+    var newSchedule = copySchedule(broadcastSchedule);
+    newSchedule.push(newEvent);
+    saveSchedule(newSchedule, function(savedSchedule) {
+        res.json(savedSchedule);
+    });
 });
 app.put("/broadcastevent/:eventId", function(req, res) {
-    broadcastEvents.push({
+    var newSchedule = copySchedule(broadcastSchedule);
+    var newEvent = {
         id: ++eventCounter + ""
+    };
+    newSchedule.push(newEvent);
+    saveSchedule(newSchedule, function(savedSchedule) {
+        res.json(newEvent);
     });
 });
 app.del("/broadcastevent/:eventId", function(req, res) {
 
+    var newSchedule;
     var idx;
 
-    if (req.broadcastEvent) {
-
-        idx = _.indexOf(broadcastEvents, req.broadcastEvent);
-
-        broadcastEvents.splice(idx, 1);
-        res.statusCode = 200;
-    } else {
+    if (!req.broadcastEvent) {
         res.statusCode = 404;
+        res.end();
     }
 
-    res.end();
+    newSchedule = copySchedule(broadcastSchedule);
+    idx = _.chain(newSchedule)
+        .pluck("id")
+        .indexOf(req.broadcastEvent.id)
+        .value();
+
+    newSchedule.splice(idx, 1);
+    saveSchedule(newSchedule, function(savedSchedule) {
+
+        res.statusCode = 200;
+        res.end();
+    });
 });
 
 app.listen(portNumber);
