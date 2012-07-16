@@ -3,3 +3,4 @@
 *.swp
 node_modules
 frontend/dist/lib/map_center/modules/electoral_college.js
+backend/schedule.json

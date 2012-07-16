@@ -5,7 +5,8 @@
     "version": "0.0.1",
     "dependencies": {
         "grunt": "0.3.11",
-        "socket.io": "0.9.6"
+        "socket.io": "0.9.6",
+        "express": "2.5.11"
     },
     "engine": "node >= 0.6.18"
 }
