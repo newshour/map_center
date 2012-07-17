@@ -9,6 +9,9 @@
         urlRoot: "/broadcastevent",
         defaults: {
             comments: ""
+        },
+        initialize: function() {
+            this.on("error", this.destroy, this);
         }
     });
     var BroadcastEvents = Backbone.Collection.extend({
@@ -44,15 +47,18 @@
         className: "broadcast-list",
         initialize: function() {
             this.collection.on("reset", this.render, this);
-            this.collection.on("add", this.render, this);
+            this.collection.on("add", this.add, this);
             this.$el.html("<h2>Broadcast Schedule</h2>");
             this.$listing = $("<ol>");
             this.$el.append(this.$listing);
         },
+        add: function(model) {
+            this.$listing.append(new BroadcastListItem({ model: model }).render().el);
+        },
         render: function() {
             this.$listing.empty();
-            this.collection.each(function(model, idx) {
-                this.$listing.append(new BroadcastListItem({ model: model }).render().el);
+            this.collection.each(function(model) {
+                this.add(model);
             }, this);
             return this;
         }

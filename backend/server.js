@@ -114,11 +114,21 @@ app.get("/broadcastevent/:eventId?", function(req, res) {
     }
 });
 app.post("/broadcastevent", function(req, res) {
-    var newEvent = {
+    var newEvent;
+    var newSchedule;
+
+    if (!req.body.name || !req.body.name.trim()) {
+        res.statusCode = 400;
+        res.end();
+        return;
+    }
+
+    newEvent = {
         id: ++eventCounter + "",
-        name: req.body.name
+        name: req.body.name.trim()
     };
-    var newSchedule = copySchedule(broadcastSchedule);
+
+    newSchedule = copySchedule(broadcastSchedule);
     newSchedule.push(newEvent);
     saveSchedule(newSchedule, function(savedSchedule) {
         res.json(savedSchedule);
