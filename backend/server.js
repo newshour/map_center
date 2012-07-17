@@ -116,8 +116,29 @@ app.get("/broadcastevent/:eventId?", function(req, res) {
 app.post("/broadcastevent", function(req, res) {
     var newEvent;
     var newSchedule;
+    var toReplay;
+    var validationError = false;
 
-    if (!req.body.name || !req.body.name.trim()) {
+    if (!req.body.type || (req.body.type !== "record" && req.body.type !=="replay")) {
+        validationError = true;
+    }
+
+    if (req.body.type === "record") {
+        if (!req.body.name || !req.body.name.trim()) {
+            validationError = true;
+        }
+    } else {
+
+        toReplay = _.find(broadcastSchedule, function(event) {
+            return event.type === "record" && event.id === req.body.replayId;
+        });
+
+        if (!toReplay) {
+            validationError = true;
+        }
+    }
+
+    if (validationError) {
         res.statusCode = 400;
         res.end();
         return;
@@ -125,7 +146,10 @@ app.post("/broadcastevent", function(req, res) {
 
     newEvent = {
         id: ++eventCounter + "",
-        name: req.body.name.trim()
+        name: req.body.name.trim(),
+        start: req.body.start,
+        duration: req.body.duration,
+        type: req.body.type
     };
 
     newSchedule = copySchedule(broadcastSchedule);
