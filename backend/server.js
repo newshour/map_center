@@ -5,14 +5,15 @@ var io = require("socket.io").listen(app);
 var fs = require("fs");
 var url = require("url");
 var _ = require("underscore");
-// Reference to the most recent state of the map. Used to bring new clients up
-// to speed before a new state is pushed
-var currentMapState;
-var scheduleFile = {
-    handle: "backend/schedule.json"
+var schedule = {
+    file: {
+        handle: "backend/schedule.json"
+    },
+    events: []
 };
 // Global array containing all known broadcast events
 var broadcastSchedule;
+var fileEncoding = "utf8";
 
 function serveStaticFile(req, res) {
     var resourceName = url.parse(req.url).path;
@@ -43,18 +44,25 @@ function copySchedule(schedule) {
 }
 
 // Save the schedule to a persistence layer (in this case, a flat fire)
-function saveSchedule(schedule, callback) {
-    fs.writeFile(scheduleFile.handle, JSON.stringify(schedule), function(err) {
+function saveSchedule(newSchedule, callback) {
+    fs.writeFile(schedule.file.handle, JSON.stringify(newSchedule), function(err) {
         if (err) {
             throw err;
         }
-        broadcastSchedule = schedule;
+        broadcastSchedule = newSchedule;
+
+        // Re-schedule all events whenever the broadcast schedule is
+        // successfully saved.
+        // TODO: Only re-schedule changed events in order to prevent
+        // interrupting any currently-active events
+        cancelEvents(schedule.events);
+        schedule.events = createEvents(broadcastSchedule);
+        _.forEach(schedule.events, function(event) {
+            event.schedule();
+        });
+
         callback(broadcastSchedule);
     });
-}
-
-function generateRecordingFileName() {
-    return "backend/recordings/" + Number(new Date()) + ".txt";
 }
 
 // Write the given map state to a file
@@ -62,21 +70,21 @@ function logMapState(fd, mapState) {
     fs.write(fd, JSON.stringify({
         timeStamp: +new Date(),
         mapState: mapState
-    }) + "\n");
+    }) + ",\n");
 }
 
 // ----------------------------------------------------------------------------
 // --[ setup for scheduling control ]
 
 try {
-    scheduleFile.stats = fs.lstatSync(scheduleFile.handle);
+    schedule.file.stats = fs.lstatSync(schedule.file.handle);
 } catch(err) {
     // File does not exist. Create an empty collection in memory
     broadcastSchedule = [];
 }
 
-if (scheduleFile.stats && scheduleFile.stats.isFile()) {
-    broadcastSchedule = JSON.parse(fs.readFileSync(scheduleFile.handle));
+if (schedule.file.stats && schedule.file.stats.isFile()) {
+    broadcastSchedule = JSON.parse(fs.readFileSync(schedule.file.handle, fileEncoding));
 }
 
 var latestEvent = _.chain(broadcastSchedule)
@@ -95,50 +103,31 @@ app.get("/", serveStaticFile);
 app.get("/index.html", serveStaticFile);
 app.get("/static/*", serveStaticFile);
 
-app.param("eventId", function(req, res, next) {
-    var broadcastEvent = _.find(broadcastSchedule, function(broadcastEvent) {
-        return broadcastEvent.id === req.params.eventId;
+app.param("recId", function(req, res, next) {
+    var recordingEvent = _.find(broadcastSchedule, function(recordingEvent) {
+        return recordingEvent.id === req.params.recId;
     });
-    if (!broadcastEvent) {
-        return next(new Error("failed to find broadcast event"));
+    if (!recordingEvent) {
+        return next(new Error("failed to find recording event"));
     }
-    req.broadcastEvent = broadcastEvent;
+    req.recordingEvent = recordingEvent;
     next();
 });
-app.get("/broadcastevent/:eventId?", function(req, res) {
 
-    if (req.broadcastEvent) {
-        res.json(req.broadcastEvent);
+app.get("/recording/:recId?", function(req, res) {
+
+    if (req.recordingEvent) {
+        res.json(req.recordingEvent);
     } else {
         res.json(broadcastSchedule);
     }
 });
-app.post("/broadcastevent", function(req, res) {
+
+app.post("/recording", function(req, res) {
     var newEvent;
     var newSchedule;
-    var toReplay;
-    var validationError = false;
 
-    if (!req.body.type || (req.body.type !== "record" && req.body.type !=="replay")) {
-        validationError = true;
-    }
-
-    if (req.body.type === "record") {
-        if (!req.body.name || !req.body.name.trim()) {
-            validationError = true;
-        }
-    } else {
-
-        toReplay = _.find(broadcastSchedule, function(event) {
-            return event.type === "record" && event.id === req.body.replayId;
-        });
-
-        if (!toReplay) {
-            validationError = true;
-        }
-    }
-
-    if (validationError) {
+    if (!req.body.name || !req.body.name.trim()) {
         res.statusCode = 400;
         res.end();
         return;
@@ -149,44 +138,54 @@ app.post("/broadcastevent", function(req, res) {
         name: req.body.name.trim(),
         start: req.body.start,
         duration: req.body.duration,
-        type: req.body.type
+        replayTimestamps: req.body.replayTimestamps || []
     };
 
     newSchedule = copySchedule(broadcastSchedule);
-    newSchedule.push(newEvent);
-    saveSchedule(newSchedule, function(savedSchedule) {
-        res.json(savedSchedule);
-    });
-});
-app.put("/broadcastevent/:eventId", function(req, res) {
-    var newSchedule = copySchedule(broadcastSchedule);
-    var newEvent = {
-        id: ++eventCounter + ""
-    };
     newSchedule.push(newEvent);
     saveSchedule(newSchedule, function(savedSchedule) {
         res.json(newEvent);
     });
 });
-app.del("/broadcastevent/:eventId", function(req, res) {
+app.put("/recording/:recId", function(req, res) {
+    var newSchedule = copySchedule(broadcastSchedule);
+    var idx;
+
+    idx = _.chain(newSchedule).pluck("id").indexOf(req.recordingEvent.id).value();
+
+    newSchedule[idx] = {
+        id: req.recordingEvent.id,
+        name: req.body.name.trim(),
+        start: req.body.start,
+        duration: req.body.duration,
+        replayTimestamps: req.body.replayTimestamps || []
+    };
+
+    saveSchedule(newSchedule, function(savedSchedule) {
+        res.statusCode = 200;
+        res.end();
+    });
+});
+app.del("/recording/:recId", function(req, res) {
 
     var newSchedule;
     var idx;
 
-    if (!req.broadcastEvent) {
+    if (!req.recordingEvent) {
         res.statusCode = 404;
         res.end();
+        return;
     }
 
     newSchedule = copySchedule(broadcastSchedule);
+
     idx = _.chain(newSchedule)
         .pluck("id")
-        .indexOf(req.broadcastEvent.id)
+        .indexOf(req.recordingEvent.id)
         .value();
 
     newSchedule.splice(idx, 1);
     saveSchedule(newSchedule, function(savedSchedule) {
-
         res.statusCode = 200;
         res.end();
     });
@@ -195,17 +194,193 @@ app.del("/broadcastevent/:eventId", function(req, res) {
 app.listen(portNumber);
 
 // ----------------------------------------------------------------------------
-// --[ distributed map synchronization ]
+// --[ broadcast state management ]
 
-io.sockets.on("connection", function (socket) {
-    // If a client connects after the map's state has been changed at least
-    // once, immediately send that state to the client
-    if (currentMapState) {
-        socket.emit("changeVotes", currentMapState);
-    }
-
-    socket.on("changeVotes", function (data) {
-        currentMapState = data;
-        io.sockets.emit("changeVotes", data);
+function cancelEvents(events) {
+    _.forEach(events, function(event) {
+        event.cancel();
     });
+}
+function createEvents(schedule) {
+
+    var events = [];
+
+    _.forEach(schedule, function(eventData) {
+
+        events.push(new Event(_.extend({}, eventData, {
+            startTime: +new Date(eventData.start),
+            type: "record",
+            duration: parseInt(eventData.duration, 10) * 1000
+        })));
+
+        _.forEach(eventData.replayTimestamps, function(replayTimestamp) {
+
+            events.push(new Event(_.extend({}, eventData, {
+                startTime: +new Date(replayTimestamp),
+                type: "replay",
+                duration: parseInt(eventData.duration, 10) * 1000
+            })));
+        });
+
+    });
+
+    return events;
+}
+
+/* Event
+ * A class to control the state of the server as it changes over time. Each
+ * instance describes either a "record" state (where incoming 'changeVotes'
+ * socket events are logged to disk and broadcasted to all listeners) or a
+ * 'replay' state (where `changeVotes` events are read from a previously-
+ * created log file and pushed to all clients)
+ */
+function Event(options) {
+    this.isActive = false;
+    this.id = options.id;
+    this.name = options.name;
+    this.type = options.type;
+    this.startTime = options.startTime;
+    this.duration = options.duration;
+};
+Event.prototype = {
+    getFileName: function() {
+        return "backend/recordings/" + this.id + "-" + this.name.replace(/[\. ]/g, "-")
+            + ".txt";
+    },
+    schedule: function() {
+
+        var now = +new Date();
+        // The number of milliseconds before scheduling the start of this event
+        var tMinus = this.startTime - now;
+
+        // Do not schedule events that have already taken place.
+        // TODO: Extend to allow for scheduling events that should have started
+        // but not finished yet, i.e.
+        //     if (tMinus < 0 && tMinus + this.duration < 0)
+        if (tMinus < 0) {
+            return;
+        }
+
+        this.setupId = setTimeout(this.start.bind(this), tMinus);
+        this.teardownId = setTimeout(this.cancel.bind(this), tMinus + this.duration);
+    },
+    start: function() {
+        this.isActive = true;
+
+        if (this.type === "record") {
+            this._startRecording();
+        } else {
+            this._startReplaying();
+        }
+    },
+    cancel: function() {
+        if (this.isActive) {
+            if(this.type === "record") {
+                this._stopRecording();
+            } else {
+                this._stopReplaying();
+            }
+        }
+        if (typeof this.setupId === "number") {
+            clearTimeout(this.setupId);
+        }
+        if (typeof this.teardownId === "number") {
+            clearTimeout(this.teardownId);
+        }
+        this.isActive = false;
+    },
+    _startRecording: function() {
+
+        // Reference to the most recent state of the map. Used to bring new
+        // clients up to speed before a new state is pushed
+        var currentMapState;
+        var fileDescriptor = fs.openSync(this.getFileName(), "w");
+
+        // Store a reference to the file descriptor so the file can be closed
+        // when this event ends (or is cancelled)
+        this.fileDescriptor = fileDescriptor;
+
+        function handleChangeVotes(data) {
+            currentMapState = data;
+            logMapState(fileDescriptor, data);
+            io.sockets.emit("changeVotes", data);
+        }
+        function handleConnection() {
+            if (currentMapState) {
+                socket.emit("changeVotes", currentMapState);
+            }
+        }
+
+        socketEventHandlers.changeVotes = handleChangeVotes;
+        socketEventHandlers.connection = handleConnection;
+    },
+    _stopRecording: function() {
+
+        fs.closeSync(this.fileDescriptor);
+        socketEventHandlers.changeVotes = noop;
+        socketEventHandlers.connection = noop;
+    },
+    _startReplaying: function() {
+
+        // Reference to the most recent state of the map. Used to bring new
+        // clients up to speed before a new state is pushed
+        var currentMapState;
+        var data = fs.readFileSync(this.getFileName(), fileEncoding);
+        var changeEvents = JSON.parse("[" + data.replace(/,\s*$/g, "") + "]");
+        var timeoutIds = this.timeoutIds = [];
+        var firstEvent = _.first(changeEvents);
+        var firstEventTime;
+
+        if (firstEvent) {
+            firstEventTime = +new Date(firstEvent.timeStamp);
+        }
+
+        _.forEach(changeEvents, function(changeEvent, idx) {
+            var delay = new Date(changeEvent.timeStamp) - firstEventTime;
+            var timeoutId = setTimeout(function() {
+                io.sockets.emit("changeVotes", changeEvent.mapState);
+            }, delay);
+            timeoutIds.push(timeoutId);
+        }, this);
+
+    },
+    _stopReplaying: function() {
+
+        _.forEach(this.timeoutIds, function(timeoutId) {
+            clearTimeout(timeoutId);
+        });
+    }
+};
+var noop = function() {};
+var socketEventHandlers = {
+    changeVotes: noop,
+    connection: noop
+};
+
+/* socket.io does not support ad-hoc binding to all currently-connected clients
+ * (**see below). This effects the approach to dynamically assigning event
+ * handlers. Instead of running the following code:
+ *
+ *     io.sockets.on("changeVotes", newChangeVotesHandler);
+ *
+ *  ...each socket must be individually assigned a handler when it connects.
+ *  This handler can invoke a global method, and this method may be dynamically
+ *  modified.
+ *
+ *  ** The socket.io documentation is somewhat lacking, making it difficult to
+ *  confirm this deficiency.
+ */
+io.sockets.on("connection", function(socket) {
+    var args = Array.prototype.slice.call(arguments);
+    socketEventHandlers.connection.apply(socket, args);
+
+    socket.on("changeVotes", function() {
+        var args = Array.prototype.slice.call(arguments);
+        socketEventHandlers.changeVotes.apply(socket, args);
+    });
+});
+cancelEvents(schedule.events);
+schedule.events = createEvents(broadcastSchedule);
+_.forEach(schedule.events, function(event) {
+    event.schedule();
 });

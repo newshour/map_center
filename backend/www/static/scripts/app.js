@@ -6,67 +6,112 @@
     var Backbone = window.Backbone;
     var moment = window.moment;
 
-    var BroadcastEvent = Backbone.Model.extend({
-        urlRoot: "/broadcastevent",
-        defaults: {
-            comments: ""
+    var Recording = Backbone.Model.extend({
+        urlRoot: "/recording",
+        defaults: function() {
+            return {
+                comments: "",
+                replayTimestamps: []
+            };
         },
-        initialize: function() {
-            this.on("error", this.destroy, this);
-        },
-        validate: function() {
-            var type = this.get("type");
-            var name = this.get("name");
-            var replayId = this.get("replayId");
-            var startMoment = moment(this.get("start"));
-            var duration = this.get("duration");
+        validate: function(attrs) {
 
-            if (!type || (type !== "record" && type !== "replay")) {
-                return "Unrecognized type";
-            }
+            var startMoment = moment(attrs.start);
 
-            if (type ==="record") {
-                if (!name || typeof name.match !== "function" ||
-                    !name.match(/[^\s]/)) {
+            if (!attrs.name || typeof attrs.name.match !== "function" ||
+               !attrs.name.match(/[^\s]/)) {
                     return "Name must contain at least 1 non-whitespace character";
-                }
-            } else {
-                if (!replayId) {
-                    return "No recording specified";
-                }
             }
 
             if (!startMoment || !!isNaN(startMoment.toDate().getTime())) {
                 return "Invalid start date";
             }
 
-            if(!/^[0-9]+$/.test(duration)) {
+            if (_.any(attrs.replayTimestamps, function(timestamp) {
+                    return isNaN(moment(timestamp).toDate().getTime());
+                })) {
+                return "Invalid time stamp";
+            }
+
+            if(!/^[0-9]+$/.test(attrs.duration)) {
                 return "Bad duration";
             }
         }
     });
-    var BroadcastEvents = Backbone.Collection.extend({
-        model: BroadcastEvent,
-        url: "/broadcastevent"
+    var Recordings = Backbone.Collection.extend({
+        model: Recording,
+        url: "/recording"
     });
 
-    var BroadcastListItem = Backbone.View.extend({
+    var RecordingListItem = Backbone.View.extend({
         tagName: "tr",
         className: "broadcast-listitem",
-        template: _.template("<td><%= type %></td>" +
-            "<td><%= name %></td>" +
+        template: _.template("<td><%= name %></td>" +
             "<td><%= start %></td>" +
             "<td><%= duration %></td>" +
+            "<td class='replays'>" +
+                "<ul class='replay-listing'><% _.forEach(replayTimestamps, function(timestamp) { %>" +
+                    "<li class='replay' data-timestamp='<%= timestamp %>'>" +
+                        "<%= timestamp %>" +
+                        "<span class='delete-replay'>&times;</span>" +
+                    "</li>" +
+                "<% }); %></ul>" +
+                "<div class='replay-creator'>" +
+                    "<input class='new-replay' type='text'></input>" +
+                    "<button class='add-replay'>Add</button>" +
+                "</div>" +
+            "</td>" +
             "<td class='delete'>&times;</td>"),
         initialize: function() {
             this.model.on("change", _.bind(this.render,this));
             this.model.on("destroy", _.bind(this.remove, this));
         },
         events: {
-            "click .delete": "requestDestroy"
+            "click .delete": "requestDestroy",
+            "click .add-replay": "addReplay",
+            "click .delete-replay": "requestDeleteReplay"
         },
         requestDestroy: function(event) {
             this.model.destroy();
+        },
+        requestDeleteReplay: function(event) {
+            var self = this;
+            var replayTimestamps = this.model.get("replayTimestamps");
+            var toDelete = $(event.target).closest(".replay").data("timestamp");
+
+            replayTimestamps = _.without(replayTimestamps, toDelete);
+
+            this.model.save({
+                replayTimestamps: replayTimestamps
+            }, {
+                error: function() {
+                    replayTimestamps = _.clone(self.model.get("replayTimestamps"));
+                    replayTimestamps.push(toDelete);
+                    self.model.set({ replayTimestamps: replayTimestamps });
+                }
+            });
+        },
+        addReplay: function() {
+            var self = this;
+            var replayTimestamps;
+            var newTimestamp;
+
+            newTimestamp = this.$(".new-replay").val();
+            // Clone the property off the model before modifying it (so the
+            // call to .save() triggers a "change" event as expected
+            replayTimestamps = _.clone(this.model.get("replayTimestamps"));
+            replayTimestamps.push(newTimestamp);
+
+            this.model.save({
+                replayTimestamps: replayTimestamps
+            }, {
+                error: function() {
+                    replayTimestamps = _.without(
+                        self.model.get("replayTimestamps"),
+                        newTimestamp);
+                    self.model.set({ replayTimestamps: replayTimestamps });
+                }
+            });
         },
         remove: function() {
             this.$el.remove();
@@ -80,79 +125,24 @@
     var BroadcastEntry = Backbone.View.extend({
         tagName: "tr",
         template: _.template(
-            "<td><select class='type'>" +
-                "<option value='record'>Record</option>" +
-                "<option value='replay'>Replay</option>" +
-            "</select></td>" +
-            "<td>" +
-                "<select class='recording'></select>" +
-                "<input type='text' class='name'></input>" +
-            "</td>" +
+            "<td><input type='text' class='name'></input></td>" +
             "<td><input type='text' class='start'></input></td>" +
             "<td><input type='text' class='duration'></td>" +
+            "<td></td>" +
             "<td><button class='submit'>Create</button></td>"),
         initialize: function() {
             this.$el.html(this.template());
             this.collection = this.options.collection;
-            this.collection.on("sync", this.renderRecordingChooser, this);
-            this.collection.on("reset", this.renderRecordingChooser, this);
-            this.renderRecordingChooser();
-            // Ensure that the form initializes according to the default type
-            this.handleTypeChange();
         },
         events: {
-            "click .submit": "handleSubmit",
-            "change .type": "handleTypeChange",
-            "change .recording": "handleRecordingChange"
+            "click .submit": "handleSubmit"
         },
         handleSubmit: function(event) {
             this.collection.create(this.serialize());
             event.preventDefault();
         },
-        // handleTypeChange
-        // Update the form according to the new broadcast type
-        // - record: text input for the name of the recording, along with the
-        //   start date and duration
-        // - replay: select input for the name of the previous recording, a
-        //   text input for the start date, and a disabled text input to
-        //   communicate the duration of the previous recording
-        handleTypeChange: function(event) {
-            if (this.$(".type").val() === "replay") {
-                this.$(".recording").show();
-                this.$(".name").hide();
-                this.$(".duration").prop("disabled", true);
-                this.handleRecordingChange();
-            } else {
-                this.$(".recording").hide();
-                this.$(".name").show();
-                this.$(".duration").prop("disabled", false).val("");
-            }
-        },
-        // handleRecordingChange
-        // Update the duration of this replay event to match the duration of
-        // the selected recorded event
-        handleRecordingChange: function(event) {
-            var recordingId = this.$(".recording").val();
-            var recordingDuration = this.collection.get(recordingId).get("duration");
-            this.$(".duration").val(recordingDuration);
-        },
-        // renderRecordingChooser
-        // Populate the recording select field according to the recorded events
-        // that are currently present in the collection
-        renderRecordingChooser: function() {
-            this.$(".recording").empty().html(
-                _.map(this.collection.models, function(model) {
-                    if (model.get("type") !== "record") {
-                        return;
-                    }
-                    return "<option value='" + model.get("id") + "'>" +
-                        model.get("name") +
-                        "</option>";
-                }).join(""));
-        },
         serialize: function() {
             return {
-                type: this.$(".type").val(),
                 name: this.$(".name").val(),
                 replayId: this.$(".recording").val(),
                 start: this.$(".start").val(),
@@ -164,7 +154,7 @@
         }
     });
 
-    var BroadcastList = Backbone.View.extend({
+    var RecordingList = Backbone.View.extend({
         className: "broadcast-list",
         initialize: function() {
             this.collection.on("reset", this.render, this);
@@ -172,7 +162,9 @@
             this.$el.html("<h2>Broadcast Schedule</h2>");
             this.$table = $("<table>");
             this.$table.html("<thead><tr>" +
-                "<td>Type</td><td>Name</td><td>Start</td><td>Duration</td><td></td>" +
+                "<td>Name</td><td>Start</td><td>Duration</td>" +
+                "<td>Rebroadcasts</td>" +
+                "<td></td>" +
                 "</tr></thead>");
             this.$listing = $("<tbody>");
             this.$table.append(this.$listing);
@@ -180,7 +172,7 @@
             this.$el.append(this.$table);
         },
         add: function(model) {
-            this.$listing.append(new BroadcastListItem({ model: model }).render().el);
+            this.$listing.append(new RecordingListItem({ model: model }).render().el);
         },
         render: function() {
             this.$listing.empty();
@@ -191,7 +183,7 @@
         }
     });
 
-    var broadcastEvents = new BroadcastEvents();
+    var recordings = new Recordings();
 
     $(function() {
         var $cache = {
@@ -203,9 +195,9 @@
             $cache.statusList.prepend(
                 $("<li>").text(JSON.stringify(data.stateVotes)));
         });
-        $cache.broadcastList = new BroadcastList({ collection: broadcastEvents }).$el;
-        $cache.body.append($cache.broadcastList);
-        broadcastEvents.fetch();
+        $cache.recordingList = new RecordingList({ collection: recordings }).$el;
+        $cache.body.append($cache.recordingList);
+        recordings.fetch();
     });
 
 }(this, undefined));

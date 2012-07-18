@@ -5,3 +5,6 @@
 .broadcast-listitem .delete {
     cursor: pointer;
 }
+.replay .delete-replay {
+    cursor: pointer;
+}
