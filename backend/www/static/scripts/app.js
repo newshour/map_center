@@ -49,7 +49,7 @@
 
     var RecordingListItem = Backbone.View.extend({
         tagName: "tr",
-        className: "broadcast-listitem",
+        className: "broadcast",
         template: _.template("<td><%= name %></td>" +
             "<td>" +
                 "<%= new Date(timeStamp).toString().slice(4, -15) %>" +
@@ -164,7 +164,7 @@
         initialize: function() {
             this.collection.on("reset", this.render, this);
             this.collection.on("add", this.add, this);
-            this.$el.html("<h2>Broadcast Schedule</h2>");
+            this.$el.html("<h2 class='section-title'>Broadcast Schedule</h2>");
             this.$table = $("<table>");
             this.$table.html("<thead><tr>" +
                 "<td>Name</td>" +

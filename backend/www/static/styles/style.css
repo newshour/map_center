@@ -1,8 +1,31 @@
+.page-title {
+    font-weight: bold;
+    font-size: 18pt;
+    margin-bottom: 10px;
+}
+.section-title {
+    font-weight: bold;
+    font-size: 14pt;
+    margin-bottom: 8px;
+}
 .map-status .status {
     height: 200px;
     overflow-y: auto;
 }
-.broadcast-listitem .delete {
+.broadcast-list .format {
+    color: #444;
+    font-size: 10pt;
+}
+.broadcast:nth-child(even) {
+    background-color: #eee;
+}
+.broadcast {
+    border-top: solid 1px #eee;
+}
+.broadcast:first-child {
+    border-top: none;
+}
+.broadcast .delete {
     cursor: pointer;
 }
 .replay .delete-replay {
