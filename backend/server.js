@@ -65,14 +65,6 @@ function saveSchedule(newSchedule, callback) {
     });
 }
 
-// Write the given map state to a file
-function logMapState(fd, mapState) {
-    fs.write(fd, JSON.stringify({
-        timeStamp: +new Date(),
-        mapState: mapState
-    }) + ",\n");
-}
-
 // Derive the recording file handle from that recording's meta-data
 function getRecordingFileHandle(recording) {
     return "backend/recordings/" + recording.id + "-" +
@@ -361,18 +353,33 @@ Event.prototype = {
         // Reference to the most recent state of the map. Used to bring new
         // clients up to speed before a new state is pushed
         var currentMapState;
-        var fileDescriptor = fs.openSync(getRecordingFileHandle(this), "w");
+        var fileStream = fs.createWriteStream(getRecordingFileHandle(this), {
+            flags: "w",
+            encoding: fileEncoding,
+        });
 
-        // Store a reference to the file descriptor so the file can be closed
-        // when this event ends (or is cancelled)
-        this.fileDescriptor = fileDescriptor;
+        // Store a reference to the file stream so it can be closed when this
+        // event ends (or is cancelled)
+        this.fileStream = fileStream;
 
         function handleChangeVotes(data) {
+
+            var changeEventStr;
+
+            // Update the "current" map state to be sent to newly-connected
+            // clients
             currentMapState = data;
-            logMapState(fileDescriptor, data);
+
             io.sockets.emit("changeVotes", data);
+
+            changeEventStr = JSON.stringify({
+                timeStamp: +new Date(),
+                mapState: data
+            }) + ",\n";
+
+            fileStream.write(changeEventStr);
         }
-        function handleConnection() {
+        function handleConnection(socket) {
             if (currentMapState) {
                 socket.emit("changeVotes", currentMapState);
             }
@@ -383,7 +390,7 @@ Event.prototype = {
     },
     _stopRecording: function() {
 
-        fs.closeSync(this.fileDescriptor);
+        this.fileStream.end();
         socketEventHandlers.changeVotes = noop;
         socketEventHandlers.connection = noop;
     },
