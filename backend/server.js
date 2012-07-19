@@ -186,8 +186,18 @@ app.del("/recording/:recId", function(req, res) {
 
     newSchedule.splice(idx, 1);
     saveSchedule(newSchedule, function(savedSchedule) {
-        res.statusCode = 200;
-        res.end();
+        var tmpEvent;
+
+        // Create an event for the deleted recording in order to derive the
+        // correct filename
+        tmpEvent = new Event(req.recordingEvent);
+
+        fs.unlink(tmpEvent.getFileName(), function(err) {
+
+            // Since the file may not exist yet, ignore any errors
+            res.statusCode = 200;
+            res.end();
+        });
     });
 });
 
