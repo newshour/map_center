@@ -16,24 +16,28 @@
         },
         validate: function(attrs) {
 
-            var startMoment = moment(attrs.start);
+            var startDate;
 
             if (!attrs.name || typeof attrs.name.match !== "function" ||
                !attrs.name.match(/[^\s]/)) {
                     return "Name must contain at least 1 non-whitespace character";
             }
 
-            if (!startMoment || !!isNaN(startMoment.toDate().getTime())) {
+            startDate = new Date(attrs.timeStamp);
+
+            if (!startDate || !!isNaN(startDate.getTime())) {
                 return "Invalid start date";
             }
 
             if (_.any(attrs.replayTimestamps, function(timestamp) {
-                    return isNaN(moment(timestamp).toDate().getTime());
+                    var date = new Date(timestamp);
+                    return !date || isNaN(date.getTime());
                 })) {
                 return "Invalid time stamp";
             }
 
-            if(!/^[0-9]+$/.test(attrs.duration)) {
+            //if(!/^[0-9]+$/.test(attrs.duration)) {
+            if (attrs.duration < 0 || parseFloat(attrs.duration, 10) !== attrs.duration) {
                 return "Bad duration";
             }
         }
@@ -47,12 +51,14 @@
         tagName: "tr",
         className: "broadcast-listitem",
         template: _.template("<td><%= name %></td>" +
-            "<td><%= start %></td>" +
-            "<td><%= duration %></td>" +
+            "<td>" +
+                "<%= new Date(timeStamp).toString().slice(4, -15) %>" +
+            "</td>" +
+            "<td><%= duration/1000 %></td>" +
             "<td class='replays'>" +
                 "<ul class='replay-listing'><% _.forEach(replayTimestamps, function(timestamp) { %>" +
                     "<li class='replay' data-timestamp='<%= timestamp %>'>" +
-                        "<%= timestamp %>" +
+                        "<%= new Date(timestamp).toString().slice(4, -15) %>" +
                         "<span class='delete-replay'>&times;</span>" +
                     "</li>" +
                 "<% }); %></ul>" +
@@ -96,7 +102,7 @@
             var replayTimestamps;
             var newTimestamp;
 
-            newTimestamp = this.$(".new-replay").val();
+            newTimestamp = Date.parse(this.$(".new-replay").val());
             // Clone the property off the model before modifying it (so the
             // call to .save() triggers a "change" event as expected
             replayTimestamps = _.clone(this.model.get("replayTimestamps"));
@@ -144,9 +150,8 @@
         serialize: function() {
             return {
                 name: this.$(".name").val(),
-                replayId: this.$(".recording").val(),
-                start: this.$(".start").val(),
-                duration: this.$(".duration").val()
+                timeStamp: Date.parse(this.$(".start").val()),
+                duration: parseFloat(this.$(".duration").val(), 10) * 1000
             };
         },
         render: function() {
@@ -162,7 +167,9 @@
             this.$el.html("<h2>Broadcast Schedule</h2>");
             this.$table = $("<table>");
             this.$table.html("<thead><tr>" +
-                "<td>Name</td><td>Start</td><td>Duration</td>" +
+                "<td>Name</td>" +
+                "<td>Start <span class='format'>(MMM DD YYYY HH:mm:ss)</span></td>" +
+                "<td>Duration <span class='format'>(sec)</span></td>" +
                 "<td>Rebroadcasts</td>" +
                 "<td></td>" +
                 "</tr></thead>");

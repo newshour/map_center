@@ -136,7 +136,7 @@ app.post("/recording", function(req, res) {
     newEvent = {
         id: ++eventCounter + "",
         name: req.body.name.trim(),
-        start: req.body.start,
+        timeStamp: req.body.timeStamp,
         duration: req.body.duration,
         replayTimestamps: req.body.replayTimestamps || []
     };
@@ -156,7 +156,7 @@ app.put("/recording/:recId", function(req, res) {
     newSchedule[idx] = {
         id: req.recordingEvent.id,
         name: req.body.name.trim(),
-        start: req.body.start,
+        timeStamp: req.body.timeStamp,
         duration: req.body.duration,
         replayTimestamps: req.body.replayTimestamps || []
     };
@@ -208,17 +208,14 @@ function createEvents(schedule) {
     _.forEach(schedule, function(eventData) {
 
         events.push(new Event(_.extend({}, eventData, {
-            startTime: +new Date(eventData.start),
-            type: "record",
-            duration: parseInt(eventData.duration, 10) * 1000
+            type: "record"
         })));
 
         _.forEach(eventData.replayTimestamps, function(replayTimestamp) {
 
             events.push(new Event(_.extend({}, eventData, {
-                startTime: +new Date(replayTimestamp),
-                type: "replay",
-                duration: parseInt(eventData.duration, 10) * 1000
+                timeStamp: replayTimestamp,
+                type: "replay"
             })));
         });
 
@@ -239,7 +236,7 @@ function Event(options) {
     this.id = options.id;
     this.name = options.name;
     this.type = options.type;
-    this.startTime = options.startTime;
+    this.timeStamp = options.timeStamp;
     this.duration = options.duration;
 };
 Event.prototype = {
@@ -251,7 +248,7 @@ Event.prototype = {
 
         var now = +new Date();
         // The number of milliseconds before scheduling the start of this event
-        var tMinus = this.startTime - now;
+        var tMinus = this.timeStamp - now;
 
         // Do not schedule events that have already taken place.
         // TODO: Extend to allow for scheduling events that should have started
