@@ -220,12 +220,6 @@ app.get("/recordingjson/:recId", function(req, res) {
         }
 
         mapEvents = JSON.parse("[" + fileContents.replace(/,\s*$/, "") + "]");
-        // Normalize mapEvent timestamps to be relative to the start of the
-        // event
-        // TODO: Store the mapEvent timestamps in this format
-        _.forEach(mapEvents, function(mapEvent) {
-            mapEvent.timeStamp -= recordingStartTime;
-        });
 
         if (req.query.endTime) {
             mapEvents = _.filter(mapEvents, function(mapEvent) {
@@ -353,14 +347,13 @@ Event.prototype = {
         // Reference to the most recent state of the map. Used to bring new
         // clients up to speed before a new state is pushed
         var currentMapState;
-        var fileStream = fs.createWriteStream(getRecordingFileHandle(this), {
+        var self = this;
+        // Store a reference to the file stream so it can be closed when this
+        // event ends (or is cancelled)
+        this.fileStream = fs.createWriteStream(getRecordingFileHandle(this), {
             flags: "w",
             encoding: fileEncoding,
         });
-
-        // Store a reference to the file stream so it can be closed when this
-        // event ends (or is cancelled)
-        this.fileStream = fileStream;
 
         function handleChangeVotes(data) {
 
@@ -373,11 +366,13 @@ Event.prototype = {
             io.sockets.emit("changeVotes", data);
 
             changeEventStr = JSON.stringify({
-                timeStamp: +new Date(),
+                // Map event timestamps are relative to the start of the
+                // recording event
+                timeStamp: +new Date() - self.timeStamp,
                 mapState: data
             }) + ",\n";
 
-            fileStream.write(changeEventStr);
+            self.fileStream.write(changeEventStr);
         }
         function handleConnection(socket) {
             if (currentMapState) {
@@ -404,17 +399,11 @@ Event.prototype = {
         var changeEvents = JSON.parse("[" + data.replace(/,\s*$/g, "") + "]");
         var timeoutIds = this.timeoutIds = [];
         var firstEvent = _.first(changeEvents);
-        var firstEventTime;
-
-        if (firstEvent) {
-            firstEventTime = +new Date(firstEvent.timeStamp);
-        }
 
         _.forEach(changeEvents, function(changeEvent, idx) {
-            var delay = new Date(changeEvent.timeStamp) - firstEventTime;
             var timeoutId = setTimeout(function() {
                 io.sockets.emit("changeVotes", changeEvent.mapState);
-            }, delay);
+            }, changeEvent.timeStamp);
             timeoutIds.push(timeoutId);
         }, this);
 
