@@ -73,6 +73,12 @@ function logMapState(fd, mapState) {
     }) + ",\n");
 }
 
+// Derive the recording file handle from that recording's meta-data
+function getRecordingFileHandle(recording) {
+    return "backend/recordings/" + recording.id + "-" +
+        recording.name.replace(/[\. ]/g, "-") + ".txt";
+}
+
 // ----------------------------------------------------------------------------
 // --[ setup for scheduling control ]
 
@@ -111,6 +117,7 @@ app.param("recId", function(req, res, next) {
         return next(new Error("failed to find recording event"));
     }
     req.recordingEvent = recordingEvent;
+    req.recordingEvent.fileHandle = getRecordingFileHandle(req.recordingEvent);
     next();
 });
 
@@ -186,18 +193,71 @@ app.del("/recording/:recId", function(req, res) {
 
     newSchedule.splice(idx, 1);
     saveSchedule(newSchedule, function(savedSchedule) {
-        var tmpEvent;
 
-        // Create an event for the deleted recording in order to derive the
-        // correct filename
-        tmpEvent = new Event(req.recordingEvent);
-
-        fs.unlink(tmpEvent.getFileName(), function(err) {
+        fs.unlink(req.recordingEvent.fileHandle, function(err) {
 
             // Since the file may not exist yet, ignore any errors
             res.statusCode = 200;
             res.end();
         });
+    });
+});
+
+// Return a JSON-formatted file describing all the map events that took place
+// over the corse of the recording specified. Optionally filter out map events
+// according to the following parameters:
+// - startTime <number>: remove events that occurred before this number of
+//   milliseconds (relative to the beginning of the recording)
+// - endTime <number>: remove events that occurred before this number of
+//   milliseconds (relative to the beginning of the recording)
+app.get("/recordingjson/:recId", function(req, res) {
+
+    var fileHandle = req.recordingEvent.fileHandle;
+    var jsonFileHandle = fileHandle.replace(/\..{2,4}$/, ".json");
+
+    fs.readFile(fileHandle, fileEncoding, function(err, fileContents) {
+
+        // The recorded contents are not JSON formatted
+        var mapEvents;
+        var recordingStartTime = req.recordingEvent.timeStamp;
+
+        if (err) {
+            res.statusCode = 404;
+            res.end();
+            return;
+        }
+
+        mapEvents = JSON.parse("[" + fileContents.replace(/,\s*$/, "") + "]");
+        // Normalize mapEvent timestamps to be relative to the start of the
+        // event
+        // TODO: Store the mapEvent timestamps in this format
+        _.forEach(mapEvents, function(mapEvent) {
+            mapEvent.timeStamp -= recordingStartTime;
+        });
+
+        if (req.query.endTime) {
+            mapEvents = _.filter(mapEvents, function(mapEvent) {
+                return mapEvent.timeStamp < req.query.endTime;
+            });
+        }
+
+        if (req.query.startTime) {
+            // Normalize the mapEvent timestamps to be relative to the
+            // requested startTime
+            _.forEach(mapEvents, function(mapEvent) {
+                mapEvent.timeStamp -= parseInt(req.query.startTime, 10);
+            });
+
+            // Remove any mapEvents that occurred before the requested
+            // startTime
+            mapEvents = _.filter(mapEvents, function(mapEvent) {
+                return mapEvent.timeStamp >= 0;
+            });
+        }
+
+        res.attachment(jsonFileHandle);
+        res.contentType("application/json");
+        res.send(mapEvents);
     });
 });
 
@@ -301,7 +361,7 @@ Event.prototype = {
         // Reference to the most recent state of the map. Used to bring new
         // clients up to speed before a new state is pushed
         var currentMapState;
-        var fileDescriptor = fs.openSync(this.getFileName(), "w");
+        var fileDescriptor = fs.openSync(getRecordingFileHandle(this), "w");
 
         // Store a reference to the file descriptor so the file can be closed
         // when this event ends (or is cancelled)
@@ -332,7 +392,8 @@ Event.prototype = {
         // Reference to the most recent state of the map. Used to bring new
         // clients up to speed before a new state is pushed
         var currentMapState;
-        var data = fs.readFileSync(this.getFileName(), fileEncoding);
+        var fileHandle = getRecordingFileHandle(this);
+        var data = fs.readFileSync(fileHandle, fileEncoding);
         var changeEvents = JSON.parse("[" + data.replace(/,\s*$/g, "") + "]");
         var timeoutIds = this.timeoutIds = [];
         var firstEvent = _.first(changeEvents);

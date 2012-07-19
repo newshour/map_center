@@ -47,6 +47,78 @@
         url: "/recording"
     });
 
+    var DownloadModal = Backbone.View.extend({
+        className: "modal download",
+        template: _.template("<% var idSuffix = +new Date(); %>" +
+            "<h2 class='title'>Download Recording JSON</h2>" +
+            "<label for='start-time-<%= idSuffix %>'>Start Time (seconds)</label>" +
+            "<input type='text' id='start-time-<%= idSuffix %>' class='start-time'></input>" +
+            "<label for='end-time-<%= idSuffix %>'>End Time (seconds)</label>" +
+            "<input type='text' id='end-time-<%= idSuffix %>' class='end-time'></input>" +
+            "<div class='buttons'>" +
+                "<button class='download'>Download</button>" +
+            "</div>"
+        ),
+        initialize: function() {
+            this.$container = $("<div>").addClass("container");
+            this.$el.append(this.$container);
+        },
+        events: {
+            "click .download": "requestDownload",
+            "click": "handleClose"
+        },
+        handleClose: function(event) {
+            if (event.target === this.el) {
+                this.close();
+            }
+        },
+        close: function() {
+            this.$el.remove();
+        },
+        // requestDownload
+        // Redirect to an endpoint designed to serve JSON file downloads. The
+        // data may be formatted according to two optional query string
+        // parameters:
+        // - startTime <number> - All events that take place before this
+        //   timestamp (relative to the beginning of the event) will be removed
+        //   from the response. All other event timestamps will be relative to
+        //   this offset
+        // - endTime <number> - All events that take place after this timestamp
+        //   (relative to the beginning of the event) will be removed from the
+        //   response
+        requestDownload: function() {
+            var requestUrl = "/recordingjson/" + this.model.id;
+            var paramsObj = this.serialize();
+            var paramsArray = [];
+            var paramsStr;
+
+            _.forEach(paramsObj, function(val, attr) {
+                if (val) {
+                    paramsArray.push(attr + "=" + val);
+                }
+            });
+            paramsStr = paramsArray.join("&");
+
+            if (paramsStr) {
+                requestUrl += "?" + paramsStr;
+            }
+
+            window.location.href = requestUrl;
+        },
+        // serialize
+        // Parse the input fields for milliseconds
+        serialize: function() {
+            return {
+                startTime: parseFloat(this.$(".start-time").val(), 10) * 1000,
+                endTime: parseFloat(this.$(".end-time").val(), 10) * 1000
+            };
+        },
+        render: function() {
+            this.$container.html(this.template(this.model.toJSON()));
+            return this;
+        }
+    });
+
     var RecordingListItem = Backbone.View.extend({
         tagName: "tr",
         className: "broadcast",
@@ -67,7 +139,12 @@
                     "<button class='add-replay'>Add</button>" +
                 "</div>" +
             "</td>" +
-            "<td class='delete'>&times;</td>"),
+            "<td>" +
+                "<% if (timeStamp < +new Date()) { %>" +
+                    "<button class='download'>Download</button>" +
+                "<% } %>" +
+                "<button class='delete'>&times;</button>" +
+            "</td>"),
         initialize: function() {
             this.model.on("change", _.bind(this.render,this));
             this.model.on("destroy", _.bind(this.remove, this));
@@ -75,7 +152,8 @@
         events: {
             "click .delete": "requestDestroy",
             "click .add-replay": "addReplay",
-            "click .delete-replay": "requestDeleteReplay"
+            "click .delete-replay": "requestDeleteReplay",
+            "click .download": "requestDownload"
         },
         requestDestroy: function(event) {
             this.model.destroy();
@@ -96,6 +174,9 @@
                     self.model.set({ replayTimestamps: replayTimestamps });
                 }
             });
+        },
+        requestDownload: function() {
+            $("body").append(new DownloadModal({ model: this.model }).render().el);
         },
         addReplay: function() {
             var self = this;
