@@ -1,10 +1,16 @@
-var portNumber = 8000;
 var express = require("express");
 var app = express.createServer();
 var io = require("socket.io").listen(app);
 var fs = require("fs");
 var url = require("url");
 var _ = require("underscore");
+
+// Server name and port. Reference environmental variables when they are set,
+// and fall back to sensible defaults.
+var serviceLocation = {
+    portNumber: process.env.NODE_PORT || 8000,
+    hostName: process.env.NODE_HOST || "127.0.0.1"
+};
 var schedule = {
     file: {
         handle: "backend/schedule.json"
@@ -247,7 +253,7 @@ app.get("/recordingjson/:recId", function(req, res) {
     });
 });
 
-app.listen(portNumber);
+app.listen(serviceLocation.portNumber, serviceLocation.hostName);
 
 // ----------------------------------------------------------------------------
 // --[ broadcast state management ]
