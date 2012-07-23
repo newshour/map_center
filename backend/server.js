@@ -21,25 +21,6 @@ var schedule = {
 var broadcastSchedule;
 var fileEncoding = "utf8";
 
-function serveStaticFile(req, res) {
-    var resourceName = url.parse(req.url).path;
-
-    if (resourceName === "/") {
-        resourceName = "/index.html";
-    }
-
-    fs.readFile(__dirname + "/www" + resourceName,
-        function(err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end("Error loading '" + resourceName + "'.");
-            }
-
-            res.writeHead(200);
-            res.end(data);
-        });
-}
-
 // Create a "deep" copy of the schedule that may be modified without effecting
 // the in-memory instance (this version should not be updated until the
 // schedule has successfully been stored in the persistence layer)
@@ -103,9 +84,7 @@ if (latestEvent) {
 // --[ scheduling control HTTP endpoints ]
 
 app.use(express.bodyParser());
-app.get("/", serveStaticFile);
-app.get("/index.html", serveStaticFile);
-app.get("/static/*", serveStaticFile);
+app.use(express.static(__dirname + "/www"));
 
 app.param("recId", function(req, res, next) {
     var recordingEvent = _.find(broadcastSchedule, function(recordingEvent) {
