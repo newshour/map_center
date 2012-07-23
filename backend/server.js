@@ -12,9 +12,7 @@ var serviceLocation = {
     hostName: process.env.NODE_HOST || "127.0.0.1"
 };
 var schedule = {
-    file: {
-        handle: "backend/schedule.json"
-    },
+    fileHandle: "./schedule.json",
     events: []
 };
 // Global array containing all known broadcast events
@@ -32,7 +30,7 @@ function copySchedule(schedule) {
 
 // Save the schedule to a persistence layer (in this case, a flat fire)
 function saveSchedule(newSchedule, callback) {
-    fs.writeFile(schedule.file.handle, JSON.stringify(newSchedule), function(err) {
+    fs.writeFile(schedule.fileHandle, JSON.stringify(newSchedule), function(err) {
         if (err) {
             throw err;
         }
@@ -54,7 +52,7 @@ function saveSchedule(newSchedule, callback) {
 
 // Derive the recording file handle from that recording's meta-data
 function getRecordingFileHandle(recording) {
-    return "backend/recordings/" + recording.id + "-" +
+    return "./recordings/" + recording.id + "-" +
         recording.name.replace(/[\. ]/g, "-") + ".txt";
 }
 
@@ -62,14 +60,10 @@ function getRecordingFileHandle(recording) {
 // --[ setup for scheduling control ]
 
 try {
-    schedule.file.stats = fs.lstatSync(schedule.file.handle);
+    broadcastSchedule = require(schedule.fileHandle);
 } catch(err) {
     // File does not exist. Create an empty collection in memory
     broadcastSchedule = [];
-}
-
-if (schedule.file.stats && schedule.file.stats.isFile()) {
-    broadcastSchedule = JSON.parse(fs.readFileSync(schedule.file.handle, fileEncoding));
 }
 
 var latestEvent = _.chain(broadcastSchedule)
@@ -282,7 +276,7 @@ function Event(options) {
 };
 Event.prototype = {
     getFileName: function() {
-        return "backend/recordings/" + this.id + "-" + this.name.replace(/[\. ]/g, "-")
+        return "./recordings/" + this.id + "-" + this.name.replace(/[\. ]/g, "-")
             + ".txt";
     },
     schedule: function() {

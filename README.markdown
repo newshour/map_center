@@ -33,6 +33,6 @@ a web browser.
 In order to excersize the network functionality, the files in `frontent/dist`
 must be served over a network protocol. Run the web server of your choice from
 that directory. The backend component is a Node.js service, which can be run
-with the following command:
+from the `backend` directory with the following command:
 
-    node backend/server.js
+    node server.js
