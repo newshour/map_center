@@ -14,6 +14,7 @@
     margin-bottom:0;
     padding-bottom:130px;
     background-color: #bbb;
+    background-image: none;
 }
 .view_tab_active {
     background-color: #bbb;
