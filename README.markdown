@@ -4,8 +4,10 @@ Documentation: http://vote-2012-map-center.readthedocs.org/
 
 ## Project Dependencies
 
-This project requires Node.js which can be downloaded free-of-charge here:
-http://nodejs.org/
+This project requires the following software:
+
+* Node.js (available at http://nodejs.org/)
+* Redis (available at http://redis.io/)
 
 Once installed, run the following command from this project's root directory:
 

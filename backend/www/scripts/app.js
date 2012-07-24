@@ -8,11 +8,33 @@
 
     var Recording = Backbone.Model.extend({
         urlRoot: "/recording",
-        defaults: function() {
-            return {
-                comments: "",
-                replayTimestamps: []
-            };
+        defaults: {
+            // TODO: Infer the type on the backend from the route used
+            type: "recording"
+        },
+        initialize: function() {
+
+            if (!this.replays) {
+                this.replays = new Replays();
+                this.replays.recordingID = this.id;
+            }
+        },
+        parse: function(resp) {
+
+            if (!this.replays) {
+                this.replays = new Replays();
+            }
+
+            if (resp.id) {
+                this.replays.recordingID = resp.id;
+            }
+
+            if (resp.replays) {
+                this.replays.reset(resp.replays);
+                delete resp.replays;
+            }
+
+            return resp;
         },
         validate: function(attrs) {
 
@@ -29,12 +51,12 @@
                 return "Invalid start date";
             }
 
-            if (_.any(attrs.replayTimestamps, function(timestamp) {
+            /*if (_.any(attrs.replayTimestamps, function(timestamp) {
                     var date = new Date(timestamp);
                     return !date || isNaN(date.getTime());
                 })) {
                 return "Invalid time stamp";
-            }
+            }*/
 
             //if(!/^[0-9]+$/.test(attrs.duration)) {
             if (attrs.duration < 0 || parseFloat(attrs.duration, 10) !== attrs.duration) {
@@ -45,6 +67,20 @@
     var Recordings = Backbone.Collection.extend({
         model: Recording,
         url: "/recording"
+    });
+
+    var Replay = Backbone.Model.extend({
+        urlRoot: "/recording",
+        defaults: {
+            // TODO: Infer the type on the backend from the route used
+            type: "replay"
+        }
+    });
+    var Replays = Backbone.Collection.extend({
+        model: Replay,
+        url: function() {
+            return "/recording?recordingID=" + this.recordingID;
+        }
     });
 
     var DownloadModal = Backbone.View.extend({
@@ -119,6 +155,67 @@
         }
     });
 
+    var ReplayListItem = Backbone.View.extend({
+        tagName: "li",
+        className: "replay",
+        template: _.template("<%= new Date(timeStamp).toString().slice(4, -15) %>" +
+            "<span class='delete-replay'>&times;</span>"),
+        initialize: function() {
+            this.$el.data("timestamp", this.model.timeStamp);
+            this.model.on("change", _.bind(this.render,this));
+            this.model.on("destroy", _.bind(this.remove, this));
+        },
+        events: {
+            "click .delete-replay": "requestDestroy"
+        },
+        requestDestroy: function() {
+            this.model.destroy();
+        },
+        render: function() {
+            this.$el.html(this.template(this.model.toJSON()));
+            return this;
+        }
+    });
+    var ReplayEntry = Backbone.View.extend({
+        template: _.template("<input type='text'></input>" +
+            "<button class='add-replay'>Add</button>"),
+        initialize: function() {
+            this.$el.html(this.template());
+        },
+        events: {
+            "click .add-replay": "requestAdd"
+        },
+        serialize: function() {
+            return {
+                timeStamp: Date.parse(this.$("input").val()),
+                recordingID: this.collection.recordingID
+            };
+        },
+        requestAdd: function() {
+            this.collection.create(this.serialize());
+        }
+    });
+    var ReplayList = Backbone.View.extend({
+        className: "replay-list",
+        initialize: function() {
+            this.collection.on("reset", this.render, this);
+            this.collection.on("add", this.add, this);
+            this.$listing = $("<ul>");
+            this.$el.append(this.$listing);
+            this.$el.append(new ReplayEntry({ collection: this.collection }).render().el);
+        },
+        add: function(model) {
+            this.$listing.append(new ReplayListItem({ model: model }).render().el);
+        },
+        render: function() {
+            this.$listing.empty();
+            this.collection.each(function(model) {
+                this.add(model);
+            }, this);
+            return this;
+        }
+    });
+
     var RecordingListItem = Backbone.View.extend({
         tagName: "tr",
         className: "broadcast",
@@ -127,18 +224,7 @@
                 "<%= new Date(timeStamp).toString().slice(4, -15) %>" +
             "</td>" +
             "<td><%= duration/1000 %></td>" +
-            "<td class='replays'>" +
-                "<ul class='replay-listing'><% _.forEach(replayTimestamps, function(timestamp) { %>" +
-                    "<li class='replay' data-timestamp='<%= timestamp %>'>" +
-                        "<%= new Date(timestamp).toString().slice(4, -15) %>" +
-                        "<span class='delete-replay'>&times;</span>" +
-                    "</li>" +
-                "<% }); %></ul>" +
-                "<div class='replay-creator'>" +
-                    "<input class='new-replay' type='text'></input>" +
-                    "<button class='add-replay'>Add</button>" +
-                "</div>" +
-            "</td>" +
+            "<td class='replays'></td>" +
             "<td>" +
                 "<% if (timeStamp < +new Date()) { %>" +
                     "<button class='download'>Download</button>" +
@@ -151,60 +237,22 @@
         },
         events: {
             "click .delete": "requestDestroy",
-            "click .add-replay": "addReplay",
-            "click .delete-replay": "requestDeleteReplay",
             "click .download": "requestDownload"
         },
         requestDestroy: function(event) {
             this.model.destroy();
         },
-        requestDeleteReplay: function(event) {
-            var self = this;
-            var replayTimestamps = this.model.get("replayTimestamps");
-            var toDelete = $(event.target).closest(".replay").data("timestamp");
-
-            replayTimestamps = _.without(replayTimestamps, toDelete);
-
-            this.model.save({
-                replayTimestamps: replayTimestamps
-            }, {
-                error: function() {
-                    replayTimestamps = _.clone(self.model.get("replayTimestamps"));
-                    replayTimestamps.push(toDelete);
-                    self.model.set({ replayTimestamps: replayTimestamps });
-                }
-            });
-        },
         requestDownload: function() {
             $("body").append(new DownloadModal({ model: this.model }).render().el);
-        },
-        addReplay: function() {
-            var self = this;
-            var replayTimestamps;
-            var newTimestamp;
-
-            newTimestamp = Date.parse(this.$(".new-replay").val());
-            // Clone the property off the model before modifying it (so the
-            // call to .save() triggers a "change" event as expected
-            replayTimestamps = _.clone(this.model.get("replayTimestamps"));
-            replayTimestamps.push(newTimestamp);
-
-            this.model.save({
-                replayTimestamps: replayTimestamps
-            }, {
-                error: function() {
-                    replayTimestamps = _.without(
-                        self.model.get("replayTimestamps"),
-                        newTimestamp);
-                    self.model.set({ replayTimestamps: replayTimestamps });
-                }
-            });
         },
         remove: function() {
             this.$el.remove();
         },
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
+            this.$(".replays").append(new ReplayList({
+                collection: this.model.replays
+            }).render().el);
             return this;
         }
     });
