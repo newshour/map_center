@@ -45,7 +45,8 @@ $STATIC_VIEWS_HAS_STATES = array(
     "primary_winners" => false,
     "senate_six" => false,
     "social_security" => true,
-    "unemployment" => true
+    "unemployment" => true,
+    "voter_id" => true
 );
 $STATIC_VIEWS_MAX_INDEX = array(
     "ethnicity" => 3,
@@ -103,6 +104,10 @@ $STATIC_VIEWS_ATTRIB = array(
     "unemployment" => array(
         "href" => "http://www.bls.gov/lau/",
         "text" => "U.S. Bureau of Labor Statistics"
+    ),
+    "voter_id" => array(
+        "href" => "http://www.ncsl.org/legislatures-elections/elections/voter-id.aspx",
+        "text" => "National Conference of State Legislatures"
     )
 );
 $MAP_TITLES = array(
@@ -119,6 +124,7 @@ $MAP_TITLES = array(
     "senate_six" => "Senate races to watch",
     "social_security" => "Social Security",
     "unemployment" => "Unemployment",
+    "voter_id" => "Voter ID laws",
     "past_primaries" => "Past results",
     "electoral_college" => "Electoral calculator"
 );
@@ -136,6 +142,7 @@ $SIDEBAR_TITLES = array(
     "senate_six" => "Senate races",
     "social_security" => "Percent of households with Social Security income",
     "unemployment" => "",
+    "voter_id" => "States with voter ID laws",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",
     "electoral_college" => "2012 prediction"
 );

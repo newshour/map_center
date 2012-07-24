@@ -126,7 +126,7 @@
                         enableMapView();
                         enableStaticMapsType();
                         var mapsWithoutUS = ["#08general", "#foreclosures", "#patchwork_types"];
-                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners", "#evangelical"];
+                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners", "#evangelical", "#voter_id"];
                         if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
                             $('#map_view a[href="#us_all"]').parent().hide();
                             $('#map_view a').not(':visible').removeClass('selected');
@@ -408,6 +408,7 @@
                     <li class="embed_option"><a href="#senate_six">Senate Six</a></li>
                     <li class="embed_option"><a href="#social_security">Social Security recipients</a></li>
                     <li class="embed_option"><a href="#unemployment">Unemployment rate</a></li>
+                    <li class="embed_option"><a href="#voter_id">Voter ID laws</a></li>
                 </ul>
             </div>
             
