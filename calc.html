@@ -35,25 +35,29 @@
                 // Open contents in new window
                 $('a.facebook-link').click(function() {
                     window.open(
-                        $(this).attr('href'), 'sharer',
-                        'toolbar=0,status=0,width=626,height=436'
+                        [
+                            'http://www.facebook.com/sharer/sharer.php?u=',
+                            encodeURIComponent(window.location.href), '&t=',
+                            encodeURIComponent(
+                                "See my prediction for the 2012 election"
+                            )
+                        ].join(''),
+                        'sharer', 'toolbar=0,status=0,width=626,height=436'
                     );
                     return false;
                 });
                 $('a.twitter-link').click(function() {
                     window.open(
-                        $(this).attr('href'), 'sharer',
-                        'toolbar=0,status=0,width=626,height=436'
+                        [
+                            'http://twitter.com/share?text=',
+                            encodeURIComponent(
+                                "See my prediction for the election @NewsHour"
+                            ),
+                            '&url=', encodeURIComponent(window.location.href)
+                        ].join(''),
+                        'sharer', 'toolbar=0,status=0,width=626,height=436'
                     );
                     return false;
-                });
-                // Update the contents of the URL copy dialog's input field
-                // when map state changes; also update Twitter and Facebook
-                // share buttons
-                mapStatus.eventBus.bind("change", function(event, status) {
-                    $('#copy-link-input').val(window.location.href);
-                    $('a.twitter-link').attr('href', ['http://twitter.com/share?text=', encodeURIComponent("See my prediction for the election @NewsHour"), '&url=', encodeURIComponent(window.location.href)].join(''));
-                    $('a.facebook-link').attr('href', ['http://www.facebook.com/sharer/sharer.php?u=', encodeURIComponent(window.location.href), '&t=', encodeURIComponent("See my prediction for the 2012 election")].join(''));
                 });
                 // Highlight entire text input when clicked
                 $('#copy-link-input').click(function() {
@@ -286,7 +290,11 @@
 <script type="text/javascript">
 		
         $(document).ready(function(){
-	$('#copy-url-modal').modal({show: false}),
+    $('#copy-url-modal').modal({show: false}),
+	$('#copy-url-modal').on('show', function() {
+        // Update contents of text field
+        $('#copy-link-input').val(window.location.href);
+    }),
 	$('.dropdown-toggle').dropdown()
 });</script>
 <!-- Start Quantcast tag -->
