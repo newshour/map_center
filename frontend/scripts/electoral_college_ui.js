@@ -1754,6 +1754,10 @@ $(document).one('coreInitialized', function() {
                     showLive: $("<button>Connect LIVE to PBS</button>")
                 }
             };
+            var popcorn;
+
+            Popcorn.player("baseplayer");
+            popcorn = Popcorn.baseplayer("body");
 
             $ui.container.append($ui.status, $ui.buttons.showLive);
 
@@ -1764,6 +1768,10 @@ $(document).one('coreInitialized', function() {
                 ecMap.connection.on("changeVotes.updateMap", function(event, status) {
                     ecMap.status.set(status);
                 });
+
+                popcorn.ecMap({
+                    ignore: false
+                });
             });
 
             $("#map svg").click(function() {
@@ -1771,6 +1779,10 @@ $(document).one('coreInitialized', function() {
                 $ui.buttons.showLive.show();
                 $ui.status.text("Now editing.");
                 ecMap.connection.off(".updateMap");
+
+                popcorn.ecMap({
+                    ignore: true
+                });
             });
 
             ecMap.connection.on("reconnecting", function() {
@@ -1778,6 +1790,29 @@ $(document).one('coreInitialized', function() {
                     .css("color", "#a00")
                     .text("Connection lost. Reconnecting...");
             });
+
+            ecMap.connection.on("replay", function(event, replayInfo) {
+
+                var delta = replayInfo.currentTime - replayInfo.startTime;
+                var relativeReplayData = [];
+
+                // Modify each change event to be relative to the time the
+                // recording was transmitted. Ignore those events that took
+                // place before this time
+                Popcorn.forEach(replayInfo.recording, function(changeEvent) {
+                    changeEvent.timeStamp -= delta;
+                    if (changeEvent.timeStamp >= 0) {
+                        relativeReplayData.push(changeEvent);
+                    }
+                });
+
+                popcorn.ecMap({
+                    replayData: relativeReplayData
+                });
+
+                popcorn.play();
+            });
+
             ecMap.connection.on("reconnect_failed", function() {
                 $ui.status
                     .css("color", "#a00")

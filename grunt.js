@@ -14,7 +14,8 @@ module.exports = function(grunt) {
       files: [
         "grunt.js",
         "frontend/scripts/electoral_college_connection.js",
-        "frontend/scripts/electoral_college_status.js"
+        "frontend/scripts/electoral_college_status.js",
+        "frontend/scripts/electoral_college_popcorn.js"
       ]
     },
     concat: {
@@ -23,6 +24,7 @@ module.exports = function(grunt) {
             "frontend/scripts/lib/*.js",
             "frontend/scripts/electoral_college_status.js",
             "frontend/scripts/electoral_college_connection.js",
+            "frontend/scripts/electoral_college_popcorn.js",
             "frontend/scripts/electoral_college_ui.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/electoral_college.js"

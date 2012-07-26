@@ -22,7 +22,7 @@
 
     // Forward the following socket.io events for use by the UI. These events
     // are detailed in the description of the "on" method below
-    $.each(["changeVotes", "connect", "connecting", "disconnect",
+    $.each(["replay", "changeVotes", "connect", "connecting", "disconnect",
         "connect_failed", "error",
         "reconnect", "reconnecting", "reconnect_failed"],
         function(idx, eventName) {

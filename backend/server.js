@@ -250,15 +250,38 @@ var setState = function(state, broadcast) {
                 // imprecise nature of the event loop), the current time may
                 // differ from the scheduled time. Calculate this difference
                 // so map change events can be scheduled accordingly.
-                var timeDelta = +new Date() - broadcast.timeStamp;
+                /*var timeDelta = +new Date() - broadcast.timeStamp;
 
                 _.forEach(recording, function(changeEvent) {
                     setTimeout(function() {
                         io.sockets.emit("changeVotes", changeEvent.mapState);
                     }, changeEvent.timeStamp - timeDelta);
-                });
+                });*/
 
+                var emitReplay = function(socket) {
+                    socket.emit("replay", {
+                        currentTime: +new Date(),
+                        startTime: broadcast.timeStamp,
+                        recording: recording
+                    });
+                };
+                var handleConnection = function(socket) {
+                    emitReplay(socket);
+                    // Clients that connect during a rebroadcast can be
+                    // disconnected in order to minimize overhead
+                    socket.disconnect();
+                };
+
+                // Immediately emit the replay event to any already-connected
+                // clients in order to support clients that connected at the
+                // end of a broadcast expecting to view the re-broadcast
+                emitReplay(io.sockets);
+
+                socketEventHandlers.connection = handleConnection;
+                socketEventHandlers.changeVotes = noop;
             });
+
+
         }
     };
 
