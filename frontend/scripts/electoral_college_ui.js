@@ -4,147 +4,6 @@ namespace("nhmc.config");
 namespace("nhmc.cleanup");
 namespace("nhmc.ctrl");
 
-(function(window) {
-
-    /* mapStatus
-     * Public interface, aliased for convenience within this closure
-     */
-    var mapStatus = window.mapStatus = {};
-    /* status
-     * Private state object
-     *     year <number> - The year to display. This allows for coloring
-     *         according to the changing distribution of electoral votes
-     *     stateVotes <object> - A collection describing the vote distribution
-     *         for each state.
-     *         {
-     *             <state name>: {
-     *                 dem: <number> - Number of electoral votes for the Democratic party
-     *                 rep: <number> - Number of electoral votes for the Republican party
-     *                 toss: <number> - Number of tossup electoral votes
-     *             }
-     *         }
-     *    totals <object> - This value is calculated from the "stateVotes"
-     *        objects each time it is modified.
-     *        {
-     *            dem: <number> - Number of electoral votes for the Democratic party
-     *            rep: <number> - Number of electoral votes for the Republican party
-     *            toss: <number> - Number of tossup electoral votes
-     *        }
-     */
-    var status = {
-        stateVotes: {},
-        totals: {}
-    };
-
-    /* eventBus
-     * A dedicated object for subscribing to map-related events:
-     *   "change" - triggered any time the state of the map changes
-     */
-    mapStatus.eventBus = $("<div>");
-    /* set
-     * Set the status of the map. Re-calculates total vote counts; fires an
-     * "change:state" event for each state followed by a single "change" event
-     * neweStatus <object> - Describes the new status of the map
-     *     year <number> - See description in "mapStatus" above
-     *     stateVotes <object> - See description in "mapStatus" above
-     */
-    mapStatus.set = function(newStatus) {
-
-        var idx, len;
-        var statusChange = false;
-
-        if ("year" in newStatus) {
-            status.year = newStatus.year;
-            statusChange = true;
-        }
-
-        if ("stateVotes" in newStatus) {
-
-            status.totals.dem = status.totals.rep = status.totals.toss = 0;
-
-            $.each(newStatus.stateVotes, function(stateName, votes) {
-
-                status.stateVotes[stateName] = votes;
-                status.totals.dem += votes.dem || 0;
-                status.totals.rep += votes.rep || 0;
-                status.totals.toss += votes.toss || 0;
-            });
-
-            // Now that the totals are re-calculated, trigger an change event
-            // for each state
-            $.each(newStatus.stateVotes, function(stateName, votes) {
-                mapStatus.eventBus.trigger("change:state", {
-                    name: stateName,
-                    dem: votes.dem,
-                    rep: votes.rep,
-                    toss: votes.toss
-                });
-            });
-            statusChange = true;
-        }
-
-        if (statusChange) {
-            mapStatus.eventBus.trigger("change", mapStatus.get());
-        }
-    };
-    /* get
-     * Create a copy of the map state
-     */
-    mapStatus.get = function() {
-        return $.extend(true, {}, status);
-    };
-    /* modifyVotes
-     * A convenience method for modifying the distribution of votes within
-     * states, relative to their current value.
-     */
-    mapStatus.modifyVotes = function(stateVoteDeltas) {
-
-        var delta;
-
-        $.each(stateVoteDeltas, function(stateName, voteDelta) {
-
-            var stateVotes = status.stateVotes[stateName];
-
-            stateVotes.dem += voteDelta.dem || 0;
-            stateVotes.rep += voteDelta.rep || 0;
-            stateVotes.toss += voteDelta.toss || 0;
-        });
-
-        mapStatus.set(status);
-    };
-
-}(this));
-/* Example usages:
- *
- * // Responding to click events
- * var eventToken = nhmc.geo.usGeo[i].statePath.connect('onclick',
- *     nhmc.geo.usGeo[i].statePath,
- *     function() {
- *          // Modified version of genericHandler
- *     });
- *
- * // Updating the visualization...
- * // ...the map:
- * mapStatus.eventBus.bind("change:state", function(event, stateStatus) {
- *     // Code consolidated from:
- *     //   - nebraskaHandler
- *     //   - maineHandler
- *     //   - genericHandler
- * });
- *
- * // ...the electoral results (numeric display)
- *
- * mapStatus.eventBus.bind("change", function(event, status) {
- *     indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
- * });
- *
- * // Tracking map status in the document fragment
- *
- * mapStatus.eventBus.bind("change", function(event, status) {
- *     window.location.hash = encodeURIComponent(JSON.stringify(status));
- * });
- */
-
 $(document).one('coreInitialized', function() {
     // Color overrides for this module
     nhmc.config.styleColors["blue"] = "#283891";
@@ -1027,12 +886,12 @@ $(document).one('coreInitialized', function() {
             $('#ec_detail_t').addClass('ec_detail_win');
         }
     };
-    mapStatus.eventBus.bind("change", function(event, status) {
+    ecMap.status.on("change", function(event, status) {
         indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
     });
     
     // Color a state when it is updated.
-    mapStatus.eventBus.bind("change:state", function(event, status) {
+    ecMap.status.on("change:state", function(event, status) {
         if (status.rep > 0 && status.dem == 0 && status.toss == 0) {
             nhmc.ctrl.setStateColors([status.name], 'red');
         } else if (status.rep == 0 && status.dem > 0 && status.toss == 0) {
@@ -1142,7 +1001,7 @@ $(document).one('coreInitialized', function() {
         }
         
         // Set the new status.
-        mapStatus.set(newStatus);
+        ecMap.status.set(newStatus);
     };
     
     // Event handler for clicking on a tab (or tab sub-option) listing a year
@@ -1157,7 +1016,7 @@ $(document).one('coreInitialized', function() {
     // Event handlers and such for the calculator.
     if (calculatorActive) {
         // Grab a copy of the current status.
-        var currentStatus = mapStatus.get();
+        var currentStatus = ecMap.status.get();
         if (typeof(currentStatus.totals.dem) == 'undefined') {
             // There's no actual status object for us to manipulate. Let's put
             // together a dummy one.
@@ -1173,7 +1032,7 @@ $(document).one('coreInitialized', function() {
                     toss: 0
                 };
             }
-            mapStatus.set(currentStatus);
+            ecMap.status.set(currentStatus);
         }
         
         // Prep the dialogs for splitting states, including 
@@ -1275,7 +1134,7 @@ $(document).one('coreInitialized', function() {
             $('#nebraska_electoral').dialog('open');
             
             // Update dialog to reflect current status
-            var neVote = mapStatus.get().stateVotes["Nebraska"];
+            var neVote = ecMap.status.get().stateVotes["Nebraska"];
             if (neVote.rep >= 3) {
                 $('#nebraska_popular').val('r');
                 neVote.rep -= 3;
@@ -1314,7 +1173,7 @@ $(document).one('coreInitialized', function() {
             }
             
             var updateNebraska = function() {
-                var oldVotes = mapStatus.get().stateVotes["Nebraska"];
+                var oldVotes = ecMap.status.get().stateVotes["Nebraska"];
                 
                 // Figure out new votes.
                 var newVotes = {
@@ -1371,7 +1230,7 @@ $(document).one('coreInitialized', function() {
                 };
                 
                 // Update the map.
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             };
             
             $('#nebraska_popular').change(updateNebraska);
@@ -1382,7 +1241,7 @@ $(document).one('coreInitialized', function() {
             $('#maine_electoral').dialog('open');
             
             // Update dialog to reflect current status
-            var meVote = mapStatus.get().stateVotes["Maine"];
+            var meVote = ecMap.status.get().stateVotes["Maine"];
             if (meVote.rep >= 3) {
                 $('#maine_popular').val('r');
                 meVote.rep -= 3;
@@ -1409,7 +1268,7 @@ $(document).one('coreInitialized', function() {
             }
             
             var updateMaine = function() {
-                var oldVotes = mapStatus.get().stateVotes["Maine"];
+                var oldVotes = ecMap.status.get().stateVotes["Maine"];
                 
                 // Figure out new votes.
                 var newVotes = {
@@ -1453,7 +1312,7 @@ $(document).one('coreInitialized', function() {
                 };
                 
                 // Update the map.
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             };
             
             $('#maine_popular').change(updateMaine);
@@ -1462,7 +1321,7 @@ $(document).one('coreInitialized', function() {
         var genericHandler = function(e) {
             var stateName = this.nhmcData.state;
             var votesInPrediction = electoralVotes['2012'].states[stateName];
-            var stateVotes = mapStatus.get().stateVotes[stateName];
+            var stateVotes = ecMap.status.get().stateVotes[stateName];
             
             if (stateVotes.rep > 0 && stateVotes.dem == 0 && stateVotes.toss == 0) {
                 var stateVoteDeltas = {};
@@ -1471,7 +1330,7 @@ $(document).one('coreInitialized', function() {
                     dem: votesInPrediction,
                     toss: 0
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             } else if (stateVotes.rep == 0 && stateVotes.dem > 0 && stateVotes.toss == 0) {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1479,7 +1338,7 @@ $(document).one('coreInitialized', function() {
                     dem: -votesInPrediction,
                     toss: votesInPrediction
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             } else if (stateVotes.rep == 0 && stateVotes.dem == 0 && stateVotes.toss > 0) {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1487,7 +1346,7 @@ $(document).one('coreInitialized', function() {
                     dem: 0,
                     toss: -votesInPrediction
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             } else {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1495,7 +1354,7 @@ $(document).one('coreInitialized', function() {
                     dem: 0,
                     toss: 0
                 };
-                mapStatus.modifyVotes(stateVoteDeltas);
+                ecMap.status.modifyVotes(stateVoteDeltas);
             }
         };
         
@@ -1806,11 +1665,11 @@ $(document).one('coreInitialized', function() {
     };
     var parseHash = function() {
         var hashState = nhmc.ctrl.hashParams()['states'];
-        var currentState = compressStateVotes(mapStatus.get().stateVotes);
+        var currentState = compressStateVotes(ecMap.status.get().stateVotes);
         if (typeof(hashState) != 'undefined' && hashState != currentState) {
             var stateVotes = expandStateVotes(hashState);
             if (!$.isEmptyObject(stateVotes)) {
-                mapStatus.set({stateVotes: stateVotes});
+                ecMap.status.set({stateVotes: stateVotes});
             }
         }
     };
@@ -1818,7 +1677,7 @@ $(document).one('coreInitialized', function() {
     // Let's kick things off!
     if (calculatorActive) {
         // Update fragment identifier every time map status changes
-        mapStatus.eventBus.bind("change", function(event, status) {
+        ecMap.status.on("change", function(event, status) {
             nhmc.ctrl.hashParams({
                 "states": compressStateVotes(status.stateVotes)
             });
@@ -1832,7 +1691,7 @@ $(document).one('coreInitialized', function() {
         // map state.
         var apCompressed = $('#use-ap-projections').attr('href');
         apCompressed = apCompressed.substring(apCompressed.indexOf('=') + 1);
-        mapStatus.eventBus.bind("change", function(event, status) {
+        ecMap.status.on("change", function(event, status) {
             var currentView = nhmc.ctrl.hashParams()["states"];
             if (currentView == apCompressed) {
                 $('#ap_projection_attribution').show();
@@ -1847,4 +1706,141 @@ $(document).one('coreInitialized', function() {
     } else {
         $('.view_tab_active .view_tab_option').first().click();
     }
+
+    // Temporary UI to demonstrate connection API and test broadcast behavior
+    // A back-end connection will only be made if the URL contains the
+    // "networked" query string parameter. If that parameter's value is
+    // "broadcaster", the UI for toggling broadcaster status will be displayed
+    (function() {
+        var match = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
+        var $sidebar;
+
+        // Do not initiate a connection if the pattern does not match
+        if (!match) {
+            return;
+        }
+
+        ecMap.connection.on("error", unavailableHandler);
+        ecMap.connection.on("connect", availableHandler);
+
+        // Initiate a connection
+        ecMap.connection.init();
+        $sidebar = $("#sidebar");
+
+        function unavailableHandler() {
+            $sidebar.append("The backend is not available at the moment.");
+        }
+
+        function availableHandler() {
+
+            ecMap.connection.off("error", unavailableHandler);
+            ecMap.connection.off("connect", availableHandler);
+
+            // Do not create the broadcaster control UI if the matched pattern does
+            // not contain the string "broadcaster"
+            if (match[1] === "broadcaster") {
+                $sidebar.append(createBroadcasterUI());
+            } else {
+                $sidebar.append(createConsumerUI());
+            }
+        }
+
+        function createConsumerUI() {
+
+            var $ui = {
+                container: $("<div class='consumer-control'>"),
+                status: $("<span class='status'></span>"),
+                buttons: {
+                    showLive: $("<button>Connect LIVE to PBS</button>")
+                }
+            };
+
+            $ui.container.append($ui.status, $ui.buttons.showLive);
+
+            $ui.buttons.showLive.click(function() {
+                // detach map click handlers
+                $ui.buttons.showLive.hide();
+                $ui.status.text("Now showing live from PBS!");
+                ecMap.connection.on("changeVotes.updateMap", function(event, status) {
+                    ecMap.status.set(status);
+                });
+            });
+
+            $("#map svg").click(function() {
+                // attach map click handlers
+                $ui.buttons.showLive.show();
+                $ui.status.text("Now editing.");
+                ecMap.connection.off(".updateMap");
+            });
+
+            ecMap.connection.on("reconnecting", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Connection lost. Reconnecting...");
+            });
+            ecMap.connection.on("reconnect_failed", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Unable to reconnect.");
+            });
+            ecMap.connection.on("connect", function() {
+                $ui.status
+                    .css("color", "#000")
+                    .text("Connected!");
+            });
+
+            $ui.buttons.showLive.trigger("click");
+
+            return $ui.container;
+        }
+
+        // Create the broadcaster control UI
+        function createBroadcasterUI() {
+
+            var $ui = {
+                container: $("<div class='broadcast-control'>"),
+                status: $("<span>"),
+                buttons: {
+                    start: $("<button class='broadcast-start'>Start Broadcasting</button>"),
+                    stop: $("<button class='broadcast-stop'>Stop Broadcasting</button>")
+                }
+            };
+
+            $ui.container.append($ui.status, $ui.buttons.start, $ui.buttons.stop);
+            $ui.buttons.stop.hide();
+
+            $ui.buttons.start.click(function() {
+                $ui.buttons.start.hide();
+                $ui.buttons.stop.show();
+                ecMap.connection.startBroadcast();
+            });
+            $ui.buttons.stop.click(function() {
+                $ui.buttons.stop.hide();
+                $ui.buttons.start.show();
+                ecMap.connection.stopBroadcast();
+            });
+
+            ecMap.connection.on("changeVotes.updateMap", function(event, status) {
+                ecMap.status.set(status);
+            });
+            ecMap.connection.on("reconnecting", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Connection lost. Reconnecting...");
+            });
+            ecMap.connection.on("reconnect_failed", function() {
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Unable to reconnect.");
+            });
+            ecMap.connection.on("connect", function() {
+                $ui.status
+                    .css("color", "#000")
+                    .text("Connected!");
+            });
+
+            return $ui.container;
+        }
+
+    }());
 });

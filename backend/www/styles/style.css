@@ -1,0 +1,58 @@
+.page-title {
+    font-weight: bold;
+    font-size: 18pt;
+    margin-bottom: 10px;
+}
+.section-title {
+    font-weight: bold;
+    font-size: 14pt;
+    margin-bottom: 8px;
+}
+.map-status .status {
+    height: 200px;
+    overflow-y: auto;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal .container {
+    width: 400px;
+    margin: 200px auto;
+    padding: 30px;
+    background-color: #eee;
+}
+.modal .title {
+    font-size: 14pt;
+    margin-bottom: 20px;
+}
+.modal .buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+.modal.download label {
+    display: block;
+}
+.broadcast-list .format {
+    color: #444;
+    font-size: 10pt;
+}
+.broadcast:nth-child(even) {
+    background-color: #eee;
+}
+.broadcast {
+    border-top: solid 1px #eee;
+}
+.broadcast:first-child {
+    border-top: none;
+}
+.broadcast .delete {
+    cursor: pointer;
+}
+.replay .delete-replay {
+    cursor: pointer;
+}
