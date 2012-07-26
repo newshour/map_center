@@ -13,6 +13,15 @@ Once installed, run the following command from this project's root directory:
 
 This will install the requisite packages from the Node Package Manager.
 
+The "grunt" build tool is required to build the project. You can check if it is
+already installed by typing:
+
+    grunt --version
+
+If not, you may install it globally by running the following command:
+
+    npm install -g grunt
+
 ## Building the Project
 
 Issue the following command to build the required source files:
