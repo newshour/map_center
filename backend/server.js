@@ -236,7 +236,7 @@ var setState = function(state, broadcast) {
             };
             var handleConnection = function(socket) {
                 if (currentMapState) {
-                    socket.emit(currentMapState);
+                    socket.emit("changeVotes", currentMapState);
                 }
             };
             socketEventHandlers.changeVotes = handleChangeVotes;
