@@ -7,6 +7,28 @@
     var ecMap = window.ecMap || {};
     window.ecMap = ecMap;
 
+    var noop = function() {};
+
+    // ecMap Popcorn.js plugin
+    // Allows for tying electoral map change events to a Popcorn instance.
+    // Options:
+    // - replayData <object>: An array describing a set of map change events.
+    //   Specifying this value will cancel previously-set change events.
+    //   Each element should be formatted as follows:
+    //   {
+    //     timeStamp <number>: UNIX timestamp for the event to occur, relative
+    //                         to the beginning of the Popcorn instance's
+    //                         timeline
+    //     mapState <object>:  Describes the desired state of the map
+    //   }
+    // - element <string>: A CSS selector string describing an element on the
+    //   page from which to derive the replayDataa by parsing its contents as
+    //   JSON.
+    //   Specifying this value will cancel previously-set change events.
+    // - ignore <boolean>: A flag to control whether or not change events
+    //   should effect the map. Although pausing the Popcorn instance would
+    //   acheive a similar result, this is useful for allowing the user to
+    //   interact with the map without effecting playback.
     Popcorn.plugin("ecMap", function(options) {
 
         var self = this;
@@ -60,9 +82,11 @@
             });
         }
 
+        // All Popcorn plugins must define 'start' and 'end' methods. These are
+        // not necessary for this plugin, so set them as noops
         return {
-            start: function() {},
-            end: function() {}
+            start: noop,
+            end: noop
         };
     });
 
