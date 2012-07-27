@@ -12,6 +12,17 @@
         var self = this;
         var replayData;
 
+        // Ensure that this instance has a namespace in its data object for the
+        // plugin
+        if (!this.data.ecMap) {
+            this.data.ecMap = {};
+        }
+
+        // Ensure that this instance has an array to track cues
+        if (!this.data.ecMap.cueIDs) {
+            this.data.ecMap.cueIDs = [];
+        }
+
         if ("replayData" in options) {
             replayData = options.replayData;
         } else if ("element" in options) {
@@ -19,8 +30,21 @@
         }
 
         if (replayData) {
-            Popcorn.forEach(replayData, function(data) {
-                self.cue(data.timeStamp/1000, function() {
+
+            // Cancel any previously-created cues
+            Popcorn.forEach(this.data.ecMap.cueIDs, function(cueID) {
+                self.cue(cueID, -1);
+            });
+            this.data.ecMap.cueIDs.length = 0;
+
+            Popcorn.forEach(replayData, function(data, idx) {
+
+                var cueID = "ecMapCue" + idx;
+
+                self.data.ecMap.cueIDs.push(cueID);
+
+                self.cue(cueID, data.timeStamp/1000);
+                self.cue(cueID, function() {
                     self.emit("changeVotes", data.mapState);
                 });
             });
