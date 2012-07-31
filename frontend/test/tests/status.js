@@ -1,4 +1,4 @@
-module("ecMap.status.set", {
+module("liveMap.status.set", {
     setup: function() {
         this.sampleValue = {
             year: 1986,
@@ -24,9 +24,9 @@ module("ecMap.status.set", {
         });
     },
     teardown: function() {
-       ecMap.status.off("change");
-       ecMap.status.off("change:state");
-       ecMap.status.reset();
+       liveMap.status.off("change");
+       liveMap.status.off("change:state");
+       liveMap.status.reset();
     }
 });
 
@@ -34,9 +34,9 @@ test("normal operation", 2, function() {
 
     var actualStatus;
 
-    ecMap.status.set(this.sampleValue);
+    liveMap.status.set(this.sampleValue);
 
-    actualStatus = ecMap.status.get();
+    actualStatus = liveMap.status.get();
 
     deepEqual(actualStatus, this.expectedStatus,
         "Correctly stores the state and calculates totals");
@@ -68,11 +68,11 @@ test("events", 5, function() {
         }
     };
 
-    ecMap.status.on("change", handlers.change);
-    ecMap.status.on("change:state", handlers.stateChange);
+    liveMap.status.on("change", handlers.change);
+    liveMap.status.on("change:state", handlers.stateChange);
 
     expectedStatus = this.expectedStatus;
-    ecMap.status.set(this.sampleValue);
+    liveMap.status.set(this.sampleValue);
 
     expectedStatus = $.extend(true, expectedStatus, {
         stateVotes: extraStates,
@@ -81,16 +81,16 @@ test("events", 5, function() {
             toss: 7
         }
     });
-    ecMap.status.set({ stateVotes: extraStates });
+    liveMap.status.set({ stateVotes: extraStates });
 
     // Set without changes--these should not trigger any "change:state" events
     // or a "change" event (which QUnit confirms through this test's expected
     // assertion count)
-    ecMap.status.set({ stateVotes: extraStates });
-    ecMap.status.set({ stateVotes: {} });
+    liveMap.status.set({ stateVotes: extraStates });
+    liveMap.status.set({ stateVotes: {} });
 });
 
-module("ecMap.status helpers");
+module("liveMap.status helpers");
 
 test("reset()", 6, function() {
     var newValue = {
@@ -131,30 +131,30 @@ test("reset()", 6, function() {
     };
     var stateCount = 0;
 
-    ecMap.status.set(newValue);
+    liveMap.status.set(newValue);
 
-    ecMap.status.on("change", handlers.change);
-    ecMap.status.on("change:state", handlers.stateChange);
-    ecMap.status.reset();
+    liveMap.status.on("change", handlers.change);
+    liveMap.status.on("change:state", handlers.stateChange);
+    liveMap.status.reset();
 
-    ok(!ecMap.status.get().year, "Unsets the year");
-    $.each(ecMap.status.get().stateVotes, function(stateName, votes) {
+    ok(!liveMap.status.get().year, "Unsets the year");
+    $.each(liveMap.status.get().stateVotes, function(stateName, votes) {
         stateCount++;
     });
     equal(stateCount, 0, "Unsets all states");
 
-    ecMap.status.off("change");
-    ecMap.status.off("change:state");
+    liveMap.status.off("change");
+    liveMap.status.off("change:state");
 
     // Ensure that "change" fires even when only states change (and not the
     // year)
     delete newValue.year;
-    ecMap.status.set(newValue);
+    liveMap.status.set(newValue);
 
-    ecMap.status.on("change", handlers.change);
-    ecMap.status.reset();
+    liveMap.status.on("change", handlers.change);
+    liveMap.status.reset();
 
-    ecMap.status.off("change");
+    liveMap.status.off("change");
 });
 
 test("changedStates()", 4, function() {
@@ -170,25 +170,25 @@ test("changedStates()", 4, function() {
         }
     };
 
-    ecMap.status.set({});
+    liveMap.status.set({});
 
-    equal(ecMap.status.changedStates(), false,
+    equal(liveMap.status.changedStates(), false,
         "Returns 'false' when no change was made by previous call to 'set'");
 
-    ecMap.status.set({ stateVotes: toChange });
+    liveMap.status.set({ stateVotes: toChange });
 
-    deepEqual(ecMap.status.changedStates(), toChange,
+    deepEqual(liveMap.status.changedStates(), toChange,
         "Returns the changed data when a change was made by the previous call to 'set'");
 
-    ecMap.status.set({ stateVotes: toChange });
+    liveMap.status.set({ stateVotes: toChange });
 
-    equal(ecMap.status.changedStates(), false,
+    equal(liveMap.status.changedStates(), false,
         "Returns 'false' when no change was made by previous call to 'set'");
 
     $.extend(true, toChange, toAdd);
 
-    ecMap.status.set({ stateVotes: toChange });
+    liveMap.status.set({ stateVotes: toChange });
 
-    deepEqual(ecMap.status.changedStates(), toAdd,
+    deepEqual(liveMap.status.changedStates(), toAdd,
         "Returns only the changed data when a change was made by the previous call to 'set'");
 });

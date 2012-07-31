@@ -318,7 +318,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
       <?php } elseif ($map_module == 'past_primaries') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/live.js"></script>
       <?php } elseif ($map_module == 'electoral_college') { ?>
-        <script type="text/javascript" src="../lib/map_center/modules/electoral_college.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/livemap.js"></script>
       <?php } ?>
         
         <script type="text/javascript">

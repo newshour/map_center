@@ -3,13 +3,13 @@
     // Dependencies
     var $ = window.jQuery;
 
-    var ecMap = window.ecMap || {};
-    window.ecMap = ecMap;
+    var liveMap = window.liveMap || {};
+    window.liveMap = liveMap;
 
-    /* ecMap.status
+    /* liveMap.status
      * Public interface, aliased for convenience within this closure
      */
-    var status = ecMap.status = {};
+    var status = liveMap.status = {};
     /* _status
      * Private state object
      *     year <number> - The year to display. This allows for coloring
@@ -223,7 +223,7 @@
  *
  * // Updating the visualization...
  * // ...the map:
- * ecMap.status.on("change:state", function(event, stateStatus) {
+ * liveMap.status.on("change:state", function(event, stateStatus) {
  *     // Code consolidated from:
  *     //   - nebraskaHandler
  *     //   - maineHandler
@@ -232,13 +232,13 @@
  *
  * // ...the electoral results (numeric display)
  *
- * ecMap.status.on("change", function(event, status) {
+ * liveMap.status.on("change", function(event, status) {
  *     indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
  * });
  *
  * // Tracking map status in the document fragment
  *
- * ecMap.status.on("change", function(event, status) {
+ * liveMap.status.on("change", function(event, status) {
  *     window.location.hash = encodeURIComponent(JSON.stringify(status));
  * });
  */

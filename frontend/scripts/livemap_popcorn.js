@@ -4,10 +4,10 @@
     var Popcorn = window.Popcorn;
     var $ = window.jQuery;
 
-    var ecMap = window.ecMap || {};
-    window.ecMap = ecMap;
+    var liveMap = window.liveMap || {};
+    window.liveMap = liveMap;
 
-    // ecMap Popcorn.js scheduler
+    // liveMap Popcorn.js scheduler
     // Allows for tying electoral map change events to a Popcorn instance.
     // Arguments:
     // - pop <Popcorn instance>: The Popcorn instance for which events should
@@ -30,19 +30,19 @@
     //     should effect the map. Although pausing the Popcorn instance would
     //     acheive a similar result, this is useful for allowing the user to
     //     interact with the map without effecting playback.
-    ecMap.popcorn = function(pop, options) {
+    liveMap.popcorn = function(pop, options) {
 
         var replayData;
 
         // Ensure that this instance has a namespace in its data object for the
         // plugin
-        if (!pop.data.ecMap) {
-            pop.data.ecMap = {};
+        if (!pop.data.liveMap) {
+            pop.data.liveMap = {};
         }
 
         // Ensure that this instance has an array to track cues
-        if (!pop.data.ecMap.cueIDs) {
-            pop.data.ecMap.cueIDs = [];
+        if (!pop.data.liveMap.cueIDs) {
+            pop.data.liveMap.cueIDs = [];
         }
 
         if ("replayData" in options) {
@@ -54,18 +54,18 @@
         if (replayData) {
 
             // Cancel any previously-created cues
-            Popcorn.forEach(pop.data.ecMap.cueIDs, function(cueID) {
+            Popcorn.forEach(pop.data.liveMap.cueIDs, function(cueID) {
 
                 pop.cue(cueID, -1);
 
             });
-            pop.data.ecMap.cueIDs.length = 0;
+            pop.data.liveMap.cueIDs.length = 0;
 
             Popcorn.forEach(replayData, function(data, idx) {
 
-                var cueID = "ecMapCue" + idx;
+                var cueID = "liveMapCue" + idx;
 
-                pop.data.ecMap.cueIDs.push(cueID);
+                pop.data.liveMap.cueIDs.push(cueID);
 
                 pop.cue(cueID, data.timeStamp/1000);
                 pop.cue(cueID, function() {
@@ -80,9 +80,7 @@
             pop.off("updateMap");
         } else {
             pop.on("updateMap", function(mapState) {
-                ecMap.status.set({
-                    stateVotes: mapState.ecVotes
-                });
+                liveMap.status.set(mapState);
             });
         }
 

@@ -3,9 +3,9 @@
     // Dependencies
     var io = window.io;
     var $ = window.jQuery;
-    var ecMap = window.ecMap || {};
-    window.ecMap = ecMap;
-    var connection = ecMap.connection = {};
+    var liveMap = window.liveMap || {};
+    window.liveMap = liveMap;
+    var connection = liveMap.connection = {};
 
     var eventBus = $("<div>");
     var connectionRequested = false;
@@ -39,7 +39,7 @@
         if (!socket.connected ||
             // Prevent infinite recursion resulting from broadcasters receiving
             // change events
-            !ecMap.status.changedStates()) {
+            !liveMap.status.changedStates()) {
             return;
         }
 
@@ -62,7 +62,7 @@
      * Emit map status changes to the backend
      */
     connection.startBroadcast = function() {
-        ecMap.status.on("change.broadcast", function(event, mapStatus) {
+        liveMap.status.on("change.broadcast", function(event, mapStatus) {
 
             connection._broadcastChange({
                 // Only broadcast the votes (not the totals)
@@ -77,7 +77,7 @@
      * Prevent map status changes from being emitted to the backend
      */
     connection.stopBroadcast = function() {
-        ecMap.status.off("change.broadcast");
+        liveMap.status.off("change.broadcast");
     };
 
     /* on
