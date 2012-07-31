@@ -327,9 +327,9 @@
             body: $("body")
         };
         var socket = io.connect();
-        socket.on("changeVotes", function(data) {
+        socket.on("updateMap", function(data) {
             $cache.statusList.prepend(
-                $("<li>").text(JSON.stringify(data.stateVotes)));
+                $("<li>").text(JSON.stringify(data)));
         });
         $cache.recordingList = new RecordingList({ collection: recordings }).$el;
         $cache.body.append($cache.recordingList);

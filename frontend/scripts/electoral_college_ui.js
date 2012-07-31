@@ -1743,6 +1743,19 @@ $(document).one('coreInitialized', function() {
             } else {
                 $sidebar.append(createConsumerUI());
             }
+
+            // Namespace the handler so it can be unbound on user
+            // interaction without affecting other handlers
+            ecMap.connection.on("updateMap.updateGUI", function(event, mapState) {
+
+                if ("ecVotes" in mapState) {
+                    ecMap.status.set({
+                        stateVotes: mapState.ecVotes
+                    });
+                }
+                // TODO: Extend with additional change event handlers, i.e.
+                // changing the map displayed or loading other web content
+            });
         }
 
         function createConsumerUI() {
@@ -1765,9 +1778,6 @@ $(document).one('coreInitialized', function() {
                 // detach map click handlers
                 $ui.buttons.showLive.hide();
                 $ui.status.text("Now showing live from PBS!");
-                ecMap.connection.on("changeVotes.updateMap", function(event, status) {
-                    ecMap.status.set(status);
-                });
 
                 ecMap.popcorn(popcorn, {
                     ignore: false
@@ -1778,7 +1788,7 @@ $(document).one('coreInitialized', function() {
                 // attach map click handlers
                 $ui.buttons.showLive.show();
                 $ui.status.text("Now editing.");
-                ecMap.connection.off(".updateMap");
+                ecMap.connection.off(".updateGUI");
 
                 ecMap.popcorn(popcorn, {
                     ignore: true
@@ -1865,9 +1875,6 @@ $(document).one('coreInitialized', function() {
                 ecMap.connection.stopBroadcast();
             });
 
-            ecMap.connection.on("changeVotes.updateMap", function(event, status) {
-                ecMap.status.set(status);
-            });
             ecMap.connection.on("reconnecting", function() {
                 $ui.status
                     .css("color", "#a00")

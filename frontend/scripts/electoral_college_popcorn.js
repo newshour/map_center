@@ -69,7 +69,7 @@
 
                 pop.cue(cueID, data.timeStamp/1000);
                 pop.cue(cueID, function() {
-                    pop.emit("changeVotes", data.mapState);
+                    pop.emit("updateMap", data.mapState);
                 });
             });
         }
@@ -77,10 +77,12 @@
         // Allow cues to be ignored so that the playback may be "silenced"
         // without effecting timing
         if (options.ignore) {
-            pop.off("changeVotes");
+            pop.off("updateMap");
         } else {
-            pop.on("changeVotes", function(mapState) {
-                ecMap.status.set(mapState);
+            pop.on("updateMap", function(mapState) {
+                ecMap.status.set({
+                    stateVotes: mapState.ecVotes
+                });
             });
         }
 

@@ -169,7 +169,7 @@ app.listen(serviceLocation.portNumber, serviceLocation.hostName);
 
 var noop = function() {};
 var socketEventHandlers = {
-    changeVotes: noop,
+    updateMap: noop,
     connection: noop
 };
 var longestEvent = 2*60*60*1000;
@@ -210,36 +210,36 @@ var setState = function(state, broadcast) {
 
     var bindings = {
         offAir: function() {
-            socketEventHandlers.changeVotes = noop;
+            socketEventHandlers.updateMap = noop;
             socketEventHandlers.connection = noop;
         },
         recording: function(broadcast) {
 
             var currentMapState;
 
-            var handleChangeVotes = function(data) {
+            var handleUpdateMap = function(mapState) {
                 var changeEvent;
                 // Update the "current" map state to be sent to newly-connected
                 // clients
-                currentMapState = data;
+                currentMapState = mapState;
 
-                io.sockets.emit("changeVotes", data);
+                io.sockets.emit("updateMap", mapState);
 
                 changeEvent = {
                     // Map event timestamps are relative to the start of the
                     // recording event
                     timeStamp: +new Date() - broadcast.timeStamp,
-                    mapState: data
+                    mapState: mapState
                 };
 
                 broadcastSchedule.addRecordingEvent(broadcast.id, changeEvent);
             };
             var handleConnection = function(socket) {
                 if (currentMapState) {
-                    socket.emit("changeVotes", currentMapState);
+                    socket.emit("updateMap", currentMapState);
                 }
             };
-            socketEventHandlers.changeVotes = handleChangeVotes;
+            socketEventHandlers.updateMap = handleUpdateMap;
             socketEventHandlers.connection = handleConnection;
         },
         replay: function(broadcast) {
@@ -254,7 +254,7 @@ var setState = function(state, broadcast) {
 
                 _.forEach(recording, function(changeEvent) {
                     setTimeout(function() {
-                        io.sockets.emit("changeVotes", changeEvent.mapState);
+                        io.sockets.emit("updateMap", changeEvent.mapState);
                     }, changeEvent.timeStamp - timeDelta);
                 });*/
 
@@ -299,7 +299,7 @@ var setState = function(state, broadcast) {
                     emitReplay(io.sockets);
 
                     socketEventHandlers.connection = handleConnection;
-                    socketEventHandlers.changeVotes = noop;
+                    socketEventHandlers.updateMap = noop;
 
                 });
 
@@ -320,7 +320,7 @@ tick();
  * (**see below). This effects the approach to dynamically assigning event
  * handlers. Instead of running the following code:
  *
- *     io.sockets.on("changeVotes", newChangeVotesHandler);
+ *     io.sockets.on("updateMap", newUpdateMapHandler);
  *
  *  ...each socket must be individually assigned a handler when it connects.
  *  This handler can invoke a global method, and this method may be dynamically
@@ -333,8 +333,8 @@ io.sockets.on("connection", function(socket) {
     var args = Array.prototype.slice.call(arguments);
     socketEventHandlers.connection.apply(socket, args);
 
-    socket.on("changeVotes", function() {
+    socket.on("updateMap", function() {
         var args = Array.prototype.slice.call(arguments);
-        socketEventHandlers.changeVotes.apply(socket, args);
+        socketEventHandlers.updateMap.apply(socket, args);
     });
 });
