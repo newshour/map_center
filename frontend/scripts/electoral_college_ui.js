@@ -1769,7 +1769,7 @@ $(document).one('coreInitialized', function() {
                     ecMap.status.set(status);
                 });
 
-                popcorn.ecMap({
+                ecMap.popcorn(popcorn, {
                     ignore: false
                 });
             });
@@ -1780,7 +1780,7 @@ $(document).one('coreInitialized', function() {
                 $ui.status.text("Now editing.");
                 ecMap.connection.off(".updateMap");
 
-                popcorn.ecMap({
+                ecMap.popcorn(popcorn, {
                     ignore: true
                 });
             });
@@ -1816,11 +1816,11 @@ $(document).one('coreInitialized', function() {
 
                 });
 
-                popcorn.ecMap({
+                ecMap.popcorn(popcorn, {
                     replayData: relativeReplayData
                 });
 
-                popcorn.play();
+                popcorn.play(0);
             });
 
             ecMap.connection.on("reconnect_failed", function() {
