@@ -1793,17 +1793,27 @@ $(document).one('coreInitialized', function() {
 
             ecMap.connection.on("replay", function(event, replayInfo) {
 
-                var delta = replayInfo.currentTime - replayInfo.startTime;
                 var relativeReplayData = [];
 
-                // Modify each change event to be relative to the time the
-                // recording was transmitted. Ignore those events that took
-                // place before this time
-                Popcorn.forEach(replayInfo.recording, function(changeEvent) {
-                    changeEvent.timeStamp -= delta;
-                    if (changeEvent.timeStamp >= 0) {
-                        relativeReplayData.push(changeEvent);
-                    }
+                // Create a set of map event cues for every future replay
+                Popcorn.forEach(replayInfo.startTimes, function(startTime) {
+
+                    var delta = replayInfo.currentTime - startTime;
+
+                    // Modify each change event to be relative to the time the
+                    // recording was transmitted. Ignore those events that took
+                    // place before this time
+                    Popcorn.forEach(replayInfo.recording, function(changeEvent) {
+
+                        // Clone the original event data so that it can be
+                        // modified for each replay
+                        var cloned = $.extend(true, {}, changeEvent);
+                        cloned.timeStamp -= delta;
+                        if (cloned.timeStamp >= 0) {
+                            relativeReplayData.push(cloned);
+                        }
+                    });
+
                 });
 
                 popcorn.ecMap({
