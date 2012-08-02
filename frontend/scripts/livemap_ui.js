@@ -1795,6 +1795,12 @@ $(document).one('coreInitialized', function() {
                     .text("Connection lost. Reconnecting...");
             });
 
+            // This handler simulates a re-broadcast of previously-recorded
+            // events. A simpler implementation would involve the backend
+            // re-broadcasting recorded events in real time. Under that
+            // approach, the following client-side logic would be unecessary
+            // since clients would not need to differentiate between live
+            // broadcasts and re-broadcasts of recorded events.
             liveMap.connection.on("replay", function(event, replayInfo) {
 
                 var relativeReplayData = [];

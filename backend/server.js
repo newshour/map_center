@@ -246,6 +246,15 @@ var setState = function(state, broadcast) {
 
             broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
 
+                // The following logic has been commented out in favor of an
+                // alternate approach to broadcasting replays. This code
+                // simulates change events and re-broadcasts them in real-time
+                // to all connected clients. This means that the backend will
+                // have to bear the same load under live broadcasts and replays
+                // alike. The new approach (described below) avoids this, but
+                // this optimization may not be necessary, in which case the
+                // original approach is preferable for its simplicity.
+                //
                 // Due to possible delays in database requests (and the
                 // imprecise nature of the event loop), the current time may
                 // differ from the scheduled time. Calculate this difference
@@ -256,7 +265,11 @@ var setState = function(state, broadcast) {
                     setTimeout(function() {
                         io.sockets.emit("updateMap", changeEvent.mapState);
                     }, changeEvent.timeStamp - timeDelta);
-                });*/
+                });
+
+                socketEventHandlers.connection = noop;
+                socketEventHandlers.updateMap = noop;
+                */
 
                 // Retrieve any other replays of the current recording so that
                 // clients can mimick re-broadcasting without needing to
