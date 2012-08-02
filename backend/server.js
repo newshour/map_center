@@ -267,44 +267,42 @@ var setState = function(state, broadcast) {
                     broadcast.recordingID,
                     function(err, allReplays) {
 
-                    var now = +new Date();
-                    var upcomingReplays = _.filter(allReplays, function(replay) {
-                        return replay.timeStamp >= now ||
-                            // Due to delays caused by the program event loop
-                            // and database queries, the active replay's start
-                            // time may be slightly earlier than the current
-                            // time. This condition ensures that in such cases,
-                            // the active replay is broadcast to all clients.
-                            replay.id === broadcast.id;
-                    });
-
-                    var emitReplay = function(socket) {
-                        socket.emit("replay", {
-                            currentTime: +new Date(),
-                            startTimes: _.pluck(upcomingReplays, "timeStamp"),
-                            recording: recording
+                        var now = +new Date();
+                        var upcomingReplays = _.filter(allReplays, function(replay) {
+                            return replay.timeStamp >= now ||
+                                // Due to delays caused by the program event loop
+                                // and database queries, the active replay's start
+                                // time may be slightly earlier than the current
+                                // time. This condition ensures that in such cases,
+                                // the active replay is broadcast to all clients.
+                                replay.id === broadcast.id;
                         });
-                    };
-                    var handleConnection = function(socket) {
-                        emitReplay(socket);
-                        // Clients that connect during a rebroadcast can be
-                        // disconnected in order to minimize overhead
-                        socket.disconnect();
-                    };
 
-                    // Immediately emit the replay event to any
-                    // already-connected clients in order to support clients
-                    // that connected at the end of a broadcast expecting to
-                    // view the re-broadcast
-                    emitReplay(io.sockets);
+                        var emitReplay = function(socket) {
+                            socket.emit("replay", {
+                                currentTime: +new Date(),
+                                startTimes: _.pluck(upcomingReplays, "timeStamp"),
+                                recording: recording
+                            });
+                        };
+                        var handleConnection = function(socket) {
+                            emitReplay(socket);
+                            // Clients that connect during a rebroadcast can be
+                            // disconnected in order to minimize overhead
+                            socket.disconnect();
+                        };
 
-                    socketEventHandlers.connection = handleConnection;
-                    socketEventHandlers.updateMap = noop;
+                        // Immediately emit the replay event to any
+                        // already-connected clients in order to support clients
+                        // that connected at the end of a broadcast expecting to
+                        // view the re-broadcast
+                        emitReplay(io.sockets);
 
-                });
+                        socketEventHandlers.connection = handleConnection;
+                        socketEventHandlers.updateMap = noop;
 
+                    });
             });
-
 
         }
     };
