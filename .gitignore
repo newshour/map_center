@@ -2,5 +2,5 @@
 *.sublime*
 *.swp
 node_modules
-frontend/dist/lib/map_center/modules/electoral_college.js
+frontend/dist/lib/map_center/modules/livemap.js
 backend/schedule.json

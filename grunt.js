@@ -13,25 +13,27 @@ module.exports = function(grunt) {
     lint: {
       files: [
         "grunt.js",
-        "frontend/scripts/electoral_college_connection.js",
-        "frontend/scripts/electoral_college_status.js"
+        "frontend/scripts/livemap_connection.js",
+        "frontend/scripts/livemap_status.js",
+        "frontend/scripts/livemap_popcorn.js"
       ]
     },
     concat: {
       dist: {
         src: [
             "frontend/scripts/lib/*.js",
-            "frontend/scripts/electoral_college_status.js",
-            "frontend/scripts/electoral_college_connection.js",
-            "frontend/scripts/electoral_college_ui.js"
+            "frontend/scripts/livemap_status.js",
+            "frontend/scripts/livemap_connection.js",
+            "frontend/scripts/livemap_popcorn.js",
+            "frontend/scripts/livemap_ui.js"
         ],
-        dest: "frontend/dist/lib/map_center/modules/electoral_college.js"
+        dest: "frontend/dist/lib/map_center/modules/livemap.js"
       }
     },
     min: {
       dist: {
         src: ["<banner:meta.banner>", "<config:concat.dist.dest>"],
-        dest: "frontend/dist/lib/map_center/modules/electoral_college.js"
+        dest: "frontend/dist/lib/map_center/modules/livemap.js"
       }
     },
     watch: {

@@ -3,9 +3,9 @@
     // Dependencies
     var io = window.io;
     var $ = window.jQuery;
-    var ecMap = window.ecMap || {};
-    window.ecMap = ecMap;
-    var connection = ecMap.connection = {};
+    var liveMap = window.liveMap || {};
+    window.liveMap = liveMap;
+    var connection = liveMap.connection = {};
 
     var eventBus = $("<div>");
     var connectionRequested = false;
@@ -22,7 +22,7 @@
 
     // Forward the following socket.io events for use by the UI. These events
     // are detailed in the description of the "on" method below
-    $.each(["changeVotes", "connect", "connecting", "disconnect",
+    $.each(["replay", "updateMap", "connect", "connecting", "disconnect",
         "connect_failed", "error",
         "reconnect", "reconnecting", "reconnect_failed"],
         function(idx, eventName) {
@@ -34,16 +34,16 @@
 
     // _broadcastChange
     // Private method for setting map change events to the server
-    connection._broadcastChange = function(event, status) {
+    connection._broadcastChange = function(mapState) {
 
         if (!socket.connected ||
             // Prevent infinite recursion resulting from broadcasters receiving
             // change events
-            !ecMap.status.changedStates()) {
+            !liveMap.status.changedStates()) {
             return;
         }
 
-        socketNs.emit("changeVotes", status);
+        socketNs.emit("updateMap", mapState);
     };
 
     /* init
@@ -62,14 +62,22 @@
      * Emit map status changes to the backend
      */
     connection.startBroadcast = function() {
-        ecMap.status.on("change", connection._broadcastChange);
+        liveMap.status.on("change.broadcast", function(event, mapStatus) {
+
+            connection._broadcastChange({
+                // Only broadcast the votes (not the totals)
+                // TODO: Broadcast compressed state used to generate document
+                // fragments
+                stateVotes: mapStatus.stateVotes
+            });
+        });
     };
 
     /* stopBroadcast
      * Prevent map status changes from being emitted to the backend
      */
     connection.stopBroadcast = function() {
-        ecMap.status.off("change", connection._broadcastChange);
+        liveMap.status.off("change.broadcast");
     };
 
     /* on

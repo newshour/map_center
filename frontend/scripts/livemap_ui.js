@@ -886,12 +886,12 @@ $(document).one('coreInitialized', function() {
             $('#ec_detail_t').addClass('ec_detail_win');
         }
     };
-    ecMap.status.on("change", function(event, status) {
+    liveMap.status.on("change", function(event, status) {
         indicateWin(status.totals.rep, status.totals.dem, status.totals.toss);
     });
     
     // Color a state when it is updated.
-    ecMap.status.on("change:state", function(event, status) {
+    liveMap.status.on("change:state", function(event, status) {
         if (status.rep > 0 && status.dem == 0 && status.toss == 0) {
             nhmc.ctrl.setStateColors([status.name], 'red');
         } else if (status.rep == 0 && status.dem > 0 && status.toss == 0) {
@@ -1001,7 +1001,7 @@ $(document).one('coreInitialized', function() {
         }
         
         // Set the new status.
-        ecMap.status.set(newStatus);
+        liveMap.status.set(newStatus);
     };
     
     // Event handler for clicking on a tab (or tab sub-option) listing a year
@@ -1016,7 +1016,7 @@ $(document).one('coreInitialized', function() {
     // Event handlers and such for the calculator.
     if (calculatorActive) {
         // Grab a copy of the current status.
-        var currentStatus = ecMap.status.get();
+        var currentStatus = liveMap.status.get();
         if (typeof(currentStatus.totals.dem) == 'undefined') {
             // There's no actual status object for us to manipulate. Let's put
             // together a dummy one.
@@ -1032,7 +1032,7 @@ $(document).one('coreInitialized', function() {
                     toss: 0
                 };
             }
-            ecMap.status.set(currentStatus);
+            liveMap.status.set(currentStatus);
         }
         
         // Prep the dialogs for splitting states, including 
@@ -1134,7 +1134,7 @@ $(document).one('coreInitialized', function() {
             $('#nebraska_electoral').dialog('open');
             
             // Update dialog to reflect current status
-            var neVote = ecMap.status.get().stateVotes["Nebraska"];
+            var neVote = liveMap.status.get().stateVotes["Nebraska"];
             if (neVote.rep >= 3) {
                 $('#nebraska_popular').val('r');
                 neVote.rep -= 3;
@@ -1173,7 +1173,7 @@ $(document).one('coreInitialized', function() {
             }
             
             var updateNebraska = function() {
-                var oldVotes = ecMap.status.get().stateVotes["Nebraska"];
+                var oldVotes = liveMap.status.get().stateVotes["Nebraska"];
                 
                 // Figure out new votes.
                 var newVotes = {
@@ -1230,7 +1230,7 @@ $(document).one('coreInitialized', function() {
                 };
                 
                 // Update the map.
-                ecMap.status.modifyVotes(stateVoteDeltas);
+                liveMap.status.modifyVotes(stateVoteDeltas);
             };
             
             $('#nebraska_popular').change(updateNebraska);
@@ -1241,7 +1241,7 @@ $(document).one('coreInitialized', function() {
             $('#maine_electoral').dialog('open');
             
             // Update dialog to reflect current status
-            var meVote = ecMap.status.get().stateVotes["Maine"];
+            var meVote = liveMap.status.get().stateVotes["Maine"];
             if (meVote.rep >= 3) {
                 $('#maine_popular').val('r');
                 meVote.rep -= 3;
@@ -1268,7 +1268,7 @@ $(document).one('coreInitialized', function() {
             }
             
             var updateMaine = function() {
-                var oldVotes = ecMap.status.get().stateVotes["Maine"];
+                var oldVotes = liveMap.status.get().stateVotes["Maine"];
                 
                 // Figure out new votes.
                 var newVotes = {
@@ -1312,7 +1312,7 @@ $(document).one('coreInitialized', function() {
                 };
                 
                 // Update the map.
-                ecMap.status.modifyVotes(stateVoteDeltas);
+                liveMap.status.modifyVotes(stateVoteDeltas);
             };
             
             $('#maine_popular').change(updateMaine);
@@ -1321,7 +1321,7 @@ $(document).one('coreInitialized', function() {
         var genericHandler = function(e) {
             var stateName = this.nhmcData.state;
             var votesInPrediction = electoralVotes['2012'].states[stateName];
-            var stateVotes = ecMap.status.get().stateVotes[stateName];
+            var stateVotes = liveMap.status.get().stateVotes[stateName];
             
             if (stateVotes.rep > 0 && stateVotes.dem == 0 && stateVotes.toss == 0) {
                 var stateVoteDeltas = {};
@@ -1330,7 +1330,7 @@ $(document).one('coreInitialized', function() {
                     dem: votesInPrediction,
                     toss: 0
                 };
-                ecMap.status.modifyVotes(stateVoteDeltas);
+                liveMap.status.modifyVotes(stateVoteDeltas);
             } else if (stateVotes.rep == 0 && stateVotes.dem > 0 && stateVotes.toss == 0) {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1338,7 +1338,7 @@ $(document).one('coreInitialized', function() {
                     dem: -votesInPrediction,
                     toss: votesInPrediction
                 };
-                ecMap.status.modifyVotes(stateVoteDeltas);
+                liveMap.status.modifyVotes(stateVoteDeltas);
             } else if (stateVotes.rep == 0 && stateVotes.dem == 0 && stateVotes.toss > 0) {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1346,7 +1346,7 @@ $(document).one('coreInitialized', function() {
                     dem: 0,
                     toss: -votesInPrediction
                 };
-                ecMap.status.modifyVotes(stateVoteDeltas);
+                liveMap.status.modifyVotes(stateVoteDeltas);
             } else {
                 var stateVoteDeltas = {};
                 stateVoteDeltas[stateName] = {
@@ -1354,7 +1354,7 @@ $(document).one('coreInitialized', function() {
                     dem: 0,
                     toss: 0
                 };
-                ecMap.status.modifyVotes(stateVoteDeltas);
+                liveMap.status.modifyVotes(stateVoteDeltas);
             }
         };
         
@@ -1665,11 +1665,11 @@ $(document).one('coreInitialized', function() {
     };
     var parseHash = function() {
         var hashState = nhmc.ctrl.hashParams()['states'];
-        var currentState = compressStateVotes(ecMap.status.get().stateVotes);
+        var currentState = compressStateVotes(liveMap.status.get().stateVotes);
         if (typeof(hashState) != 'undefined' && hashState != currentState) {
             var stateVotes = expandStateVotes(hashState);
             if (!$.isEmptyObject(stateVotes)) {
-                ecMap.status.set({stateVotes: stateVotes});
+                liveMap.status.set({stateVotes: stateVotes});
             }
         }
     };
@@ -1677,7 +1677,7 @@ $(document).one('coreInitialized', function() {
     // Let's kick things off!
     if (calculatorActive) {
         // Update fragment identifier every time map status changes
-        ecMap.status.on("change", function(event, status) {
+        liveMap.status.on("change", function(event, status) {
             nhmc.ctrl.hashParams({
                 "states": compressStateVotes(status.stateVotes)
             });
@@ -1691,7 +1691,7 @@ $(document).one('coreInitialized', function() {
         // map state.
         var apCompressed = $('#use-ap-projections').attr('href');
         apCompressed = apCompressed.substring(apCompressed.indexOf('=') + 1);
-        ecMap.status.on("change", function(event, status) {
+        liveMap.status.on("change", function(event, status) {
             var currentView = nhmc.ctrl.hashParams()["states"];
             if (currentView == apCompressed) {
                 $('#ap_projection_attribution').show();
@@ -1720,11 +1720,11 @@ $(document).one('coreInitialized', function() {
             return;
         }
 
-        ecMap.connection.on("error", unavailableHandler);
-        ecMap.connection.on("connect", availableHandler);
+        liveMap.connection.on("error", unavailableHandler);
+        liveMap.connection.on("connect", availableHandler);
 
         // Initiate a connection
-        ecMap.connection.init();
+        liveMap.connection.init();
         $sidebar = $("#sidebar");
 
         function unavailableHandler() {
@@ -1733,8 +1733,8 @@ $(document).one('coreInitialized', function() {
 
         function availableHandler() {
 
-            ecMap.connection.off("error", unavailableHandler);
-            ecMap.connection.off("connect", availableHandler);
+            liveMap.connection.off("error", unavailableHandler);
+            liveMap.connection.off("connect", availableHandler);
 
             // Do not create the broadcaster control UI if the matched pattern does
             // not contain the string "broadcaster"
@@ -1743,6 +1743,13 @@ $(document).one('coreInitialized', function() {
             } else {
                 $sidebar.append(createConsumerUI());
             }
+
+            // Namespace the handler so it can be unbound on user
+            // interaction without affecting other handlers
+            liveMap.connection.on("updateMap.updateGUI", function(event, mapState) {
+
+                liveMap.status.set(mapState);
+            });
         }
 
         function createConsumerUI() {
@@ -1754,6 +1761,10 @@ $(document).one('coreInitialized', function() {
                     showLive: $("<button>Connect LIVE to PBS</button>")
                 }
             };
+            var popcorn;
+
+            Popcorn.player("baseplayer");
+            popcorn = Popcorn.baseplayer("body");
 
             $ui.container.append($ui.status, $ui.buttons.showLive);
 
@@ -1761,8 +1772,9 @@ $(document).one('coreInitialized', function() {
                 // detach map click handlers
                 $ui.buttons.showLive.hide();
                 $ui.status.text("Now showing live from PBS!");
-                ecMap.connection.on("changeVotes.updateMap", function(event, status) {
-                    ecMap.status.set(status);
+
+                liveMap.popcorn(popcorn, {
+                    ignore: false
                 });
             });
 
@@ -1770,20 +1782,63 @@ $(document).one('coreInitialized', function() {
                 // attach map click handlers
                 $ui.buttons.showLive.show();
                 $ui.status.text("Now editing.");
-                ecMap.connection.off(".updateMap");
+                liveMap.connection.off(".updateGUI");
+
+                liveMap.popcorn(popcorn, {
+                    ignore: true
+                });
             });
 
-            ecMap.connection.on("reconnecting", function() {
+            liveMap.connection.on("reconnecting", function() {
                 $ui.status
                     .css("color", "#a00")
                     .text("Connection lost. Reconnecting...");
             });
-            ecMap.connection.on("reconnect_failed", function() {
+
+            // This handler simulates a re-broadcast of previously-recorded
+            // events. A simpler implementation would involve the backend
+            // re-broadcasting recorded events in real time. Under that
+            // approach, the following client-side logic would be unecessary
+            // since clients would not need to differentiate between live
+            // broadcasts and re-broadcasts of recorded events.
+            liveMap.connection.on("replay", function(event, replayInfo) {
+
+                var relativeReplayData = [];
+
+                // Create a set of map event cues for every future replay
+                Popcorn.forEach(replayInfo.startTimes, function(startTime) {
+
+                    var delta = replayInfo.currentTime - startTime;
+
+                    // Modify each change event to be relative to the time the
+                    // recording was transmitted. Ignore those events that took
+                    // place before this time
+                    Popcorn.forEach(replayInfo.recording, function(changeEvent) {
+
+                        // Clone the original event data so that it can be
+                        // modified for each replay
+                        var cloned = $.extend(true, {}, changeEvent);
+                        cloned.timeStamp -= delta;
+                        if (cloned.timeStamp >= 0) {
+                            relativeReplayData.push(cloned);
+                        }
+                    });
+
+                });
+
+                liveMap.popcorn(popcorn, {
+                    replayData: relativeReplayData
+                });
+
+                popcorn.play(0);
+            });
+
+            liveMap.connection.on("reconnect_failed", function() {
                 $ui.status
                     .css("color", "#a00")
                     .text("Unable to reconnect.");
             });
-            ecMap.connection.on("connect", function() {
+            liveMap.connection.on("connect", function() {
                 $ui.status
                     .css("color", "#000")
                     .text("Connected!");
@@ -1812,28 +1867,25 @@ $(document).one('coreInitialized', function() {
             $ui.buttons.start.click(function() {
                 $ui.buttons.start.hide();
                 $ui.buttons.stop.show();
-                ecMap.connection.startBroadcast();
+                liveMap.connection.startBroadcast();
             });
             $ui.buttons.stop.click(function() {
                 $ui.buttons.stop.hide();
                 $ui.buttons.start.show();
-                ecMap.connection.stopBroadcast();
+                liveMap.connection.stopBroadcast();
             });
 
-            ecMap.connection.on("changeVotes.updateMap", function(event, status) {
-                ecMap.status.set(status);
-            });
-            ecMap.connection.on("reconnecting", function() {
+            liveMap.connection.on("reconnecting", function() {
                 $ui.status
                     .css("color", "#a00")
                     .text("Connection lost. Reconnecting...");
             });
-            ecMap.connection.on("reconnect_failed", function() {
+            liveMap.connection.on("reconnect_failed", function() {
                 $ui.status
                     .css("color", "#a00")
                     .text("Unable to reconnect.");
             });
-            ecMap.connection.on("connect", function() {
+            liveMap.connection.on("connect", function() {
                 $ui.status
                     .css("color", "#000")
                     .text("Connected!");
