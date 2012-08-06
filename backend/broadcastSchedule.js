@@ -10,9 +10,16 @@ var _ = require("underscore");
 // - broadcasts:byID <hash> - Contains meta data for recordings, encoded in JSON
 // - broadcastIDs:byTimestamp <sorted set>
 // - replayIDs:byRecordingID <sorted set>
-var BroadcastSchedule = function(opts) {
+var BroadcastSchedule = function(options) {
+
+    options = options || {};
+
     this._client = redis.createClient();
-    this._schedule = [];
+
+    // Specify the database index. Will default to 0 when not present
+    if ("db" in options) {
+        this._client.select(options.db);
+    }
 };
 BroadcastSchedule.prototype = {
     create: function(params, callback) {
@@ -50,6 +57,8 @@ BroadcastSchedule.prototype = {
     },
     get: function(id, userCallback) {
 
+        // This method has no side effects, so if a callback is not provided,
+        // there is no need to retrieve the broadcast information.
         if (!_.isFunction(userCallback)) {
             return;
         }
@@ -277,6 +286,13 @@ BroadcastSchedule.prototype = {
 
             userCallback(err, eventObjs);
         });
+    },
+    quit: function(callback) {
+        this._client.quit(callback);
+    },
+    // Used for testing
+    clear: function(callback) {
+        this._client.flushdb(callback);
     }
 };
 
