@@ -154,22 +154,24 @@ $(document).one('coreInitialized', function() {
     }
     
     $('.view_tab_more').delegate('.view_tab_option:not(#view_tab_more_shown)', 'click', function() {
-        var dataIndex = $('#view_tab_options_more_shown').length == 0 ? 0 : parseInt($('#view_tab_options_more_shown').attr('href').substring(8), 10);
-        
         $(document).one('drawingComplete', function() {
-            staticTypesInit(typeof(nhmcStatic[dataIndex]) == 'undefined' ? nhmcStatic : nhmcStatic[dataIndex]);
+            parseDataHash();
         });
         
         var mapValue = $(this).attr('href').substring(1);
         $('#map_view').val(mapValue);
-        $('#view_tab_more_shown').attr('href', '#' + mapValue);
+        $('#view_tab_more_shown').attr('href', '#' + mapValue)
+            .text($(this).text());
         nhmc.ctrl.zoomToState(mapValue);
+        nhmc.ctrl.hashParams({"map_view": mapValue});
     });
     $('.view_tab_options_more').delegate('.view_tab_option:not(#view_tab_options_more_shown)', 'click', function() {
         var dataIndex = parseInt($(this).attr('href').substring(8), 10);
-        $('#view_tab_options_more_shown').attr('href', '#static_' + dataIndex);
+        $('#view_tab_options_more_shown').attr('href', '#static_' + dataIndex)
+            .text($(this).text());
         
         staticTypesInit(typeof(nhmcStatic[dataIndex]) == 'undefined' ? nhmcStatic : nhmcStatic[dataIndex]);
+        nhmc.ctrl.hashParams({'data_index': dataIndex});
     });
     
     var shownMapValue = $('#map_view').val();
@@ -268,14 +270,50 @@ $(document).one('coreInitialized', function() {
     
     $('#legend').show();
     
-    if (typeof(nhmcStaticDataIndex) != 'undefined') {
-        if (nhmcStatic.length && nhmcStaticDataIndex < nhmcStatic.length) {
-            var dataIndex = nhmcStaticDataIndex;
+    // Handle map view or data set specified in fragment identifier
+    var parseMapHash = function() {
+        var hashParams = nhmc.ctrl.hashParams();
+        
+        // Does the hash specify a map view to show?
+        var currentMapView = $('#map_view').val();
+        var hashMapView = nhmc.ctrl.hashParams()['map_view'];
+        if (typeof(hashMapView) != 'undefined' && currentMapView != hashMapView) {
+            // Make sure it's a map view that's actually available to the user
+            var selectedMapOption = $('.view_tab_more .view_tab_option[href="#' + hashMapView + '"]').last();
+            if (selectedMapOption.length != 0) {
+                selectedMapOption.click();
+            } else {
+                nhmc.ctrl.hashParams({"map_view": currentMapView});
+            }
+        }  // else {render the data on the currently displayed map view}
+    };
+    var parseDataHash = function() {
+        // Does the hash specify a data set to show?
+        var currentDataIndex = $('#view_tab_options_more_shown').length == 0 ? 0 : parseInt($('#view_tab_options_more_shown').attr('href').substring(8), 10);
+        var hashDataIndex = parseInt(nhmc.ctrl.hashParams()['data_index'], 10);
+        if (!isNaN(hashDataIndex) && currentDataIndex != hashDataIndex) {
+            // Make sure it's a data set that's actually available to the user
+            var selectedDataOption = $('.view_tab_options_more .view_tab_option[href="#static_' + hashDataIndex + '"]').last();
+            if (selectedDataOption.length != 0) {
+                selectedDataOption.click();
+            } else {
+                nhmc.ctrl.hashParams({'data_index': currentDataIndex});
+            }
         } else {
-            var dataIndex = 0;
+            if (typeof(nhmcStaticDataIndex) != 'undefined') {
+                if (nhmcStatic.length && nhmcStaticDataIndex < nhmcStatic.length) {
+                    var dataIndex = nhmcStaticDataIndex;
+                } else {
+                    var dataIndex = 0;
+                }
+            } else {
+                var dataIndex = currentDataIndex;
+            }
+            staticTypesInit(typeof(nhmcStatic[dataIndex]) == 'undefined' ? nhmcStatic : nhmcStatic[dataIndex]);
         }
-    } else {
-        var dataIndex = $('#view_tab_options_more_shown').length == 0 ? 0 : parseInt($('#view_tab_options_more_shown').attr('href').substring(8), 10);
-    }
-    staticTypesInit(typeof(nhmcStatic[dataIndex]) == 'undefined' ? nhmcStatic : nhmcStatic[dataIndex]);
+    };
+    parseMapHash();
+    parseDataHash();
+    if ('onhashchange' in window) {$(window).bind('hashchange', parseMapHash);}
+    if ('onhashchange' in window) {$(window).bind('hashchange', parseDataHash);}
 });
