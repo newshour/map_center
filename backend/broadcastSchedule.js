@@ -261,7 +261,7 @@ BroadcastSchedule.prototype = {
                 // Remove any mapEvents that occurred after the specified
                 // endTime
                 eventObjs = _.filter(eventObjs, function(eventObj) {
-                    return eventObj.timeStamp < options.endTime;
+                    return eventObj.timeStamp <= options.endTime;
                 });
             }
 

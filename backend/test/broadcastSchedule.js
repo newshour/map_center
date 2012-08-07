@@ -250,4 +250,131 @@ testModules.del.normalCase = function(test) {
     });
 };
 
+testModules.recordingData = {
+    setUp: function(callback) {
+        var self = this;
+        var eventData = {
+            duration: 23,
+            timeStamp: 45
+        };
+
+        this.schedule.create(eventData, function(err, newEvent) {
+            self.recordingEvent = newEvent;
+            callback();
+        });
+    }
+};
+
+testModules.recordingData.add = function(test) {
+    var eventData = {};
+
+    test.expect(1);
+
+    this.schedule.addRecordingEvent(this.recordingEvent.id, eventData, function(err) {
+
+        test.ok(!err, "Does not return an error");
+        test.done();
+    });
+};
+
+testModules.recordingData.get = {
+    setUp: function(callback) {
+        var fakeEventsToAdd = 20;
+        var fakeEventsAdded = 0;
+        var idx, newEvent;
+
+        this.events = [];
+
+        for (idx = 0; idx < fakeEventsToAdd; ++idx) {
+            // Add minimal event data for testing
+            newEvent = { timeStamp: idx * 100 };
+            this.events.push(newEvent);
+            this.schedule.addRecordingEvent(this.recordingEvent.id,
+                newEvent,
+                function() {
+                    fakeEventsAdded++;
+                    // The setUp is only complete when all the add requests
+                    // have completed
+                    if (fakeEventsAdded === fakeEventsToAdd) {
+                        callback();
+                    }
+                });
+        }
+    }
+};
+
+testModules.recordingData.get.all = function(test) {
+
+    var options = {};
+    var self = this;
+
+    test.expect(3);
+
+    this.schedule.getRecordingEvent(this.recordingEvent.id, options, function(err, events) {
+        test.ok(!err, "Does not return an error");
+        test.equal(events.length, 20, "Returns all events");
+        test.deepEqual(events, self.events, "Returns the correct events");
+        test.done();
+    });
+};
+testModules.recordingData.get.before = function(test) {
+
+    var self = this;
+    var options = {
+        endTime: 800
+    };
+
+    test.expect(3);
+
+    this.schedule.getRecordingEvent(this.recordingEvent.id, options, function(err, events) {
+        test.ok(!err, "Does not return an error");
+        test.equal(events.length, 9, "Returns the correct number of events");
+        test.deepEqual(events, self.events.slice(0, 9), "Returns the correct events");
+        test.done();
+    });
+};
+testModules.recordingData.get.after = function(test) {
+
+    var self = this;
+    var options = {
+        startTime: 1853
+    };
+    var expected = [{ timeStamp: 1900 }];
+
+    test.expect(3);
+
+    this.schedule.getRecordingEvent(this.recordingEvent.id, options, function(err, events) {
+        test.ok(!err, "Does not return an error");
+        test.equal(events.length, 1, "Returns the correct number of events");
+        test.deepEqual(events, expected,
+            "Returns the correct event");
+        test.done();
+    });
+};
+testModules.recordingData.get.withOffset = function(test) {
+
+    var self = this;
+    var options = {
+        startTime: 800,
+        endTime: 1020,
+        offset: -23
+    };
+    var expected = [
+        { timeStamp: 800 - 23 },
+        { timeStamp: 900 - 23 },
+        { timeStamp: 1000 - 23 }
+    ];
+
+    test.expect(3);
+
+    this.schedule.getRecordingEvent(this.recordingEvent.id, options, function(err, events) {
+
+        test.ok(!err, "Does not return an error");
+        test.equal(events.length, 3, "Returns the correct number of events");
+        test.deepEqual(events, expected,
+            "Returns the correct events, offset by the specified duration");
+        test.done();
+    });
+};
+
 module.exports = testModules;
