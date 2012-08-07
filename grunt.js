@@ -15,7 +15,8 @@ module.exports = function(grunt) {
         "grunt.js",
         "frontend/scripts/livemap_connection.js",
         "frontend/scripts/livemap_status.js",
-        "frontend/scripts/livemap_popcorn.js"
+        "frontend/scripts/livemap_popcorn.js",
+        "frontend/scripts/livemap_ui.js"
       ]
     },
     concat: {
