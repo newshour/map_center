@@ -75,9 +75,9 @@ testModules.get = {
                     timeStamp: recordingEvent.timeStamp +
                         ((recordingEvent.duration + 100) * (idx + 1))
                 }, replayCreatedHandler);
-            };
+            }
         });
-    },
+    }
 };
 testModules.get.byID = function(test) {
     var self = this;
@@ -281,6 +281,14 @@ testModules.recordingData.get = {
     setUp: function(callback) {
         var fakeEventsToAdd = 20;
         var fakeEventsAdded = 0;
+        var recordingAddedHandler = function() {
+            fakeEventsAdded++;
+            // The setUp is only complete when all the add requests
+            // have completed
+            if (fakeEventsAdded === fakeEventsToAdd) {
+                callback();
+            }
+        };
         var idx, newEvent;
 
         this.events = [];
@@ -291,14 +299,7 @@ testModules.recordingData.get = {
             this.events.push(newEvent);
             this.schedule.addRecordingEvent(this.recordingEvent.id,
                 newEvent,
-                function() {
-                    fakeEventsAdded++;
-                    // The setUp is only complete when all the add requests
-                    // have completed
-                    if (fakeEventsAdded === fakeEventsToAdd) {
-                        callback();
-                    }
-                });
+                recordingAddedHandler);
         }
     }
 };

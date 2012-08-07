@@ -231,8 +231,8 @@ BroadcastSchedule.prototype = {
     del: function(id, callback) {
         var operations = this._client.multi();
 
-        operations.hdel("broadcasts:byID", id)
-        operations.zrem("broadcastIDs:byTimestamp", id)
+        operations.hdel("broadcasts:byID", id);
+        operations.zrem("broadcastIDs:byTimestamp", id);
 
         // Remove from the "replayIDs" sorted set regardless of whether
         // the broadcast is a recording or a replay. This simplification is
