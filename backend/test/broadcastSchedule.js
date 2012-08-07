@@ -2,26 +2,29 @@ var BroadcastSchedule = require("../broadcastSchedule");
 var testDbId = 2;
 var testModules = {};
 
-testModules.create = {
-    setUp: function(callback) {
-        this.schedule = new BroadcastSchedule({
-            db: testDbId
-        });
-        callback();
-    },
-    tearDown: function(callback) {
-        var self = this;
-        this.schedule.clear(function() {
-            self.schedule.quit(callback);
-        });
-    }
+testModules.setUp = function(callback) {
+    this.schedule = new BroadcastSchedule({
+        db: testDbId
+    });
+    callback();
 };
+
+testModules.tearDown = function(callback) {
+    var self = this;
+    this.schedule.clear(function() {
+        self.schedule.quit(callback);
+    });
+};
+
+testModules.create = {};
 testModules.create.normalCase = function( test ) {
     var eventData = {
         timeStamp: 2000,
         duration: 200
     };
+
     test.expect(4);
+
     this.schedule.create(eventData, function(err, newEvent) {
         test.ok(!err, "Creating a new event does not generate an error");
         test.equal(eventData.timeStamp, newEvent.timeStamp,
@@ -53,9 +56,6 @@ testModules.get = {
         };
         var self = this;
         var replayEvents = new Array(10);
-        this.schedule = new BroadcastSchedule({
-            db: testDbId
-        });
         this.schedule.create(eventData, function(err, recordingEvent) {
             var replaysToCreate = 12;
             // Each replay event needs to be created individually. Use the
@@ -78,12 +78,6 @@ testModules.get = {
             };
         });
     },
-    tearDown: function(callback) {
-        var self = this;
-        this.schedule.clear(function() {
-            self.schedule.quit(callback);
-        });
-    }
 };
 testModules.get.byID = function(test) {
     var self = this;
@@ -195,20 +189,10 @@ testModules.update = {
             duration: 200
         };
 
-        this.schedule = new BroadcastSchedule({
-            db: testDbId
-        });
-
         this.schedule.create(eventData, function(err, newEvent) {
 
             self.recordingEvent = newEvent;
             callback();
-        });
-    },
-    tearDown: function(callback) {
-        var self = this;
-        this.schedule.clear(function() {
-            self.schedule.quit(callback);
         });
     }
 };
@@ -243,21 +227,9 @@ testModules.del = {
             timeStamp: 45
         };
 
-        this.schedule = new BroadcastSchedule({
-            db: testDbId
-        });
-
         this.schedule.create(eventData, function(err, newEvent) {
             self.recordingEvent = newEvent;
             callback();
-        });
-    },
-    tearDown: function(callback) {
-
-        var self = this;
-
-        this.schedule.clear(function() {
-            self.schedule.quit(callback);
         });
     }
 };
