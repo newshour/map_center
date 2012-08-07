@@ -186,7 +186,7 @@ BroadcastSchedule.prototype = {
             options.lowerTimestamp,
             handlers.broadcastIDsReceived);
     },
-    update: function(id, params, callback) {
+    update: function(id, params, userCallback) {
 
         var self = this;
 
@@ -196,12 +196,12 @@ BroadcastSchedule.prototype = {
                 var json, operations;
 
                 if (err) {
-                    callback(err);
+                    userCallback(err);
                     return;
                 }
 
                 if (!parseInt(result, 10)) {
-                    callback("Specified event does not exist");
+                    userCallback("Specified event does not exist");
                     return;
                 }
 
@@ -212,7 +212,7 @@ BroadcastSchedule.prototype = {
 
                 operations = self._client.multi();
 
-                operations.hset("broadcasts:byID", id, json, callback);
+                operations.hset("broadcasts:byID", id, json);
 
                 if (params.type === "replay") {
                     operations.zadd("replayIDs:byRecordingID", params.recordingID, id);
@@ -223,7 +223,9 @@ BroadcastSchedule.prototype = {
                     operations.zadd("broadcastIDs:byTimestamp", params.timeStamp, id);
                 }
 
-                operations.exec(callback);
+                operations.exec(function(err) {
+                    userCallback(err, params);
+                });
             });
     },
     del: function(id, callback) {
