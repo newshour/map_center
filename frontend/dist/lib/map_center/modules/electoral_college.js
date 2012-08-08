@@ -862,8 +862,6 @@ $(document).one('coreInitialized', function() {
         var status = this;
         /* _status
          * Private state object
-         *     year <number> - The year to display. This allows for coloring
-         *         according to the changing distribution of electoral votes
          *     stateVotes <object> - A collection describing the vote distribution
          *         for each state.
          *         {
