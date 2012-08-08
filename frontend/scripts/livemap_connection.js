@@ -65,10 +65,7 @@
         liveMap.status.on("change.broadcast", function(event, mapStatus) {
 
             connection._broadcastChange({
-                // Only broadcast the votes (not the totals)
-                // TODO: Broadcast compressed state used to generate document
-                // fragments
-                stateVotes: mapStatus.stateVotes
+                href: mapStatus.href
             });
         });
     };

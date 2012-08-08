@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/socket.io-0.9.6.js"></script>
+        <script type="text/javascript" src="lib/popcorn-complete-1.3.js"></script>
+        <script type="text/javascript" src="livemap_connection.js"></script>
+        <script type="text/javascript" src="livemap_status.js"></script>
+        <script type="text/javascript" src="livemap_popcorn.js"></script>
+        <script type="text/javascript" src="livemap_ui.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#wrapped').load(function() {
+                    try {
+                        var subWindow = this.contentWindow;
+                        var frameLocation = subWindow.location.href;
+                        if (frameLocation) {
+                            $('#frame-url').text(subWindow.location.href);
+                            liveMap.status.set({
+                                href: subWindow.location.href
+                            });
+                            $(subWindow.document).ready(function() {
+                                if ('onhashchange' in subWindow) {
+                                    $(subWindow).bind('hashchange', function() {
+                                        $('#frame-url').text(subWindow.location.href);
+                                        liveMap.status.set({
+                                            href: subWindow.location.href
+                                        });
+                                    });
+                                }
+                            });
+                        } else {
+                            // Chrome doesn't actually throw anything and just
+                            // sets frameLocation to undefined, so we need to
+                            // check for that and throw something (_anything_)
+                            // ourselves to trigger the catch block below.
+                            throw true;
+                        }
+                    } catch(e) {
+                        $('#frame-url').text("URL unavailable due to cross-domain security restrictions");
+                    }
+                });
+                
+                $('#frame-options a').click(function() {
+                    $('#wrapped').attr('src', $(this).attr('href'));
+                    return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h2>Currently displayed URL</h2>
+        <p id="frame-url"></p>
+        <h2>Content</h2>
+        <iframe id="wrapped" src="iframe_content.html"></iframe>
+        <h2>External control</h2>
+        <ul id="frame-options">
+            <li><a href="iframe_content.html" id="example-1">Example page 1</a></li>
+            <li><a href="iframe_content_2.html" id="example-2">Example page 2</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=social_security" id="example-3">Example page 3 (cross-domain)</a></li>
+        </ul>
+        <h2>Backend connection controls</h2>
+        <div id="sidebar"></div>
+    </body>
+</html>

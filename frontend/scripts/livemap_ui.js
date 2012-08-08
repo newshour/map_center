@@ -2,7 +2,7 @@
 // A back-end connection will only be made if the URL contains the
 // "networked" query string parameter. If that parameter's value is
 // "broadcaster", the UI for toggling broadcaster status will be displayed
-(function() {
+$(document).ready(function() {
     var match = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
     var $sidebar;
 
@@ -39,7 +39,7 @@
         // interaction without affecting other handlers
         liveMap.connection.on("updateMap.updateGUI", function(event, mapState) {
 
-            ecMap.set(mapState);
+            liveMap.status.set(mapState);
         });
     }
 
@@ -185,4 +185,4 @@
         return $ui.container;
     }
 
-}());
+});
