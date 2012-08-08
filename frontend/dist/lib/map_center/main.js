@@ -599,7 +599,9 @@ nhmc.ctrl.hashParams = function(newParams, destroyCurrent) {
         }
         
         var newHashParts = [];
-        for (attr in params) {
+        var sortedParams = Object.keys(params).sort();
+        for (var i = 0, length = sortedParams.length; i < length; i++) {
+            var attr = sortedParams[i];
             newHashParts.push([
                 attr.toString(),
                 params[attr].toString()
