@@ -2,34 +2,28 @@
 // A back-end connection will only be made if the URL contains the
 // "networked" query string parameter. If that parameter's value is
 // "broadcaster", the UI for toggling broadcaster status will be displayed
-$(document).ready(function() {
-    var match = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
-    var $sidebar;
+(function(window, undefined) {
 
-    // Do not initiate a connection if the pattern does not match
-    if (!match) {
-        return;
+    // Dependencies
+    var $ = window.$;
+    var Popcorn = window.Popcorn;
+    var liveMap = window.liveMap || {};
+    window.liveMap = liveMap;
+
+    function unavailableHandler(event) {
+        event.data.$sidebar.append("The backend is not available at the moment.");
     }
 
-    liveMap.connection.on("error", unavailableHandler);
-    liveMap.connection.on("connect", availableHandler);
+    function availableHandler(event) {
 
-    // Initiate a connection
-    liveMap.connection.init();
-    $sidebar = $("#sidebar");
-
-    function unavailableHandler() {
-        $sidebar.append("The backend is not available at the moment.");
-    }
-
-    function availableHandler() {
+        var $sidebar = event.data.$sidebar;
 
         liveMap.connection.off("error", unavailableHandler);
         liveMap.connection.off("connect", availableHandler);
 
         // Do not create the broadcaster control UI if the matched pattern does
         // not contain the string "broadcaster"
-        if (match[1] === "broadcaster") {
+        if (event.data.match[1] === "broadcaster") {
             $sidebar.append(createBroadcasterUI());
         } else {
             $sidebar.append(createConsumerUI());
@@ -185,4 +179,23 @@ $(document).ready(function() {
         return $ui.container;
     }
 
-});
+    $(window.document).ready(function() {
+
+        var eventData = {
+            match: window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i),
+            $sidebar: $("#sidebar")
+        };
+
+        // Do not initiate a connection if the pattern does not match
+        if (!eventData.match) {
+            return;
+        }
+
+        liveMap.connection.on("error", eventData, unavailableHandler);
+        liveMap.connection.on("connect", eventData, availableHandler);
+
+        // Initiate a connection
+        liveMap.connection.init();
+
+    });
+}(this));
