@@ -15,10 +15,10 @@
      *     href <strong> - The URL to show in the child iframe.
      */
     var _status = {
-        href: ''
+        href: ""
     };
     var eventBus = $("<div>");
-    var changedStates = false;
+    var _hasChanged = false;
 
     /* on
      * Subscribe to map-related events.
@@ -33,7 +33,8 @@
     /* off
      * Unsubscribe from map-related events
      * Arguments:
-     *   - eventName <string> An identifier for the type of event to list for
+     *   - eventName <string> An identifier for the type of event from which to
+     *     unsubscribe
      *   - handler <function> The function to be invoked when the event occurs.
      *     If unspecified, all events bound to the supplied event type will be
      *     unbound.
@@ -42,8 +43,7 @@
      */
     status.off = $.proxy(eventBus.unbind, eventBus);
     /* set
-     * Set the status of the map. Re-calculates total vote counts; fires an
-     * "change:state" event for each state followed by a single "change" event
+     * Set the status of the map and fire a "change" event
      * neweStatus <object> - Describes the new status of the map
      *     href <string> - See description in "_status" above
      */
@@ -54,14 +54,18 @@
         // the end of this method
         var hasChanged = false;
 
-        if ("href" in newStatus) {
+        newStatus = newStatus || {};
+
+        if ("href" in newStatus && newStatus.href !== _status.href) {
             _status.href = newStatus.href;
             hasChanged = true;
         }
 
         if (hasChanged) {
             eventBus.trigger("change", status.get());
-            changedStates = true;
+            _hasChanged = true;
+        } else {
+            _hasChanged = false;
         }
     };
     status.reset = function() {
@@ -77,17 +81,17 @@
 
         if (hasChanged) {
             eventBus.trigger("change", status.get());
-            changedStates = true;
+            _hasChanged = true;
         }
     };
-    /* changedStates
+    /* hasChanged
      * If any properties were changed in the most recent call to "set", this
-     * method will return true. If no states were changed, this
-     * method will return false
+     * method will return true. If no states were changed, this method will
+     * return false
      */
-    status.changedStates = function() {
+    status.hasChanged = function() {
 
-        return changedStates;
+        return _hasChanged;
     };
     /* get
      * Create a copy of the map state
