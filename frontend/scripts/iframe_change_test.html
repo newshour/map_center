@@ -41,10 +41,10 @@
                         $('#frame-url').text("URL unavailable due to cross-domain security restrictions");
                     }
                 });
-                
-                $('#frame-options a').click(function() {
+
+                $('#frame-options a').click(function(event) {
                     $('#wrapped').attr('src', $(this).attr('href'));
-                    return false;
+                    event.preventDefault();
                 });
             });
         </script>
