@@ -39,7 +39,7 @@
         if (!socket.connected ||
             // Prevent infinite recursion resulting from broadcasters receiving
             // change events
-            !liveMap.status.changedStates()) {
+            !liveMap.status.hasChanged()) {
             return;
         }
 
