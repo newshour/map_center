@@ -11,19 +11,24 @@
         <script type="text/javascript" src="livemap_ui.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                liveMap.status.on("change", function(event, status) {
+                    if (status.href != "unavailable") {
+                        $('#frame-url').text(status.href);
+                    } else {
+                        $('#frame-url').text("URL unavailable due to cross-domain security restrictions");
+                    }
+                });
                 $('#wrapped').load(function() {
                     try {
                         var subWindow = this.contentWindow;
                         var frameLocation = subWindow.location.href;
                         if (frameLocation) {
-                            $('#frame-url').text(subWindow.location.href);
                             liveMap.status.set({
                                 href: subWindow.location.href
                             });
                             $(subWindow.document).ready(function() {
                                 if ('onhashchange' in subWindow) {
                                     $(subWindow).bind('hashchange', function() {
-                                        $('#frame-url').text(subWindow.location.href);
                                         liveMap.status.set({
                                             href: subWindow.location.href
                                         });
@@ -38,7 +43,9 @@
                             throw true;
                         }
                     } catch(e) {
-                        $('#frame-url').text("URL unavailable due to cross-domain security restrictions");
+                        liveMap.status.set({
+                            href: "unavailable"
+                        });
                     }
                 });
 
