@@ -3,6 +3,9 @@ module("liveMap.status.set", {
         this.sampleValue = {
             href: "http://fake-url.com"
         };
+        this.sampleValue2 = {
+            href: "http://even-more-fake-url.com"
+        };
     },
     teardown: function() {
        liveMap.status.off("change");
@@ -23,18 +26,22 @@ test("normal operation", 2, function() {
     notEqual(actualStatus, this.sampleValue,
         "Returns a distinct object");
 });
-test("events", 1, function() {
+test("events", 4, function() {
 
     var self = this;
+    // Scope the expected status outside of the change handler so that the same
+    // change handler can be used to test different change events
+    var expectedStatus;
     var changeHandler = function(event, status) {
-        deepEqual( status, self.sampleValue,
+        ok(liveMap.status.hasChanged(),
+            ".hasChanged() always returns true in the change handler");
+        deepEqual( status, expectedStatus,
             "Emits a 'change' event with the expected state data");
-        start();
     };
-    stop();
 
     liveMap.status.on("change", changeHandler);
 
+    expectedStatus = this.sampleValue;
     liveMap.status.set(this.sampleValue);
 
     // Set without changes--these should not trigger any "change:state" events
@@ -42,6 +49,9 @@ test("events", 1, function() {
     // assertion count)
     liveMap.status.set(this.sampleValue);
     liveMap.status.set({});
+
+    expectedStatus = this.sampleValue2;
+    liveMap.status.set(this.sampleValue2);
 });
 
 module("liveMap.status helpers", {

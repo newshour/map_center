@@ -50,22 +50,21 @@
     status.set = function(newStatus) {
 
         var idx, len;
-        // Flag used to determine whether a "change" event should be fired at
-        // the end of this method
-        var hasChanged = false;
+
+        // Use the internal `_hasChanged` flag to track when the internal state
+        // is actually modified
+        _hasChanged = false;
 
         newStatus = newStatus || {};
 
         if ("href" in newStatus && newStatus.href !== _status.href) {
             _status.href = newStatus.href;
-            hasChanged = true;
+            _hasChanged = true;
         }
 
-        if (hasChanged) {
+        // Only fire a change event after the internal state has been modified
+        if (_hasChanged) {
             eventBus.trigger("change", status.get());
-            _hasChanged = true;
-        } else {
-            _hasChanged = false;
         }
     };
     status.reset = function() {
