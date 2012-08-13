@@ -11,6 +11,7 @@
         <script type="text/javascript" src="livemap_ui.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                // Update currently displayed URL
                 liveMap.status.on("change", function(event, status) {
                     if (status.href != "unavailable") {
                         $('#frame-url').text(status.href);
@@ -18,43 +19,65 @@
                         $('#frame-url').text("URL unavailable due to cross-domain security restrictions");
                     }
                 });
-                $('#wrapped').load(function() {
-                    try {
-                        var subWindow = this.contentWindow;
-                        var frameLocation = subWindow.location.href;
-                        if (frameLocation) {
-                            liveMap.status.set({
-                                href: subWindow.location.href
-                            });
-                            $(subWindow.document).ready(function() {
-                                if ('onhashchange' in subWindow) {
-                                    $(subWindow).bind('hashchange', function() {
-                                        liveMap.status.set({
-                                            href: subWindow.location.href
-                                        });
-                                    });
-                                }
-                            });
+                
+                var networked = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
+                if (networked) {
+                    $('#backend-controls').show();
+                }
+                if (networked && networked[1] != 'broadcaster') {
+                    // For non-broadcasters, update iframe contents when
+                    // statuses come in
+                    liveMap.status.on("change", function(event, status) {
+                        if (status.href != 'unavailable') {
+                            $('#wrapped').attr('src', status.href);
                         } else {
-                            // Chrome doesn't actually throw anything and just
-                            // sets frameLocation to undefined, so we need to
-                            // check for that and throw something (_anything_)
-                            // ourselves to trigger the catch block below.
-                            throw true;
+                            $('#wrapped').attr('src', 'about:blank');
                         }
-                    } catch(e) {
-                        liveMap.status.set({
-                            href: "unavailable"
-                        });
-                    }
-                });
-
+                    });
+                } else {
+                    // For broadcasters, send status messages as frame updates
+                    $('#wrapped').load(function() {
+                        try {
+                            var subWindow = this.contentWindow;
+                            var frameLocation = subWindow.location.href;
+                            if (frameLocation) {
+                                liveMap.status.set({
+                                    href: subWindow.location.href
+                                });
+                                $(subWindow.document).ready(function() {
+                                    if ('onhashchange' in subWindow) {
+                                        $(subWindow).bind('hashchange', function() {
+                                            liveMap.status.set({
+                                                href: subWindow.location.href
+                                            });
+                                        });
+                                    }
+                                });
+                            } else {
+                                // Chrome doesn't actually throw anything and just
+                                // sets frameLocation to undefined, so we need to
+                                // check for that and throw something (_anything_)
+                                // ourselves to trigger the catch block below.
+                                throw true;
+                            }
+                        } catch(e) {
+                            liveMap.status.set({
+                                href: "unavailable"
+                            });
+                        }
+                    });
+                }
+                
+                // Change iframe URL whenever a link gets clicked
                 $('#frame-options a').click(function(event) {
                     $('#wrapped').attr('src', $(this).attr('href'));
                     event.preventDefault();
                 });
             });
         </script>
+        <style type="text/css">
+            #backend-controls {display: none;}
+        </style>
     </head>
     <body>
         <h2>Currently displayed URL</h2>
@@ -67,7 +90,9 @@
             <li><a href="iframe_content_2.html" id="example-2">Example page 2</a></li>
             <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=social_security" id="example-3">Example page 3 (cross-domain)</a></li>
         </ul>
-        <h2>Backend connection controls</h2>
-        <div id="sidebar"></div>
+        <div id="backend-controls">
+            <h2>Backend connection controls</h2>
+            <div id="sidebar"></div>
+        </div>
     </body>
 </html>
