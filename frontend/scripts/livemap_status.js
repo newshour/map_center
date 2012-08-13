@@ -18,7 +18,6 @@
         href: ""
     };
     var eventBus = $("<div>");
-    var _hasChanged = false;
 
     /* on
      * Subscribe to map-related events.
@@ -50,8 +49,7 @@
     status.set = function(newStatus) {
 
         var idx, len;
-        // Flag used to determine whether a "change" event should be fired at
-        // the end of this method
+        // Use a flag to track when the internal state is actually modified
         var hasChanged = false;
 
         newStatus = newStatus || {};
@@ -61,11 +59,9 @@
             hasChanged = true;
         }
 
+        // Only fire a change event after the internal state has been modified
         if (hasChanged) {
             eventBus.trigger("change", status.get());
-            _hasChanged = true;
-        } else {
-            _hasChanged = false;
         }
     };
     status.reset = function() {
@@ -81,17 +77,7 @@
 
         if (hasChanged) {
             eventBus.trigger("change", status.get());
-            _hasChanged = true;
         }
-    };
-    /* hasChanged
-     * If any properties were changed in the most recent call to "set", this
-     * method will return true. If no states were changed, this method will
-     * return false
-     */
-    status.hasChanged = function() {
-
-        return _hasChanged;
     };
     /* get
      * Create a copy of the map state

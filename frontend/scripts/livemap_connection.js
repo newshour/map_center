@@ -36,10 +36,7 @@
     // Private method for setting map change events to the server
     connection._broadcastChange = function(mapState) {
 
-        if (!socket.connected ||
-            // Prevent infinite recursion resulting from broadcasters receiving
-            // change events
-            !liveMap.status.hasChanged()) {
+        if (!socket.connected) {
             return;
         }
 
