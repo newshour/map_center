@@ -26,15 +26,13 @@ test("normal operation", 2, function() {
     notEqual(actualStatus, this.sampleValue,
         "Returns a distinct object");
 });
-test("events", 4, function() {
+test("events", 2, function() {
 
     var self = this;
     // Scope the expected status outside of the change handler so that the same
     // change handler can be used to test different change events
     var expectedStatus;
     var changeHandler = function(event, status) {
-        ok(liveMap.status.hasChanged(),
-            ".hasChanged() always returns true in the change handler");
         deepEqual( status, expectedStatus,
             "Emits a 'change' event with the expected state data");
     };
@@ -44,9 +42,8 @@ test("events", 4, function() {
     expectedStatus = this.sampleValue;
     liveMap.status.set(this.sampleValue);
 
-    // Set without changes--these should not trigger any "change:state" events
-    // or a "change" event (which QUnit confirms through this test's expected
-    // assertion count)
+    // Set without changes--these should not trigger a "change" event (which
+    // QUnit confirms through this test's expected assertion count)
     liveMap.status.set(this.sampleValue);
     liveMap.status.set({});
 
@@ -69,28 +66,20 @@ module("liveMap.status helpers", {
 test("reset()", 1, function() {
     var emptyStatus = {};
     var changeHandler = function(event, status) {
-        deepEqual(status, emptyStatus, "Fires a 'change' event reflecting an empty status");
+        deepEqual(status, emptyStatus,
+            "Fires a 'change' event reflecting an empty status");
         start();
     };
     stop();
 
     liveMap.status.set(this.sampleValue);
+    liveMap.status.set(this.sampleValue);
 
     liveMap.status.on("change", changeHandler);
     liveMap.status.reset();
 
-});
-
-test("hasChanged()", 2, function() {
-
-    liveMap.status.set({});
-
-    equal(liveMap.status.hasChanged(), false,
-        "Returns 'false' when no change was made by previous call to 'set'");
-
-    liveMap.status.set({ href: "http://fake-url.com" });
-
-    equal(liveMap.status.hasChanged(), true,
-        "Returns 'true' when a change was made by the previous call to 'set'");
+    // Consecutive calls to reset should not trigger a "change" events (which
+    // QUnit confirms through this test's expected assertion count)
+    liveMap.status.reset();
 
 });
