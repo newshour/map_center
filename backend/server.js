@@ -37,6 +37,17 @@ app.param("recId", function(req, res, next) {
     });
 });
 
+app.post("/auth", function(req, res) {
+
+    if (req.body.pwd === "password") {
+        // TODO: Set cookie value as a runtime-generated token
+        res.cookie("name", "authenticated");
+    } else {
+        res.clearCookie("name");
+    }
+    res.end();
+});
+
 app.get("/recording/:recId?", function(req, res) {
 
     if (req.recordingEvent) {

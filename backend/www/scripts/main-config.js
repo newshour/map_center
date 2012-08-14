@@ -6,6 +6,7 @@ require.config({
 
     "recording": "modules/recording",
     "replay": "modules/replay",
+    "auth": "modules/auth",
 
     "liveMap.status": "shared/livemap_status",
     "liveMap.popcorn": "shared/livemap_popcorn",
