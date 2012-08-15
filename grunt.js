@@ -39,6 +39,19 @@ module.exports = function(grunt) {
             "frontend/scripts/livemap_playback.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
+      },
+      adminapp: {
+        src: [
+            "backend/scripts/lib/jquery*.js",
+            "backend/scripts/lib/underscore*.js",
+            "backend/scripts/lib/backbone*.js",
+            "backend/scripts/lib/moment*.js",
+            "frontend/scripts/lib/popcorn*.js",
+            "frontend/scripts/livemap_status.js",
+            "frontend/scripts/livemap_popcorn.js",
+            "backend/scripts/app.js"
+        ],
+        dest: "backend/www/scripts/app.js"
       }
     },
     min: {
@@ -49,6 +62,10 @@ module.exports = function(grunt) {
       playback: {
         src: ["<banner:meta.banner>", "<config:concat.playback.dest>"],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
+      },
+      adminapp: {
+        src: ["<banner:meta.banner>", "<config:concat.adminapp.dest>"],
+        dest: "backend/www/scripts/app.js"
       }
     },
     watch: {

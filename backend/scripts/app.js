@@ -87,20 +87,36 @@
         className: "modal download",
         template: _.template("<% var idSuffix = +new Date(); %>" +
             "<h2 class='title'>Download Recording JSON</h2>" +
-            "<label for='start-time-<%= idSuffix %>'>Start Time (seconds)</label>" +
-            "<input type='text' id='start-time-<%= idSuffix %>' class='start-time'></input>" +
-            "<label for='end-time-<%= idSuffix %>'>End Time (seconds)</label>" +
-            "<input type='text' id='end-time-<%= idSuffix %>' class='end-time'></input>" +
-            "<div class='buttons'>" +
-                "<button class='download'>Download</button>" +
-            "</div>"
+            "<section class='controls'>" +
+                "<h2 class='section-title'>Edit</h2>" +
+                "<label for='start-time-<%= idSuffix %>'>Start Time (seconds)</label>" +
+                "<input type='text' id='start-time-<%= idSuffix %>' class='start-time'></input>" +
+                "<label for='end-time-<%= idSuffix %>'>End Time (seconds)</label>" +
+                "<input type='text' id='end-time-<%= idSuffix %>' class='end-time'></input>" +
+                "<label for='offset-time-<%= idSuffix %>'>Offset (seconds)</label>" +
+                "<input type='text' id='offset-time-<%= idSuffix %>' class='offset-time'></input>" +
+                "<div class='buttons'>" +
+                    "<button class='download'>Download</button>" +
+                "</div>" +
+                "<h2 class='section-title'>Preview</h2>" +
+                "<label for='preview-source-<%= idSuffix %>'>Media Source</label>" +
+                "<input type='text' id='preview-source-<%= idSuffix %>' class='preview-source'></input>" +
+                "<div class='buttons'>" +
+                    "<button class='preview'>Preview</button>" +
+                "</div>" +
+            "</section>" +
+            "<section class='preview'>" +
+                "<video class='preview-media' controls></video>" +
+                "<iframe class='preview-frame'></iframe>" +
+            "</section>"
         ),
         initialize: function() {
             this.$container = $("<div>").addClass("container");
             this.$el.append(this.$container);
         },
         events: {
-            "click .download": "requestDownload",
+            "click .buttons .download": "requestDownload",
+            "click .buttons .preview": "preview",
             "click": "handleClose"
         },
         handleClose: function(event) {
@@ -108,12 +124,32 @@
                 this.close();
             }
         },
+        preview: function() {
+            var $media = this.$(".preview-media");
+            var $ifr = this.$(".preview-frame");
+            var self = this;
+            $media.attr("src", this.$(".preview-source").val());
+            liveMap.status.off("change");
+            liveMap.status.on("change", function(event, status) {
+                $ifr.attr("src", status.href);
+            });
+            if (this.pop) {
+                this.pop.destroy();
+            }
+            this.pop = Popcorn($media.get(0));
+            $.ajax({
+                url: this.getDownloadUrl(),
+                success: function(data) {
+                    liveMap.popcorn(self.pop, { replayData: data });
+                    self.pop.play();
+                }
+            });
+        },
         close: function() {
             this.$el.remove();
         },
-        // requestDownload
-        // Redirect to an endpoint designed to serve JSON file downloads. The
-        // data may be formatted according to two optional query string
+        // getDownloadUrl
+        // The data may be formatted according to two optional query string
         // parameters:
         // - startTime <number> - All events that take place before this
         //   timestamp (relative to the beginning of the event) will be removed
@@ -122,7 +158,7 @@
         // - endTime <number> - All events that take place after this timestamp
         //   (relative to the beginning of the event) will be removed from the
         //   response
-        requestDownload: function() {
+        getDownloadUrl: function() {
             var requestUrl = "/recordingjson/" + this.model.id;
             var paramsObj = this.serialize();
             var paramsArray = [];
@@ -139,18 +175,25 @@
                 requestUrl += "?" + paramsStr;
             }
 
-            window.location.href = requestUrl;
+            return requestUrl;
+        },
+        // requestDownload
+        // Redirect to an endpoint designed to serve JSON file downloads.
+        requestDownload: function() {
+            window.location.href = this.getDownloadUrl();
         },
         // serialize
         // Parse the input fields for milliseconds
         serialize: function() {
             return {
                 startTime: parseFloat(this.$(".start-time").val(), 10) * 1000,
-                endTime: parseFloat(this.$(".end-time").val(), 10) * 1000
+                endTime: parseFloat(this.$(".end-time").val(), 10) * 1000,
+                offset: parseFloat(this.$(".offset-time").val(), 10) * 1000
             };
         },
         render: function() {
             this.$container.html(this.template(this.model.toJSON()));
+
             return this;
         }
     });

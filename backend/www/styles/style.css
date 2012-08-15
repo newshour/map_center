@@ -21,21 +21,37 @@
     background-color: rgba(0,0,0,0.4);
 }
 .modal .container {
-    width: 400px;
-    margin: 200px auto;
+    width: 600px;
+    margin: 150px auto;
     padding: 30px;
     background-color: #eee;
 }
 .modal .title {
-    font-size: 14pt;
+    font-size: 16pt;
     margin-bottom: 20px;
+}
+.modal .section-title {
+    font-size: 14pt;
+    margin-bottom: 10px;
 }
 .modal .buttons {
     text-align: center;
     margin-top: 20px;
 }
 .modal.download label {
-    display: block;
+    display: inline-block;
+    width: 110px;
+    font-size: 10pt;
+}
+.modal.download section {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+}
+.modal.download .preview-media, .modal.download .preview-frame {
+    width: 300px;
+    border: solid 1px #444;
+    margin: 5px auto;
 }
 .broadcast-list .format {
     color: #444;
