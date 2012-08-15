@@ -16,7 +16,8 @@ module.exports = function(grunt) {
         "frontend/scripts/livemap_connection.js",
         "frontend/scripts/livemap_status.js",
         "frontend/scripts/livemap_popcorn.js",
-        "frontend/scripts/livemap_ui.js"
+        "frontend/scripts/livemap_ui.js",
+        "frontend/scripts/livemap_playback.js"
       ]
     },
     concat: {
@@ -29,12 +30,25 @@ module.exports = function(grunt) {
             "frontend/scripts/livemap_ui.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap.js"
+      },
+      playback: {
+        src: [
+            "frontend/scripts/lib/popcorn*.js",
+            "frontend/scripts/livemap_status.js",
+            "frontend/scripts/livemap_popcorn.js",
+            "frontend/scripts/livemap_playback.js"
+        ],
+        dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
       }
     },
     min: {
       dist: {
         src: ["<banner:meta.banner>", "<config:concat.dist.dest>"],
         dest: "frontend/dist/lib/map_center/modules/livemap.js"
+      },
+      playback: {
+        src: ["<banner:meta.banner>", "<config:concat.playback.dest>"],
+        dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
       }
     },
     watch: {
