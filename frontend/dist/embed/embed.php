@@ -154,7 +154,7 @@ $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_M
 
 $instructions = null;  # Might use later
 if ($map_module == 'electoral_college') {
-    $instructions = 'Click states to change party<br /><span class="smaller">(AP projection shown)</span>';
+    $instructions = 'Click states to change party<br /><span class="smaller" id="ap_projection_attribution">(AP projection shown)</span>';
 }
 
 $map_title = (isset($MAP_TITLES[$map_module])) ? $MAP_TITLES[$map_module] : $MAP_TITLES[$static_maps_type];
@@ -327,7 +327,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
       <?php } elseif ($map_module == 'past_primaries') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/live.js"></script>
       <?php } elseif ($map_module == 'electoral_college') { ?>
-        <script type="text/javascript" src="../lib/map_center/modules/livemap.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/electoral_college.js"></script>
       <?php } ?>
         
         <script type="text/javascript">
@@ -429,6 +429,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         </div>
                                     </div>
                                 </div>
+                                <a href="calc.html#states=lrGSpRqGBlvGnqBlKp" id="use-ap-projections" style="display: none;">2012 AP Projections</a>
                               <?php } ?>
                             </div>
                             <input name="map_view" id="map_view" type="hidden" value="<?php echo $map_view; ?>" />
