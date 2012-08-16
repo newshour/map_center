@@ -81,6 +81,8 @@ body {
     text-transform: uppercase;
 }
 
+a img {border: 0;}
+
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-= THE GOOD STUFF -=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 #view_info h1 {

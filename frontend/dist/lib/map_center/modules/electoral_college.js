@@ -1893,14 +1893,14 @@ $(document).one('coreInitialized', function() {
         ecMap.on("change", function(event, status) {
             var currentView = nhmc.ctrl.hashParams()["states"];
             if (currentView == apCompressed) {
-                $('#ap_projection_attribution').show();
+                $('#ap_projection_attribution').css('visibility', 'visible');
             } else {
-                $('#ap_projection_attribution').hide();
+                $('#ap_projection_attribution').css('visibility', 'hidden');
             }
         });
         var currentView = nhmc.ctrl.hashParams()["states"];
         if (currentView && currentView == apCompressed) {
-            $('#ap_projection_attribution').show();
+            $('#ap_projection_attribution').css('visibility', 'visible');
         }
     } else {
         $('.view_tab_active .view_tab_option').first().click();
