@@ -22,9 +22,11 @@
 }
 .modal .container {
     width: 600px;
-    margin: 150px auto;
+    margin: 70px auto 0 auto;
     padding: 30px;
     background-color: #eee;
+    max-height: 80%;
+    overflow: auto;
 }
 .modal .title {
     font-size: 16pt;
@@ -40,18 +42,28 @@
 }
 .modal.download label {
     display: inline-block;
-    width: 110px;
     font-size: 10pt;
+    margin-right: 10px;
 }
-.modal.download section {
-    display: inline-block;
-    vertical-align: top;
-    width: 300px;
+.modal.download .time-input {
+    width: 50px;
+    margin-right: 20px;
+}
+.modal.download .preview-controls {
+    width: 280px;
+    float: left;
 }
 .modal.download .preview-media, .modal.download .preview-frame {
-    width: 300px;
     border: solid 1px #444;
+    display: block;
+}
+.modal.download .preview-media {
+    width: 300px;
+}
+.modal.download .preview-frame {
     margin: 5px auto;
+    height: 400px;
+    width: 600px;
 }
 .broadcast-list .format {
     color: #444;
