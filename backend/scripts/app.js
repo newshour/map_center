@@ -5,6 +5,7 @@
     var _ = window._;
     var Backbone = window.Backbone;
     var moment = window.moment;
+    var JST = window.JST;
 
     var Recording = Backbone.Model.extend({
         urlRoot: "/recording",
@@ -85,31 +86,7 @@
 
     var DownloadModal = Backbone.View.extend({
         className: "modal download",
-        template: _.template("<% var idSuffix = +new Date(); %>" +
-            "<h2 class='title'>Download Recording JSON</h2>" +
-            "<section class='controls'>" +
-                "<h2 class='section-title'>Edit</h2>" +
-                "<label for='start-time-<%= idSuffix %>'>Start Time (seconds)</label>" +
-                "<input type='text' id='start-time-<%= idSuffix %>' class='start-time'></input>" +
-                "<label for='end-time-<%= idSuffix %>'>End Time (seconds)</label>" +
-                "<input type='text' id='end-time-<%= idSuffix %>' class='end-time'></input>" +
-                "<label for='offset-time-<%= idSuffix %>'>Offset (seconds)</label>" +
-                "<input type='text' id='offset-time-<%= idSuffix %>' class='offset-time'></input>" +
-                "<div class='buttons'>" +
-                    "<button class='download'>Download</button>" +
-                "</div>" +
-                "<h2 class='section-title'>Preview</h2>" +
-                "<label for='preview-source-<%= idSuffix %>'>Media Source</label>" +
-                "<input type='text' id='preview-source-<%= idSuffix %>' class='preview-source'></input>" +
-                "<div class='buttons'>" +
-                    "<button class='preview'>Preview</button>" +
-                "</div>" +
-            "</section>" +
-            "<section class='preview'>" +
-                "<video class='preview-media' controls></video>" +
-                "<iframe class='preview-frame'></iframe>" +
-            "</section>"
-        ),
+        template: JST["backend/templates/json-editor.html"],
         initialize: function() {
             this.$container = $("<div>").addClass("container");
             this.$el.append(this.$container);
@@ -201,8 +178,7 @@
     var ReplayListItem = Backbone.View.extend({
         tagName: "li",
         className: "replay",
-        template: _.template("<%= new Date(timeStamp).toString().slice(4, -15) %>" +
-            "<span class='delete-replay'>&times;</span>"),
+        template: JST["backend/templates/replay-list-item.html"],
         initialize: function() {
             this.$el.data("timestamp", this.model.timeStamp);
             this.model.on("change", _.bind(this.render,this));
@@ -220,8 +196,7 @@
         }
     });
     var ReplayEntry = Backbone.View.extend({
-        template: _.template("<input type='text'></input>" +
-            "<button class='add-replay'>Add</button>"),
+        template: JST["backend/templates/replay-entry.html"],
         initialize: function() {
             this.$el.html(this.template());
         },
@@ -262,18 +237,7 @@
     var RecordingListItem = Backbone.View.extend({
         tagName: "tr",
         className: "broadcast",
-        template: _.template("<td><%= name %></td>" +
-            "<td>" +
-                "<%= new Date(timeStamp).toString().slice(4, -15) %>" +
-            "</td>" +
-            "<td><%= duration/1000 %></td>" +
-            "<td class='replays'></td>" +
-            "<td>" +
-                "<% if (timeStamp < +new Date()) { %>" +
-                    "<button class='download'>Download</button>" +
-                "<% } %>" +
-                "<button class='delete'>&times;</button>" +
-            "</td>"),
+        template: JST["backend/templates/recording-list-item.html"],
         initialize: function() {
             this.model.on("change", _.bind(this.render,this));
             this.model.on("destroy", _.bind(this.remove, this));
@@ -302,12 +266,7 @@
 
     var BroadcastEntry = Backbone.View.extend({
         tagName: "tr",
-        template: _.template(
-            "<td><input type='text' class='name'></input></td>" +
-            "<td><input type='text' class='start'></input></td>" +
-            "<td><input type='text' class='duration'></td>" +
-            "<td></td>" +
-            "<td><button class='submit'>Create</button></td>"),
+        template: JST["backend/templates/broadcast-entry.html"],
         initialize: function() {
             this.$el.html(this.template());
             this.collection = this.options.collection;

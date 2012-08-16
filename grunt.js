@@ -20,6 +20,18 @@ module.exports = function(grunt) {
         "frontend/scripts/livemap_playback.js"
       ]
     },
+    // Compile Underscore.js-compatable templates into JavaScript functions for
+    // run-time efficiency and simplified maintenance
+    jst: {
+      adminapp: {
+        options: {
+          namespace: "JST"
+        },
+        files: {
+          "backend/www/scripts/jst.js": "backend/templates/*.html"
+        }
+      }
+    },
     concat: {
       dist: {
         src: [
@@ -49,6 +61,7 @@ module.exports = function(grunt) {
             "frontend/scripts/lib/popcorn*.js",
             "frontend/scripts/livemap_status.js",
             "frontend/scripts/livemap_popcorn.js",
+            "backend/www/scripts/jst.js",
             "backend/scripts/app.js"
         ],
         dest: "backend/www/scripts/app.js"
@@ -94,8 +107,10 @@ module.exports = function(grunt) {
     uglify: {}
   });
 
+  grunt.loadNpmTasks("grunt-contrib");
+
   // Default task.
-  grunt.registerTask("default", "lint concat min");
-  grunt.registerTask("dev", "lint concat");
+  grunt.registerTask("default", "lint jst concat min");
+  grunt.registerTask("dev", "lint jst concat");
 
 };
