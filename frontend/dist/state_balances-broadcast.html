@@ -5,8 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>2012 Political Map Center | PBS NewsHour</title>
-	<meta name="description" content="The map features 2008 general election results for president" />
-	<meta name="author" content="map, politics, 2012 election, 2008 election" />
+    <meta name="description" content="The map features state fiscal balances for fiscal year 2011" />
+    <meta name="author" content="map, politics, 2012 election, state finance, budget surplus, budget deficit, state budget" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
         <!-- Safari (iOS) settings -->
@@ -31,86 +31,20 @@
             var nhmcStaticFlyouts = {
                 enabled: true
             };
-            
-            // Overriding tooltip formatter
-            var nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, countyOnly, currentData) {
-                var tooltipText = [];
-                
-                if (countyOnly) {
-                    tooltipText.push('<p>' + thisCounty + ': <br />');
-                } else {
-                    if (thisCounty) {
-                        tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
-                    } else {
-                        tooltipText.push('<p>' + thisState + ': <br />');
-                    }
-                }
-                
-                tooltipText.push((currentData.prefix || ''));
-                if (thisFIPS) {
-                    var dataValue = currentData.areas[thisFIPS];
-                } else {
-                    var dataValue = currentData.areas[thisState];
-                }
-                var decimalPlaces = currentData.decimalPlaces || 0;
-                if (dataValue > 0) {
-                    tooltipText.push('Obama by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
-                } else if (dataValue < 0) {
-                    tooltipText.push('McCain by ' + (-dataValue).toFixed(decimalPlaces) + (currentData.suffix || ''));
-                } else if (dataValue == 0) {
-                    tooltipText.push('Tie');
-                } else {
-                    tooltipText.push('Unavailable');
-                }
-                tooltipText.push('</p>');
-                
-                return tooltipText.join('');
-            };
-            
-            // Overriding legend break text
-            var nhmcStaticBreakFormatter = function(thisBreak, prevBreak, isLastBreak, breakPrefix, breakSuffix, breakDecimals) {
-                function formatBreak(currentBreak) {
-                    return breakPrefix + currentBreak.toFixed(breakDecimals) + breakSuffix;
-                }
-                
-                if (thisBreak >= 0 && prevBreak >= 0) {
-                    if (prevBreak == 0) {
-                        return '<strong>Obama</strong> &#8804; ' + formatBreak(thisBreak);
-                    } else if (isLastBreak) {
-                        return '<strong>Obama</strong> by ' + breakPrefix + prevBreak.toFixed(breakDecimals) + '+' + breakSuffix;
-                    } else {
-                        return '<strong>Obama</strong> by ' + prevBreak.toFixed(breakDecimals) + ' - ' + formatBreak(thisBreak);
-                    }
-                } else if (thisBreak <= 0 && prevBreak <= 0) {
-                    if (thisBreak == 0) {
-                        return '<strong>McCain</strong> &#8804; ' + formatBreak(-prevBreak);
-                    } else if (prevBreak) {
-                        return '<strong>McCain</strong> by ' + (-thisBreak).toFixed(breakDecimals) + ' - ' + formatBreak(-prevBreak);
-                    } else {
-                        return '<strong>McCain</strong> by ' + breakPrefix + (-thisBreak).toFixed(breakDecimals) + '+' + breakSuffix;
-                    }
-                } else if (thisBreak >= 0 && prevBreak <= 0) {
-                    return '<strong>McCain</strong> by ' + formatBreak(-prevBreak) + ' to Obama by ' + formatBreak(thisBreak);
-                }
-            };
         //]]></script>
         <!-- Map Center core -->
-        <script type="text/javascript" src="lib/maps/all_counties.js"></script>
         <script type="text/javascript" src="lib/maps/states_only.js"></script>
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
         <!-- Individual Map Center modules -->
         <script type="text/javascript" src="lib/map_center/modules/static_maps.js"></script>
-        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/08general.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/static_maps_data/state_balances.js"></script>
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/static_maps.css" />
                         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/iowa-broadcast.css" />
-        <style type="text/css">
-            #view_info h1 {width: 600px;}
-        </style>
 
     </head><body>
 		
@@ -133,17 +67,17 @@
             <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>2008 presidential results</h1>
+            <h1>State finance</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S. (by state)</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S></a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
-                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S. (by county)</a></li><![endif]>
-                        <li><a href="#us_all" class="view_tab_option">U.S. (by state)</a></li>
-                        <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <!--
-                        <li><a href="#ak" class="view_tab_option">Alaska</a></li>
+                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S.</a></li><![endif]>
                         -->
-                        <li><a href="#ak_08general" class="view_tab_option">Alaska</a></li>
+                        <li><a href="#us_all" class="view_tab_option">U.S.</a></li>
+                        <!--
+                        <li><a href="#al" class="view_tab_option">Alabama</a></li>
+                        <li><a href="#ak" class="view_tab_option">Alaska</a></li>
                         <li><a href="#az" class="view_tab_option">Arizona</a></li>
                         <li><a href="#ar" class="view_tab_option">Arkansas</a></li>
                         <li><a href="#ca" class="view_tab_option">California</a></li>
@@ -185,14 +119,15 @@
                         <li><a href="#sd" class="view_tab_option">South Dakota</a></li>
                         <li><a href="#tn" class="view_tab_option">Tennessee</a></li>
                         <li><a href="#tx" class="view_tab_option">Texas</a></li>
-                        <li style="display: none;"><a href="#ut" class="view_tab_option">Utah</a></li>
+                        <li><a href="#ut" class="view_tab_option">Utah</a></li>
                         <li><a href="#vt" class="view_tab_option">Vermont</a></li>
                         <li><a href="#va" class="view_tab_option">Virginia</a></li>
                         <li><a href="#wa" class="view_tab_option">Washington</a></li>
                         <li><a href="#dc" class="view_tab_option">Washington, D.C.</a></li>
                         <li><a href="#wv" class="view_tab_option">West Virginia</a></li>
-                        <li><a href="#wi" class="view_tab_option">Wisconsin</a></li>
+                        <li style="display: none;"><a href="#wi" class="view_tab_option">Wisconsin</a></li>
                         <li><a href="#wy" class="view_tab_option">Wyoming</a></li>
+                        -->
                     </ul>
                 </div>
             </div>
@@ -200,7 +135,7 @@
         <div id="content_area">
             <div id="sidebar">
                 <div class="sidebar-info">
-                    <h3 id="sidebar_title">Win margin in general election</h3>
+                    <h3 id="sidebar_title">State balances as percentage of expenditures, fiscal year 2011</h3>
                     <div id="legend">
                         <div id="legend_templates">
                             <div class="category_entry">
@@ -221,7 +156,7 @@
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
-            <h2 id="static_data_source">Source: <a href="http://nationalatlas.gov/mld/popul08.html" target="_blank">U.S. Geological Survey</a>, <a href="http://nationalatlas.gov/mld/elect08.html" target="_blank">Federal Election Commission</a></h2>
+            <h2 id="static_data_source">Source: <a href="http://www.nasbo.org/publications-data/fiscal-survey-states/fiscal-survey-states-spring-2012" target="_blank">National Association of State Budget Officers</a></h2>
         </div>
 </div>
 
