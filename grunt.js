@@ -57,15 +57,15 @@ module.exports = function(grunt) {
     min: {
       dist: {
         src: ["<banner:meta.banner>", "<config:concat.dist.dest>"],
-        dest: "frontend/dist/lib/map_center/modules/livemap.js"
+        dest: "<config:concat.dist.dest>"
       },
       playback: {
         src: ["<banner:meta.banner>", "<config:concat.playback.dest>"],
-        dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
+        dest: "<config:concat.playback.dest>"
       },
       adminapp: {
         src: ["<banner:meta.banner>", "<config:concat.adminapp.dest>"],
-        dest: "backend/www/scripts/app.js"
+        dest: "<config:concat.adminapp.dest>"
       }
     },
     watch: {
