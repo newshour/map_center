@@ -18,10 +18,27 @@
 
     $(function() {
 
-        var pop, $ifr;
+        var pop, $ifr, $media;
 
-        pop = new Popcorn(selectors.media);
         $ifr = $(selectors.iframe);
+        $media = $(selectors.media);
+
+        if (!$ifr.length || !$media.length) {
+
+            if (!$ifr.length) {
+                console.error("Replay iFrame element not found (expected at selector '" +
+                    selectors.iframe + "'");
+            }
+
+            if (!$media.length) {
+                console.error("Replay media element not found (expected at selector '" +
+                    selectors.media + "'");
+            }
+
+            return;
+        }
+
+        pop = new Popcorn($media.get(0));
 
         liveMap.popcorn(pop, {
             element: selectors.json
