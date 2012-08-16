@@ -33,7 +33,7 @@ $LIVE_VIEWS_NEEDS_EMPTY = array(
 );
 $STATIC_VIEWS_HAS_STATES = array(
     # Keys are static map names.
-    "08general" => false,
+    "08general" => true,
     "bachelors" => true,
     "diversity" => true,
     "ethnicity" => true,
@@ -55,7 +55,7 @@ $STATIC_VIEWS_MAX_INDEX = array(
 $STATIC_VIEWS_ATTRIB = array(
     "08general" => array(
         "href" => "http://nationalatlas.gov/mld/popul08.html",
-        "text" => "U.S. Geological Survey"
+        "text" => "U.S. Geological Survey, Federal Election Commission"
     ),
     "bachelors" => array(
         "href" => "http://www.census.gov/acs/",
@@ -206,11 +206,19 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                 if (countyOnly) {
                     tooltipText.push('<p>' + thisCounty + ': <br />');
                 } else {
-                    tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+                    if (thisCounty) {
+                        tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+                    } else {
+                        tooltipText.push('<p>' + thisState + ': <br />');
+                    }
                 }
                 
                 tooltipText.push((currentData.prefix || ''));
-                var dataValue = currentData.areas[thisFIPS];
+                if (thisFIPS) {
+                    var dataValue = currentData.areas[thisFIPS];
+                } else {
+                    var dataValue = currentData.areas[thisState];
+                }
                 var decimalPlaces = currentData.decimalPlaces || 0;
                 if (dataValue > 0) {
                     tooltipText.push('Obama by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
@@ -225,6 +233,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                 
                 return tooltipText.join('');
             };
+            
             
             // Overriding legend break text
             var nhmcStaticBreakFormatter = function(thisBreak, prevBreak, isLastBreak, breakPrefix, breakSuffix, breakDecimals) {
