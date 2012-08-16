@@ -39,11 +39,19 @@
                 if (countyOnly) {
                     tooltipText.push('<p>' + thisCounty + ': <br />');
                 } else {
-                    tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+                    if (thisCounty) {
+                        tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+                    } else {
+                        tooltipText.push('<p>' + thisState + ': <br />');
+                    }
                 }
                 
                 tooltipText.push((currentData.prefix || ''));
-                var dataValue = currentData.areas[thisFIPS];
+                if (thisFIPS) {
+                    var dataValue = currentData.areas[thisFIPS];
+                } else {
+                    var dataValue = currentData.areas[thisState];
+                }
                 var decimalPlaces = currentData.decimalPlaces || 0;
                 if (dataValue > 0) {
                     tooltipText.push('Obama by ' + dataValue.toFixed(decimalPlaces) + (currentData.suffix || ''));
@@ -88,6 +96,7 @@
         //]]></script>
         <!-- Map Center core -->
         <script type="text/javascript" src="lib/maps/all_counties.js"></script>
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
         <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="lib/map_center/main.js"></script>
@@ -126,9 +135,10 @@
         <div id="view_info">
             <h1>2008 presidential results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#ut" id="view_tab_more_shown" class="view_tab_option">Utah</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S. (by state)</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
-                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S.</a></li><![endif]>
+                        <![if gte IE 9]><li><a href="#us_counties" class="view_tab_option">U.S. (by county)</a></li><![endif]>
+                        <li><a href="#us_all" class="view_tab_option">U.S. (by state)</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <!--
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
@@ -205,13 +215,13 @@
                         <div id="legend_entries"></div>
                     </div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="ut" />
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
             </div>
             <div id="loading"></div>
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>
-            <h2 id="static_data_source">Source: <a href="http://nationalatlas.gov/mld/popul08.html" target="_blank">U.S. Geological Survey</a></h2>
+            <h2 id="static_data_source">Source: <a href="http://nationalatlas.gov/mld/popul08.html" target="_blank">U.S. Geological Survey</a>, <a href="http://nationalatlas.gov/mld/elect08.html" target="_blank">Federal Election Commission</a></h2>
         </div>
 </div>
 
