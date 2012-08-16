@@ -21,6 +21,12 @@
                     }
                 });
                 
+                // FIXME: This is just for debugging purposes and probably
+                // should be removed before launch.
+                liveMap.status.on("change", function(event, status) {
+                    console.log(status.href);
+                });
+                
                 var networked = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
                 if (networked) {
                     $('#backend-controls').show();
@@ -30,14 +36,14 @@
                     // statuses come in
                     liveMap.status.on("change", function(event, status) {
                         if (status.href != 'unavailable') {
-                            $('#wrapped').attr('src', status.href);
+                            $('#live-map-frame').attr('src', status.href);
                         } else {
-                            $('#wrapped').attr('src', 'about:blank');
+                            $('#live-map-frame').attr('src', 'about:blank');
                         }
                     });
                 } else {
                     // For broadcasters, send status messages as frame updates
-                    $('#wrapped').load(function() {
+                    $('#live-map-frame').load(function() {
                         try {
                             var subWindow = this.contentWindow;
                             var frameLocation = subWindow.location.href;
@@ -45,6 +51,8 @@
                                 liveMap.status.set({
                                     href: subWindow.location.href
                                 });
+                                // Bind hashchange event so we can still pick
+                                // it up
                                 $(subWindow.document).ready(function() {
                                     if ('onhashchange' in subWindow) {
                                         $(subWindow).bind('hashchange', function() {
@@ -62,16 +70,20 @@
                                 throw true;
                             }
                         } catch(e) {
-                            liveMap.status.set({
-                                href: "unavailable"
-                            });
+                            // liveMap.status.set({
+                            //     href: "unavailable"
+                            // });
+                            
+                            // Do nothing
                         }
                     });
                 }
                 
                 // Change iframe URL whenever a link gets clicked
                 $('#frame-options a').click(function(event) {
-                    $('#wrapped').attr('src', $(this).attr('href'));
+                    liveMap.status.set({
+                        href: $(this).attr('href')
+                    });
                     event.preventDefault();
                 });
             });
@@ -83,8 +95,6 @@
     <body>
         <h2>Currently displayed URL</h2>
         <p id="frame-url"></p>
-        <h2>Content</h2>
-        <iframe id="wrapped" src="iframe_content.html"></iframe>
         <h2>External control</h2>
         <ul id="frame-options">
             <li><a href="iframe_content.html" id="example-1">Example page 1</a></li>
@@ -102,6 +112,7 @@
             <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.webm" type='video/webm; codecs="vp8, vorbis"' />
             <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.ogv" type='video/ogg; codecs="theora, vorbis"' />
         </video>
-        <iframe id="live-map-frame"></iframe>
+        <h2>Map content</h2>
+        <iframe id="live-map-frame" src="iframe_content.html"></iframe>
     </body>
 </html>
