@@ -196,7 +196,9 @@ $(document).one('coreInitialized', function() {
                 }
             }
         } else if (currentData.breaks) {
-            if (typeof(currentData.areas[thisFIPS]) == 'undefined' && typeof(currentData.areas[thisState]) == 'undefined') {
+            if (thisFIPS != '' && typeof(currentData.areas[thisFIPS]) == 'undefined') {
+                tooltipText.push('Unavailable');
+            } else if (typeof(currentData.areas[thisState]) == 'undefined') {
                 tooltipText.push('Unavailable');
             } else if (thisCounty != '') {
                 tooltipText.push((currentData.prefix || '') + currentData.areas[thisFIPS].toFixed(currentData.decimalPlaces || 0) + (currentData.suffix || '') + '</p>');
