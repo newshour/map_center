@@ -5,6 +5,7 @@
     var _ = window._;
     var Backbone = window.Backbone;
     var moment = window.moment;
+    var JST = window.JST;
 
     var Recording = Backbone.Model.extend({
         urlRoot: "/recording",
@@ -85,22 +86,14 @@
 
     var DownloadModal = Backbone.View.extend({
         className: "modal download",
-        template: _.template("<% var idSuffix = +new Date(); %>" +
-            "<h2 class='title'>Download Recording JSON</h2>" +
-            "<label for='start-time-<%= idSuffix %>'>Start Time (seconds)</label>" +
-            "<input type='text' id='start-time-<%= idSuffix %>' class='start-time'></input>" +
-            "<label for='end-time-<%= idSuffix %>'>End Time (seconds)</label>" +
-            "<input type='text' id='end-time-<%= idSuffix %>' class='end-time'></input>" +
-            "<div class='buttons'>" +
-                "<button class='download'>Download</button>" +
-            "</div>"
-        ),
+        template: JST["backend/templates/json-editor.html"],
         initialize: function() {
             this.$container = $("<div>").addClass("container");
             this.$el.append(this.$container);
         },
         events: {
-            "click .download": "requestDownload",
+            "click .buttons .download": "requestDownload",
+            "click .buttons .preview": "preview",
             "click": "handleClose"
         },
         handleClose: function(event) {
@@ -108,12 +101,32 @@
                 this.close();
             }
         },
+        preview: function() {
+            var $media = this.$(".preview-media");
+            var $ifr = this.$(".preview-frame");
+            var self = this;
+            $media.attr("src", this.$(".preview-source").val());
+            liveMap.status.off("change");
+            liveMap.status.on("change", function(event, status) {
+                $ifr.attr("src", status.href);
+            });
+            if (this.pop) {
+                this.pop.destroy();
+            }
+            this.pop = Popcorn($media.get(0));
+            $.ajax({
+                url: this.getDownloadUrl(),
+                success: function(data) {
+                    liveMap.popcorn(self.pop, { replayData: data });
+                    self.pop.play();
+                }
+            });
+        },
         close: function() {
             this.$el.remove();
         },
-        // requestDownload
-        // Redirect to an endpoint designed to serve JSON file downloads. The
-        // data may be formatted according to two optional query string
+        // getDownloadUrl
+        // The data may be formatted according to two optional query string
         // parameters:
         // - startTime <number> - All events that take place before this
         //   timestamp (relative to the beginning of the event) will be removed
@@ -122,7 +135,7 @@
         // - endTime <number> - All events that take place after this timestamp
         //   (relative to the beginning of the event) will be removed from the
         //   response
-        requestDownload: function() {
+        getDownloadUrl: function() {
             var requestUrl = "/recordingjson/" + this.model.id;
             var paramsObj = this.serialize();
             var paramsArray = [];
@@ -139,18 +152,25 @@
                 requestUrl += "?" + paramsStr;
             }
 
-            window.location.href = requestUrl;
+            return requestUrl;
+        },
+        // requestDownload
+        // Redirect to an endpoint designed to serve JSON file downloads.
+        requestDownload: function() {
+            window.location.href = this.getDownloadUrl();
         },
         // serialize
         // Parse the input fields for milliseconds
         serialize: function() {
             return {
                 startTime: parseFloat(this.$(".start-time").val(), 10) * 1000,
-                endTime: parseFloat(this.$(".end-time").val(), 10) * 1000
+                endTime: parseFloat(this.$(".end-time").val(), 10) * 1000,
+                offset: parseFloat(this.$(".offset-time").val(), 10) * 1000
             };
         },
         render: function() {
             this.$container.html(this.template(this.model.toJSON()));
+
             return this;
         }
     });
@@ -158,8 +178,7 @@
     var ReplayListItem = Backbone.View.extend({
         tagName: "li",
         className: "replay",
-        template: _.template("<%= new Date(timeStamp).toString().slice(4, -15) %>" +
-            "<span class='delete-replay'>&times;</span>"),
+        template: JST["backend/templates/replay-list-item.html"],
         initialize: function() {
             this.$el.data("timestamp", this.model.timeStamp);
             this.model.on("change", _.bind(this.render,this));
@@ -177,8 +196,7 @@
         }
     });
     var ReplayEntry = Backbone.View.extend({
-        template: _.template("<input type='text'></input>" +
-            "<button class='add-replay'>Add</button>"),
+        template: JST["backend/templates/replay-entry.html"],
         initialize: function() {
             this.$el.html(this.template());
         },
@@ -219,18 +237,7 @@
     var RecordingListItem = Backbone.View.extend({
         tagName: "tr",
         className: "broadcast",
-        template: _.template("<td><%= name %></td>" +
-            "<td>" +
-                "<%= new Date(timeStamp).toString().slice(4, -15) %>" +
-            "</td>" +
-            "<td><%= duration/1000 %></td>" +
-            "<td class='replays'></td>" +
-            "<td>" +
-                "<% if (timeStamp < +new Date()) { %>" +
-                    "<button class='download'>Download</button>" +
-                "<% } %>" +
-                "<button class='delete'>&times;</button>" +
-            "</td>"),
+        template: JST["backend/templates/recording-list-item.html"],
         initialize: function() {
             this.model.on("change", _.bind(this.render,this));
             this.model.on("destroy", _.bind(this.remove, this));
@@ -259,12 +266,7 @@
 
     var BroadcastEntry = Backbone.View.extend({
         tagName: "tr",
-        template: _.template(
-            "<td><input type='text' class='name'></input></td>" +
-            "<td><input type='text' class='start'></input></td>" +
-            "<td><input type='text' class='duration'></td>" +
-            "<td></td>" +
-            "<td><button class='submit'>Create</button></td>"),
+        template: JST["backend/templates/broadcast-entry.html"],
         initialize: function() {
             this.$el.html(this.template());
             this.collection = this.options.collection;

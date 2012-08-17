@@ -136,6 +136,8 @@ app.del("/recording/:recId", function(req, res) {
 //   milliseconds (relative to the beginning of the recording)
 // - endTime <number>: remove events that occurred before this number of
 //   milliseconds (relative to the beginning of the recording)
+// - offset <number>: shift events the occurred in the interval by this number
+//   of milliseconds
 app.get("/recordingjson/:recId", function(req, res) {
 
     var options = {};
@@ -151,6 +153,10 @@ app.get("/recordingjson/:recId", function(req, res) {
 
     if (req.query.endTime) {
         options.endTime = parseInt(req.query.endTime, 10);
+    }
+
+    if (req.query.offset) {
+        options.offset = parseInt(req.query.offset, 10);
     }
 
     broadcastSchedule.getRecordingEvent(req.recordingEvent.id,

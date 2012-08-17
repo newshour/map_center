@@ -1,0 +1,10 @@
+<td><%= name %></td>
+<td><%= new Date(timeStamp).toString().slice(4, -15) %></td>
+<td><%= duration/1000 %></td>
+<td class="replays"></td>
+<td>
+    <% if (timeStamp < +new Date()) { %>
+        <button class="download">Download</button>
+    <% } %>
+    <button class="delete">&times;</button>
+</td>

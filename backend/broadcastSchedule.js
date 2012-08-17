@@ -247,20 +247,29 @@ BroadcastSchedule.prototype = {
 
             if ("endTime" in options) {
 
+                // Remove any mapEvents that occurred after the specified
+                // endTime
                 eventObjs = _.filter(eventObjs, function(eventObj) {
                     return eventObj.timeStamp < options.endTime;
                 });
             }
 
             if ("startTime" in options) {
-                // Normalize the mapEvent timestamps to be relative to the
-                // requested startTime
+
+                // Remove any mapEvents that occurred before the specified
+                // startTime
+                eventObjs = _.filter(eventObjs, function(eventObj) {
+                    return eventObj.timeStamp >= options.startTime;
+                });
+            }
+
+            if ("offset" in options) {
                 _.forEach(eventObjs, function(eventObj) {
-                    eventObj.timeStamp -= options.startTime;
+                    eventObj.timeStamp += options.offset;
                 });
 
-                // Remove any mapEvents that occurred before the requested
-                // startTime
+                // After the transformation, there may be events that occur
+                // before 0, so remove them.
                 eventObjs = _.filter(eventObjs, function(eventObj) {
                     return eventObj.timeStamp >= 0;
                 });

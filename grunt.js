@@ -20,6 +20,18 @@ module.exports = function(grunt) {
         "frontend/scripts/livemap_playback.js"
       ]
     },
+    // Compile Underscore.js-compatable templates into JavaScript functions for
+    // run-time efficiency and simplified maintenance
+    jst: {
+      adminapp: {
+        options: {
+          namespace: "JST"
+        },
+        files: {
+          "backend/www/scripts/jst.js": "backend/templates/*.html"
+        }
+      }
+    },
     concat: {
       dist: {
         src: [
@@ -39,16 +51,34 @@ module.exports = function(grunt) {
             "frontend/scripts/livemap_playback.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
+      },
+      adminapp: {
+        src: [
+            "backend/scripts/lib/jquery*.js",
+            "backend/scripts/lib/underscore*.js",
+            "backend/scripts/lib/backbone*.js",
+            "backend/scripts/lib/moment*.js",
+            "frontend/scripts/lib/popcorn*.js",
+            "frontend/scripts/livemap_status.js",
+            "frontend/scripts/livemap_popcorn.js",
+            "backend/www/scripts/jst.js",
+            "backend/scripts/app.js"
+        ],
+        dest: "backend/www/scripts/app.js"
       }
     },
     min: {
       dist: {
         src: ["<banner:meta.banner>", "<config:concat.dist.dest>"],
-        dest: "frontend/dist/lib/map_center/modules/livemap.js"
+        dest: "<config:concat.dist.dest>"
       },
       playback: {
         src: ["<banner:meta.banner>", "<config:concat.playback.dest>"],
-        dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
+        dest: "<config:concat.playback.dest>"
+      },
+      adminapp: {
+        src: ["<banner:meta.banner>", "<config:concat.adminapp.dest>"],
+        dest: "<config:concat.adminapp.dest>"
       }
     },
     watch: {
@@ -77,8 +107,10 @@ module.exports = function(grunt) {
     uglify: {}
   });
 
+  grunt.loadNpmTasks("grunt-contrib");
+
   // Default task.
-  grunt.registerTask("default", "lint concat min");
-  grunt.registerTask("dev", "lint concat");
+  grunt.registerTask("default", "lint jst concat min");
+  grunt.registerTask("dev", "lint jst concat");
 
 };
