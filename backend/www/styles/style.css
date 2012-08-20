@@ -58,6 +58,8 @@
     display: block;
 }
 .modal.download .preview-media {
+    float: right;
+    height: 200px;
     width: 300px;
 }
 .modal.download .preview-frame {

@@ -102,10 +102,10 @@
             }
         },
         preview: function() {
-            var $media = this.$(".preview-media");
+            var $media = this.$("#json-editor-preview-media");
             var $ifr = this.$(".preview-frame");
             var self = this;
-            $media.attr("src", this.$(".preview-source").val());
+            var ytUrl = this.$(".preview-source").val();
             liveMap.status.off("change");
             liveMap.status.on("change", function(event, status) {
                 $ifr.attr("src", status.href);
@@ -113,7 +113,7 @@
             if (this.pop) {
                 this.pop.destroy();
             }
-            this.pop = Popcorn($media.get(0));
+            this.pop = Popcorn.youtube('#json-editor-preview-media', ytUrl);
             $.ajax({
                 url: this.getDownloadUrl(),
                 success: function(data) {
