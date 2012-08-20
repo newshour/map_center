@@ -32,6 +32,9 @@ module.exports = function(grunt) {
         }
       }
     },
+    test: {
+        "backend": ["backend/test/*.js"]
+    },
     concat: {
       dist: {
         src: [
@@ -110,7 +113,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib");
 
   // Default task.
-  grunt.registerTask("default", "lint jst concat min");
-  grunt.registerTask("dev", "lint jst concat");
+  grunt.registerTask("default", "lint test jst concat min");
+  grunt.registerTask("dev", "lint test jst concat");
 
 };
