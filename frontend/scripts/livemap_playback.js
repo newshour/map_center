@@ -38,7 +38,7 @@
             return;
         }
 
-        pop = new Popcorn($media.get(0));
+        pop = Popcorn.youtube(selectors.media, $media.data("youtubeUrl"));
 
         liveMap.popcorn(pop, {
             element: selectors.json

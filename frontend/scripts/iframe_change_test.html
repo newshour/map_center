@@ -91,6 +91,7 @@
         <style type="text/css">
             #backend-controls {display: none;}
             #map-content {float: right;}
+            #live-map-media {width: 600px; height: 400px;}
         </style>
     </head>
     <body>
@@ -112,10 +113,6 @@
         </div>
         <h2>Video playback</h2>
         <script type="text/json" id="live-map-data">[{"timeStamp":5000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=social_security"}},{"timeStamp":10000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=08general"}},{"timeStamp":17000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=08general"}},{"timeStamp":25000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=unemployment"}},{"timeStamp":28000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=electoral_college#states=lrGSpRqGBlvGnqBlKp"}},{"timeStamp":30000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=electoral_college#states=lpGmplqGBllGlqBlCp"}}]</script>
-        <video controls id="live-map-media">
-            <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-            <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.webm" type='video/webm; codecs="vp8, vorbis"' />
-            <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.ogv" type='video/ogg; codecs="theora, vorbis"' />
-        </video>
+        <div id="live-map-media" data-youtube-url="http://www.youtube.com/watch?v=FQMO6vjmkyI"></div>
     </body>
 </html>
