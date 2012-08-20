@@ -10,9 +10,16 @@ var _ = require("underscore");
 // - broadcasts:byID <hash> - Contains meta data for recordings, encoded in JSON
 // - broadcastIDs:byTimestamp <sorted set>
 // - replayIDs:byRecordingID <sorted set>
-var BroadcastSchedule = function(opts) {
+var BroadcastSchedule = function(options) {
+
+    options = options || {};
+
     this._client = redis.createClient();
-    this._schedule = [];
+
+    // Specify the database index. Will default to 0 when not present
+    if ("db" in options) {
+        this._client.select(options.db);
+    }
 };
 BroadcastSchedule.prototype = {
     create: function(params, callback) {
@@ -50,6 +57,8 @@ BroadcastSchedule.prototype = {
     },
     get: function(id, userCallback) {
 
+        // This method has no side effects, so if a callback is not provided,
+        // there is no need to retrieve the broadcast information.
         if (!_.isFunction(userCallback)) {
             return;
         }
@@ -177,7 +186,7 @@ BroadcastSchedule.prototype = {
             options.lowerTimestamp,
             handlers.broadcastIDsReceived);
     },
-    update: function(id, params, callback) {
+    update: function(id, params, userCallback) {
 
         var self = this;
 
@@ -187,12 +196,12 @@ BroadcastSchedule.prototype = {
                 var json, operations;
 
                 if (err) {
-                    callback(err);
+                    userCallback(err);
                     return;
                 }
 
                 if (!parseInt(result, 10)) {
-                    callback("Specified event does not exist");
+                    userCallback("Specified event does not exist");
                     return;
                 }
 
@@ -203,7 +212,7 @@ BroadcastSchedule.prototype = {
 
                 operations = self._client.multi();
 
-                operations.hset("broadcasts:byID", id, json, callback);
+                operations.hset("broadcasts:byID", id, json);
 
                 if (params.type === "replay") {
                     operations.zadd("replayIDs:byRecordingID", params.recordingID, id);
@@ -214,14 +223,16 @@ BroadcastSchedule.prototype = {
                     operations.zadd("broadcastIDs:byTimestamp", params.timeStamp, id);
                 }
 
-                operations.exec(callback);
+                operations.exec(function(err) {
+                    userCallback(err, params);
+                });
             });
     },
     del: function(id, callback) {
         var operations = this._client.multi();
 
-        operations.hdel("broadcasts:byID", id)
-        operations.zrem("broadcastIDs:byTimestamp", id)
+        operations.hdel("broadcasts:byID", id);
+        operations.zrem("broadcastIDs:byTimestamp", id);
 
         // Remove from the "replayIDs" sorted set regardless of whether
         // the broadcast is a recording or a replay. This simplification is
@@ -250,7 +261,7 @@ BroadcastSchedule.prototype = {
                 // Remove any mapEvents that occurred after the specified
                 // endTime
                 eventObjs = _.filter(eventObjs, function(eventObj) {
-                    return eventObj.timeStamp < options.endTime;
+                    return eventObj.timeStamp <= options.endTime;
                 });
             }
 
@@ -277,6 +288,13 @@ BroadcastSchedule.prototype = {
 
             userCallback(err, eventObjs);
         });
+    },
+    quit: function(callback) {
+        this._client.quit(callback);
+    },
+    // Used for testing
+    clear: function(callback) {
+        this._client.flushdb(callback);
     }
 };
 
