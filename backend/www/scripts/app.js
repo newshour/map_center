@@ -1,11 +1,16 @@
-(function( window ) {
+require([
+  "liveMap.status",
+  "liveMap.popcorn",
+  "jst",
+  "jquery",
+  "underscore",
+  "backbone",
+  "socket.io",
+  "popcorn"
+  ], function(liveMapStatus, liveMapPopcorn, JST, $, _, Backbone, io, Popcorn) {
 
-    // Dependencies
-    var $ = window.jQuery;
-    var _ = window._;
-    var Backbone = window.Backbone;
-    var moment = window.moment;
-    var JST = window.JST;
+    var window = this;
+    var liveMap = window.liveMap;
 
     var Recording = Backbone.Model.extend({
         urlRoot: "/recording",
@@ -338,4 +343,4 @@
         recordings.fetch();
     });
 
-}(this, undefined));
+});
