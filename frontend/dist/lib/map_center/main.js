@@ -381,7 +381,10 @@ nhmc.ctrl.zoomToState = function(state) {
     } else if (state == 'us_all') {
         for (var i in nhmc.geo.usGeo) {
             nhmc.surface.add(nhmc.geo.usGeo[i].statePath);
-            if (nhmc.geo.usGeo[i].label) {nhmc.surface.add(nhmc.geo.usGeo[i].label);}
+            if (nhmc.geo.usGeo[i].label) {
+                nhmc.surface.add(nhmc.geo.usGeo[i].label);
+                nhmc.geo.usGeo[i].label.setShape(nhmc.geo.usGeo[i].label.getShape());
+            }
             if (scalingNecessary) {
                 nhmc.geo.usGeo[i].statePath.setTransform(scaleMatrix);
                 if (nhmc.geo.usGeo[i].label) {
