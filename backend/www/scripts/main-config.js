@@ -4,6 +4,9 @@ require.config({
   //baseUrl: "scripts",//"backend/scripts/",
   paths: {
 
+    "recording": "modules/recording",
+    "replay": "modules/replay",
+
     "liveMap.status": "shared/livemap_status",
     "liveMap.popcorn": "shared/livemap_popcorn",
 

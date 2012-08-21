@@ -14,6 +14,7 @@ module.exports = function(grunt) {
       files: [
         "grunt.js",
         "backend/www/scripts/app.js",
+        "backend/www/scripts/modules/*.js",
         "shared/*.js"
       ]
     },
@@ -112,7 +113,8 @@ module.exports = function(grunt) {
       },
       globals: {
         console: true,
-        require: true
+        require: true,
+        define: true
       }
     },
     uglify: {}
