@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/socket.io-0.9.6.js"></script>
+        <script type="text/javascript" src="lib/popcorn-complete-1.3.js"></script>
+        <script type="text/javascript" src="livemap_connection.js"></script>
+        <script type="text/javascript" src="livemap_status.js"></script>
+        <script type="text/javascript" src="livemap_popcorn.js"></script>
+        <script type="text/javascript" src="livemap_ui.js"></script>
+        <script type="text/javascript" src="livemap_playback.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // Update currently displayed URL
+                liveMap.status.on("change", function(event, status) {
+                    if (status.href != "unavailable") {
+                        $('#frame-url').text(status.href);
+                    } else {
+                        $('#frame-url').text("URL unavailable due to cross-domain security restrictions");
+                    }
+                });
+                
+                // FIXME: This is just for debugging purposes and probably
+                // should be removed before launch.
+                liveMap.status.on("change", function(event, status) {
+                    console.log(status.href);
+                });
+                
+                var networked = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
+                if (networked) {
+                    $('#backend-controls').show();
+                }
+                if (networked && networked[1] != 'broadcaster') {
+                    // For non-broadcasters, update iframe contents when
+                    // statuses come in
+                    liveMap.status.on("change", function(event, status) {
+                        if (status.href != 'unavailable') {
+                            $('#live-map-frame').attr('src', status.href);
+                        } else {
+                            $('#live-map-frame').attr('src', 'about:blank');
+                        }
+                    });
+                } else {
+                    // For broadcasters, send status messages as frame updates
+                    $('#live-map-frame').load(function() {
+                        try {
+                            var subWindow = this.contentWindow;
+                            var frameLocation = subWindow.location.href;
+                            if (frameLocation) {
+                                liveMap.status.set({
+                                    href: subWindow.location.href
+                                });
+                                // Bind hashchange event so we can still pick
+                                // it up
+                                $(subWindow.document).ready(function() {
+                                    if ('onhashchange' in subWindow) {
+                                        $(subWindow).bind('hashchange', function() {
+                                            liveMap.status.set({
+                                                href: subWindow.location.href
+                                            });
+                                        });
+                                    }
+                                });
+                            } else {
+                                // Chrome doesn't actually throw anything and just
+                                // sets frameLocation to undefined, so we need to
+                                // check for that and throw something (_anything_)
+                                // ourselves to trigger the catch block below.
+                                throw true;
+                            }
+                        } catch(e) {
+                            // liveMap.status.set({
+                            //     href: "unavailable"
+                            // });
+                            
+                            // Do nothing
+                        }
+                    });
+                }
+                
+                // Change iframe URL whenever a link gets clicked
+                $('#frame-options a').click(function(event) {
+                    liveMap.status.set({
+                        href: $(this).attr('href')
+                    });
+                    event.preventDefault();
+                });
+            });
+        </script>
+        <style type="text/css">
+            #backend-controls {display: none;}
+            #map-content {float: right;}
+            #live-map-media {width: 600px; height: 400px;}
+        </style>
+    </head>
+    <body>
+        <div id="map-content">
+            <h2>Map content</h2>
+            <iframe id="live-map-frame" src="iframe_content.html" width="800" height="500" scrolling="no"></iframe>
+        </div>
+        <h2>Currently displayed URL</h2>
+        <p id="frame-url"></p>
+        <h2>External control</h2>
+        <ul id="frame-options">
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=unemployment" id="example-1">Example page 1</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=08general" id="example-2">Example page 2</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=social_security" id="example-3">Example page 3</a></li>
+        </ul>
+        <div id="backend-controls">
+            <h2>Backend connection controls</h2>
+            <div id="sidebar"></div>
+        </div>
+        <h2>Video playback</h2>
+        <script type="text/json" id="live-map-data">[{"timeStamp":5000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=social_security"}},{"timeStamp":10000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=08general"}},{"timeStamp":17000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=08general"}},{"timeStamp":25000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=unemployment"}},{"timeStamp":28000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=electoral_college#states=lrGSpRqGBlvGnqBlKp"}},{"timeStamp":30000,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=electoral_college#states=lpGmplqGBllGlqBlCp"}}]</script>
+        <div id="live-map-media" data-youtube-url="http://www.youtube.com/watch?v=FQMO6vjmkyI"></div>
+    </body>
+</html>

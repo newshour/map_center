@@ -1,11 +1,10 @@
 .DS_Store
 *.sublime*
-<<<<<<< HEAD
 *.swp
 node_modules
 frontend/dist/lib/map_center/modules/livemap.js
+frontend/dist/lib/map_center/modules/livemap-playback.js
 backend/schedule.json
-=======
 
 calc-broadcaster-error.html
 
@@ -14,4 +13,4 @@ calc-broadcaster-ready.html
 calc-consumer-error.html
 
 calc-consumer-ready.html
->>>>>>> ignore second screen files
+backend/www/scripts

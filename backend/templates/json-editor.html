@@ -1,0 +1,22 @@
+<% var idSuffix = +new Date(); %>
+<h2 class="title">Download Recording JSON</h2>
+<h2 class="section-title">Edit</h2>
+<label for="start-time-<%= idSuffix %>">Start Time (seconds)</label>
+<input type="text" id="start-time-<%= idSuffix %>" class="time-input start-time"></input>
+<label for="end-time-<%= idSuffix %>">End Time (seconds)</label>
+<input type="text" id="end-time-<%= idSuffix %>" class="time-input end-time"></input>
+<label for="offset-time-<%= idSuffix %>">Offset (seconds)</label>
+<input type="text" id="offset-time-<%= idSuffix %>" class="time-input offset-time"></input>
+<div class="buttons">
+    <button class="download">Download</button>
+</div>
+<h2 class="section-title">Preview</h2>
+<div class="preview-controls">
+    <label for="preview-source-<%= idSuffix %>">Media Source</label>
+    <input type="text" id="preview-source-<%= idSuffix %>" class="preview-source"></input>
+    <div class="buttons">
+        <button class="preview">Preview</button>
+    </div>
+</div>
+<div class="preview-media" id="json-editor-preview-media"></div>
+<iframe class="preview-frame"></iframe>

@@ -21,21 +21,51 @@
     background-color: rgba(0,0,0,0.4);
 }
 .modal .container {
-    width: 400px;
-    margin: 200px auto;
+    width: 600px;
+    margin: 70px auto 0 auto;
     padding: 30px;
     background-color: #eee;
+    max-height: 80%;
+    overflow: auto;
 }
 .modal .title {
-    font-size: 14pt;
+    font-size: 16pt;
     margin-bottom: 20px;
+}
+.modal .section-title {
+    font-size: 14pt;
+    margin-bottom: 10px;
 }
 .modal .buttons {
     text-align: center;
     margin-top: 20px;
 }
 .modal.download label {
+    display: inline-block;
+    font-size: 10pt;
+    margin-right: 10px;
+}
+.modal.download .time-input {
+    width: 50px;
+    margin-right: 20px;
+}
+.modal.download .preview-controls {
+    width: 280px;
+    float: left;
+}
+.modal.download .preview-media, .modal.download .preview-frame {
+    border: solid 1px #444;
     display: block;
+}
+.modal.download .preview-media {
+    float: right;
+    height: 200px;
+    width: 300px;
+}
+.modal.download .preview-frame {
+    margin: 5px auto;
+    height: 400px;
+    width: 600px;
 }
 .broadcast-list .format {
     color: #444;

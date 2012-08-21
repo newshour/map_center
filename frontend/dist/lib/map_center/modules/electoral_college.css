@@ -220,7 +220,7 @@ h2.attribution {
     font-size: 1em;
     padding: 0 0 0 25px;
 }
-#ap_projection_attribution {display: none;}
+#ap_projection_attribution {visibility: hidden;}
 
 .reset
 {
