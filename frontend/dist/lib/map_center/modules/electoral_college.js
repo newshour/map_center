@@ -814,7 +814,8 @@ $(document).one('coreInitialized', function() {
         },
         "1972": {
             "democratic": "McGovern",
-            "republican": "Nixon"
+            "republican": "Nixon",
+            "tossup": "Hospers"
         },
         "1976": {
             "democratic": "Carter",
