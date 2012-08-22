@@ -181,7 +181,7 @@ define([
             }
         },
         preview: function() {
-            var $media = this.$("#json-editor-preview-media");
+            var $media = this.$(".preview-media");
             var $ifr = this.$(".preview-frame");
             var self = this;
             var ytUrl = this.$(".preview-source").val();
@@ -192,7 +192,7 @@ define([
             if (this.pop) {
                 this.pop.destroy();
             }
-            this.pop = Popcorn.youtube("#json-editor-preview-media", ytUrl);
+            this.pop = Popcorn.youtube(".preview-media", ytUrl);
             $.ajax({
                 url: this.getDownloadUrl(),
                 success: function(data) {
