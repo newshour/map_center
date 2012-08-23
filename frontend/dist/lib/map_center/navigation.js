@@ -33,6 +33,11 @@ $(document).ready(function() {
         id: "jobless"
     }, {
         featured: false,
+        title: "Change in unemployed",
+        href: "unemployment_change.html",
+        id: "unemployment_change"
+    }, {
+        featured: false,
         title: "Union workers",
         href: "unions.html",
         id: "unions"
