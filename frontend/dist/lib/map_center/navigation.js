@@ -33,6 +33,11 @@ $(document).ready(function() {
         id: "jobless"
     }, {
         featured: false,
+        title: "Union workers",
+        href: "unions.html",
+        id: "unions"
+    }, {
+        featured: false,
         title: "Median income",
         href: "income.html",
         id: "income"
