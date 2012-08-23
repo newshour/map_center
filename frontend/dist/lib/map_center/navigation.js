@@ -112,7 +112,13 @@ $(document).ready(function() {
         if (url.indexOf('\\') == -1) {var pathDelimiter = '/';}
         else {var pathDelimiter = '\\';}
         
-        return url.substring(url.lastIndexOf(pathDelimiter) + 1);
+        var filename = url.substring(url.lastIndexOf(pathDelimiter) + 1);
+        var hashIndex = filename.indexOf('#');
+        if (hashIndex != -1) {
+            return filename.substring(0, hashIndex);
+        } else {
+            return filename;
+        }
     }
     
     var currentFilename = getFilename(window.location.href);
