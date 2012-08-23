@@ -13,11 +13,9 @@ module.exports = function(grunt) {
     lint: {
       files: [
         "grunt.js",
-        "frontend/scripts/livemap_connection.js",
-        "frontend/scripts/livemap_status.js",
-        "frontend/scripts/livemap_popcorn.js",
-        "frontend/scripts/livemap_ui.js",
-        "frontend/scripts/livemap_playback.js"
+        "backend/www/scripts/app.js",
+        "backend/www/scripts/modules/*.js",
+        "shared/*.js"
       ]
     },
     // Compile Underscore.js-compatable templates into JavaScript functions for
@@ -35,39 +33,57 @@ module.exports = function(grunt) {
     test: {
         "backend": ["backend/test/*.js"]
     },
+    requirejs: {
+      "adminapp": {
+        options: {
+          mainConfigFile: "backend/www/scripts/main-config.js"
+        }
+      }
+    },
+    copy: {
+      // This copy target should only be run in development as it inserts
+      // require.js in the application's position, thus allowing dependencies
+      // to be resolved at run time.
+      "adminapp-dev": {
+        options: {
+          processName: function(fileName) {
+            if (/require.*\.js$/i.test(fileName)) {
+              fileName = "require.js";
+            }
+            return fileName;
+          }
+        },
+        files: {
+          "backend/www/scripts/": "backend/www/scripts/lib/require-2.0.6.js"
+        }
+      },
+      "adminapp": {
+        files: {
+          "backend/www/scripts/shared": [
+            "shared/**"
+          ]
+        }
+      }
+    },
     concat: {
       dist: {
         src: [
-            "frontend/scripts/lib/*.js",
-            "frontend/scripts/livemap_status.js",
-            "frontend/scripts/livemap_connection.js",
-            "frontend/scripts/livemap_popcorn.js",
-            "frontend/scripts/livemap_ui.js"
+            "shared/lib/*.js",
+            "shared/livemap_status.js",
+            "shared/livemap_connection.js",
+            "shared/livemap_popcorn.js",
+            "shared/livemap_ui.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap.js"
       },
       playback: {
         src: [
-            "frontend/scripts/lib/popcorn*.js",
-            "frontend/scripts/livemap_status.js",
-            "frontend/scripts/livemap_popcorn.js",
-            "frontend/scripts/livemap_playback.js"
+            "shared/lib/popcorn*.js",
+            "shared/livemap_status.js",
+            "shared/livemap_popcorn.js",
+            "shared/livemap_playback.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
-      },
-      adminapp: {
-        src: [
-            "backend/scripts/lib/jquery*.js",
-            "backend/scripts/lib/underscore*.js",
-            "backend/scripts/lib/backbone*.js",
-            "backend/scripts/lib/moment*.js",
-            "frontend/scripts/lib/popcorn*.js",
-            "frontend/scripts/livemap_status.js",
-            "frontend/scripts/livemap_popcorn.js",
-            "backend/www/scripts/jst.js",
-            "backend/scripts/app.js"
-        ],
-        dest: "backend/www/scripts/app.js"
       }
     },
     min: {
@@ -78,10 +94,6 @@ module.exports = function(grunt) {
       playback: {
         src: ["<banner:meta.banner>", "<config:concat.playback.dest>"],
         dest: "<config:concat.playback.dest>"
-      },
-      adminapp: {
-        src: ["<banner:meta.banner>", "<config:concat.adminapp.dest>"],
-        dest: "<config:concat.adminapp.dest>"
       }
     },
     watch: {
@@ -104,7 +116,8 @@ module.exports = function(grunt) {
       },
       globals: {
         console: true,
-        jQuery: true
+        require: true,
+        define: true
       }
     },
     uglify: {}
@@ -113,7 +126,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib");
 
   // Default task.
-  grunt.registerTask("default", "lint test jst concat min");
-  grunt.registerTask("dev", "lint test jst concat");
+  grunt.registerTask("default", "lint test concat min jst copy:adminapp requirejs");
+  grunt.registerTask("dev", "lint test concat jst copy");
 
 };
