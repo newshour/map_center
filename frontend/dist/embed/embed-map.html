@@ -101,6 +101,19 @@
                     }
                 };
                 
+                var disableUnions = function() {
+                    $('#static_maps_index_unions_parent').hide();
+                    $('#static_maps_index_unions a').removeClass('selected');
+                };
+                var enableUnions = function() {
+                    $('#static_maps_index_unions_parent').show();
+                    if ($('#static_maps_index_unions a.selected').length) {
+                        $('#static_maps_index_unions a.selected').slice(1).removeClass('selected');
+                    } else {
+                        $('#static_maps_index_unions a').first().addClass('selected');
+                    }
+                };
+                
                 var updateOptions = function() {
                     $(this).parent().siblings().find('a').removeClass('selected');
                     $(this).addClass('selected');
@@ -126,7 +139,7 @@
                         enableMapView();
                         enableStaticMapsType();
                         var mapsWithoutUS = ["#foreclosures", "#patchwork_types"];
-                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners", "#evangelical", "#voter_id"];
+                        var mapsWithOnlyUS = ["#senate_six", "#primary_winners", "#evangelical", "#voter_id", "#unions"];
                         if (mapsWithoutUS.indexOf($('#static_maps_type a.selected').attr('href')) != -1) {
                             $('#map_view a[href="#us_all"]').parent().hide();
                             $('#map_view a').not(':visible').removeClass('selected');
@@ -149,12 +162,19 @@
                         if ($('#static_maps_type a.selected').attr('href') == '#ethnicity') {
                             enableEthnicity();
                             disableForeclosures();
+                            disableUnions();
                         } else if ($('#static_maps_type a.selected').attr('href') == '#foreclosures') {
                             disableEthnicity();
                             enableForeclosures();
+                            disableUnions();
+                        } else if ($('#static_maps_type a.selected').attr('href') == '#unions') {
+                            disableEthnicity();
+                            disableForeclosures();
+                            enableUnions();
                         } else {
                             disableEthnicity();
                             disableForeclosures();
+                            disableUnions();
                         }
                     }
                     
@@ -213,8 +233,8 @@
                     } else {
                         var mapView = $('#map_view a.selected').attr('href').substring(1);
                         var staticMapsType = $('#static_maps_type a.selected').attr('href').substring(1);
-                        if (staticMapsType == 'ethnicity' || staticMapsType == 'foreclosures') {
-                            var staticMapsIndex = parseInt($('#static_maps_index_ethnicity a.selected, #static_maps_index_foreclosures a.selected').attr('href').substring(1), 10);
+                        if (staticMapsType == 'ethnicity' || staticMapsType == 'foreclosures' || staticMapsType == 'unions') {
+                            var staticMapsIndex = parseInt($('#static_maps_index_ethnicity a.selected, #static_maps_index_foreclosures a.selected, #static_maps_index_unions a.selected').attr('href').substring(1), 10);
                         } else {
                             var staticMapsIndex = null;
                         }
@@ -266,6 +286,7 @@
             .embed li {
                 float: left;
                 margin: 0.1em 0.5em 0.1em 0.1em;
+
             }
             
             #embed_width {width: 4em;}
@@ -408,6 +429,8 @@
                     <li class="embed_option"><a href="#senate_six">Senate Six</a></li>
                     <li class="embed_option"><a href="#social_security">Social Security recipients</a></li>
                     <li class="embed_option"><a href="#unemployment">Unemployment rate</a></li>
+                    <li class="embed_option"><a href="#unemployment_change">Unemployment change</a></li>
+                    <li class="embed_option"><a href="#unions">Union workers</a></li>
                     <li class="embed_option"><a href="#voter_id">Voter ID laws</a></li>
                 </ul>
             </div>
@@ -430,6 +453,14 @@
                     <li class="embed_option"><a href="#0">Sales</a></li>
                     <li class="embed_option"><a href="#1">2009&ndash;2011 rate change</a></li>
                     <li class="embed_option"><a href="#2">2007&ndash;2011 rate change</a></li>
+                </ul>
+            </div>
+            
+            <div id="static_maps_index_unions_parent">
+                <label>Subcategory: </label>
+                <ul id="static_maps_index_unions">
+                    <li class="embed_option"><a href="#0">Membership</a></li>
+                    <li class="embed_option"><a href="#1">Representation</a></li>
                 </ul>
             </div>
             

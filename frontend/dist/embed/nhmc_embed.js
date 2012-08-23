@@ -135,7 +135,10 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
                 'primary_winners': 'pw',
                 'senate_six': 'sr',
                 'social_security': 'ss',
-                'unemployment': 'ue'
+                'unemployment': 'ue',
+                'unemployment_change': 'uc',
+                'unions': 'un',
+                'voter_id': 'vi'
             }[staticMapsType]);
         }
         if (staticMapsIndex) {idParts.push(staticMapsIndex);}

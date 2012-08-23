@@ -42,15 +42,18 @@ $STATIC_VIEWS_HAS_STATES = array(
     "income" => true,
     "patchwork_types" => false,
     "population_density" => true,
-    "primary_winners" => false,
-    "senate_six" => false,
+    "primary_winners" => true,
+    "senate_six" => true,
     "social_security" => true,
     "unemployment" => true,
+    "unemployment_change" => true,
+    "unions" => true,
     "voter_id" => true
 );
 $STATIC_VIEWS_MAX_INDEX = array(
     "ethnicity" => 3,
     "foreclosures" => 2,
+    "unions" => 2
 );
 $STATIC_VIEWS_ATTRIB = array(
     "08general" => array(
@@ -70,8 +73,8 @@ $STATIC_VIEWS_ATTRIB = array(
         "text" => "U.S. Census Bureau"
     ),
     "evangelical" => array(
-        "href" => "http://religions.pewforum.org/maps",
-        "text" => "Pew Forum on Religion and Public Life, 2007"
+        "href" => "http://www.rcms2010.org/",
+        "text" => "Association of Statisticians of American Religious Bodies, Association of Religion Data Archives"
     ),
     "foreclosures" => array(
         "href" => "http://www.patchworknation.org/",
@@ -105,6 +108,14 @@ $STATIC_VIEWS_ATTRIB = array(
         "href" => "http://www.bls.gov/lau/",
         "text" => "U.S. Bureau of Labor Statistics"
     ),
+    "unemployment_change" => array(
+        "href" => "http://www.bls.gov/lau/",
+        "text" => "U.S. Bureau of Labor Statistics"
+    ),
+    "unions" => array(
+        "href" => "http://www.bls.gov/news.release/union2.toc.htm",
+        "text" => "U.S. Bureau of Labor Statistics"
+    ),
     "voter_id" => array(
         "href" => "http://www.ncsl.org/legislatures-elections/elections/voter-id.aspx",
         "text" => "National Conference of State Legislatures"
@@ -114,7 +125,7 @@ $MAP_TITLES = array(
     "08general" => "2008 presidential results",
     "bachelors" => "Education",
     "diversity" => "Diversity index",
-    "ethnicity" => "Ethnicity: <span class=\"static_map_name\"></span></h1>",
+    "ethnicity" => "Ethnicity: <span class=\"static_map_name\"></span>",
     "evangelical" => "Evangelical Protestants",
     "foreclosures" => "Foreclosures: <span class=\"static_map_name\"></span>",
     "income" => "Income",
@@ -124,6 +135,8 @@ $MAP_TITLES = array(
     "senate_six" => "Senate races to watch",
     "social_security" => "Social Security",
     "unemployment" => "Unemployment",
+    "unemployment_change" => "Unemployment",
+    "unions" => "Unions: <span class=\"static_map_name\"></span>",
     "voter_id" => "Voter ID laws",
     "past_primaries" => "Past results",
     "electoral_college" => "Electoral calculator"
@@ -133,7 +146,7 @@ $SIDEBAR_TITLES = array(
     "bachelors" => "25-year-olds with a bachelor's degree or higher",
     "diversity" => "Diversity index <a href=\"#\" class=\"diversity_explain\">(?)</a>",
     "ethnicity" => "",
-    "evangelical" => "Population that affiliates with Evangelical Protestant tradition",
+    "evangelical" => "Percent of population that adheres to Evangelical Protestant tradition",
     "foreclosures" => "",
     "income" => "Median household income, 2006&ndash;2010",
     "patchwork_types" => "County types",
@@ -142,6 +155,8 @@ $SIDEBAR_TITLES = array(
     "senate_six" => "Senate races",
     "social_security" => "Percent of households with Social Security income",
     "unemployment" => "",
+    "unemployment_change" => "Unemployment rate change, January 2009 to January 2012",
+    "unions" => "",
     "voter_id" => "States with voter ID laws",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",
     "electoral_college" => "2012 prediction"
@@ -152,7 +167,7 @@ $map_module = (isset($_GET['map_module']) && array_search($_GET['map_module'], $
 $static_maps_type = (isset($_GET['static_maps_type']) && isset($STATIC_VIEWS_ATTRIB[$_GET['static_maps_type']])) ? $_GET['static_maps_type'] : 'diversity';
 $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_MAX_INDEX[$static_maps_type]) && (int) $_GET['static_maps_index'] <= $STATIC_VIEWS_MAX_INDEX[$static_maps_type]) ? (int) $_GET['static_maps_index'] : 0;
 
-$instructions = null;  # Might use later
+$instructions = null;
 if ($map_module == 'electoral_college') {
     $instructions = 'Click states to change party<br /><span class="smaller" id="ap_projection_attribution">(AP projection shown)</span>';
 }
