@@ -13,4 +13,11 @@ calc-broadcaster-ready.html
 calc-consumer-error.html
 
 calc-consumer-ready.html
-backend/www/scripts
+# During development, the Require.js library is copied here and dependencies
+# are satisfied at runtime. When deployed, this file will contain the complete
+# minified source.
+backend/www/scripts/require.js
+# Compiled templates, generated at build time from HTML files
+backend/www/scripts/jst.js
+# Copied from shared/ during build
+backend/www/scripts/shared
