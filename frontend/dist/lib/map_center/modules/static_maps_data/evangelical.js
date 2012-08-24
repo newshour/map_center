@@ -1,6 +1,6 @@
 var nhmcStatic = {
-    "breaks": [10, 15, 20, 25, 30, 40, 50, 100],
-    "colors": ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84"],
+    "breaks": [7, 12, 15, 20, 25, 30, 40, 50, 100],
+    "colors": ["#ffffc7", "#dded85", "#acdf8e", "#49b599", "#1991a7", "#085da1", "#0a2d7c", "#0b1260", "#020828"],
     "decimalPlaces": 0,
     "suffix": "%",
     "areas": {
