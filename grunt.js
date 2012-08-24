@@ -41,7 +41,10 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      "adminapp-deploy": {
+      // This copy target should only be run in development as it inserts
+      // require.js in the application's position, thus allowing dependencies
+      // to be resolved at run time.
+      "adminapp-dev": {
         options: {
           processName: function(fileName) {
             if (/require.*\.js$/i.test(fileName)) {
@@ -123,7 +126,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib");
 
   // Default task.
-  grunt.registerTask("default", "lint test concat min jst copy:adminapp-deploy requirejs");
+  grunt.registerTask("default", "lint test concat min jst copy:adminapp requirejs");
   grunt.registerTask("dev", "lint test concat jst copy");
 
 };
