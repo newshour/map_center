@@ -13,6 +13,12 @@ var serviceLocation = {
 };
 
 var broadcastSchedule = new BroadcastSchedule();
+// TODO: Create a new token for each user, and provide a means for token
+// expiration and revocation
+var broadcasterToken = {
+    name: "broadcastertoken",
+    value: Math.random().toString().slice(2)
+};
 
 // ----------------------------------------------------------------------------
 // --[ scheduling control HTTP endpoints ]
@@ -40,10 +46,9 @@ app.param("recId", function(req, res, next) {
 app.post("/auth", function(req, res) {
 
     if (req.body.pwd === "password") {
-        // TODO: Set cookie value as a runtime-generated token
-        res.cookie("name", "authenticated");
+        res.cookie(broadcasterToken.name, broadcasterToken.value);
     } else {
-        res.clearCookie("name");
+        res.clearCookie(broadcasterToken.name);
     }
     res.end();
 });
@@ -358,8 +363,34 @@ tick();
  *  confirm this deficiency.
  */
 io.sockets.on("connection", function(socket) {
-    var args = Array.prototype.slice.call(arguments);
-    socketEventHandlers.connection.apply(socket, args);
+    socketEventHandlers.connection.apply(socket, arguments);
+});
+io.of("/broadcaster").authorization(function(handshakeData, callback) {
+    var cookieStr = handshakeData.headers.cookie || "";
+    var cookies = {};
+
+    // Process the cookie string into an object describing the key:value pairs,
+    // i.e.
+    //   "name1=value1; name2=value2; name3"
+    // becomes
+    //   {
+    //     name1: "value1",
+    //     name2: "value2",
+    //     name3: undefined
+    //   }
+    cookieStr.split(";").map(function(cookie) {
+        return cookie.trim();
+    }).forEach(function(cookieTuple) {
+        cookieTuple = cookieTuple.split("=");
+        cookies[cookieTuple[0]] = cookieTuple[1];
+    });
+
+    if (broadcasterToken.value === cookies[broadcasterToken.name]) {
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
+}).on("connection", function(socket) {
 
     socket.on("updateMap", function() {
         var args = Array.prototype.slice.call(arguments);

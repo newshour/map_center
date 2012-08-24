@@ -17,8 +17,10 @@
         // overhead of establishing a connection.
         "auto connect": connectionRequested
     });
-    // Default socket namespace
-    var socketNs = socket.of("");
+    // Default socket namespaces`
+    var socketNamespaces = {
+        "": socket.of("")
+    };
 
     // Forward the following socket.io events for use by the UI. These events
     // are detailed in the description of the "on" method below
@@ -26,7 +28,7 @@
         "connect_failed", "error",
         "reconnect", "reconnecting", "reconnect_failed"],
         function(idx, eventName) {
-            socketNs.on(eventName, function() {
+            socketNamespaces[""].on(eventName, function() {
                 eventBus.trigger.apply(eventBus,
                     [eventName].concat(Array.prototype.slice.call(arguments)));
             });
@@ -40,7 +42,7 @@
             return;
         }
 
-        socketNs.emit("updateMap", mapState);
+        socketNamespaces.broadcaster.emit("updateMap", mapState);
     };
 
     /* init
@@ -59,6 +61,9 @@
      * Emit map status changes to the backend
      */
     connection.startBroadcast = function() {
+
+        socketNamespaces.broadcaster = socket.of("/broadcaster");
+
         liveMap.status.on("change.broadcast", function(event, mapStatus) {
 
             connection._broadcastChange({
