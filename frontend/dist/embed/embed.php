@@ -52,7 +52,7 @@ $STATIC_VIEWS_HAS_STATES = array(
 );
 $STATIC_VIEWS_MAX_INDEX = array(
     "ethnicity" => 3,
-    "foreclosures" => 2,
+    "foreclosures" => 3,
     "unions" => 2
 );
 $STATIC_VIEWS_ATTRIB = array(
