@@ -43,9 +43,29 @@ $(document).ready(function() {
         id: "unions"
     }, {
         featured: false,
+        title: "Foreclosures",
+        href: "foreclosures.html",
+        id: "foreclosures"
+    }, {
+        featured: false,
         title: "Median income",
         href: "income.html",
         id: "income"
+    }, {
+        featured: false,
+        title: "Bachelor's degrees",
+        href: "bachelors.html",
+        id: "bachelors"
+    }, {
+        featured: false,
+        title: "Population density",
+        href: "population_density.html",
+        id: "population"
+    }, {
+        featured: false,
+        title: "Evangelical Protestants",
+        href: "evangelical.html",
+        id: "evangelical"
     }, {
         featured: false,
         title: "2008 Hispanic voters",
@@ -63,19 +83,9 @@ $(document).ready(function() {
         id: "diversity"
     }, {
         featured: false,
-        title: "Bachelor's degrees",
-        href: "bachelors.html",
-        id: "bachelors"
-    }, {
-        featured: false,
-        title: "Wisconsin recall results",
-        href: "other_votes.html",
-        id: "other_votes"
-    }, {
-        featured: false,
-        title: "Social Security",
-        href: "social_security.html",
-        id: "social_security"
+        title: "Patchwork Nation counties",
+        href: "patchwork_types.html",
+        id: "patchwork"
     }, {
         featured: false,
         title: "Voter ID laws",
@@ -83,30 +93,15 @@ $(document).ready(function() {
         id: "voter_id"
     }, {
         featured: false,
-        title: "Foreclosures",
-        href: "foreclosures.html",
-        id: "foreclosures"
-    }, {
-        featured: false,
-        title: "Population density",
-        href: "population_density.html",
-        id: "population"
-    }, {
-        featured: false,
-        title: "Evangelical Protestants",
-        href: "evangelical.html",
-        id: "evangelical"
-    }, {
-        featured: false,
-        title: "Patchwork Nation counties",
-        href: "patchwork_types.html",
-        id: "patchwork"
-    }, {
-        featured: false,
         title: "Senate Six",
         href: "senate_six.html",
         id: "senate"
-		}, {
+	}, {
+        featured: false,
+        title: "Wisconsin recall results",
+        href: "other_votes.html",
+        id: "other_votes"
+    }, {
         featured: false,
         title: "Embed Map",
         href: "embed/index.html",
