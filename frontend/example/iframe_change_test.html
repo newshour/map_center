@@ -29,6 +29,7 @@
                 if (networked && networked[1] != 'broadcaster') {
                     // For non-broadcasters, update iframe contents when
                     // statuses come in
+
                     liveMap.status.on("change", function(event, status) {
                         if (status.href != 'unavailable') {
                             $('#live-map-frame').attr('src', status.href);
@@ -37,6 +38,14 @@
                         }
                     });
                 } else {
+                    var $openLogin = $("<button>Broadcaster Login</button>")
+                        .on("click", function() {
+                            window.open(
+                                "http://localhost:8000/auth?" +
+                                    // Prevent browser caching
+                                    (+new Date()),
+                                "broadcaster-auth", "height=200,width=300");
+                        }).prependTo(document.body);
                     // For broadcasters, send status messages as frame updates
                     $('#live-map-frame').load(function() {
                         try {

@@ -24,6 +24,7 @@ var broadcasterToken = {
 // --[ scheduling control HTTP endpoints ]
 
 app.use(express.bodyParser());
+app.use(express.cookieParser());
 app.use(express.static(__dirname + "/www"));
 
 app.param("recId", function(req, res, next) {
@@ -43,14 +44,24 @@ app.param("recId", function(req, res, next) {
     });
 });
 
+app.get("/auth", function(req, res) {
+
+    if (req.cookies[broadcasterToken.name] === broadcasterToken.value ) {
+        res.sendfile("www/logout.html");
+    } else {
+        res.sendfile("www/login.html");
+    }
+});
+
 app.post("/auth", function(req, res) {
 
     if (req.body.pwd === "password") {
         res.cookie(broadcasterToken.name, broadcasterToken.value);
+        res.sendfile("www/logout.html");
     } else {
         res.clearCookie(broadcasterToken.name);
+        res.sendfile("www/login.html");
     }
-    res.end();
 });
 
 app.get("/recording/:recId?", function(req, res) {
