@@ -855,6 +855,72 @@ $(document).one('coreInitialized', function() {
         }
     };
     
+    // Tooltips for historical results
+    var flyoutsEnabled = typeof(window.flyoutsEnabled) != 'undefined' ? window.flyoutsEnabled : false;
+    // FIXME: Add pre-1996 data.
+    var popularVotes = {
+        // "1964": {
+        //     "democratic": {},
+        //     "republican": {}
+        //     "tossup": {}
+        // },
+        // "1968": {
+        //     "democratic": {},
+        //     "republican": {},
+        //     "tossup": {}
+        // },
+        // "1972": {
+        //     "democratic": {},
+        //     "republican": {},
+        //     "tossup": {}
+        // },
+        // "1976": {
+        //     "democratic": {},
+        //     "republican": {}
+        //     "tossup": {}
+        // },
+        // "1980": {
+        //     "democratic": {},
+        //     "republican": {}
+        //     "tossup": {}
+        // },
+        // "1984": {
+        //     "democratic": {},
+        //     "republican": {}
+        //     "tossup": {}
+        // },
+        // "1988": {
+        //     "democratic": {},
+        //     "republican": {}
+        //     "tossup": {}
+        // },
+        // "1992": {
+        //     "democratic": {},
+        //     "republican": {}
+        //     "tossup": {}
+        // },
+        "1996": {
+            "democratic": {"Alabama":43.16,"Alaska":33.27,"Arizona":46.52,"Arkansas":53.74,"California":51.1,"Colorado":44.43,"Connecticut":52.83,"Delaware":51.82,"District of Columbia":85.19,"Florida":48.02,"Georgia":45.84,"Hawaii":56.93,"Idaho":33.64,"Illinois":54.31,"Indiana":41.55,"Iowa":50.26,"Kansas":36.08,"Kentucky":45.84,"Louisiana":52.01,"Maine":51.62,"Maryland":54.25,"Massachusetts":61.47,"Michigan":51.69,"Minnesota":51.1,"Mississippi":44.08,"Missouri":47.54,"Montana":41.23,"Nebraska":34.95,"Nevada":43.93,"New Hampshire":49.32,"New Jersey":53.72,"New Mexico":49.18,"New York":59.47,"North Carolina":44.04,"North Dakota":40.13,"Ohio":47.38,"Oklahoma":40.45,"Oregon":47.15,"Pennsylvania":49.17,"Rhode Island":59.71,"South Carolina":43.96,"South Dakota":43.03,"Tennessee":48,"Texas":43.83,"Utah":33.3,"Vermont":53.35,"Virginia":45.15,"Washington":49.84,"West Virginia":51.5,"Wisconsin":48.81,"Wyoming":36.84},
+            "republican": {"Alabama":50.12,"Alaska":50.8,"Arizona":44.29,"Arkansas":36.8,"California":38.21,"Colorado":45.8,"Connecticut":34.69,"Delaware":36.58,"District of Columbia":9.34,"Florida":42.32,"Georgia":47.01,"Hawaii":31.64,"Idaho":52.18,"Illinois":36.81,"Indiana":47.13,"Iowa":39.92,"Kansas":54.29,"Kentucky":44.88,"Louisiana":39.94,"Maine":30.76,"Maryland":38.27,"Massachusetts":28.08,"Michigan":38.48,"Minnesota":34.96,"Mississippi":49.21,"Missouri":41.24,"Montana":44.11,"Nebraska":53.66,"Nevada":42.91,"New Hampshire":39.37,"New Jersey":35.86,"New Mexico":41.86,"New York":30.61,"North Carolina":48.73,"North Dakota":46.94,"Ohio":41.02,"Oklahoma":48.26,"Oregon":39.06,"Pennsylvania":39.97,"Rhode Island":26.82,"South Carolina":49.79,"South Dakota":46.49,"Tennessee":45.59,"Texas":48.76,"Utah":54.37,"Vermont":31.09,"Virginia":47.1,"Washington":37.3,"West Virginia":36.76,"Wisconsin":38.48,"Wyoming":49.81},
+            "tossup": {}
+        },
+        "2000": {
+            "democratic": {"Alabama":41.57,"Alaska":27.67,"Arizona":44.73,"Arkansas":45.86,"California":53.45,"Colorado":42.39,"Connecticut":55.91,"Delaware":54.96,"District of Columbia":85.16,"Florida":48.84,"Georgia":42.98,"Hawaii":55.79,"Idaho":27.64,"Illinois":54.6,"Indiana":41.01,"Iowa":48.54,"Kansas":37.24,"Kentucky":41.37,"Louisiana":44.88,"Maine":49.09,"Maryland":56.57,"Massachusetts":59.8,"Michigan":51.28,"Minnesota":47.9,"Mississippi":40.7,"Missouri":47.08,"Montana":33.36,"Nebraska":33.25,"Nevada":45.98,"New Hampshire":46.8,"New Jersey":56.12,"New Mexico":47.91,"New York":60.21,"North Carolina":43.2,"North Dakota":33.06,"Ohio":46.46,"Oklahoma":38.43,"Oregon":46.96,"Pennsylvania":50.6,"Rhode Island":60.99,"South Carolina":40.9,"South Dakota":37.56,"Tennessee":47.28,"Texas":37.98,"Utah":26.34,"Vermont":50.63,"Virginia":44.44,"Washington":50.16,"West Virginia":45.59,"Wisconsin":47.83,"Wyoming":27.7},
+            "republican": {"Alabama":56.48,"Alaska":58.62,"Arizona":51.02,"Arkansas":51.31,"California":41.65,"Colorado":50.75,"Connecticut":38.44,"Delaware":41.9,"District of Columbia":8.95,"Florida":48.85,"Georgia":54.67,"Hawaii":37.46,"Idaho":67.17,"Illinois":42.58,"Indiana":56.65,"Iowa":48.22,"Kansas":58.04,"Kentucky":56.5,"Louisiana":52.55,"Maine":43.97,"Maryland":40.18,"Massachusetts":32.5,"Michigan":46.15,"Minnesota":45.5,"Mississippi":57.62,"Missouri":50.42,"Montana":58.44,"Nebraska":62.24,"Nevada":49.52,"New Hampshire":48.07,"New Jersey":40.29,"New Mexico":47.85,"New York":35.23,"North Carolina":56.03,"North Dakota":60.66,"Ohio":49.97,"Oklahoma":60.31,"Oregon":46.52,"Pennsylvania":46.43,"Rhode Island":31.91,"South Carolina":56.84,"South Dakota":60.3,"Tennessee":51.15,"Texas":59.3,"Utah":66.83,"Vermont":40.7,"Virginia":52.47,"Washington":44.58,"West Virginia":51.92,"Wisconsin":47.61,"Wyoming":67.76},
+            "tossup": {}
+        },
+        "2004": {
+            "democratic": {"Alabama":36.84,"Alaska":35.52,"Arizona":44.4,"Arkansas":44.55,"California":54.3,"Colorado":47.02,"Connecticut":54.31,"Delaware":53.35,"District of Columbia":89.18,"Florida":47.09,"Georgia":41.37,"Hawaii":54.01,"Idaho":30.26,"Illinois":54.82,"Indiana":39.26,"Iowa":49.23,"Kansas":36.62,"Kentucky":39.69,"Louisiana":42.22,"Maine":53.57,"Maryland":55.91,"Massachusetts":61.94,"Michigan":51.23,"Minnesota":51.09,"Mississippi":39.76,"Missouri":46.1,"Montana":38.56,"Nebraska":32.68,"Nevada":47.88,"New Hampshire":50.24,"New Jersey":52.92,"New Mexico":49.05,"New York":58.37,"North Carolina":43.58,"North Dakota":35.5,"Ohio":48.71,"Oklahoma":34.43,"Oregon":51.35,"Pennsylvania":50.92,"Rhode Island":59.42,"South Carolina":40.9,"South Dakota":38.44,"Tennessee":42.53,"Texas":38.22,"Utah":26,"Vermont":58.94,"Virginia":45.48,"Washington":52.82,"West Virginia":43.2,"Wisconsin":49.7,"Wyoming":29.07},
+            "republican": {"Alabama":62.46,"Alaska":61.07,"Arizona":54.87,"Arkansas":54.31,"California":44.36,"Colorado":51.69,"Connecticut":43.95,"Delaware":45.75,"District of Columbia":9.34,"Florida":52.1,"Georgia":57.97,"Hawaii":45.26,"Idaho":68.38,"Illinois":44.48,"Indiana":59.94,"Iowa":49.9,"Kansas":62,"Kentucky":59.55,"Louisiana":56.72,"Maine":44.58,"Maryland":42.93,"Massachusetts":36.78,"Michigan":47.81,"Minnesota":47.61,"Mississippi":59.45,"Missouri":53.3,"Montana":59.07,"Nebraska":65.9,"Nevada":50.47,"New Hampshire":48.87,"New Jersey":46.24,"New Mexico":49.84,"New York":40.08,"North Carolina":56.02,"North Dakota":62.86,"Ohio":50.81,"Oklahoma":65.57,"Oregon":47.19,"Pennsylvania":48.42,"Rhode Island":38.67,"South Carolina":57.98,"South Dakota":59.91,"Tennessee":56.8,"Texas":61.09,"Utah":71.54,"Vermont":38.8,"Virginia":53.68,"Washington":45.64,"West Virginia":56.06,"Wisconsin":49.32,"Wyoming":68.86},
+            "tossup": {}
+        },
+        "2008": {
+            "democratic": {"Alabama":38.74,"Alaska":37.89,"Arizona":45.12,"Arkansas":38.86,"California":61.01,"Colorado":53.66,"Connecticut":60.59,"Delaware":61.94,"District of Columbia":92.46,"Florida":51.03,"Georgia":46.99,"Hawaii":71.85,"Idaho":36.09,"Illinois":61.92,"Indiana":49.95,"Iowa":53.93,"Kansas":41.65,"Kentucky":41.17,"Louisiana":39.93,"Maine":57.71,"Maryland":61.92,"Massachusetts":61.8,"Michigan":57.43,"Minnesota":54.06,"Mississippi":43,"Missouri":49.29,"Montana":47.25,"Nebraska":41.6,"Nevada":55.15,"New Hampshire":54.13,"New Jersey":57.27,"New Mexico":56.91,"New York":62.88,"North Carolina":49.7,"North Dakota":44.62,"Ohio":51.5,"Oklahoma":34.35,"Oregon":56.75,"Pennsylvania":54.49,"Rhode Island":62.86,"South Carolina":44.9,"South Dakota":44.75,"Tennessee":41.83,"Texas":43.68,"Utah":34.41,"Vermont":67.46,"Virginia":52.63,"Washington":57.65,"West Virginia":42.59,"Wisconsin":56.22,"Wyoming":32.54},
+            "republican": {"Alabama":60.32,"Alaska":59.42,"Arizona":53.64,"Arkansas":58.72,"California":36.95,"Colorado":44.71,"Connecticut":38.22,"Delaware":36.95,"District of Columbia":6.53,"Florida":48.22,"Georgia":52.2,"Hawaii":26.58,"Idaho":61.52,"Illinois":36.78,"Indiana":48.91,"Iowa":44.39,"Kansas":56.61,"Kentucky":57.4,"Louisiana":58.56,"Maine":40.38,"Maryland":36.47,"Massachusetts":35.99,"Michigan":40.96,"Minnesota":43.82,"Mississippi":56.18,"Missouri":49.43,"Montana":49.51,"Nebraska":56.53,"Nevada":42.65,"New Hampshire":44.52,"New Jersey":41.7,"New Mexico":41.78,"New York":36.03,"North Carolina":49.38,"North Dakota":53.25,"Ohio":46.91,"Oklahoma":65.65,"Oregon":40.4,"Pennsylvania":44.17,"Rhode Island":35.06,"South Carolina":53.87,"South Dakota":53.16,"Tennessee":56.9,"Texas":55.45,"Utah":62.58,"Vermont":30.45,"Virginia":46.33,"Washington":40.48,"West Virginia":55.71,"Wisconsin":42.31,"Wyoming":64.78},
+            "tossup": {}
+        }
+    };
+    
     // Pub/sub infrastructure for map status
     var ECStatus = function() {
         /* status
@@ -1213,7 +1279,8 @@ $(document).one('coreInitialized', function() {
         setElectoralVote($(this).text());
     });
     
-    // Event handlers and such for the calculator.
+    // Event handlers and such for the calculator, or tooltip handers for the
+    // historical results
     if (calculatorActive) {
         // Grab a copy of the current status.
         var currentStatus = ecMap.get();
@@ -1320,9 +1387,98 @@ $(document).one('coreInitialized', function() {
         $('#maine_popular').val('u');
         $('#maine_4').val('u');
         $('#maine_5').val('u');
-
+        
         attachStateClickHandlers();
-
+    } else {
+        var tooltipFormatter = function(thisState) {
+            var thisYear = $('#view_tab_more_shown').text();
+            var tooltipText = '<h2>' + thisState + '</h2>';
+            
+            // Electoral votes allotted and cast
+            tooltipText += '<h3>' + electoralVotes[thisYear].states[thisState] + ' electoral votes</h3><table>';
+            if (electoralVotes[thisYear][thisState]) {
+                var parties = ['republican', 'democratic', 'tossup'];
+                parties.sort(function(a, b) {
+                    return electoralVotes[thisYear][thisState][b] - electoralVotes[thisYear][thisState][a];
+                });
+                for (var i = 0, length = parties.length; i < length; i++) {
+                    var party = parties[i];
+                    if (electoralVotes[thisYear][thisState][party] > 0) {
+                        tooltipText += '<tr><td class="tooltip-candidate-name">' + candidateNames[thisYear][party] + '</td><td class="tooltip-candidate-votes">' + electoralVotes[thisYear][thisState][party] + '</td></tr>';
+                    }
+                }
+            } else {
+                tooltipText += '<tr><td class="tooltip-candidate-name">';
+                if (electoralVotes[thisYear].republican.indexOf(thisState) != -1) {
+                    tooltipText += candidateNames[thisYear].republican;
+                } else if (electoralVotes[thisYear].democratic.indexOf(thisState) != -1) {
+                    tooltipText += candidateNames[thisYear].democratic;
+                } else {
+                    tooltipText += candidateNames[thisYear].tossup;
+                }
+                tooltipText += '</td><td class="tooltip-candidate-votes">' + electoralVotes[thisYear].states[thisState] + '</td></tr>';
+            }
+            tooltipText += '</table>';
+            
+            // Popular vote if available
+            if (popularVotes[thisYear]) {
+                tooltipText += '<h3>Popular vote</h3><table>';
+                
+                var parties = ['republican', 'democratic', 'tossup'];
+                parties.sort(function(a, b) {
+                    return popularVotes[thisYear][b][thisState] - popularVotes[thisYear][a][thisState];
+                });
+                
+                for (var i = 0, length = parties.length; i < length; i++) {
+                    var party = parties[i];
+                    var candidateName = candidateNames[thisYear][party];
+                    var partyVotes = popularVotes[thisYear][party][thisState];
+                    if (partyVotes > 0) {
+                        tooltipText += '<tr><td class="tooltip-candidate-name">' + candidateName + '</td><td class="tooltip-candidate-votes">' + partyVotes.toFixed(2) + '%</td></tr>';
+                    }
+                }
+                
+                tooltipText += '</table>';
+            }
+            
+            return tooltipText;
+        };
+        
+        nhmc.tooltips.render = function() {
+            $('#tooltip').remove();
+            
+            var thisState = this.nhmcData.state;
+            
+            if (flyoutsEnabled) {
+                this.setStroke({
+                    color: '#000000',
+                    width: 3
+                });
+                this.moveToFront();
+            }
+            
+            $('body').append('<div id="tooltip"' + (flyoutsEnabled ? ' class="tooltip_flyout"' : '') + '>' + tooltipFormatter(thisState) + '</div>');
+            if (Modernizr.touch) {nhmc.tooltips.addClose();}
+        };
+        if (flyoutsEnabled) {
+            nhmc.tooltips.position = function(e) {
+                // Set the position in the page's styles.
+                // FIXME: Check whether these styles exist.
+            };
+            
+            nhmc.tooltips.destroy = function() {
+                $('#tooltip').remove();
+                for (var i = 0, length = nhmc.surface.children.length; i < length; i++) {
+                    var child = nhmc.surface.children[i];
+                    if (typeof(child.nhmcData) != 'undefined') {
+                        child.setStroke(nhmc.config.defaultAttributes.stroke);
+                    }
+                }
+            };
+        }
+        if (nhmc.tooltips.hoverHandlerTokens.length == 0) {
+            nhmc.tooltips.init();
+        }
     }
 
     /* attachStateClickHandlers
