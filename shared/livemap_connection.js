@@ -2,7 +2,6 @@
 
     // Dependencies
     var io = window.io;
-    var $ = window.jQuery;
     var liveMap = window.liveMap || {};
     window.liveMap = liveMap;
 
@@ -19,9 +18,14 @@
         dflt: "",
         broadcaster: "/broadcaster"
     };
-    var Connection = liveMap.Connection = function(options) {
-        var self = this;
-        this._socket = new io.Socket($.extend({}, defaultOptions, options));
+
+    var Connection = liveMap.Connection = function(userOptions) {
+        var options = {};
+
+        io.util.merge(options, defaultOptions);
+        io.util.merge(options, userOptions);
+
+        this._socket = new io.Socket(options);
     };
     Connection.prototype.connect = function() {
         var self = this;
