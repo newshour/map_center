@@ -30,6 +30,9 @@ module.exports = function(grunt) {
         }
       }
     },
+    qunit: {
+      all: ["frontend/test/index.html"]
+    },
     test: {
         "backend": ["backend/test/*.js"]
     },
