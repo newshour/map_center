@@ -168,6 +168,15 @@
                 .css("color", "#a00")
                 .text("Connection lost. Reconnecting...");
         });
+        connection.onBroadcaster("connect_failed", function(message) {
+            if (message === "unauthorized") {
+                $ui.buttons.stop.hide();
+                $ui.buttons.start.hide();
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Failed to authenticate as a broadcaster.");
+            }
+        });
         connection.on("reconnect_failed", function() {
             $ui.status
                 .css("color", "#a00")
