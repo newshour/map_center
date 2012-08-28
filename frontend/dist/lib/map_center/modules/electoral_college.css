@@ -200,7 +200,7 @@ a.copy-link:active
 	margin-top:20px;
 }
 
-.historical { padding:40px 0 0 0;}
+.historical { padding:40px 0 0 0; margin-top:-20px;}
 
 #content_area h2 { margin:5px 0 0 -10px; }
 
