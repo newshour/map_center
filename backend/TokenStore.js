@@ -1,5 +1,7 @@
 var redis = require("redis");
 
+var purgeInterval = 1000*60*60*6;   // 6 hours
+
 // BroadcastSchedule
 // A CRUD datastore for broadcasts, which can be classified as either
 // - recordings
@@ -26,6 +28,9 @@ var TokenStore = function(options) {
     if ("timeout" in options) {
         this._timeout = options.timeout;
     }
+
+    // Initiate periodic removal of expired tokens
+    this._purge();
 };
 // create
 // Generate a unique token and store it. Optionally, specify the timeout of the
@@ -85,6 +90,19 @@ TokenStore.prototype.getValid = function(callback) {
 
             callback(err, validTokens);
         });
+};
+// _purge
+// Private method for curbing the growth of the database by removing expired
+// tokens. This is done for memory efficiency only: the TokenStore safely
+// ignores expired tokens that persist in the database.
+TokenStore.prototype._purge = function(callback) {
+    var self = this;
+    var now = new Date().getTime();
+    this._client.zremrangebyscore(["tokens", now, "-inf"], function() {
+        setTimeout(function() {
+            self._purge();
+        }, purgeInterval);
+    });
 };
 TokenStore.prototype.quit = function(callback) {
     this._client.quit(callback);
