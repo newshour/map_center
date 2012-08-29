@@ -100,7 +100,8 @@ TokenStore.prototype.invalidate = function(token, callback) {
 TokenStore.prototype._purge = function(callback) {
     var self = this;
     var now = new Date().getTime();
-    this._client.zremrangebyscore(["tokens:byExpiration", now, "-inf"], function() {
+
+    this._client.zremrangebyscore(["tokens:byExpiration", "-inf", now], function() {
         setTimeout(function() {
             self._purge();
         }, purgeInterval);
