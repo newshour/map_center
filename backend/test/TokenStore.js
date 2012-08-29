@@ -24,7 +24,7 @@ testModules.createNormal = function(test) {
         test.done();
     });
 };
-testModules.createOptions = function(test) {
+testModules.createWithOptions = function(test) {
     test.expect(3);
     this.tokenStore.create({ timeout: 300 }, function(err, token) {
         test.ok(!err, "Does not return an error");
@@ -102,7 +102,6 @@ testModules.getValid = {
         });
     }
 };
-
 testModules.getValid.normal = function(test) {
     var self = this;
     test.expect(6);
@@ -119,6 +118,53 @@ testModules.getValid.normal = function(test) {
             test.ok(validTokens[token] > now, "Token is not yet expired");
         });
         test.done();
+    });
+};
+
+testModules.invalidate = {
+    setUp: function(callback) {
+        var self = this;
+        this.tokenStore.create(function(err, token) {
+            self.token = token;
+            callback();
+        });
+    }
+};
+testModules.invalidate.valid = function(test) {
+    var self = this;
+    test.expect(5);
+    this.tokenStore.isValid(this.token, function(err, isValid) {
+        test.ok(!err, "Does not return an error");
+        test.ok(isValid, "Token is initially valid");
+        self.tokenStore.invalidate(self.token, function(err) {
+
+            test.ok(!err, "Does not return an error");
+            self.tokenStore.isValid(self.token, function(err, isValid) {
+                test.ok(!err, "Does not return an error");
+                test.ok(!isValid, "Token has been successfully invalidated");
+                test.done();
+            });
+        });
+    });
+};
+testModules.invalidate.invalid = function(test) {
+    var self = this;
+    // Create an invalid token based on the runtime-generated token
+    var invalidToken = this.token + "differentiator";
+
+    test.expect(5);
+    this.tokenStore.isValid(invalidToken, function(err, isValid) {
+        test.ok(!err, "Does not return an error");
+        test.ok(!isValid, "Token is initially invalid");
+        self.tokenStore.invalidate(invalidToken, function(err) {
+
+            test.ok(!err, "Does not return an error");
+            self.tokenStore.isValid(invalidToken, function(err, isValid) {
+                test.ok(!err, "Does not return an error");
+                test.ok(!isValid, "Token remains invalidat");
+                test.done();
+            });
+        });
     });
 };
 

@@ -91,6 +91,9 @@ TokenStore.prototype.getValid = function(callback) {
             callback(err, validTokens);
         });
 };
+TokenStore.prototype.invalidate = function(token, callback) {
+    this._client.zrem("tokens", token, callback);
+};
 // _purge
 // Private method for curbing the growth of the database by removing expired
 // tokens. This is done for memory efficiency only: the TokenStore safely
