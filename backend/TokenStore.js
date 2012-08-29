@@ -91,7 +91,12 @@ TokenStore.prototype.getValid = function(callback) {
         });
 };
 TokenStore.prototype.invalidate = function(token, callback) {
-    this._client.zrem("tokens:byExpiration", token, callback);
+    var operations = this._client.multi();
+
+    operations.zrem("tokens:byExpiration", token);
+    operations.hdel("tokens:metadata", token);
+
+    operations.exec(callback);
 };
 // _purge
 // Private method for curbing the growth of the database by removing expired
@@ -101,10 +106,28 @@ TokenStore.prototype._purge = function(callback) {
     var self = this;
     var now = new Date().getTime();
 
-    this._client.zremrangebyscore(["tokens:byExpiration", "-inf", now], function() {
+    var scheduleNext = function() {
         setTimeout(function() {
             self._purge();
         }, purgeInterval);
+    };
+
+    this._client.zrevrangebyscore(["tokens:byExpiration", now, "-inf"], function(err, tokens) {
+        var toInvalidateCount = tokens.length;
+
+        tokens.forEach(function(token) {
+            self.invalidate(token, function() {
+                toInvalidateCount--;
+
+                if (toInvalidateCount === 0) {
+                    scheduleNext();
+                }
+            });
+        });
+
+        if (toInvalidateCount === 0) {
+            scheduleNext();
+        }
     });
 };
 TokenStore.prototype.quit = function(callback) {
