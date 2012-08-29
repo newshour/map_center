@@ -19,7 +19,7 @@ var TokenStore = function(options) {
     options = options || {};
 
     this._client = redis.createClient();
-    this._timeout = 60*60*3;
+    this._timeout = 1000*60*60*3;   // 3 hours
 
     // Specify the database index. Will default to 0 when not present
     if ("db" in options) {
