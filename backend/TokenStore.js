@@ -35,28 +35,31 @@ var TokenStore = function(options) {
 // create
 // Generate a unique token and store it. Optionally, specify the timeout of the
 // token in seconds:
-// create( [options,] callback )
-TokenStore.prototype.create = function(options, callback) {
+// create( [ metaData, ] callback )
+TokenStore.prototype.create = function(metaData, callback) {
     var token = Math.random().toString().slice(2);
-    var expires = new Date().getTime();
+    var operations = this._client.multi();
 
-    if (typeof options === "function") {
-        callback = options;
+    if (typeof metaData === "function") {
+        callback = metaData;
+        metaData = {};
     }
 
-    if (typeof options.timeout === "number") {
-        expires += options.timeout;
-    } else {
-        expires += this._timeout;
+    if (typeof metaData.expires !== "number") {
+        metaData.expires = this._timeout;
     }
+    metaData.expires += new Date().getTime();
 
-    this._client.zadd("tokens", expires, token, function(err) {
-        callback(err, token);
+    operations.hset("tokens:metadata", token, JSON.stringify(metaData));
+    operations.zadd("tokens:byExpiration", metaData.expires, token);
+
+    operations.exec(function(err) {
+        callback(err, token, metaData);
     });
 };
 TokenStore.prototype.isValid = function(token, callback) {
     var now = new Date().getTime();
-    this._client.zrevrangebyscore(["tokens", "+inf", now],
+    this._client.zrevrangebyscore(["tokens:byExpiration", "+inf", now],
         function(err, tokens) {
 
             var isValid = false;
@@ -68,31 +71,27 @@ TokenStore.prototype.isValid = function(token, callback) {
         });
 };
 // getValid
-// Return all valid tokens as an object whose keys are the token strings and
-// whose values are the expiration timestamps
+// Return an array containing all valid token meta data.
 TokenStore.prototype.getValid = function(callback) {
     var now = new Date().getTime();
-    this._client.zrevrangebyscore(["tokens", "+inf", now, "WITHSCORES"],
-        // zrevrangebyscore returns an array where values (tokens in this case)
-        // and scores (expiration timestamps in this case) are intersperced as
-        // follows:
-        //     [ token1, timestamp1, token2, timestamp2, ... ]
-        // This requires some minor processing to format in the more usable
-        // form described above.
-        function(err, data) {
-            var validTokens = {};
-            data.forEach(function(token, idx) {
-                if (idx % 2) {
-                    return;
-                }
-                validTokens[token] = data[idx+1];
-            });
+    var self = this;
+    this._client.zrevrangebyscore(["tokens:byExpiration", "+inf", now],
+        function(err, tokens) {
+            var hmgetArgs = ["tokens:metadata"];
 
-            callback(err, validTokens);
+            hmgetArgs = hmgetArgs.concat(tokens);
+
+            self._client.hmget(hmgetArgs, function(err, metaDataJSON) {
+                var metaData = metaDataJSON.map(function(json) {
+                    return JSON.parse(json);
+                });
+
+                callback(err, metaData);
+            });
         });
 };
 TokenStore.prototype.invalidate = function(token, callback) {
-    this._client.zrem("tokens", token, callback);
+    this._client.zrem("tokens:byExpiration", token, callback);
 };
 // _purge
 // Private method for curbing the growth of the database by removing expired
@@ -101,7 +100,7 @@ TokenStore.prototype.invalidate = function(token, callback) {
 TokenStore.prototype._purge = function(callback) {
     var self = this;
     var now = new Date().getTime();
-    this._client.zremrangebyscore(["tokens", now, "-inf"], function() {
+    this._client.zremrangebyscore(["tokens:byExpiration", now, "-inf"], function() {
         setTimeout(function() {
             self._purge();
         }, purgeInterval);
