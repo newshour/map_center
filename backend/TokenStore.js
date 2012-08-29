@@ -2,16 +2,15 @@ var redis = require("redis");
 
 var purgeInterval = 1000*60*60*6;   // 6 hours
 
-// BroadcastSchedule
-// A CRUD datastore for broadcasts, which can be classified as either
-// - recordings
-// - replays
+// TokenStore
+// A CRUD datastore for tokens, which are used to grant temporary authorization
+// to broadcasters after they have presented valid credentials
 // Implemented as a Redis NoSQL database:
-// - broadcastCounter <integer> - Maintained to generate broadcast IDs
-// - broadcasts:byID <hash> - Contains meta data for recordings, encoded in JSON
-// - broadcastIDs:byTimestamp <sorted set>
-// - replayIDs:byRecordingID <sorted set>
-
+// - tokens:metadata <hash> - Indexed by the tokens themselves. Contains
+//   user-defined meta data for tokens, along with an "expires" field (a UNIX
+//   timestamp describing the moment that the token will be invalidated)
+// - tokens:byExpiration <sorted set> - indexed by token expiration time. Used
+//   to enable efficient queries for currently-valid tokens
 // NOTE: This implementation does not scale well for large numbers of valid
 // tokens.
 var TokenStore = function(options) {
@@ -33,8 +32,10 @@ var TokenStore = function(options) {
     this._purge();
 };
 // create
-// Generate a unique token and store it. Optionally, specify the timeout of the
-// token in seconds:
+// Generate a unique token and store it. Optionally, specify arbitrary metadata
+// to be stored along with the token. If unspecified, an "expires" attribute
+// will be created as a UNIX timestamp describing the moment the token will be
+// invalidated.
 // create( [ metaData, ] callback )
 TokenStore.prototype.create = function(metaData, callback) {
     var token = Math.random().toString().slice(2);
@@ -57,6 +58,8 @@ TokenStore.prototype.create = function(metaData, callback) {
         callback(err, token, metaData);
     });
 };
+// isValid
+// Determine if a given token is valid
 TokenStore.prototype.isValid = function(token, callback) {
     var now = new Date().getTime();
     this._client.zrevrangebyscore(["tokens:byExpiration", "+inf", now],
@@ -90,6 +93,9 @@ TokenStore.prototype.getValid = function(callback) {
             });
         });
 };
+// invalidate
+// Ensure that the specified token, if it exists, is no longer recognized as
+// valid
 TokenStore.prototype.invalidate = function(token, callback) {
     var operations = this._client.multi();
 
