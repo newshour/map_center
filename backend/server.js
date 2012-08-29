@@ -4,6 +4,7 @@ var io = require("socket.io").listen(app);
 var _ = require("underscore");
 
 var BroadcastSchedule = require("./broadcastSchedule");
+var TokenStore = require("./TokenStore");
 
 // Server name and port. Reference environmental variables when they are set,
 // and fall back to sensible defaults.
@@ -13,12 +14,8 @@ var serviceLocation = {
 };
 
 var broadcastSchedule = new BroadcastSchedule();
-// TODO: Create a new token for each user, and provide a means for token
-// expiration and revocation
-var broadcasterToken = {
-    name: "broadcastertoken",
-    value: Math.random().toString().slice(2)
-};
+var tokenStore = new TokenStore();
+var broadcasterTokenName = "broadcastertoken";
 
 // ----------------------------------------------------------------------------
 // --[ scheduling control HTTP endpoints ]
@@ -46,20 +43,25 @@ app.param("recId", function(req, res, next) {
 
 app.get("/auth", function(req, res) {
 
-    if (req.cookies[broadcasterToken.name] === broadcasterToken.value ) {
-        res.sendfile("www/logout.html");
-    } else {
-        res.sendfile("www/login.html");
-    }
+    tokenStore.isValid(req.cookies[broadcasterTokenName], function(err, isValid) {
+
+        if (isValid) {
+            res.sendfile("www/logout.html");
+        } else {
+            res.sendfile("www/login.html");
+        }
+    });
 });
 
 app.post("/auth", function(req, res) {
 
     if (req.body.pwd === "password") {
-        res.cookie(broadcasterToken.name, broadcasterToken.value);
-        res.sendfile("www/logout.html");
+        tokenStore.create(function(err, token) {
+            res.cookie(broadcasterTokenName, token);
+            res.sendfile("www/logout.html");
+        });
     } else {
-        res.clearCookie(broadcasterToken.name);
+        res.clearCookie(broadcasterTokenName);
         res.sendfile("www/login.html");
     }
 });
@@ -396,11 +398,9 @@ io.of("/broadcaster").authorization(function(handshakeData, callback) {
         cookies[cookieTuple[0]] = cookieTuple[1];
     });
 
-    if (broadcasterToken.value === cookies[broadcasterToken.name]) {
-        callback(null, true);
-    } else {
-        callback(null, false);
-    }
+    tokenStore.isValid(cookies[broadcasterTokenName], function(err, isValid) {
+        callback(err, isValid);
+    });
 }).on("connection", function(socket) {
 
     socket.on("updateMap", function() {
