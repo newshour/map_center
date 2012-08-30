@@ -19,8 +19,8 @@ testModules.createNormal = function(test) {
     test.expect(3);
     this.tokenStore.create(function(err, token) {
         test.ok(!err, "Does not return an error");
-        test.ok(typeof token === "string", "Generates a string token");
-        test.ok(token.length > 10, "Generated token has non-negligable length");
+        test.equal(typeof token.val, "string", "Generates a string token");
+        test.ok(token.val.length > 10, "Generated token has non-negligable length");
         test.done();
     });
 };
@@ -28,8 +28,8 @@ testModules.createWithOptions = function(test) {
     test.expect(3);
     this.tokenStore.create({ test: 123 }, function(err, token) {
         test.ok(!err, "Does not return an error");
-        test.ok(typeof token === "string", "Generates a string token");
-        test.ok(token.length > 10, "Generated token has non-negligable length");
+        test.equal(typeof token.val, "string", "Generates a string token");
+        test.ok(token.val.length > 10, "Generated token has non-negligable length");
         test.done();
     });
 };
@@ -52,7 +52,7 @@ testModules.isValid = {
 testModules.isValid.member = function(test) {
 
     test.expect(2);
-    this.tokenStore.isValid(this.token, function(err, isValid) {
+    this.tokenStore.isValid(this.token.val, function(err, isValid) {
 
         test.ok(!err, "Does not return an error");
         test.ok(isValid, "Confirms validity");
@@ -62,7 +62,7 @@ testModules.isValid.member = function(test) {
 testModules.isValid.nonmember = function(test) {
 
     // Create an invalid token based on the runtime-generated token
-    var invalidToken = this.token + "differentiator";
+    var invalidToken = this.token.val + "differentiator";
 
     test.expect(2);
 
@@ -78,11 +78,11 @@ testModules.isValid.expiring = function(test) {
 
     test.expect(4);
 
-    this.tokenStore.isValid(this.shortToken, function(err, isValid) {
+    this.tokenStore.isValid(this.shortToken.val, function(err, isValid) {
         test.ok(!err, "Does not return an error");
         test.ok(isValid, "Confirms validity");
         setTimeout(function() {
-            self.tokenStore.isValid(self.shortToken, function(err, isValid) {
+            self.tokenStore.isValid(self.shortToken.val, function(err, isValid) {
                 test.ok(!err, "Does not return an error");
                 test.ok(!isValid, "Confirms invalidity");
                 test.done();
@@ -94,20 +94,19 @@ testModules.isValid.expiring = function(test) {
 testModules.getValid = {
     setUp: function(callback) {
         var self = this;
-        this.metaData = [
-            { m: 23 },
-            { j: 45 }
-        ];
+        this.metaData = [];
 
-        this.tokenStore.create(this.metaData[0], function(err, token) {
+        this.tokenStore.create({ m: 23 }, function(err, token) {
 
-            self.tokenStore.create(self.metaData[1], function(err, token) {
+            self.metaData.push(token);
+            self.tokenStore.create({ j: 45 }, function(err, token) {
+                self.metaData.push(token);
                 self.metaData.sort(self.metaDataSorter);
                 callback();
             });
         });
         this.metaDataSorter = function(a, b) {
-            return a.expires > b.expires;
+            return a.val > b.val;
         };
     }
 };
@@ -146,13 +145,13 @@ testModules.invalidate = {
 testModules.invalidate.valid = function(test) {
     var self = this;
     test.expect(5);
-    this.tokenStore.isValid(this.token, function(err, isValid) {
+    this.tokenStore.isValid(this.token.val, function(err, isValid) {
         test.ok(!err, "Does not return an error");
         test.ok(isValid, "Token is initially valid");
-        self.tokenStore.invalidate(self.token, function(err) {
+        self.tokenStore.invalidate(self.token.val, function(err) {
 
             test.ok(!err, "Does not return an error");
-            self.tokenStore.isValid(self.token, function(err, isValid) {
+            self.tokenStore.isValid(self.token.val, function(err, isValid) {
                 test.ok(!err, "Does not return an error");
                 test.ok(!isValid, "Token has been successfully invalidated");
                 test.done();
@@ -163,7 +162,7 @@ testModules.invalidate.valid = function(test) {
 testModules.invalidate.invalid = function(test) {
     var self = this;
     // Create an invalid token based on the runtime-generated token
-    var invalidToken = this.token + "differentiator";
+    var invalidToken = this.token.val + "differentiator";
 
     test.expect(5);
     this.tokenStore.isValid(invalidToken, function(err, isValid) {

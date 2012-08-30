@@ -55,7 +55,7 @@ TokenStore.prototype.create = function(metaData, callback) {
     operations.zadd("tokens:byExpiration", metaData.expires, token);
 
     operations.exec(function(err) {
-        callback(err, token, metaData);
+        callback(err, { val: token, meta: metaData });
     });
 };
 // isValid
@@ -84,12 +84,12 @@ TokenStore.prototype.getValid = function(callback) {
 
             hmgetArgs = hmgetArgs.concat(tokens);
 
-            self._client.hmget(hmgetArgs, function(err, metaDataJSON) {
-                var metaData = metaDataJSON.map(function(json) {
-                    return JSON.parse(json);
+            self._client.hmget(hmgetArgs, function(err, tokenJSON) {
+                var toreturn = tokenJSON && tokenJSON.map(function(json, idx) {
+                    return { val: tokens[idx], meta: JSON.parse(json) };
                 });
 
-                callback(err, metaData);
+                callback(err, toreturn);
             });
         });
 };

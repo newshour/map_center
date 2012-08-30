@@ -57,7 +57,7 @@ app.post("/auth", function(req, res) {
 
     if (req.body.pwd === "password") {
         tokenStore.create(function(err, token) {
-            res.cookie(broadcasterTokenName, token);
+            res.cookie(broadcasterTokenName, token.val);
             res.sendfile("www/logout.html");
         });
     } else {
@@ -195,6 +195,12 @@ app.get("/recordingjson/:recId", function(req, res) {
             res.contentType("application/json");
             res.send(recording);
         });
+});
+
+app.get("/token", function(req, res) {
+    tokenStore.getValid(function(err, tokens) {
+        res.json(tokens);
+    });
 });
 
 app.listen(serviceLocation.portNumber, serviceLocation.hostName);
