@@ -205,6 +205,27 @@ app.get("/token", function(req, res) {
     });
 });
 
+app.del("/token/:tokenValue", function(req, res) {
+    tokenStore.getMeta(req.params.tokenValue, function(err, metaData) {
+
+        tokenStore.invalidate(req.params.tokenValue, function(err) {
+            var socket;
+
+            if (!metaData) {
+                console.log("NO METADATA");
+                return;
+            }
+            socket = io.sockets.sockets[metaData.socketId];
+            if (!socket) {
+                console.log("NO SOCKET");
+                return;
+            }
+
+            socket.disconnect();
+        });
+    });
+});
+
 app.listen(serviceLocation.portNumber, serviceLocation.hostName);
 
 // ----------------------------------------------------------------------------
