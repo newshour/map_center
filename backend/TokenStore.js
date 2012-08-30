@@ -104,6 +104,45 @@ TokenStore.prototype.invalidate = function(token, callback) {
 
     operations.exec(callback);
 };
+// setMeta
+// Set meta data on the specified token, overwriting previously-existing
+// attributes
+TokenStore.prototype.setMeta = function(token, metaDataChanges, callback) {
+    var self = this;
+
+    this._client.hget("tokens:metadata", token, function(err, metaDataJSON) {
+        var currentMetaData = JSON.parse(metaDataJSON);
+        var newMetaData = {};
+        var newMetaDataJSON, attr;
+
+        if (err) {
+            callback(err);
+            return;
+        } else if (!metaDataJSON) {
+            callback("Invalid token specified");
+            return;
+        }
+
+        for (attr in currentMetaData) {
+            newMetaData[attr] = currentMetaData[attr];
+        }
+        for (attr in metaDataChanges) {
+            newMetaData[attr] = metaDataChanges[attr];
+        }
+
+        newMetaDataJSON = JSON.stringify(newMetaData);
+
+        self._client.hset("tokens:metadata", token, newMetaDataJSON, function(err) {
+
+            if (err) {
+                callback(err, { val: token, meta: currentMetaData });
+                return;
+            }
+            callback(null, { val: token, meta: newMetaData });
+        });
+
+    });
+};
 // _purge
 // Private method for curbing the growth of the database by removing expired
 // tokens. This is done for memory efficiency only: the TokenStore safely

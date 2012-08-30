@@ -407,12 +407,16 @@ io.of("/broadcaster").authorization(function(handshakeData, callback) {
     });
 
     tokenStore.isValid(cookies[broadcasterTokenName], function(err, isValid) {
+        handshakeData.token = cookies[broadcasterTokenName];
         callback(err, isValid);
     });
 }).on("connection", function(socket) {
 
-    socket.on("updateMap", function() {
-        var args = Array.prototype.slice.call(arguments);
-        socketEventHandlers.updateMap.apply(socket, args);
+    tokenStore.setMeta(socket.handshake.token, { socketId: socket.id }, function(err, token) {
+
+        socket.on("updateMap", function() {
+            var args = Array.prototype.slice.call(arguments);
+            socketEventHandlers.updateMap.apply(socket, args);
+        });
     });
 });

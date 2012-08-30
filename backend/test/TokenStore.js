@@ -180,4 +180,40 @@ testModules.invalidate.invalid = function(test) {
     });
 };
 
+testModules.setMeta = {
+    setUp: function(callback) {
+        var self = this;
+        this.tokenStore.create({ oldAttr: 33 }, function(err, token) {
+            self.token = token;
+            callback();
+        });
+    }
+};
+testModules.setMeta.set = function(test) {
+    test.expect(3);
+    this.tokenStore.setMeta(this.token.val, { newAttr: 23 }, function(err, token) {
+        test.ok(!err, "Does not return an error");
+        test.equal(token.meta.newAttr, 23, "Correctly sets new meta data");
+        test.equal(token.meta.oldAttr, 33, "Correctly returns unmodified meta data");
+        test.done();
+    });
+};
+testModules.setMeta.reset = function(test) {
+    test.expect(2);
+    this.tokenStore.setMeta(this.token.val, { oldAttr: 42 }, function(err, token) {
+        test.ok(!err, "Does not return an error");
+        test.equal(token.meta.oldAttr, 42, "Correctly re-sets existing meta data");
+        test.done();
+    });
+};
+testModules.setMeta.unknown = function(test) {
+    var invalidToken = this.token.val + "differentiator";
+    test.expect(2);
+    this.tokenStore.setMeta(invalidToken, { j: 45 }, function(err, meta) {
+        test.ok(err, "Returns an error when invalid token is specified");
+        test.ok(!meta, "Does not return any meta data for invalid tokens");
+        test.done();
+    });
+};
+
 module.exports = testModules;
