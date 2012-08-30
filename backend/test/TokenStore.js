@@ -180,6 +180,36 @@ testModules.invalidate.invalid = function(test) {
     });
 };
 
+testModules.getMeta = {
+    setUp: function(callback) {
+        var self = this;
+        this.tokenStore.create({ pris: 24601 }, function(err, token) {
+            self.token = token;
+            callback();
+        });
+    }
+};
+testModules.getMeta.existing = function(test) {
+    test.expect(2);
+
+    this.tokenStore.getMeta(this.token.val, function(err, metaData) {
+        test.ok(!err, "Does not return an error");
+        test.equal(metaData.pris, 24601, "Returns the correct meta data");
+        test.done();
+    });
+};
+testModules.getMeta.nonexisting = function(test) {
+    var invalidToken = this.token.val + "differentiator";
+    test.expect(2);
+
+    this.tokenStore.getMeta(invalidToken, function(err, metaData) {
+        test.ok(!err, "Does not return an error");
+        test.ok(!metaData, "Returns no meta data");
+        test.done();
+    });
+};
+
+
 testModules.setMeta = {
     setUp: function(callback) {
         var self = this;

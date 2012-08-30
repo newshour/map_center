@@ -104,21 +104,27 @@ TokenStore.prototype.invalidate = function(token, callback) {
 
     operations.exec(callback);
 };
+// getMeta
+// Retrieve meta data for the specified token
+TokenStore.prototype.getMeta = function(token, callback) {
+    this._client.hget("tokens:metadata", token, function(err, metaData) {
+        callback(err, JSON.parse(metaData));
+    });
+};
 // setMeta
 // Set meta data on the specified token, overwriting previously-existing
 // attributes
 TokenStore.prototype.setMeta = function(token, metaDataChanges, callback) {
     var self = this;
 
-    this._client.hget("tokens:metadata", token, function(err, metaDataJSON) {
-        var currentMetaData = JSON.parse(metaDataJSON);
+    this.getMeta(token, function(err, currentMetaData) {
         var newMetaData = {};
         var newMetaDataJSON, attr;
 
         if (err) {
             callback(err);
             return;
-        } else if (!metaDataJSON) {
+        } else if (!currentMetaData) {
             callback("Invalid token specified");
             return;
         }
