@@ -22,12 +22,6 @@
                     }
                 });
                 
-                // FIXME: This is just for debugging purposes and probably
-                // should be removed before launch.
-                liveMap.status.on("change", function(event, status) {
-                    console.log(status.href);
-                });
-                
                 var networked = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
                 if (networked) {
                     $('#backend-controls').show();
@@ -104,16 +98,18 @@
         <p id="frame-url"></p>
         <h2>External control</h2>
         <ul id="frame-options">
-            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=unemployment" id="example-1">Example page 1</a></li>
-            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=08general" id="example-2">Example page 2</a></li>
-            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=va&amp;static_maps_type=social_security" id="example-3">Example page 3</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=us_all&amp;static_maps_type=unemployment">Unemployment (U.S.)</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=oh&amp;static_maps_type=unemployment">Unemployment (Ohio)</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=oh&amp;static_maps_type=08general">2008 general election (Ohio)</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=ia&amp;static_maps_type=unemployment">Unemployment (Iowa)</a></li>
+            <li><a href="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=ia&amp;static_maps_type=08general">2008 general election (Iowa)</a></li>
         </ul>
         <div id="backend-controls">
             <h2>Backend connection controls</h2>
             <div id="sidebar"></div>
         </div>
         <h2>Video playback</h2>
-        <script type="text/json" id="live-map-data">[{"timeStamp":6435,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=unemployment"}},{"timeStamp":23530,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=08general"}},{"timeStamp":46891,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=social_security"}},{"timeStamp":54927,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=unemployment"}},{"timeStamp":65139,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=social_security"}},{"timeStamp":76971,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=08general"}},{"timeStamp":91455,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=unemployment"}},{"timeStamp":97191,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=va&static_maps_type=social_security"}}]</script>
-        <div id="live-map-media" data-youtube-url="http://www.youtube.com/watch?v=FQMO6vjmkyI"></div>
+        <script type="application/json" id="live-map-data">[{"timeStamp":2976,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=unemployment"}},{"timeStamp":113908,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=oh&static_maps_type=unemployment"}},{"timeStamp":140619,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=oh&static_maps_type=08general"}},{"timeStamp":162227,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=oh&static_maps_type=unemployment"}},{"timeStamp":176465,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=ia&static_maps_type=unemployment"}}]</script>
+        <div id="live-map-media" data-youtube-url="http://www.youtube.com/watch?v=IkGgUVlXNIk"></div>
     </body>
 </html>

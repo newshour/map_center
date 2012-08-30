@@ -1,15 +1,15 @@
 // Overriding legend break text
 var nhmcStaticBreakFormatter = function(thisBreak, prevBreak, isLastBreak, breakPrefix, breakSuffix, breakDecimals) {
     if (isLastBreak) {
-        return 'Increased ' + breakPrefix + prevBreak.toFixed(0) + '+' + breakSuffix;
+        return 'Increased ' + breakPrefix + prevBreak.toFixed(1) + '+' + breakSuffix;
     } else if (prevBreak != null) {
         if (prevBreak < 0) {
-            return 'Decreased ' + breakPrefix + (-thisBreak).toFixed(0) + '&ndash;' + breakPrefix + (-prevBreak).toFixed(0) + breakSuffix
+            return 'Decreased ' + breakPrefix + (-thisBreak).toFixed(1) + '&ndash;' + breakPrefix + (-prevBreak).toFixed(1) + breakSuffix
         } else {
-            return 'Increased ' + breakPrefix + prevBreak.toFixed(0) + '&ndash;' + breakPrefix + thisBreak.toFixed(0) + breakSuffix;
+            return 'Increased ' + breakPrefix + prevBreak.toFixed(1) + '&ndash;' + breakPrefix + thisBreak.toFixed(1) + breakSuffix;
         }
     } else {
-        return 'Decreased ' + breakPrefix + (-thisBreak).toFixed(0) + '+' + breakSuffix;
+        return 'Decreased ' + breakPrefix + (-thisBreak).toFixed(1) + '+' + breakSuffix;
     }
 };
 var nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, countyOnly, currentData) {
@@ -53,8 +53,8 @@ var nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, count
     return tooltipText.join('');
 };
 var nhmcStatic = {
-    "breaks": [-4, -2, -1, 0, 1, 2, 4, 100],
-    "colors": ["#542788", "#8073ac", "#b2abd2", "#d8daeb", "#fee0b6", "#fdb863", "#e08214", "#b35806"],
+    "breaks": [-2.5, -1.5, -0.5, 0, 0.5, 1.5, 2.5, 100],
+    "colors": ["#4575b4", "#74add1", "#abd9e9", "#e0f3f8", "#fee090", "#fdae61", "#f46d43", "#d73027"],
     "decimalPlaces": 1,
     "seriesName": "Unemployment rate change, January 2009 to January 2012",
     "suffix": " pts",
