@@ -55,8 +55,10 @@ app.get("/auth", function(req, res) {
 
 app.post("/auth", function(req, res) {
 
+    var ip = req.connection.remoteAddress;
+
     if (req.body.pwd === "password") {
-        tokenStore.create(function(err, token) {
+        tokenStore.create({ ip: ip }, function(err, token) {
             res.cookie(broadcasterTokenName, token.val);
             res.sendfile("www/logout.html");
         });
