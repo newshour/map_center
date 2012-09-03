@@ -299,6 +299,7 @@ var socketEventHandlers = {
 };
 var longestEvent = 2*60*60*1000;
 var tickInterval = 2*1000;
+var setState;
 var tick = function() {
 
     var now = +new Date();
@@ -331,7 +332,7 @@ var tick = function() {
     }, findActiveBroadcast);
 };
 
-var setState = function(state, broadcast) {
+setState = function(state, broadcast) {
 
     var bindings = {
         offAir: function() {
