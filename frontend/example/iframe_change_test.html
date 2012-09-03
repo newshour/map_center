@@ -38,14 +38,17 @@
                         }
                     });
                 } else {
-                    var $openLogin = $("<button>Broadcaster Login</button>")
-                        .on("click", function() {
-                            window.open(
-                                "http://localhost:8000/auth?" +
-                                    // Prevent browser caching
-                                    (+new Date()),
-                                "broadcaster-auth", "height=200,width=300");
-                        }).prependTo(document.body);
+                    var $loginOptions = $("<div>")
+                        .addClass("broadcaster-login");
+                    var authServices = ["Twitter", "Google"];
+                    var linkHtml = $.map(authServices, function(authService) {
+                        return "<a href='http://localhost:8000/auth/" +
+                            authService.toLowerCase() + "'>Login with " +
+                            authService + "</a>";
+                    }).join(" | ");
+
+                    $loginOptions.append($(linkHtml)).prependTo(document.body);
+
                     // For broadcasters, send status messages as frame updates
                     $('#live-map-frame').load(function() {
                         try {

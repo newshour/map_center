@@ -1,12 +1,17 @@
+var fs = require("fs");
 var http = require("http");
 var express = require("express");
 var app = express();
 var server = http.createServer(app);
 var io = require("socket.io").listen(server);
+var RedisStore = require("connect-redis")(express);
+var passport = require("passport");
 var _ = require("underscore");
 
+var TwitterStrategy = require("passport-twitter").Strategy;
+var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+
 var BroadcastSchedule = require("./broadcastSchedule");
-var TokenStore = require("./TokenStore");
 
 // Server name and port. Reference environmental variables when they are set,
 // and fall back to sensible defaults.
@@ -15,16 +20,106 @@ var serviceLocation = {
     hostName: process.env.NODE_HOST || "127.0.0.1"
 };
 
+// Credentials, stored in non-version-controlled files
+var CREDS = {
+    oauth: {
+        twitter: require("./credentials/oauth/twitter.json"),
+        google: require("./credentials/oauth/google.json")
+    },
+    ssl: {
+        key: fs.readFileSync("./credentials/ssl/privatekey.pem").toString(),
+        cert: fs.readFileSync("./credentials/ssl/certificate.pem").toString()
+    }
+};
+
 var broadcastSchedule = new BroadcastSchedule();
-var tokenStore = new TokenStore();
-var broadcasterTokenName = "broadcastertoken";
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    // For now, don't bother persisting information about the user. Simply set
+    // a flag so the application can grant access to recognized users.
+    done(null, { id: id });
+});
+function authorize(isRecognized, id, done) {
+    if (isRecognized) {
+        return done(null, { id: id, isRecognized: true });
+    } else {
+        return done("Not recognized");
+    }
+}
+
+passport.use(new TwitterStrategy({
+        consumerKey: CREDS.oauth.twitter.key,
+        consumerSecret: CREDS.oauth.twitter.secret,
+        callbackURL: "http://localhost:8000/auth/twitter/callback"
+    },
+    function(token, tokenSecret, profile, done) {
+
+        var id = profile.username;
+        var isRecognized = CREDS.oauth.twitter.ids.indexOf(id) > -1;
+
+        authorize(isRecognized, id, done);
+
+    }
+));
+passport.use(new GoogleStrategy({
+        clientID: CREDS.oauth.google.key,
+        clientSecret: CREDS.oauth.google.secret,
+        callbackURL: "http://localhost:8000/auth/google/callback"
+    },
+    function(accessToken, refreshToken, profile, done) {
+
+        // profile.emails is an array with the following format:
+        // [ { value: "a@b.com" }, { value: "c@d.com" }, ... ]
+        // So _.pluck out the e-mail addresses themselves.
+        var emailAddresses = _.pluck(profile.emails, "value");
+        var ids = _.intersection(CREDS.oauth.google.ids, emailAddresses);
+        var id = ids[0];
+        var isRecognized = (id !== undefined);
+
+        authorize(isRecognized, id, done);
+    }
+));
+
 
 // ----------------------------------------------------------------------------
 // --[ scheduling control HTTP endpoints ]
 
-app.use(express.bodyParser());
-app.use(express.cookieParser());
-app.use(express.static(__dirname + "/www"));
+// Dynamically generating a secret in this way means one less file will have to
+// be managed outside of the repository. The drawback is that, in the event of
+// a server re-start, all authenticated users will be kicked and need to re-
+// authenticate.
+var sessionSecret = "This is a secret." + Math.random();
+var sioCookieParser = express.cookieParser(sessionSecret);
+var store = new RedisStore();
+
+// Simple Express middleware to redirect unauthorized users to the site index
+var redirectUnauthorized = function(req, res, next) {
+    // Certain pages should be accessible to anyone, namely: the index
+    // (login) page and the authorization pages
+    if (req.path === "/" || /^\/auth\//.test(req.path) ||
+        // All other pages should only be served to users that have
+        // properly authenticated
+        (req.session && req.session.passport && req.session.passport.user)) {
+        next();
+
+    // In any other case, serve the index page
+    } else {
+        next("Unauthorized");
+    }
+};
+
+app.configure(function() {
+    app.use(express.bodyParser());
+    app.use(express.cookieParser());
+    app.use(express.session({ store: store, secret: sessionSecret }));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(express.static(__dirname + "/www"));
+    app.use(redirectUnauthorized);
+});
 
 app.param("recId", function(req, res, next) {
 
@@ -43,32 +138,23 @@ app.param("recId", function(req, res, next) {
     });
 });
 
-app.get("/auth", function(req, res) {
+app.get("/auth/twitter", passport.authenticate("twitter"));
+app.get("/auth/twitter/callback",
+    passport.authenticate("twitter", {
+        successRedirect: "/",
+        failureRedirect: "/"
+    }));
 
-    tokenStore.isValid(req.cookies[broadcasterTokenName], function(err, isValid) {
-
-        if (isValid) {
-            res.sendfile("www/logout.html");
-        } else {
-            res.sendfile("www/login.html");
-        }
-    });
-});
-
-app.post("/auth", function(req, res) {
-
-    var ip = req.connection.remoteAddress;
-
-    if (req.body.pwd === "password") {
-        tokenStore.create({ ip: ip }, function(err, token) {
-            res.cookie(broadcasterTokenName, token.val);
-            res.sendfile("www/logout.html");
-        });
-    } else {
-        res.clearCookie(broadcasterTokenName);
-        res.sendfile("www/login.html");
-    }
-});
+app.get("/auth/google", passport.authenticate("google", {
+    scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email"
+    ]}));
+app.get("/auth/google/callback",
+    passport.authenticate("google", {
+        successRedirect: "/",
+        failureRedirect: "/"
+    }));
 
 app.get("/recording/:recId?", function(req, res) {
 
@@ -199,33 +285,6 @@ app.get("/recordingjson/:recId", function(req, res) {
             res.contentType("application/json");
             res.send(recording);
         });
-});
-
-app.get("/token", function(req, res) {
-    tokenStore.getValid(function(err, tokens) {
-        res.json(tokens);
-    });
-});
-
-app.del("/token/:tokenValue", function(req, res) {
-    tokenStore.getMeta(req.params.tokenValue, function(err, metaData) {
-
-        tokenStore.invalidate(req.params.tokenValue, function(err) {
-            var socket;
-
-            if (!metaData) {
-                console.log("NO METADATA");
-                return;
-            }
-            socket = io.sockets.sockets[metaData.socketId];
-            if (!socket) {
-                console.log("NO SOCKET");
-                return;
-            }
-
-            socket.disconnect();
-        });
-    });
 });
 
 server.listen(serviceLocation.portNumber, serviceLocation.hostName);
@@ -409,37 +468,36 @@ tick();
 io.sockets.on("connection", function(socket) {
     socketEventHandlers.connection.apply(socket, arguments);
 });
+
+// Only clients that have authenticated through OAuth should be allowed to
+// join the "broadcaster" channel. Authentication can be confirmed by locating
+// the client's session ID in the Redis-connect datastore.
 io.of("/broadcaster").authorization(function(handshakeData, callback) {
-    var cookieStr = handshakeData.headers.cookie || "";
-    var cookies = {};
 
-    // Process the cookie string into an object describing the key:value pairs,
-    // i.e.
-    //   "name1=value1; name2=value2; name3"
-    // becomes
-    //   {
-    //     name1: "value1",
-    //     name2: "value2",
-    //     name3: undefined
-    //   }
-    cookieStr.split(";").map(function(cookie) {
-        return cookie.trim();
-    }).forEach(function(cookieTuple) {
-        cookieTuple = cookieTuple.split("=");
-        cookies[cookieTuple[0]] = cookieTuple[1];
-    });
+    // Use the cookie string from the handshake data to construct a request
+    // object for use with the cookieParser middleware.
+    var fakeReq = { headers: { cookie: handshakeData.headers.cookie } };
 
-    tokenStore.isValid(cookies[broadcasterTokenName], function(err, isValid) {
-        handshakeData.token = cookies[broadcasterTokenName];
-        callback(err, isValid);
+    sioCookieParser(fakeReq, {}, function(err) {
+
+        var sessionId = fakeReq.signedCookies["connect.sid"];
+
+        store.get(sessionId, function(err, data) {
+
+            var isAuthorized;
+
+            if (err) {
+                return callback(err);
+            }
+            isAuthorized = !!(data && data.passport && data.passport.user);
+
+            callback(null, isAuthorized);
+        });
     });
 }).on("connection", function(socket) {
 
-    tokenStore.setMeta(socket.handshake.token, { socketId: socket.id }, function(err, token) {
-
-        socket.on("updateMap", function() {
-            var args = Array.prototype.slice.call(arguments);
-            socketEventHandlers.updateMap.apply(socket, args);
-        });
+    socket.on("updateMap", function() {
+        var args = Array.prototype.slice.call(arguments);
+        socketEventHandlers.updateMap.apply(socket, args);
     });
 });
