@@ -1,6 +1,8 @@
+var http = require("http");
 var express = require("express");
-var app = express.createServer();
-var io = require("socket.io").listen(app);
+var app = express();
+var server = http.createServer(app);
+var io = require("socket.io").listen(server);
 var _ = require("underscore");
 
 var BroadcastSchedule = require("./broadcastSchedule");
@@ -226,7 +228,7 @@ app.del("/token/:tokenValue", function(req, res) {
     });
 });
 
-app.listen(serviceLocation.portNumber, serviceLocation.hostName);
+server.listen(serviceLocation.portNumber, serviceLocation.hostName);
 
 // ----------------------------------------------------------------------------
 // --[ broadcast state management ]
