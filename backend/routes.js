@@ -1,4 +1,5 @@
 var _ = require("underscore");
+var auth = require("./auth");
 
 var broadcastSchedule;
 
@@ -7,6 +8,12 @@ exports.initialize = function(newBroadcastSchedule) {
 };
 
 exports.attach = function(app) {
+
+    // Set up endpoints for any OAuth routes declared in auth.js
+    _.forEach(auth.getRouteHandlers(), function(handlers) {
+        app.get("/auth/" + handlers.serviceName, handlers.request);
+        app.get("/auth/" + handlers.serviceName + "/callback", handlers.callback);
+    });
 
     app.param("recId", function(req, res, next) {
 

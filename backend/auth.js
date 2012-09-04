@@ -37,6 +37,32 @@ var redirectUnauthorized = function(req, res, next) {
     }
 };
 
+// routeHandlers
+// These handlers are necessary for the OAuth protocol. They must be exposed on
+// an HTTP route before they may be utilized.
+var routeHandlers = [
+    {
+        serviceName: "twitter",
+        request: passport.authenticate("twitter"),
+        callback: passport.authenticate("twitter", {
+            successRedirect: "/",
+            failureRedirect: "/"
+        })
+    },
+    {
+        serviceName: "google",
+        request: passport.authenticate("google", {
+            scope: [
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email"
+            ]}),
+        callback: passport.authenticate("google", {
+            successRedirect: "/",
+            failureRedirect: "/"
+        })
+    }
+];
+
 exports.initialize = function(CREDS) {
     function authorize(isRecognized, id, done) {
         if (isRecognized) {
@@ -86,25 +112,11 @@ exports.initializeApp = function(app) {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(redirectUnauthorized);
+};
 
-    app.get("/auth/twitter", passport.authenticate("twitter"));
-    app.get("/auth/twitter/callback",
-        passport.authenticate("twitter", {
-            successRedirect: "/",
-            failureRedirect: "/"
-        }));
+exports.getRouteHandlers = function() {
 
-    app.get("/auth/google", passport.authenticate("google", {
-        scope: [
-            "https://www.googleapis.com/auth/userinfo.profile",
-            "https://www.googleapis.com/auth/userinfo.email"
-        ]}));
-    app.get("/auth/google/callback",
-        passport.authenticate("google", {
-            successRedirect: "/",
-            failureRedirect: "/"
-        }));
-
+    return routeHandlers;
 };
 
 exports.checkAuthorization = function(cookie, callback) {
