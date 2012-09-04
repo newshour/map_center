@@ -4,12 +4,7 @@ var express = require("express");
 var app = express();
 var server = http.createServer(app);
 var io = require("socket.io").listen(server);
-var RedisStore = require("connect-redis")(express);
-var passport = require("passport");
 var _ = require("underscore");
-
-var TwitterStrategy = require("passport-twitter").Strategy;
-var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
 var BroadcastSchedule = require("./broadcastSchedule");
 
@@ -34,91 +29,18 @@ var CREDS = {
 
 var broadcastSchedule = new BroadcastSchedule();
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-passport.deserializeUser(function(id, done) {
-    // For now, don't bother persisting information about the user. Simply set
-    // a flag so the application can grant access to recognized users.
-    done(null, { id: id });
-});
-function authorize(isRecognized, id, done) {
-    if (isRecognized) {
-        return done(null, { id: id, isRecognized: true });
-    } else {
-        return done("Not recognized");
-    }
-}
-
-passport.use(new TwitterStrategy({
-        consumerKey: CREDS.oauth.twitter.key,
-        consumerSecret: CREDS.oauth.twitter.secret,
-        callbackURL: "http://localhost:8000/auth/twitter/callback"
-    },
-    function(token, tokenSecret, profile, done) {
-
-        var id = profile.username;
-        var isRecognized = CREDS.oauth.twitter.ids.indexOf(id) > -1;
-
-        authorize(isRecognized, id, done);
-
-    }
-));
-passport.use(new GoogleStrategy({
-        clientID: CREDS.oauth.google.key,
-        clientSecret: CREDS.oauth.google.secret,
-        callbackURL: "http://localhost:8000/auth/google/callback"
-    },
-    function(accessToken, refreshToken, profile, done) {
-
-        // profile.emails is an array with the following format:
-        // [ { value: "a@b.com" }, { value: "c@d.com" }, ... ]
-        // So _.pluck out the e-mail addresses themselves.
-        var emailAddresses = _.pluck(profile.emails, "value");
-        var ids = _.intersection(CREDS.oauth.google.ids, emailAddresses);
-        var id = ids[0];
-        var isRecognized = (id !== undefined);
-
-        authorize(isRecognized, id, done);
-    }
-));
-
+var auth = require("./auth");
 
 // ----------------------------------------------------------------------------
 // --[ scheduling control HTTP endpoints ]
 
-// Dynamically generating a secret in this way means one less file will have to
-// be managed outside of the repository. The drawback is that, in the event of
-// a server re-start, all authenticated users will be kicked and need to re-
-// authenticate.
-var sessionSecret = "This is a secret." + Math.random();
-var sioCookieParser = express.cookieParser(sessionSecret);
-var store = new RedisStore();
-
-// Simple Express middleware to redirect unauthorized users to the site index
-var redirectUnauthorized = function(req, res, next) {
-    // Certain pages should be accessible to anyone, namely: the index
-    // (login) page and the authorization pages
-    if (req.path === "/" || /^\/auth\//.test(req.path) ||
-        // All other pages should only be served to users that have
-        // properly authenticated
-        (req.session && req.session.passport && req.session.passport.user)) {
-        next();
-
-    // In any other case, serve the index page
-    } else {
-        next("Unauthorized");
-    }
-};
+auth.initialize(CREDS);
 
 app.configure(function() {
     app.use(express.bodyParser());
-    app.use(express.cookieParser());
-    app.use(express.session({ store: store, secret: sessionSecret }));
-    app.use(passport.initialize());
-    app.use(passport.session());
     app.use(express.static(__dirname + "/www"));
-    app.use(redirectUnauthorized);
+
+    auth.initializeApp(app);
 });
 
 app.param("recId", function(req, res, next) {
@@ -137,24 +59,6 @@ app.param("recId", function(req, res, next) {
         next();
     });
 });
-
-app.get("/auth/twitter", passport.authenticate("twitter"));
-app.get("/auth/twitter/callback",
-    passport.authenticate("twitter", {
-        successRedirect: "/",
-        failureRedirect: "/"
-    }));
-
-app.get("/auth/google", passport.authenticate("google", {
-    scope: [
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email"
-    ]}));
-app.get("/auth/google/callback",
-    passport.authenticate("google", {
-        successRedirect: "/",
-        failureRedirect: "/"
-    }));
 
 app.get("/recording/:recId?", function(req, res) {
 
@@ -475,25 +379,13 @@ io.sockets.on("connection", function(socket) {
 // the client's session ID in the Redis-connect datastore.
 io.of("/broadcaster").authorization(function(handshakeData, callback) {
 
-    // Use the cookie string from the handshake data to construct a request
-    // object for use with the cookieParser middleware.
-    var fakeReq = { headers: { cookie: handshakeData.headers.cookie } };
+    auth.checkAuthorization(handshakeData.headers.cookie, function(err, isAuthorized) {
 
-    sioCookieParser(fakeReq, {}, function(err) {
-
-        var sessionId = fakeReq.signedCookies["connect.sid"];
-
-        store.get(sessionId, function(err, data) {
-
-            var isAuthorized;
-
-            if (err) {
-                return callback(err);
-            }
-            isAuthorized = !!(data && data.passport && data.passport.user);
-
-            callback(null, isAuthorized);
-        });
+        if (err) {
+            callback(err);
+            return;
+        }
+        callback(null, isAuthorized);
     });
 }).on("connection", function(socket) {
 
