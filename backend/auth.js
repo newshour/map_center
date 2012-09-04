@@ -63,7 +63,11 @@ var routeHandlers = [
     }
 ];
 
-exports.initialize = function(CREDS) {
+exports.initialize = function(CREDS, serviceLocation) {
+
+    var baseUrl = "http://" + serviceLocation.hostName +
+        ":" + serviceLocation.portNumber;
+
     function authorize(isRecognized, id, done) {
         if (isRecognized) {
             return done(null, { id: id, isRecognized: true });
@@ -75,7 +79,7 @@ exports.initialize = function(CREDS) {
     passport.use(new TwitterStrategy({
             consumerKey: CREDS.oauth.twitter.key,
             consumerSecret: CREDS.oauth.twitter.secret,
-            callbackURL: "http://localhost:8000/auth/twitter/callback"
+            callbackURL: baseUrl + "/auth/twitter/callback"
         },
         function(token, tokenSecret, profile, done) {
 
@@ -89,7 +93,7 @@ exports.initialize = function(CREDS) {
     passport.use(new GoogleStrategy({
             clientID: CREDS.oauth.google.key,
             clientSecret: CREDS.oauth.google.secret,
-            callbackURL: "http://localhost:8000/auth/google/callback"
+            callbackURL: baseUrl + "/auth/google/callback"
         },
         function(accessToken, refreshToken, profile, done) {
 

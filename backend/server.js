@@ -35,7 +35,7 @@ var routes = require("./routes");
 // ----------------------------------------------------------------------------
 // --[ scheduling control HTTP endpoints ]
 
-auth.initialize(CREDS);
+auth.initialize(CREDS, serviceLocation);
 broadcast.initialize(server, broadcastSchedule);
 routes.initialize(broadcastSchedule);
 
