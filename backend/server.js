@@ -19,10 +19,6 @@ var CREDS = {
     oauth: {
         twitter: require("./credentials/oauth/twitter.json"),
         google: require("./credentials/oauth/google.json")
-    },
-    ssl: {
-        key: fs.readFileSync("./credentials/ssl/privatekey.pem").toString(),
-        cert: fs.readFileSync("./credentials/ssl/certificate.pem").toString()
     }
 };
 
