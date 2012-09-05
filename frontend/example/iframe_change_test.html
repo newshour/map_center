@@ -42,7 +42,7 @@
                         .addClass("broadcaster-login");
                     var authServices = ["Twitter", "Google"];
                     var linkHtml = $.map(authServices, function(authService) {
-                        return "<a href='http://localhost:8000/auth/" +
+                        return "<a href='http://127.0.0.1:8000/auth/" +
                             authService.toLowerCase() + "'>Login with " +
                             authService + "</a>";
                     }).join(" | ");
