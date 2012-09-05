@@ -5,14 +5,12 @@ var RedisStore = require("connect-redis")(express);
 var TwitterStrategy = require("passport-twitter").Strategy;
 var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-passport.deserializeUser(function(id, done) {
-    // For now, don't bother persisting information about the user. Simply set
-    // a flag so the application can grant access to recognized users.
-    done(null, { id: id });
-});
+// Credentials, stored in non-version-controlled files
+var CREDS = {
+    twitter: require("./credentials/oauth/twitter.json"),
+    google: require("./credentials/oauth/google.json")
+};
+
 // Dynamically generating a secret in this way means one less file will have to
 // be managed outside of the repository. The drawback is that, in the event of
 // a server re-start, all authenticated users will be kicked and need to re-
@@ -63,7 +61,16 @@ var routeHandlers = [
     }
 ];
 
-exports.initialize = function(CREDS, serviceLocation) {
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    // For now, don't bother persisting information about the user. Simply set
+    // a flag so the application can grant access to recognized users.
+    done(null, { id: id });
+});
+
+exports.initialize = function(serviceLocation) {
 
     var baseUrl = "http://" + serviceLocation.hostName +
         ":" + serviceLocation.portNumber;
@@ -77,22 +84,22 @@ exports.initialize = function(CREDS, serviceLocation) {
     }
 
     passport.use(new TwitterStrategy({
-            consumerKey: CREDS.oauth.twitter.key,
-            consumerSecret: CREDS.oauth.twitter.secret,
+            consumerKey: CREDS.twitter.key,
+            consumerSecret: CREDS.twitter.secret,
             callbackURL: baseUrl + "/auth/twitter/callback"
         },
         function(token, tokenSecret, profile, done) {
 
             var id = profile.username;
-            var isRecognized = CREDS.oauth.twitter.ids.indexOf(id) > -1;
+            var isRecognized = CREDS.twitter.ids.indexOf(id) > -1;
 
             authorize(isRecognized, id, done);
 
         }
     ));
     passport.use(new GoogleStrategy({
-            clientID: CREDS.oauth.google.key,
-            clientSecret: CREDS.oauth.google.secret,
+            clientID: CREDS.google.key,
+            clientSecret: CREDS.google.secret,
             callbackURL: baseUrl + "/auth/google/callback"
         },
         function(accessToken, refreshToken, profile, done) {
@@ -101,7 +108,7 @@ exports.initialize = function(CREDS, serviceLocation) {
             // [ { value: "a@b.com" }, { value: "c@d.com" }, ... ]
             // So _.pluck out the e-mail addresses themselves.
             var emailAddresses = _.pluck(profile.emails, "value");
-            var ids = _.intersection(CREDS.oauth.google.ids, emailAddresses);
+            var ids = _.intersection(CREDS.google.ids, emailAddresses);
             var id = ids[0];
             var isRecognized = (id !== undefined);
 

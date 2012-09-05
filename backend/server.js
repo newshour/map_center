@@ -14,14 +14,6 @@ var serviceLocation = {
     hostName: process.env.NODE_HOST || "127.0.0.1"
 };
 
-// Credentials, stored in non-version-controlled files
-var CREDS = {
-    oauth: {
-        twitter: require("./credentials/oauth/twitter.json"),
-        google: require("./credentials/oauth/google.json")
-    }
-};
-
 var broadcastSchedule = new BroadcastSchedule();
 
 var auth = require("./auth");
@@ -31,7 +23,7 @@ var routes = require("./routes");
 // ----------------------------------------------------------------------------
 // --[ scheduling control HTTP endpoints ]
 
-auth.initialize(CREDS, serviceLocation);
+auth.initialize(serviceLocation);
 broadcast.initialize(server, broadcastSchedule);
 routes.initialize(broadcastSchedule);
 
