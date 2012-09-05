@@ -7,6 +7,8 @@ exports.initialize = function(newBroadcastSchedule) {
     broadcastSchedule = newBroadcastSchedule;
 };
 
+// attach
+// Declare the routes needed for the web server
 exports.attach = function(app) {
 
     // Set up endpoints for any OAuth routes declared in auth.js

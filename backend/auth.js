@@ -117,7 +117,9 @@ exports.initialize = function(serviceLocation) {
     ));
 };
 
-exports.initializeApp = function(app) {
+// attach
+// Connect the Express middleware necessary for proper authentication
+exports.attach = function(app) {
     app.use(express.cookieParser());
     app.use(express.session({ store: sessionStore, secret: sessionSecret }));
     app.use(passport.initialize());
