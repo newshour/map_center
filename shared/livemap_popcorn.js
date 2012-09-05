@@ -34,17 +34,6 @@
 
         var replayData;
 
-        // Ensure that this instance has a namespace in its data object for the
-        // plugin
-        if (!pop.data.liveMap) {
-            pop.data.liveMap = {};
-        }
-
-        // Ensure that this instance has an array to track cues
-        if (!pop.data.liveMap.cueIDs) {
-            pop.data.liveMap.cueIDs = [];
-        }
-
         if ("replayData" in options) {
             replayData = options.replayData;
         } else if ("element" in options) {
@@ -53,23 +42,26 @@
 
         if (replayData) {
 
-            // Cancel any previously-created cues
-            Popcorn.forEach(pop.data.liveMap.cueIDs, function(cueID) {
-
-                pop.cue(cueID, -1);
-
-            });
-            pop.data.liveMap.cueIDs.length = 0;
-
             Popcorn.forEach(replayData, function(data, idx) {
 
-                var cueID = "liveMapCue" + idx;
+                var endTime;
+                if (replayData[idx+1]) {
+                    endTime = replayData[idx+1].timeStamp / 1000;
+                } else  {
+                    // Popcorn.duration may return 0 or NaN for YouTube videos
+                    // before they have loaded. In this case, use Infinity as a
+                    // stand in value to mimic the desired effect.
+                    endTime = pop.duration() || Infinity;
+                }
 
-                pop.data.liveMap.cueIDs.push(cueID);
-
-                pop.cue(cueID, data.timeStamp/1000);
-                pop.cue(cueID, function() {
-                    pop.emit("updateMap", data.mapState);
+                // The Popcorn.js "code" plugin expects timestamps to be in
+                // units of seconds.
+                pop.code({
+                    start: data.timeStamp / 1000,
+                    end: endTime,
+                    onStart: function() {
+                        pop.emit("updateMap", data.mapState);
+                    }
                 });
             });
         }
