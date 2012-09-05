@@ -1,10 +1,7 @@
-var fs = require("fs");
 var http = require("http");
 var express = require("express");
-var app = express();
-var server = http.createServer(app);
-var _ = require("underscore");
 
+var app = express();
 var BroadcastSchedule = require("./broadcastSchedule");
 
 // Server name and port. Reference environmental variables when they are set,
@@ -14,17 +11,15 @@ var serviceLocation = {
     hostName: process.env.NODE_HOST || "127.0.0.1"
 };
 
+var httpServer = http.createServer(app);
 var broadcastSchedule = new BroadcastSchedule();
 
 var auth = require("./auth");
 var broadcast = require("./broadcast");
 var routes = require("./routes");
 
-// ----------------------------------------------------------------------------
-// --[ scheduling control HTTP endpoints ]
-
 auth.initialize(serviceLocation);
-broadcast.initialize(server, broadcastSchedule);
+broadcast.initialize(httpServer, broadcastSchedule);
 routes.initialize(broadcastSchedule);
 
 app.configure(function() {
@@ -35,4 +30,4 @@ app.configure(function() {
     routes.attach(app);
 });
 
-server.listen(serviceLocation.portNumber, serviceLocation.hostName);
+httpServer.listen(serviceLocation.portNumber, serviceLocation.hostName);
