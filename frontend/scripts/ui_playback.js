@@ -3,9 +3,7 @@
     // Dependencies
     var Popcorn = window.Popcorn;
     var $ = window.jQuery;
-
-    var liveMap = window.liveMap || {};
-    window.liveMap = liveMap;
+    var liveMap = window.liveMap;
 
     // By hard-coding these selectors, new playback pages can be created
     // without additional scripting. These pages simply need to contain
