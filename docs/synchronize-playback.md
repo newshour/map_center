@@ -27,8 +27,10 @@ already been created:
   Select "Download" and save the modified JSON data locally.
 5. **Create the HTML document**  
   This document should include (at a minimum) the following assets:
-  1. A media element with the ID of `live-map-media`. For example:  
-    `<video id="live-map-media" src="path/to/the/video.webm"></video>`
+  1. A container element with the ID of `live-map-media` and a
+    `data-youtube-url` attribute set to the URL for the YouTube video to show.
+    For example:  
+    `<div id="live-map-media" data-youtube-url="http://www.youtube.com/watch?v=IkGgUVlXNIk"></div>`
   2. A `script` element with the ID of `live-map-data` that contains the JSON
      downloaded in step #4. It should also declare the following attribute:
      `type="text/json"` to ensure that the browser does not parse/render its
