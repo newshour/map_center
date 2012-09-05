@@ -2,7 +2,7 @@ var http = require("http");
 var express = require("express");
 
 var app = express();
-var BroadcastSchedule = require("./broadcastSchedule");
+var BroadcastSchedule = require("./BroadcastSchedule");
 
 // Server name and port. Reference environmental variables when they are set,
 // and fall back to sensible defaults.
