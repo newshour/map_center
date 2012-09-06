@@ -2,7 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="styles/reset.css"></link>
-        <link rel="stylesheet" type="text/css" href="styles/style.css"></link>
+        <link rel="stylesheet" type="text/css" href="styles/admin.css"></link>
         <script src="/socket.io/socket.io.js"></script>
         <script data-main="scripts/main-config" src="scripts/require.js"></script>
     </head>
@@ -12,6 +12,10 @@
             <h2 class="section-title">Map Status (live stream)</h2>
             <ul class="status">
             </ul>
+        </div>
+        <div class="broadcaster-login">
+            <a href="/auth/twitter">Log in with Twitter</a> |
+            <a href="/auth/google">Log in with Google</a>
         </div>
     </body>
 </html>

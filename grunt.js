@@ -11,8 +11,11 @@ module.exports = function(grunt) {
         "* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author %>; */"
     },
     lint: {
-      files: [
+      server: [
         "grunt.js",
+        "backend/*.js"
+      ],
+      client: [
         "backend/www/scripts/app.js",
         "backend/www/scripts/modules/*.js",
         "shared/*.js"
@@ -29,6 +32,9 @@ module.exports = function(grunt) {
           "backend/www/scripts/jst.js": "backend/templates/*.html"
         }
       }
+    },
+    qunit: {
+      all: ["frontend/test/index.html"]
     },
     test: {
         "backend": ["backend/test/*.js"]
@@ -101,23 +107,41 @@ module.exports = function(grunt) {
       tasks: "lint"
     },
     jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        browser: true
+      server: {
+        options: {
+          curly: true,
+          eqeqeq: true,
+          immed: true,
+          latedef: true,
+          newcap: true,
+          noarg: true,
+          sub: true,
+          undef: true,
+          boss: true,
+          eqnull: true,
+          node: true,
+          es5: true
+        }
       },
-      globals: {
-        console: true,
-        require: true,
-        define: true
+      client: {
+        options: {
+          curly: true,
+          eqeqeq: true,
+          immed: true,
+          latedef: true,
+          newcap: true,
+          noarg: true,
+          sub: true,
+          undef: true,
+          boss: true,
+          eqnull: true,
+          browser: true
+        },
+        globals: {
+          console: true,
+          require: true,
+          define: true
+        }
       }
     },
     uglify: {}
