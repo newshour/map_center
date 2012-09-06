@@ -8,14 +8,38 @@ var auth = require("./auth");
 var socketServer;
 var broadcastSchedule;
 
-var noop = function() {};
+var noop = module.exports.noop = function() {};
 var socketEventHandlers = {
     updateMap: noop,
     connection: noop
 };
 var longestEvent = 2*60*60*1000;
 var tickInterval = 2*1000;
-var setState;
+
+var handlerGenerators;
+
+// Set handlers for relevant socket events:
+// - connection (from all new clients)
+// - updateMap (from authenticated broadcaster)
+var setHandlers = function(state, broadcast, callback) {
+
+    if (state in handlerGenerators) {
+        handlerGenerators[state](broadcast, function(err, handlers) {
+            if (err) {
+                callback(err);
+                return;
+            }
+            socketEventHandlers.connection = handlers.onConnection;
+            socketEventHandlers.updateMap = handlers.onUpdateMap;
+            callback();
+        });
+    } else {
+        setTimeout(function() {
+            callback("Unrecognized state");
+        }, 0);
+    }
+};
+
 var tick = function() {
 
     var now = +new Date();
@@ -30,13 +54,15 @@ var tick = function() {
 
 
         if (!activeBroadcast) {
-            setState("offAir");
-            setTimeout(tick, tickInterval);
-            return;
-        }
+            setHandlers("offAir", null, function(err) {
+                setTimeout(tick, tickInterval);
+            });
+        } else {
 
-        setState(activeBroadcast.type, activeBroadcast);
-        setTimeout(tick, activeBroadcast.duration);
+            setHandlers(activeBroadcast.type, activeBroadcast, function(err) {
+                setTimeout(tick, activeBroadcast.duration);
+            });
+        }
     };
 
     broadcastSchedule.getByTime({
@@ -48,122 +74,129 @@ var tick = function() {
     }, findActiveBroadcast);
 };
 
-setState = function(state, broadcast) {
+// handlerGenerators
+// Create socket event handlers for the provided state and broadcast. Valid
+// states:
+// - offAir
+// - recording
+// - replay
+handlerGenerators = exports.handlerGenerators = {
+    offAir: function(_, callback) {
+        setTimeout(function() {
+            callback(null, {
+                onUpdateMap: noop,
+                onConnection: noop
+            });
+        }, 0);
+    },
+    recording: function(broadcast, callback) {
+        var currentMapState;
 
-    var bindings = {
-        offAir: function() {
-            socketEventHandlers.updateMap = noop;
-            socketEventHandlers.connection = noop;
-        },
-        recording: function(broadcast) {
+        var handleUpdateMap = function(mapState) {
+            var changeEvent;
+            // Update the "current" map state to be sent to newly-connected
+            // clients
+            currentMapState = mapState;
 
-            var currentMapState;
+            socketServer.sockets.emit("updateMap", mapState);
 
-            var handleUpdateMap = function(mapState) {
-                var changeEvent;
-                // Update the "current" map state to be sent to newly-connected
-                // clients
-                currentMapState = mapState;
-
-                socketServer.sockets.emit("updateMap", mapState);
-
-                changeEvent = {
-                    // Map event timestamps are relative to the start of the
-                    // recording event
-                    timeStamp: +new Date() - broadcast.timeStamp,
-                    mapState: mapState
-                };
-
-                broadcastSchedule.addRecordingEvent(broadcast.id, changeEvent);
+            changeEvent = {
+                // Map event timestamps are relative to the start of the
+                // recording event
+                timeStamp: +new Date() - broadcast.timeStamp,
+                mapState: mapState
             };
-            var handleConnection = function(socket) {
-                if (currentMapState) {
-                    socket.emit("updateMap", currentMapState);
-                }
-            };
-            socketEventHandlers.updateMap = handleUpdateMap;
-            socketEventHandlers.connection = handleConnection;
-        },
-        replay: function(broadcast) {
 
-            broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
+            broadcastSchedule.addRecordingEvent(broadcast.id, changeEvent);
+        };
+        var handleConnection = function(socket) {
+            if (currentMapState) {
+                socket.emit("updateMap", currentMapState);
+            }
+        };
+        setTimeout(function() {
+            callback(null, {
+                onUpdateMap: handleUpdateMap,
+                onConnection: handleConnection
+            });
+        }, 0);
+    },
+    replay: function(broadcast, callback) {
 
-                // The following logic has been commented out in favor of an
-                // alternate approach to broadcasting replays. This code
-                // simulates change events and re-broadcasts them in real-time
-                // to all connected clients. This means that the backend will
-                // have to bear the same load under live broadcasts and replays
-                // alike. The new approach (described below) avoids this, but
-                // this optimization may not be necessary, in which case the
-                // original approach is preferable for its simplicity.
-                //
-                // Due to possible delays in database requests (and the
-                // imprecise nature of the event loop), the current time may
-                // differ from the scheduled time. Calculate this difference
-                // so map change events can be scheduled accordingly.
-                /*var timeDelta = +new Date() - broadcast.timeStamp;
+        broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
 
-                _.forEach(recording, function(changeEvent) {
-                    setTimeout(function() {
-                        socketServer.sockets.emit("updateMap", changeEvent.mapState);
-                    }, changeEvent.timeStamp - timeDelta);
-                });
+            // The following logic has been commented out in favor of an
+            // alternate approach to broadcasting replays. This code
+            // simulates change events and re-broadcasts them in real-time
+            // to all connected clients. This means that the backend will
+            // have to bear the same load under live broadcasts and replays
+            // alike. The new approach (described below) avoids this, but
+            // this optimization may not be necessary, in which case the
+            // original approach is preferable for its simplicity.
+            //
+            // Due to possible delays in database requests (and the
+            // imprecise nature of the event loop), the current time may
+            // differ from the scheduled time. Calculate this difference
+            // so map change events can be scheduled accordingly.
+            /*var timeDelta = +new Date() - broadcast.timeStamp;
 
-                socketEventHandlers.connection = noop;
-                socketEventHandlers.updateMap = noop;
-                */
-
-                // Retrieve any other replays of the current recording so that
-                // clients can mimick re-broadcasting without needing to
-                // refresh (especially relevant for clients who connect at the
-                // end of one rebroadcast expecting to view the following
-                // rebroadcast)
-                broadcastSchedule.getReplaysByRecordingID(
-                    broadcast.recordingID,
-                    function(err, allReplays) {
-
-                        var now = +new Date();
-                        var upcomingReplays = _.filter(allReplays, function(replay) {
-                            return replay.timeStamp >= now ||
-                                // Due to delays caused by the program event loop
-                                // and database queries, the active replay's start
-                                // time may be slightly earlier than the current
-                                // time. This condition ensures that in such cases,
-                                // the active replay is broadcast to all clients.
-                                replay.id === broadcast.id;
-                        });
-
-                        var emitReplay = function(socket) {
-                            socket.emit("replay", {
-                                currentTime: +new Date(),
-                                startTimes: _.pluck(upcomingReplays, "timeStamp"),
-                                recording: recording
-                            });
-                        };
-                        var handleConnection = function(socket) {
-                            emitReplay(socket);
-                            // Clients that connect during a rebroadcast can be
-                            // disconnected in order to minimize overhead
-                            socket.disconnect();
-                        };
-
-                        // Immediately emit the replay event to any
-                        // already-connected clients in order to support clients
-                        // that connected at the end of a broadcast expecting to
-                        // view the re-broadcast
-                        emitReplay(socketServer.sockets);
-
-                        socketEventHandlers.connection = handleConnection;
-                        socketEventHandlers.updateMap = noop;
-
-                    });
+            _.forEach(recording, function(changeEvent) {
+                setTimeout(function() {
+                    socketServer.sockets.emit("updateMap", changeEvent.mapState);
+                }, changeEvent.timeStamp - timeDelta);
             });
 
-        }
-    };
+            socketEventHandlers.connection = noop;
+            socketEventHandlers.updateMap = noop;
+            */
 
-    if (state in bindings) {
-        bindings[state](broadcast);
+            // Retrieve any other replays of the current recording so that
+            // clients can mimick re-broadcasting without needing to
+            // refresh (especially relevant for clients who connect at the
+            // end of one rebroadcast expecting to view the following
+            // rebroadcast)
+            broadcastSchedule.getReplaysByRecordingID(
+                broadcast.recordingID,
+                function(err, allReplays) {
+
+                    var now = +new Date();
+                    var upcomingReplays = _.filter(allReplays, function(replay) {
+                        return replay.timeStamp >= now ||
+                            // Due to delays caused by the program event loop
+                            // and database queries, the active replay's start
+                            // time may be slightly earlier than the current
+                            // time. This condition ensures that in such cases,
+                            // the active replay is broadcast to all clients.
+                            replay.id === broadcast.id;
+                    });
+
+                    var emitReplay = function(socket) {
+                        socket.emit("replay", {
+                            currentTime: +new Date(),
+                            startTimes: _.pluck(upcomingReplays, "timeStamp"),
+                            recording: recording
+                        });
+                    };
+                    var handleConnection = function(socket) {
+                        emitReplay(socket);
+                        // Clients that connect during a rebroadcast can be
+                        // disconnected in order to minimize overhead
+                        socket.disconnect();
+                    };
+
+                    // Immediately emit the replay event to any
+                    // already-connected clients in order to support clients
+                    // that connected at the end of a broadcast expecting to
+                    // view the re-broadcast
+                    emitReplay(socketServer.sockets);
+
+                    callback(null, {
+                        onConnection: handleConnection,
+                        onUpdateMap: noop
+                    });
+
+                });
+        });
     }
 };
 
