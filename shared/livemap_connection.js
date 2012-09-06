@@ -2,78 +2,43 @@
 
     // Dependencies
     var io = window.io;
-    var $ = window.jQuery;
     var liveMap = window.liveMap || {};
     window.liveMap = liveMap;
-    var connection = liveMap.connection = {};
 
-    var eventBus = $("<div>");
-    var connectionRequested = false;
-    var socket = new io.Socket({
-        host: "localhost",
+    var defaultOptions = {
+        // TODO: Define endpoint location at build time
+        host: "127.0.0.1",
         port: 8000,
         // The connection status will be managed elsewhere. This allows the
         // script to be included without necessarily incurring the network
         // overhead of establishing a connection.
-        "auto connect": connectionRequested
-    });
-    // Default socket namespace
-    var socketNs = socket.of("");
-
-    // Forward the following socket.io events for use by the UI. These events
-    // are detailed in the description of the "on" method below
-    $.each(["replay", "updateMap", "connect", "connecting", "disconnect",
-        "connect_failed", "error",
-        "reconnect", "reconnecting", "reconnect_failed"],
-        function(idx, eventName) {
-            socketNs.on(eventName, function() {
-                eventBus.trigger.apply(eventBus,
-                    [eventName].concat(Array.prototype.slice.call(arguments)));
-            });
-        });
-
-    // _broadcastChange
-    // Private method for setting map change events to the server
-    connection._broadcastChange = function(mapState) {
-
-        if (!socket.connected) {
-            return;
-        }
-
-        socketNs.emit("updateMap", mapState);
+        "auto connect": false
+    };
+    var namespaces = {
+        dflt: "",
+        broadcaster: "/broadcaster"
     };
 
-    /* init
-     * Initiate a connection to the backend service
-     */
-    connection.init = function(options) {
+    var Connection = liveMap.Connection = function(userOptions) {
+        var options = {};
 
-        if (!connectionRequested) {
+        io.util.merge(options, defaultOptions);
+        io.util.merge(options, userOptions);
 
-            socket.connect();
-            connectionRequested = true;
-        }
+        this._socket = new io.Socket(options);
     };
-
-    /* startBroadcast
-     * Emit map status changes to the backend
-     */
-    connection.startBroadcast = function() {
-        liveMap.status.on("change.broadcast", function(event, mapStatus) {
-
-            connection._broadcastChange({
-                href: mapStatus.href
-            });
-        });
+    Connection.prototype.connect = function() {
+        var self = this;
+        this._socket.connect();
+        // Any further attempts to connect should use socket.io's "reconnect"
+        // method
+        this.connect = function() {
+            self._socket.reconnect();
+        };
     };
-
-    /* stopBroadcast
-     * Prevent map status changes from being emitted to the backend
-     */
-    connection.stopBroadcast = function() {
-        liveMap.status.off("change.broadcast");
+    Connection.prototype._on = function(namespace, msgType, handler) {
+        this._socket.of(namespace).on(msgType, handler);
     };
-
     /* on
      * Subscribe to connect-related events.
      * Arguments:
@@ -96,7 +61,24 @@
      *  - "reconnecting" - emitted when the socket is attempting to reconnect
      *     with the server
      */
-    connection.on = $.proxy(eventBus.bind, eventBus);
+    Connection.prototype.on = function(msgType, handler) {
+        this._on(namespaces.dflt, msgType, handler);
+    };
+    /* onBroadcaster
+     * Subscribe to broadcaster-related events. Most notable, this includes the
+     * "connect_failed" event, which will be fired with a message of
+     * "unauthorized" when the client fails to authorize as a broadcaster
+     */
+    Connection.prototype.onBroadcaster = function(msgType, handler) {
+        this._on(namespaces.broadcaster, msgType, handler);
+    };
+    Connection.prototype._off = function(namespace, msgType, handler) {
+        if (handler) {
+            this._socket.of(namespace).removeListener(msgType, handler);
+        } else {
+            this._socket.of(namespace).removeAllListeners(msgType);
+        }
+    };
     /* off
      * Unsubscribe from connection-related events
      * Arguments:
@@ -107,6 +89,15 @@
      * Event types:
      *   - (see listing in "on")
      */
-    connection.off = $.proxy(eventBus.unbind, eventBus);
+    Connection.prototype.off = function(msgType, handler) {
+        this._off(namespaces.dflt, msgType, handler);
+    };
+    Connection.prototype.offBroadcaster = function(msgType, handler) {
+        this._off(namespaces.broadcaster, msgType, handler);
+    };
+    // Only emit in the broadcaster namespace
+    Connection.prototype.emit = function(msgType, msg) {
+        this._socket.of(namespaces.broadcaster).emit(msgType, msg);
+    };
 
 }(this));
