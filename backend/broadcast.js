@@ -121,24 +121,22 @@ handlerGenerators = exports.handlerGenerators = {
             });
         }, 0);
     },
-    replay: function(broadcast, callback) {
+    // The following implementation of replay broadcast is no longer supported.
+    // This code simulates change events and re-broadcasts them in real-time to
+    // all connected clients.  This means that the backend will have to bear
+    // the same load under live broadcasts and replays alike. The new approach
+    // (described below) avoids this, but this optimization may not be
+    // necessary, in which case the original approach should be re-implemented
+    // due to its simplicity.
+    __replay: function(broadcast, callback) {
 
         broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
 
-            // The following logic has been commented out in favor of an
-            // alternate approach to broadcasting replays. This code
-            // simulates change events and re-broadcasts them in real-time
-            // to all connected clients. This means that the backend will
-            // have to bear the same load under live broadcasts and replays
-            // alike. The new approach (described below) avoids this, but
-            // this optimization may not be necessary, in which case the
-            // original approach is preferable for its simplicity.
-            //
-            // Due to possible delays in database requests (and the
-            // imprecise nature of the event loop), the current time may
-            // differ from the scheduled time. Calculate this difference
-            // so map change events can be scheduled accordingly.
-            /*var timeDelta = +new Date() - broadcast.timeStamp;
+            // Due to possible delays in database requests (and the imprecise
+            // nature of the event loop), the current time may differ from the
+            // scheduled time. Calculate this difference so map change events can
+            // be scheduled accordingly.
+            var timeDelta = +new Date() - broadcast.timeStamp;
 
             _.forEach(recording, function(changeEvent) {
                 setTimeout(function() {
@@ -146,9 +144,15 @@ handlerGenerators = exports.handlerGenerators = {
                 }, changeEvent.timeStamp - timeDelta);
             });
 
-            socketEventHandlers.connection = noop;
-            socketEventHandlers.updateMap = noop;
-            */
+            callback(null, {
+                onUpdateMap: noop,
+                onConnection: noop
+            });
+        });
+    },
+    replay: function(broadcast, callback) {
+
+        broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
 
             // Retrieve any other replays of the current recording so that
             // clients can mimick re-broadcasting without needing to
