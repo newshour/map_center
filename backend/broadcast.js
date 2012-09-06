@@ -8,7 +8,7 @@ var auth = require("./auth");
 var socketServer;
 var broadcastSchedule;
 
-var noop = module.exports.noop = function() {};
+var noop = function() {};
 var socketEventHandlers = {
     updateMap: noop,
     connection: noop
@@ -29,8 +29,17 @@ var setHandlers = function(state, broadcast, callback) {
                 callback(err);
                 return;
             }
+            if (handlers.onConnection === null) {
+                handlers.onConnection = noop;
+            }
+
+            if (handlers.onUpdateMap === null) {
+                handlers.onUpdateMap = noop;
+            }
+
             socketEventHandlers.connection = handlers.onConnection;
             socketEventHandlers.updateMap = handlers.onUpdateMap;
+
             callback();
         });
     } else {
@@ -84,8 +93,8 @@ handlerGenerators = exports.handlerGenerators = {
     offAir: function(_, callback) {
         setTimeout(function() {
             callback(null, {
-                onUpdateMap: noop,
-                onConnection: noop
+                onUpdateMap: null,
+                onConnection: null
             });
         }, 0);
     },
@@ -145,8 +154,8 @@ handlerGenerators = exports.handlerGenerators = {
             });
 
             callback(null, {
-                onUpdateMap: noop,
-                onConnection: noop
+                onUpdateMap: null,
+                onConnection: null
             });
         });
     },
@@ -196,7 +205,7 @@ handlerGenerators = exports.handlerGenerators = {
 
                     callback(null, {
                         onConnection: handleConnection,
-                        onUpdateMap: noop
+                        onUpdateMap: null
                     });
 
                 });

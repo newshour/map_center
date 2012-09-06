@@ -47,44 +47,38 @@ testModules.generateHandlers.offAir = function(test) {
     broadcast.handlerGenerators.offAir(null, function(err, handlers) {
 
         test.ok(!err, "Does not return an error.");
-        test.equal(broadcast.noop, handlers.onConnection,
-            "Returns a noop for the onConnection handler");
-        test.equal(broadcast.noop, handlers.onUpdateMap,
-            "Returns a noop for the onUpdateMap handler");
+        test.equal(null, handlers.onConnection,
+            "Returns null in place of the onConnection handler");
+        test.equal(null, handlers.onUpdateMap,
+            "Returns null in place of the onUpdateMap handler");
         test.done();
     });
 };
 
 testModules.generateHandlers.replay = function(test) {
 
-    test.expect(4);
+    test.expect(3);
 
     broadcast.handlerGenerators.replay(this.replayEvent, function(err, handlers) {
 
         test.ok(!err, "Does not return an error.");
-        test.notEqual(broadcast.noop, handlers.onConnection,
-            "Does not return a noop for the onConnection handler");
         test.equal("function", typeof handlers.onConnection,
             "Returns a function for the onConnection handler");
-        test.equal(broadcast.noop, handlers.onUpdateMap,
-            "Returns a noop for the onUpdateMap handler");
+        test.equal(null, handlers.onUpdateMap,
+            "Returns null in place of the onUpdateMap handler");
         test.done();
     });
 };
 
 testModules.generateHandlers.recording = function(test) {
 
-    test.expect(5);
+    test.expect(3);
 
     broadcast.handlerGenerators.recording(this.recordingEvent, function(err, handlers) {
 
         test.ok(!err, "Does not return an error.");
-        test.notEqual(broadcast.noop, handlers.onConnection,
-            "Does not return a noop for the onConnection handler");
         test.equal("function", typeof handlers.onConnection,
             "Returns a function for the onConnection handler");
-        test.notEqual(broadcast.noop, handlers.onUpdateMap,
-            "Does not return a noop for the onUpdateMap handler");
         test.equal("function", typeof handlers.onUpdateMap,
             "Returns a function for the onUpdateMap handler");
         test.done();
