@@ -141,11 +141,18 @@ handlerGenerators = exports.handlerGenerators = {
 
         broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
 
+            var timeDelta;
+
+            if (err) {
+                callback(err);
+                return;
+            }
+
             // Due to possible delays in database requests (and the imprecise
             // nature of the event loop), the current time may differ from the
             // scheduled time. Calculate this difference so map change events can
             // be scheduled accordingly.
-            var timeDelta = +new Date() - broadcast.timeStamp;
+            timeDelta = +new Date() - broadcast.timeStamp;
 
             _.forEach(recording, function(changeEvent) {
                 setTimeout(function() {
@@ -163,6 +170,11 @@ handlerGenerators = exports.handlerGenerators = {
 
         broadcastSchedule.getRecordingEvent(broadcast.recordingID, {}, function(err, recording) {
 
+            if (err) {
+                callback(err);
+                return;
+            }
+
             // Retrieve any other replays of the current recording so that
             // clients can mimick re-broadcasting without needing to
             // refresh (especially relevant for clients who connect at the
@@ -172,8 +184,16 @@ handlerGenerators = exports.handlerGenerators = {
                 broadcast.recordingID,
                 function(err, allReplays) {
 
-                    var now = +new Date();
-                    var upcomingReplays = _.filter(allReplays, function(replay) {
+                    var now, upcomingReplays, emitReplay, handleConnection;
+
+
+                    if (err) {
+                        callback(err);
+                        return;
+                    }
+
+                    now = +new Date();
+                    upcomingReplays = _.filter(allReplays, function(replay) {
                         return replay.timeStamp >= now ||
                             // Due to delays caused by the program event loop
                             // and database queries, the active replay's start
@@ -183,14 +203,14 @@ handlerGenerators = exports.handlerGenerators = {
                             replay.id === broadcast.id;
                     });
 
-                    var emitReplay = function(socket) {
+                    emitReplay = function(socket) {
                         socket.emit("replay", {
                             currentTime: +new Date(),
                             startTimes: _.pluck(upcomingReplays, "timeStamp"),
                             recording: recording
                         });
                     };
-                    var handleConnection = function(socket) {
+                    handleConnection = function(socket) {
                         emitReplay(socket);
                         // Clients that connect during a rebroadcast can be
                         // disconnected in order to minimize overhead
