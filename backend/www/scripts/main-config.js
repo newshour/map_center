@@ -1,7 +1,4 @@
 require.config({
-  //appDir: "backend/scripts/",
-  //baseUrl: "./",
-  //baseUrl: "scripts",//"backend/scripts/",
   paths: {
 
     "recording": "modules/recording",
@@ -52,8 +49,6 @@ require.config({
       exports: "Popcorn"
     }
   },
-  // The directory path to save the output
-  //dir: "backend/www/scripts",
   name: "app",
   include: "almond",
   insertRequire: ["app"],
