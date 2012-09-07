@@ -7,34 +7,33 @@
     // Dependencies
     var $ = window.$;
     var Popcorn = window.Popcorn;
-    var liveMap = window.liveMap || {};
-    window.liveMap = liveMap;
+    var liveMap = window.liveMap;
+
+    var connection = new liveMap.Connection();
+    var eventData;
+
+    function updateGUI(mapState) {
+        liveMap.status.set(mapState);
+    }
 
     function unavailableHandler(event) {
         event.data.$sidebar.append("The backend is not available at the moment.");
     }
 
-    function availableHandler(event) {
+    function availableHandler() {
 
-        var $sidebar = event.data.$sidebar;
+        var $sidebar = eventData.$sidebar;
 
-        liveMap.connection.off("error", unavailableHandler);
-        liveMap.connection.off("connect", availableHandler);
+        connection.off("error", unavailableHandler);
+        connection.off("connect", availableHandler);
 
         // Do not create the broadcaster control UI if the matched pattern does
         // not contain the string "broadcaster"
-        if (event.data.match[1] === "broadcaster") {
+        if (eventData.match[1] === "broadcaster") {
             $sidebar.append(createBroadcasterUI());
         } else {
             $sidebar.append(createConsumerUI());
         }
-
-        // Namespace the handler so it can be unbound on user
-        // interaction without affecting other handlers
-        liveMap.connection.on("updateMap.updateGUI", function(event, mapState) {
-
-            liveMap.status.set(mapState);
-        });
     }
 
     function createConsumerUI() {
@@ -57,6 +56,7 @@
             // detach map click handlers
             $ui.buttons.showLive.hide();
             $ui.status.text("Now showing live from PBS!");
+            connection.on("updateMap", updateGUI);
 
             liveMap.popcorn(popcorn, {
                 ignore: false
@@ -67,14 +67,14 @@
             // attach map click handlers
             $ui.buttons.showLive.show();
             $ui.status.text("Now editing.");
-            liveMap.connection.off(".updateGUI");
+            connection.off("updateMap", updateGUI);
 
             liveMap.popcorn(popcorn, {
                 ignore: true
             });
         });
 
-        liveMap.connection.on("reconnecting", function() {
+        connection.on("reconnecting", function() {
             $ui.status
                 .css("color", "#a00")
                 .text("Connection lost. Reconnecting...");
@@ -86,7 +86,7 @@
         // approach, the following client-side logic would be unecessary
         // since clients would not need to differentiate between live
         // broadcasts and re-broadcasts of recorded events.
-        liveMap.connection.on("replay", function(event, replayInfo) {
+        connection.on("replay", function(replayInfo) {
 
             var relativeReplayData = [];
 
@@ -118,12 +118,12 @@
             popcorn.play(0);
         });
 
-        liveMap.connection.on("reconnect_failed", function() {
+        connection.on("reconnect_failed", function() {
             $ui.status
                 .css("color", "#a00")
                 .text("Unable to reconnect.");
         });
-        liveMap.connection.on("connect", function() {
+        connection.on("connect", function() {
             $ui.status
                 .css("color", "#000")
                 .text("Connected!");
@@ -152,25 +152,37 @@
         $ui.buttons.start.click(function() {
             $ui.buttons.start.hide();
             $ui.buttons.stop.show();
-            liveMap.connection.startBroadcast();
+            liveMap.status.on("change.broadcast", function(event, mapState) {
+                connection.emit("updateMap", mapState);
+            });
         });
         $ui.buttons.stop.click(function() {
             $ui.buttons.stop.hide();
             $ui.buttons.start.show();
-            liveMap.connection.stopBroadcast();
+            liveMap.status.off("change.broadcast");
         });
 
-        liveMap.connection.on("reconnecting", function() {
+        connection.on("updateMap", updateGUI);
+        connection.on("reconnecting", function() {
             $ui.status
                 .css("color", "#a00")
                 .text("Connection lost. Reconnecting...");
         });
-        liveMap.connection.on("reconnect_failed", function() {
+        connection.onBroadcaster("connect_failed", function(message) {
+            if (message === "unauthorized") {
+                $ui.buttons.stop.hide();
+                $ui.buttons.start.hide();
+                $ui.status
+                    .css("color", "#a00")
+                    .text("Failed to authenticate as a broadcaster.");
+            }
+        });
+        connection.on("reconnect_failed", function() {
             $ui.status
                 .css("color", "#a00")
                 .text("Unable to reconnect.");
         });
-        liveMap.connection.on("connect", function() {
+        connection.on("connect", function() {
             $ui.status
                 .css("color", "#000")
                 .text("Connected!");
@@ -181,7 +193,7 @@
 
     $(window.document).ready(function() {
 
-        var eventData = {
+        eventData = {
             match: window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i),
             $sidebar: $("#sidebar")
         };
@@ -191,11 +203,11 @@
             return;
         }
 
-        liveMap.connection.on("error", eventData, unavailableHandler);
-        liveMap.connection.on("connect", eventData, availableHandler);
+        connection.on("error", unavailableHandler);
+        connection.on("connect", availableHandler);
 
         // Initiate a connection
-        liveMap.connection.init();
+        connection.connect();
 
     });
 }(this));

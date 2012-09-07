@@ -5,6 +5,9 @@ node_modules
 frontend/dist/lib/map_center/modules/livemap.js
 frontend/dist/lib/map_center/modules/livemap-playback.js
 backend/schedule.json
+backend/credentials/oauth/*.json
+backend/credentials/ssl/*.pem
+backend/credentials/ssl/*.csr
 
 calc-broadcaster-error.html
 
