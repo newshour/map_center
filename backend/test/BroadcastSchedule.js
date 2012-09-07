@@ -1,4 +1,4 @@
-var BroadcastSchedule = require("../broadcastSchedule");
+var BroadcastSchedule = require("../BroadcastSchedule");
 var testDbId = 2;
 var testModules = {};
 

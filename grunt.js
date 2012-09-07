@@ -18,6 +18,7 @@ module.exports = function(grunt) {
       client: [
         "backend/www/scripts/app.js",
         "backend/www/scripts/modules/*.js",
+        "frontend/scripts/*.js",
         "shared/*.js"
       ]
     },
@@ -78,7 +79,7 @@ module.exports = function(grunt) {
             "shared/livemap_status.js",
             "shared/livemap_connection.js",
             "shared/livemap_popcorn.js",
-            "shared/livemap_ui.js"
+            "frontend/scripts/ui_realtime.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap.js"
       },
@@ -87,7 +88,7 @@ module.exports = function(grunt) {
             "shared/lib/popcorn*.js",
             "shared/livemap_status.js",
             "shared/livemap_popcorn.js",
-            "shared/livemap_playback.js"
+            "frontend/scripts/ui_playback.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
       }
