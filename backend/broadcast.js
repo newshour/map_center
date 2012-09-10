@@ -107,7 +107,7 @@ handlerGenerators = exports.handlerGenerators = {
             // clients
             currentMapState = mapState;
 
-            socketServer.sockets.emit("updateMap", mapState);
+            socketServer.of("").except(this.id).emit("updateMap", mapState);
 
             changeEvent = {
                 // Map event timestamps are relative to the start of the
