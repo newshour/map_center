@@ -1,7 +1,23 @@
 var fs = require("fs");
 var io = require("socket.io-client");
+var optimist = require("optimist");
 
-var clientCount = process.argv[2] || 1000;
+var argParser = optimist
+    .usage("Usage: $0 -c [num]")
+    .describe("c", "Number of clients to spawn")
+    .alias("c", "clients")
+    .default("c", 1000)
+    .describe("h", "Display this message")
+    .boolean("h")
+    .alias("h", "help")
+    .check(function(args) {
+        if (typeof args.c !== "number") {
+            throw "c must be a number";
+        }
+    });
+var argv = argParser.argv;
+
+var clientCount = argv.c;
 var idx;
 var connections = [];
 var connection;
@@ -19,6 +35,11 @@ var counters = {
 var clientFilePath = __dirname + "/../../shared/livemap_connection.js";
 this.io = io;
 eval(fs.readFileSync(clientFilePath).toString());
+
+if (argv.h) {
+    optimist.showHelp();
+    process.exit();
+}
 
 console.log("Spawning " + clientCount + " clients...");
 
