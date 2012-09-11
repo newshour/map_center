@@ -19,12 +19,8 @@ var argv = argParser.argv;
 
 var clientCount = argv.c;
 var idx;
-var connections = [];
 var connection;
-var timeStamps = {
-    firstMsg: 0,
-    lastMsg: 0
-};
+var timeStamps = [];
 var counters = {
     connected: 0,
     msgReceived: 0
@@ -45,6 +41,18 @@ console.log("Spawning " + clientCount + " clients...");
 
 var handlers = {
     connect: function() {
+
+        // Defer attaching the "updateMap" handler to ensure that all clients
+        // have received the latest cached message (if any) before monitoring
+        // future messages.
+        if (!this.hasConnected) {
+            this.hasConnected = true;
+
+            setTimeout(function() {
+                this.on("updateMap", handlers.updateMap);
+            }.bind(this), 1000);
+        }
+
         counters.connected++;
     },
     disconnect: function() {
@@ -52,34 +60,37 @@ var handlers = {
     },
     updateMap: function() {
 
-        counters.msgReceived++;
+        timeStamps.push(new Date().getTime());
 
-        if (counters.msgReceived === 1) {
-            handlers.firstReceived();
-        }
-
-        if (counters.msgReceived === counters.connected) {
+        if (timeStamps.length === counters.connected) {
             handlers.lastReceived();
         }
-    },
-    firstReceived: function() {
-        timeStamps.firstMsg = new Date().getTime();
     },
     // Not a socket event, but triggered when all currently-connected clients
     // have received the "updateMap" message
     lastReceived: function() {
         var message;
-        timeStamps.lastMsg = new Date().getTime();
+        var first = timeStamps.shift();
+        var offsets = timeStamps.map(function(timeStamp) {
+            return timeStamp - first;
+        });
+        var avg = offsets
+            .reduce(function(prev, curr) { return prev + curr; }) / offsets.length;
+        var stdDev = Math.pow(offsets
+            .reduce(function(prev, curr) { return prev + Math.pow(curr - avg, 2); }) / offsets.length, 0.5);
 
         // Report the time span over which clients received the message.
         // TODO: Send this message via an HTTP POST request to some endpoint,
         // possibly defined via the command line.
-        message = counters.msgReceived +
-            " connected clients received message over the course of " +
-            (timeStamps.lastMsg - timeStamps.firstMsg) + "ms";
+        message = "All connected clients received message.\n" +
+            "  # Clients:\t" + (timeStamps.length + 1) + "\n" +
+            "  Time Span:\t" + (timeStamps[timeStamps.length-1] - first) + "ms\n" +
+            "  Avgerage:\t" + avg.toFixed(2) + "ms\n" +
+            "  Std dev:\t" + stdDev.toFixed(2);
+
         console.log(message);
 
-        counters.msgReceived = 0;
+        timeStamps.length = 0;
     }
 };
 
@@ -87,20 +98,11 @@ var handlers = {
 for (idx = 0; idx < clientCount; ++idx) {
     connection = new this.liveMap.Connection();
     connection.connect();
-    connection.on("connect", handlers.connect);
-    connection.on("disconnect", handlers.disconnect);
-    connections.push(connection);
+    connection.on("connect", handlers.connect.bind(connection));
+    connection.on("disconnect", handlers.disconnect.bind(connection));
 }
-
-// Delay to ensure that all clients have connected and received the latest
-// cached message (if any) before monitoring messages
-setTimeout(function() {
-    for (idx = 0; idx < clientCount; ++idx) {
-        connections[idx].on("updateMap", handlers.updateMap);
-    }
-}, 4000);
 
 setInterval(function() {
     console.log("Connected: " + counters.connected);
-    console.log("Received: " + counters.msgReceived);
+    console.log("Received: " + timeStamps.length);
 }, 1000);
