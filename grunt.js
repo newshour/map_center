@@ -24,12 +24,6 @@ module.exports = function(grunt) {
         "shared/*.js"
       ]
     },
-    setServiceLocation: {
-      connection: {
-        src: "shared/livemap_connection.js",
-        dest: "tmp/livemap_connection.js"
-      }
-    },
     // Compile Underscore.js-compatable templates into JavaScript functions for
     // run-time efficiency and simplified maintenance
     jst: {
@@ -74,34 +68,49 @@ module.exports = function(grunt) {
       },
       "adminapp": {
         options: {
-          flatten: true
+          flatten: true,
+          // Inject NODE_HOST and NODE_PORT values into files as they are
+          // copied
+          processContent: function(content) {
+            return content.replace(/\{\{\s*(NODE_HOST|NODE_PORT)\s*\}\}/g,
+                function(match, varName) {
+                    return grunt.config("meta." + varName);
+                }
+            );
+          }
         },
         files: {
           "backend/www/scripts/shared": [
             "shared/livemap_status.js",
             "shared/livemap_popcorn.js",
-            "tmp/livemap_connection.js"
+            "shared/livemap_connection.js"
           ],
-          "backend/www/scripts/shared/lib": "shared/lib/*"
+          "backend/www/scripts/shared/lib": "shared/lib/*",
+          "frontend/dist/lib/map_center/modules/shared": [
+            "shared/livemap_status.js",
+            "shared/livemap_popcorn.js",
+            "shared/livemap_connection.js"
+          ],
+          "frontend/dist/lib/map_center/modules/shared/lib": "shared/lib/*"
         }
       }
     },
     concat: {
       dist: {
         src: [
-            "shared/lib/*.js",
-            "shared/livemap_status.js",
-            "tmp/livemap_connection.js",
-            "shared/livemap_popcorn.js",
+            "frontend/dist/lib/map_center/modules/shared/lib/*.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_status.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_connection.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_popcorn.js",
             "frontend/scripts/ui_realtime.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap.js"
       },
       playback: {
         src: [
-            "shared/lib/popcorn*.js",
-            "shared/livemap_status.js",
-            "shared/livemap_popcorn.js",
+            "frontend/dist/lib/map_center/modules/shared/lib/popcorn*.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_status.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_popcorn.js",
             "frontend/scripts/ui_playback.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"
@@ -163,10 +172,9 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks("grunt-contrib");
-  grunt.loadTasks("build-tasks");
 
   // Default task.
-  grunt.registerTask("default", "lint test setServiceLocation concat min jst copy:adminapp requirejs");
-  grunt.registerTask("dev", "lint test setServiceLocation concat jst copy");
+  grunt.registerTask("default", "lint test concat min jst copy:adminapp requirejs");
+  grunt.registerTask("dev", "lint test concat jst copy");
 
 };
