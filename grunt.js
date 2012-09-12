@@ -5,6 +5,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: "<json:package.json>",
     meta: {
+      NODE_HOST: process.env.NODE_HOST || "127.0.0.1",
+      NODE_PORT: process.env.NODE_PORT || 8000,
       banner: "/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
         "<%= grunt.template.today('yyyy-mm-dd') %>\n" +
         "<%= pkg.homepage ? '* ' + pkg.homepage + '\n' : '' %>" +
@@ -21,6 +23,12 @@ module.exports = function(grunt) {
         "frontend/scripts/*.js",
         "shared/*.js"
       ]
+    },
+    setServiceLocation: {
+      connection: {
+        src: "shared/livemap_connection.js",
+        dest: "tmp/livemap_connection.js"
+      }
     },
     // Compile Underscore.js-compatable templates into JavaScript functions for
     // run-time efficiency and simplified maintenance
@@ -65,10 +73,16 @@ module.exports = function(grunt) {
         }
       },
       "adminapp": {
+        options: {
+          flatten: true
+        },
         files: {
           "backend/www/scripts/shared": [
-            "shared/**"
-          ]
+            "shared/livemap_status.js",
+            "shared/livemap_popcorn.js",
+            "tmp/livemap_connection.js"
+          ],
+          "backend/www/scripts/shared/lib": "shared/lib/*"
         }
       }
     },
@@ -77,7 +91,7 @@ module.exports = function(grunt) {
         src: [
             "shared/lib/*.js",
             "shared/livemap_status.js",
-            "shared/livemap_connection.js",
+            "tmp/livemap_connection.js",
             "shared/livemap_popcorn.js",
             "frontend/scripts/ui_realtime.js"
         ],
@@ -149,9 +163,10 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks("grunt-contrib");
+  grunt.loadTasks("build-tasks");
 
   // Default task.
-  grunt.registerTask("default", "lint test concat min jst copy:adminapp requirejs");
-  grunt.registerTask("dev", "lint test concat jst copy");
+  grunt.registerTask("default", "lint test setServiceLocation concat min jst copy:adminapp requirejs");
+  grunt.registerTask("dev", "lint test setServiceLocation concat jst copy");
 
 };
