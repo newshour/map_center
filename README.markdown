@@ -47,3 +47,12 @@ that directory. The backend component is a Node.js service, which can be run
 from the `backend` directory with the following command:
 
     node server.js
+
+# Serving the Application in Production
+
+By default, the service will run on port #8000 of the IP address `127.0.0.1`.
+These locations can be overridden by defining the `NODE_PORT` and `NODE_HOST`
+environmental variables, respectively.
+
+After defining one or both of these parameters, re-build the project and
+re-start the service.
