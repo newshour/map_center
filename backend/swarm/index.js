@@ -28,9 +28,18 @@ var counters = {
 
 // Hack to get client code running on server (evaluate that code in the global
 // scope, making sure that the required Socket.io client library is available)
-var clientFilePath = __dirname + "/../../shared/livemap_connection.js";
+var clientFilePath = __dirname + "/../www/scripts/shared/livemap_connection.js";
+var clientFileContents;
 this.io = io;
-eval(fs.readFileSync(clientFilePath).toString());
+try {
+  clientFileContents = fs.readFileSync(clientFilePath).toString();
+} catch(err) {
+  console.error("Unable to open client connection file at '" + clientFilePath +
+    "'. Please verify that the project has been built.");
+  console.error(err.toString());
+  process.exit();
+}
+eval(clientFileContents);
 
 if (argv.h) {
     optimist.showHelp();
