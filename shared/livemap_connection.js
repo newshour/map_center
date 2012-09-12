@@ -6,9 +6,9 @@
     window.liveMap = liveMap;
 
     var defaultOptions = {
-        // TODO: Define endpoint location at build time
-        host: "127.0.0.1",
-        port: 8000,
+        // These values are expanded at build time.
+        host: "{{ NODE_HOST }}",
+        port: "{{ NODE_PORT }}",
         // The connection status will be managed elsewhere. This allows the
         // script to be included without necessarily incurring the network
         // overhead of establishing a connection.
