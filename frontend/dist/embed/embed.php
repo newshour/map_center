@@ -451,7 +451,13 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                         </div>
                         <div class="clear"></div>
                       <?php if ($map_module == 'static_maps') { ?>
-                        <h2 id="static_data_source">Source: <a href="<?php echo $attrib['href']; ?>" target="_blank"><?php echo $attrib['text']; ?></a></h2>
+                        <h2 id="static_data_source">
+                          <?php if ($static_maps_type == 'ethnicity') { ?>
+                            Source: <a href="<?php echo $attrib['href']; ?>" target="_blank"><?php echo $attrib['text']; ?></a>. Totals might exceed 100% in some areas since people can identify with multiple groups.
+                          <?php } else { ?>
+                            Source: <a href="<?php echo $attrib['href']; ?>" target="_blank"><?php echo $attrib['text']; ?></a>
+                          <?php } ?>
+                        </h2>
                       <?php } elseif ($map_module == 'past_primaries') { ?>
                         <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
                       <?php } ?>
