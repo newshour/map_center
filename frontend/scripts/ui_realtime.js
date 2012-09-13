@@ -174,10 +174,11 @@
             $("#frame-options").off("click.broadcast");
         });
 
-        // TODO: Extend liveMap.connection API so that the service location may
-        // be derived at run time
+        // Generate hyperlinks to backend OAuth services. Derive the URL from
+        // the socket connection's host and port.
         var linkHtml = $.map(authServices, function(authService) {
-            return "<a href='http://127.0.0.1:8000/auth/" +
+            return "<a href='http://" + connection.getHost() + ":" +
+                connection.getPort() + "/auth/" +
                 authService.toLowerCase() + "'>Login with " +
                 authService + "</a>";
         }).join(" | ");
