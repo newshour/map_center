@@ -17,6 +17,7 @@ var argParser = optimist
     });
 var argv = argParser.argv;
 
+var resultsFileName = "results.txt";
 var clientCount = argv.c;
 var idx;
 var connection;
@@ -47,6 +48,8 @@ if (argv.h) {
 }
 
 console.log("Spawning " + clientCount + " clients...");
+// Clear the results file if it exists
+fs.writeFileSync(resultsFileName, "");
 
 var handlers = {
     connect: function() {
@@ -95,8 +98,9 @@ var handlers = {
             "  # Clients:\t" + (timeStamps.length + 1) + "\n" +
             "  Time Span:\t" + (timeStamps[timeStamps.length-1] - first) + "ms\n" +
             "  Avgerage:\t" + avg.toFixed(2) + "ms\n" +
-            "  Std dev:\t" + stdDev.toFixed(2);
+            "  Std dev:\t" + stdDev.toFixed(2) + "\n";
 
+        fs.appendFile(resultsFileName, message);
         console.log(message);
 
         timeStamps.length = 0;
