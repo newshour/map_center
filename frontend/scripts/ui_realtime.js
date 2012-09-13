@@ -10,26 +10,33 @@
     var liveMap = window.liveMap;
 
     var connection = new liveMap.Connection();
-    var eventData;
+    var urlMatch;
 
-    function updateGUI(mapState) {
-        liveMap.status.set(mapState);
+    function updateIframe(status) {
+        if (status.href !== "unavailable") {
+            $("#live-map-frame").attr("src", status.href);
+        } else {
+            $("#live-map-frame").attr("src", "about:blank");
+        }
     }
 
     function unavailableHandler(event) {
-        event.data.$sidebar.append("The backend is not available at the moment.");
+        $("#backend-controls").show();
+        $("#sidebar").append("<strong>Service unavailable.</strong>");
     }
 
     function availableHandler() {
 
-        var $sidebar = eventData.$sidebar;
+        var $sidebar = $("#sidebar");
+
+        $("#backend-controls").show();
 
         connection.off("error", unavailableHandler);
         connection.off("connect", availableHandler);
 
         // Do not create the broadcaster control UI if the matched pattern does
         // not contain the string "broadcaster"
-        if (eventData.match[1] === "broadcaster") {
+        if (urlMatch[1] === "broadcaster") {
             $sidebar.append(createBroadcasterUI());
         } else {
             $sidebar.append(createConsumerUI());
@@ -56,7 +63,7 @@
             // detach map click handlers
             $ui.buttons.showLive.hide();
             $ui.status.text("Now showing live from PBS!");
-            connection.on("updateMap", updateGUI);
+            connection.on("updateMap", liveMap.status.set);
 
             liveMap.popcorn(popcorn, {
                 ignore: false
@@ -67,7 +74,7 @@
             // attach map click handlers
             $ui.buttons.showLive.show();
             $ui.status.text("Now editing.");
-            connection.off("updateMap", updateGUI);
+            connection.off("updateMap", liveMap.status.set);
 
             liveMap.popcorn(popcorn, {
                 ignore: true
@@ -137,32 +144,84 @@
     // Create the broadcaster control UI
     function createBroadcasterUI() {
 
+        var authServices = ["Twitter", "Google"];
         var $ui = {
             container: $("<div class='broadcast-control'>"),
             status: $("<span>"),
             buttons: {
                 start: $("<button class='broadcast-start'>Start Broadcasting</button>"),
                 stop: $("<button class='broadcast-stop'>Stop Broadcasting</button>")
-            }
+            },
+            loginOptions: $("<div>").addClass("broadcaster-login")
         };
 
         $ui.container.append($ui.status, $ui.buttons.start, $ui.buttons.stop);
         $ui.buttons.stop.hide();
 
-        $ui.buttons.start.click(function() {
+        $ui.buttons.start.on("click", function() {
             $ui.buttons.start.hide();
             $ui.buttons.stop.show();
-            liveMap.status.on("change.broadcast", function(event, mapState) {
-                connection.emit("updateMap", mapState);
+            $("#frame-options").on("click.broadcast", "a", function(event) {
+                connection.emit("updateMap", {
+                    href: $(event.target).attr("href")
+                });
             });
         });
-        $ui.buttons.stop.click(function() {
+        $ui.buttons.stop.on("click", function() {
             $ui.buttons.stop.hide();
             $ui.buttons.start.show();
-            liveMap.status.off("change.broadcast");
+
+            $("#frame-options").off("click.broadcast");
         });
 
-        connection.on("updateMap", updateGUI);
+        // Generate hyperlinks to backend OAuth services. Derive the URL from
+        // the socket connection's host and port.
+        var linkHtml = $.map(authServices, function(authService) {
+            return "<a href='http://" + connection.getHost() + ":" +
+                connection.getPort() + "/auth/" +
+                authService.toLowerCase() + "'>Login with " +
+                authService + "</a>";
+        }).join(" | ");
+
+        $ui.loginOptions.append($(linkHtml)).prependTo(document.body);
+
+        // Send status messages as frame updates
+        $('#live-map-frame').load(function() {
+            try {
+                var subWindow = this.contentWindow;
+                var frameLocation = subWindow.location.href;
+                if (frameLocation) {
+                    liveMap.status.set({
+                        href: subWindow.location.href
+                    });
+                    // Bind hashchange event so we can still pick
+                    // it up
+                    $(subWindow.document).ready(function() {
+                        if ('onhashchange' in subWindow) {
+                            $(subWindow).bind('hashchange', function() {
+                                liveMap.status.set({
+                                    href: subWindow.location.href
+                                });
+                            });
+                        }
+                    });
+                } else {
+                    // Chrome doesn't actually throw anything and just
+                    // sets frameLocation to undefined, so we need to
+                    // check for that and throw something (_anything_)
+                    // ourselves to trigger the catch block below.
+                    throw true;
+                }
+            } catch(e) {
+                // liveMap.status.set({
+                //     href: "unavailable"
+                // });
+
+                // Do nothing
+            }
+        });
+
+        connection.on("updateMap", liveMap.status.set);
         connection.on("reconnecting", function() {
             $ui.status
                 .css("color", "#a00")
@@ -191,15 +250,24 @@
         return $ui.container;
     }
 
-    $(window.document).ready(function() {
+    $(function() {
 
-        eventData = {
-            match: window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i),
-            $sidebar: $("#sidebar")
-        };
+        urlMatch = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
+
+        // Change iframe URL whenever a link gets clicked
+        $("#frame-options").on("click", "a", function(event) {
+            liveMap.status.set({
+                href: $(event.target).attr("href")
+            });
+            event.preventDefault();
+        });
+
+        liveMap.status.on("change", function(event, status) {
+            updateIframe(status);
+        });
 
         // Do not initiate a connection if the pattern does not match
-        if (!eventData.match) {
+        if (!urlMatch) {
             return;
         }
 

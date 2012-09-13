@@ -27,6 +27,16 @@
 
         this._socket = new io.Socket(options);
     };
+    // getHost
+    // Simple accessor for Socket.io's public "host" parameter
+    Connection.prototype.getHost = function() {
+        return this._socket.options.host;
+    };
+    // getPort
+    // Simple accessor for Socket.io's public "port" parameter
+    Connection.prototype.getPort = function() {
+        return this._socket.options.port;
+    };
     Connection.prototype.connect = function() {
         var self = this;
         this._socket.connect();
