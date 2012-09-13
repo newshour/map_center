@@ -5,6 +5,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: "<json:package.json>",
     meta: {
+      NODE_HOST: process.env.NODE_HOST || "127.0.0.1",
+      NODE_PORT: process.env.NODE_PORT || 8000,
       banner: "/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
         "<%= grunt.template.today('yyyy-mm-dd') %>\n" +
         "<%= pkg.homepage ? '* ' + pkg.homepage + '\n' : '' %>" +
@@ -65,29 +67,50 @@ module.exports = function(grunt) {
         }
       },
       "adminapp": {
+        options: {
+          flatten: true,
+          // Inject NODE_HOST and NODE_PORT values into files as they are
+          // copied
+          processContent: function(content) {
+            return content.replace(/\{\{\s*(NODE_HOST|NODE_PORT)\s*\}\}/g,
+                function(match, varName) {
+                    return grunt.config("meta." + varName);
+                }
+            );
+          }
+        },
         files: {
           "backend/www/scripts/shared": [
-            "shared/**"
-          ]
+            "shared/livemap_status.js",
+            "shared/livemap_popcorn.js",
+            "shared/livemap_connection.js"
+          ],
+          "backend/www/scripts/shared/lib": "shared/lib/*",
+          "frontend/dist/lib/map_center/modules/shared": [
+            "shared/livemap_status.js",
+            "shared/livemap_popcorn.js",
+            "shared/livemap_connection.js"
+          ],
+          "frontend/dist/lib/map_center/modules/shared/lib": "shared/lib/*"
         }
       }
     },
     concat: {
       dist: {
         src: [
-            "shared/lib/*.js",
-            "shared/livemap_status.js",
-            "shared/livemap_connection.js",
-            "shared/livemap_popcorn.js",
+            "frontend/dist/lib/map_center/modules/shared/lib/*.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_status.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_connection.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_popcorn.js",
             "frontend/scripts/ui_realtime.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap.js"
       },
       playback: {
         src: [
-            "shared/lib/popcorn*.js",
-            "shared/livemap_status.js",
-            "shared/livemap_popcorn.js",
+            "frontend/dist/lib/map_center/modules/shared/lib/popcorn*.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_status.js",
+            "frontend/dist/lib/map_center/modules/shared/livemap_popcorn.js",
             "frontend/scripts/ui_playback.js"
         ],
         dest: "frontend/dist/lib/map_center/modules/livemap-playback.js"

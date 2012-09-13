@@ -24,3 +24,4 @@ backend/www/scripts/require.js
 backend/www/scripts/jst.js
 # Copied from shared/ during build
 backend/www/scripts/shared
+frontend/dist/lib/map_center/modules/shared
