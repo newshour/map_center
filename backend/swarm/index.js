@@ -1,3 +1,4 @@
+/*jshint evil:true */
 var fs = require("fs");
 var io = require("socket.io-client");
 var optimist = require("optimist");

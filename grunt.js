@@ -15,7 +15,8 @@ module.exports = function(grunt) {
     lint: {
       server: [
         "grunt.js",
-        "backend/*.js"
+        "backend/*.js",
+        "backend/swarm/*.js"
       ],
       client: [
         "backend/www/scripts/app.js",
