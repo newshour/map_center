@@ -6,6 +6,7 @@ following structure:
 
 ```
 {
+	"serviceName": <string>,
 	"key": <string>,
 	"secret": <string>,
 	"idPath": <string>,
