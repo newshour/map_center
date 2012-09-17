@@ -7,7 +7,7 @@ var nhmcStatic = {
     },
     "areaLists": {
         "Require photo ID": ["Kansas", "Tennessee", "Indiana", "Pennsylvania", "Georgia"],
-        "Request photo ID": ["Idaho", "South Dakota", "Louisiana", "Michigan", "Florida", "Hawaii"],
+        "Request photo ID": ["Idaho", "South Dakota", "Louisiana", "Michigan", "Florida", "Hawaii", "New Hampshire"],
         "Non-photo ID": ["Alaska", "Washington", "Montana", "North Dakota", "Utah", "Colorado", "Arizona", "Texas", "Oklahoma", "Missouri", "Arkansas", "Alabama", "Kentucky", "Ohio", "Virginia", "South Carolina", "Delaware", "Rhode Island", "Connecticut"]
     }
 };
