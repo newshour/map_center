@@ -11,6 +11,9 @@ var argParser = optimist
     .describe("h", "Display this message")
     .boolean("h")
     .alias("h", "help")
+    .describe("v", "Periodically print connection status")
+    .boolean("v")
+    .alias("v", "verbose")
     .check(function(args) {
         if (typeof args.c !== "number") {
             throw "c must be a number";
@@ -48,7 +51,10 @@ if (argv.h) {
     process.exit();
 }
 
-console.log("Spawning " + clientCount + " clients...");
+if (argv.v) {
+    console.log("Spawning " + clientCount + " clients...");
+}
+
 // Clear the results file if it exists
 fs.writeFileSync(resultsFileName, "");
 
@@ -102,7 +108,9 @@ var handlers = {
             "  Std dev:\t" + stdDev.toFixed(2) + "\n";
 
         fs.appendFile(resultsFileName, message);
-        console.log(message);
+        if (argv.v) {
+            console.log(message);
+        }
 
         timeStamps.length = 0;
     }
@@ -116,7 +124,9 @@ for (idx = 0; idx < clientCount; ++idx) {
     connection.on("disconnect", handlers.disconnect.bind(connection));
 }
 
-setInterval(function() {
-    console.log("Connected: " + counters.connected);
-    console.log("Received: " + timeStamps.length);
-}, 1000);
+if (argv.v) {
+    setInterval(function() {
+        console.log("Connected: " + counters.connected);
+        console.log("Received: " + timeStamps.length);
+    }, 1000);
+}
