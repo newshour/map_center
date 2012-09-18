@@ -8,6 +8,8 @@ var argParser = optimist
     .describe("c", "Number of clients to spawn")
     .alias("c", "clients")
     .default("c", 1000)
+    .describe("o", "Output file")
+    .alias("o", "output")
     .describe("h", "Display this message")
     .boolean("h")
     .alias("h", "help")
@@ -21,7 +23,6 @@ var argParser = optimist
     });
 var argv = argParser.argv;
 
-var resultsFileName = "results.txt";
 var clientCount = argv.c;
 var idx;
 var connection;
@@ -51,12 +52,20 @@ if (argv.h) {
     process.exit();
 }
 
+if (argv.o) {
+    // Clear the results file if it exists
+    try {
+        fs.writeFileSync(argv.o, "");
+    } catch(err) {
+        console.error("Unable to open output file at '" + argv.o + "'");
+        console.error(err.toString());
+        process.exit();
+    }
+}
+
 if (argv.v) {
     console.log("Spawning " + clientCount + " clients...");
 }
-
-// Clear the results file if it exists
-fs.writeFileSync(resultsFileName, "");
 
 var handlers = {
     connect: function() {
@@ -107,7 +116,10 @@ var handlers = {
             "  Avgerage:\t" + avg.toFixed(2) + "ms\n" +
             "  Std dev:\t" + stdDev.toFixed(2) + "\n";
 
-        fs.appendFile(resultsFileName, message);
+        if (argv.o) {
+            fs.appendFile(argv.o, message);
+        }
+
         if (argv.v) {
             console.log(message);
         }
