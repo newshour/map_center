@@ -102,26 +102,30 @@ var handlers = {
         var offsets = timeStamps.map(function(timeStamp) {
             return timeStamp - first;
         });
-        var avg = offsets
-            .reduce(function(prev, curr) { return prev + curr; }) / offsets.length;
-        var stdDev = Math.pow(offsets
-            .reduce(function(prev, curr) { return prev + Math.pow(curr - avg, 2); }) / offsets.length, 0.5);
 
-        // Report the time span over which clients received the message.
-        // TODO: Send this message via an HTTP POST request to some endpoint,
-        // possibly defined via the command line.
-        message = "All connected clients received message.\n" +
-            "  # Clients:\t" + (timeStamps.length + 1) + "\n" +
-            "  Time Span:\t" + (timeStamps[timeStamps.length-1] - first) + "ms\n" +
-            "  Avgerage:\t" + avg.toFixed(2) + "ms\n" +
-            "  Std dev:\t" + stdDev.toFixed(2) + "\n";
+        // Calculate statistics
+        var stats = {
+            clientCount: timeStamps.length + 1,
+            timeSpan: timeStamps[timeStamps.length-1] - first,
+        };
+        stats.avg = offsets.reduce(function(prev, curr) {
+                return prev + curr;
+            }) / offsets.length;
+        stats.stdDev = Math.pow(
+            offsets.reduce(function(prev, curr) {
+                return prev + Math.pow(curr - stats.avg, 2);
+            }) / offsets.length, 0.5);
 
         if (argv.o) {
-            fs.appendFile(argv.o, message);
+            fs.appendFile(argv.o, JSON.stringify(stats));
         }
 
         if (argv.v) {
-            console.log(message);
+            console.log("All connected clients received message.\n" +
+                "  # Clients:\t" + stats.clientCount + "\n" +
+                "  Time Span:\t" + stats.timeSpan + "ms\n" +
+                "  Avgerage:\t" + stats.avg + "ms\n" +
+                "  Std dev:\t" + stats.stdDev + "ms\n");
         }
 
         timeStamps.length = 0;
