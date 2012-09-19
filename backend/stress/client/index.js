@@ -1,15 +1,18 @@
 /*jshint evil:true */
+var express = require("express");
 var fs = require("fs");
 var io = require("socket.io-client");
 var optimist = require("optimist");
 
+var app = express();
 var argParser = optimist
     .usage("Usage: $0 -c [num]")
     .describe("c", "Number of clients to spawn")
     .alias("c", "clients")
     .default("c", 1000)
-    .describe("o", "Output file")
-    .alias("o", "output")
+    .describe("p", "Port to listen for commands")
+    .alias("p", "port")
+    .default("p", 9001)
     .describe("h", "Display this message")
     .boolean("h")
     .alias("h", "help")
@@ -19,6 +22,9 @@ var argParser = optimist
     .check(function(args) {
         if (typeof args.c !== "number") {
             throw "c must be a number";
+        }
+        if (typeof args.p !== "number") {
+            throw "p must be a number";
         }
     });
 var argv = argParser.argv;
@@ -52,16 +58,18 @@ if (argv.h) {
     process.exit();
 }
 
-if (argv.o) {
-    // Clear the results file if it exists
-    try {
-        fs.writeFileSync(argv.o, "");
-    } catch(err) {
-        console.error("Unable to open output file at '" + argv.o + "'");
-        console.error(err.toString());
-        process.exit();
+app.listen(argv.p, "127.0.0.1");
+
+app.get("/dump", function(req, res) {
+
+    var attr;
+
+    res.send(JSON.stringify(trialDelays));
+
+    for (attr in trialDelays) {
+        delete trialDelays[attr];
     }
-}
+});
 
 if (argv.v) {
     console.log("Spawning " + clientCount + " clients...");
@@ -106,10 +114,6 @@ var handlers = {
         var delays = trialDelays[msg.timeStamp];
         var avgDelay;
 
-        if (argv.o) {
-            fs.appendFile(argv.o, JSON.stringify(delays));
-        }
-
         if (argv.v) {
             avgDelay = delays
                 .reduce(function(prev, current) {
@@ -121,7 +125,6 @@ var handlers = {
                 "  Avg. Delay:\t" + avgDelay + "ms\n");
         }
 
-        delete trialDelays[msg.timeStamp];
     }
 };
 
