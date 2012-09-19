@@ -34,7 +34,7 @@ var counters = {
 
 // Hack to get client code running on server (evaluate that code in the global
 // scope, making sure that the required Socket.io client library is available)
-var clientFilePath = __dirname + "/../www/scripts/shared/livemap_connection.js";
+var clientFilePath = __dirname + "/../../www/scripts/shared/livemap_connection.js";
 var clientFileContents;
 this.io = io;
 try {
