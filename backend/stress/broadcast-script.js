@@ -20,7 +20,8 @@ function runTrial(broadcastCount, delay, callback) {
                 var url = urls[idx % urls.length];
                 console.log(idx + ": " + url);
                 connection.emit("updateMap", {
-                    href: url
+                    href: url,
+                    timeStamp: new Date().getTime()
                 });
                 if (idx === broadcastCount - 1) {
                     setTimeout(callback, delay)

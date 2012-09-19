@@ -26,7 +26,7 @@ var argv = argParser.argv;
 var clientCount = argv.c;
 var idx;
 var connection;
-var timeStamps = [];
+var trialDelays = {};
 var counters = {
     connected: 0,
     msgReceived: 0
@@ -86,50 +86,42 @@ var handlers = {
     disconnect: function() {
         counters.connected--;
     },
-    updateMap: function() {
+    updateMap: function(msg) {
 
-        timeStamps.push(new Date().getTime());
+        var delays = trialDelays[msg.timeStamp];
+        if (!delays) {
+            delays = trialDelays[msg.timeStamp] = [];
+        }
 
-        if (timeStamps.length === counters.connected) {
-            handlers.lastReceived();
+        delays.push(new Date().getTime() - msg.timeStamp);
+
+        if (delays.length === counters.connected) {
+            handlers.lastReceived(msg);
         }
     },
     // Not a socket event, but triggered when all currently-connected clients
     // have received the "updateMap" message
-    lastReceived: function() {
-        var message;
-        var first = timeStamps.shift();
-        var offsets = timeStamps.map(function(timeStamp) {
-            return timeStamp - first;
-        });
+    lastReceived: function(msg) {
 
-        // Calculate statistics
-        var stats = {
-            clientCount: timeStamps.length + 1,
-            timeSpan: timeStamps[timeStamps.length-1] - first,
-            timeStamp: new Date().getTime()
-        };
-        stats.avg = offsets.reduce(function(prev, curr) {
-                return prev + curr;
-            }) / offsets.length;
-        stats.stdDev = Math.pow(
-            offsets.reduce(function(prev, curr) {
-                return prev + Math.pow(curr - stats.avg, 2);
-            }) / offsets.length, 0.5);
+        var delays = trialDelays[msg.timeStamp];
+        var avgDelay;
 
         if (argv.o) {
-            fs.appendFile(argv.o, JSON.stringify(stats));
+            fs.appendFile(argv.o, JSON.stringify(delays));
         }
 
         if (argv.v) {
-            console.log("All connected clients received message.\n" +
-                "  # Clients:\t" + stats.clientCount + "\n" +
-                "  Time Span:\t" + stats.timeSpan + "ms\n" +
-                "  Avgerage:\t" + stats.avg + "ms\n" +
-                "  Std dev:\t" + stats.stdDev + "ms\n");
+            avgDelay = delays
+                .reduce(function(prev, current) {
+                    return prev + current;
+                }) / delays.length;
+
+            console.log("Trial '" + msg.timeStamp + "' complete.\n" +
+                "  # Clients:\t" + delays.length + "\n" +
+                "  Avg. Delay:\t" + avgDelay + "ms\n");
         }
 
-        timeStamps.length = 0;
+        delete trialDelays[msg.timeStamp];
     }
 };
 
@@ -144,6 +136,6 @@ for (idx = 0; idx < clientCount; ++idx) {
 if (argv.v) {
     setInterval(function() {
         console.log("Connected: " + counters.connected);
-        console.log("Received: " + timeStamps.length);
+        console.log("Outstanding trials: " + Object.keys(trialDelays).length);
     }, 1000);
 }
