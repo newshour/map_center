@@ -107,6 +107,7 @@ var handlers = {
         var stats = {
             clientCount: timeStamps.length + 1,
             timeSpan: timeStamps[timeStamps.length-1] - first,
+            timeStamp: new Date().getTime()
         };
         stats.avg = offsets.reduce(function(prev, curr) {
                 return prev + curr;
