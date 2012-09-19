@@ -16,7 +16,7 @@ module.exports = function(grunt) {
       server: [
         "grunt.js",
         "backend/*.js",
-        "backend/swarm/*.js"
+        "backend/stress/client/*.js"
       ],
       client: [
         "backend/www/scripts/app.js",
