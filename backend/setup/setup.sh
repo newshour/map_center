@@ -44,8 +44,8 @@ cd ~
 mkdir .ssh
 chmod 700 .ssh
 cd .ssh
-touch authorized_keys2
-cat ~/import/public-keys/*.pub >> authorized_keys2
+touch authorized_keys
+cat ~/import/public-keys/*.pub >> authorized_keys
 
 su $NODE_USER
 cd ~
