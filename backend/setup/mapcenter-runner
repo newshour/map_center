@@ -1,0 +1,45 @@
+#! /bin/bash
+# /etc/init.d/mapcenter-runner
+
+### BEGIN INIT INFO
+# Provides:		mapcenter-runner
+# Required-Start:	$syslog $remote_fs redis-server
+# Required-Stop:	$syslog $remote_fs redis-server
+# Should-Start:		$local_fs
+# Should-Stop:		$local_fs
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Short-Description:	MapCenter service
+### END INIT INFO
+
+NODE_PATH=/opt/joyent/node/bin/node
+# The user designated to run the Node.js service
+NODE_USER=noder
+PROJECT_DIR=/home/$NODE_USER/map_center
+MAIN_SCRIPT=$PROJECT_DIR/backend/server.js
+
+case "$1" in
+  start)
+    cd $PROJECT_DIR
+    # Ensure that environmental variables NODE_HOST and NODE_PATH are set as
+    # intended
+    source /root/.bashrc
+    # Retrieve the latest version of the project source
+    git pull origin master
+    # Fetch new dependencies, if any
+    npm install
+    # Build the project
+    grunt
+    # Start the service as the designated Node.js user
+    start-stop-daemon --start --startas $NODE_PATH --user $NODE_USER --background --chuid $NODE_USER:users -- $MAIN_SCRIPT
+    ;;
+  stop)
+    start-stop-daemon --stop --user $NODE_USER
+    ;;
+  *)
+    echo "Usage: /etc/init.d/mapcenter-runner {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
