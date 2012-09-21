@@ -5,6 +5,10 @@
 NODE_HOST=127.0.0.1
 NODE_PORT=8000
 NODE_USER=noder
+PROJECT_REPO=https://github.com/newshour/map_center.git
+
+NODE_HOME=/home/$NODE_USER
+PROJECT_DIR=$NODE_HOME/map_center
 
 # setup.sh
 chmod 700 /root
@@ -32,6 +36,9 @@ mkdir -p /opt/joyent/node-0.8
 ln -s /opt/joyent/node-0.8/ /opt/joyent/node
 chown $NODE_USER:users /opt/joyent/node-0.8
 
+mv ~/import/startup.sh $NODE_HOME
+chown $NODER_USER:users $NODE_HOME/startup.sh
+
 # Add ssh keys
 cd ~
 mkdir .ssh
@@ -40,13 +47,20 @@ cd .ssh
 touch authorized_keys2
 cat ~/import/public-keys/*.pub >> authorized_keys2
 
-# Set environmental variables in .bashrc, where they can be sourced at startup
-echo "export NODE_HOST=$NODE_HOST" >> ~/.bashrc
-echo "export NODE_PORT=$NODE_PORT" >> ~/.bashrc
-
-# Install Node.js as the Node.js user
 su $NODE_USER
 cd ~
+
+# Set environmental variables in a source-able file
+touch ~/env-vars.sh
+echo "#! /bin/sh
+
+export NODE_HOST=$NODE_HOST
+export NODE_PORT=$NODE_PORT
+export PROJECT_DIR=$PROJECT_DIR
+export PATH=\$PATH:/opt/joyent/node/bin
+" > ~/env-vars.sh
+
+# Install Node.js as the Node.js user
 mkdir builds
 cd builds
 wget http://nodejs.org/dist/v0.8.8/node-v0.8.8.tar.gz
@@ -55,13 +69,12 @@ cd node-v0.8.8
 ./configure --prefix=/opt/joyent/node-0.8
 make
 make install
-echo "export PATH=\$PATH:/opt/joyent/node/bin" >> ~/.bashrc
 source ~/.bashrc
 
 # Clone and configure project repository
 cd ~
-git clone https://github.com/newshour/map_center.git
-cd map_center
+git clone $PROJECT_REPO $PROJECT_DIR
+cd $PROJECT_DIR
 git remote add bocoup https://github.com/bocoup/map_center.git
 npm install -g grunt
 npm install
