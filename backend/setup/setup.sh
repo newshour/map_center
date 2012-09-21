@@ -79,12 +79,15 @@ git remote add bocoup https://github.com/bocoup/map_center.git
 npm install -g grunt
 npm install
 
+# Return to root user
+exit
+
 # Copy OAuth credentials into place
-cp ~/import/oauth/*.json backend/credentials/oauth
+cp ~/import/oauth/*.json $PROJECT_DIR/backend/credentials/oauth
 
 # Copy the MapCenter service script (responsible for pulling, building, and
-# running the project) into place, and make Debian aware of it so it will run
-# at startup
+# running the project) into place, and make system aware of it so the script
+# will be run at startup
 cp ~/import/mapcenter-runner ~
 chmod 755 ~/mapcenter-runner
 ln -s ~/mapcenter-runner /etc/init.d/mapcenter-runner
