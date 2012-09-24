@@ -1,0 +1,213 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title>2012 Political Map Center | PBS NewsHour</title>
+	<meta name="description" content="The map features an electoral college calculator which includes historical data going back to the 1964 election" />
+	<meta name="author" content="map, politics, 2012 election, electoral college calculator" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png" />
+	 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Safari (iOS) settings -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+<meta property="og:title" content="See My Prediction For the 2012 Election at PBS NewsHour Map Center" /> 
+		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
+		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.0/dojo/dojo.js"></script>
+        <script type="text/javascript" src="lib/highcharts.js"></script>
+        <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
+        <script src="js/libs/modernizr-2.0.6.min.js"></script>
+        <script type="text/javascript" src="lib/add2home/add2home.js"></script>
+        <script type="text/javascript">//<![CDATA[
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+            
+            // Share buttons!
+            $(document).ready(function() {
+                // Open contents in new window
+                $('a.facebook-link').click(function() {
+                    window.open(
+                        [
+                            'http://www.facebook.com/sharer/sharer.php?u=',
+                            encodeURIComponent(window.location.href), '&t=',
+                            encodeURIComponent(
+                                "See my prediction for the 2012 election"
+                            )
+                        ].join(''),
+                        'sharer', 'toolbar=0,status=0,width=626,height=436'
+                    );
+                    return false;
+                });
+                $('a.twitter-link').click(function() {
+                    window.open(
+                        [
+                            'http://twitter.com/share?text=',
+                            encodeURIComponent(
+                                "See my prediction for the election @NewsHour"
+                            ),
+                            '&url=', encodeURIComponent(window.location.href)
+                        ].join(''),
+                        'sharer', 'toolbar=0,status=0,width=626,height=436'
+                    );
+                    return false;
+                });
+                // Highlight entire text input when clicked
+                $('#copy-link-input').click(function() {
+                    $(this).select();
+                });
+            });
+        //]]></script>
+        <!-- Map Center core -->
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
+        <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/navigation.js"></script>
+        <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <!-- Individual Map Center modules -->
+        <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
+                <script type="text/javascript" src="lib/calc-elements/js/bootstrap.js"></script>
+
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/add2home/add2home.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
+                <link rel="stylesheet" type="text/css" href="lib/calc-elements/css/bootstrap.css" />
+
+</head>
+<body>
+		<div id="head-pbs">
+    
+  
+</div>
+
+<div id="container">
+
+	
+	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
+<div id="content">
+ <div id="nav_outermost" class="clearfix">
+            <div id="nav_outer">
+                <div id="nav-main-prev" class="nav_control">&laquo;</div>
+                <div id="nav-main">
+                    <div id="nav_container"><!-- Navigation options now loaded in lib/map_center/navigation.js --></div>
+                </div>
+                <div id="nav-main-next" class="nav_control">&raquo;</div>
+            </div>
+            <div id="nav_toggle" class="open"><a href="#">Close</a></div>
+        </div>
+        <div id="view_info">
+            <h1>Electoral calculator</h1>
+            <div id="view_tabs"></div>
+        </div>
+        <div id="content_area">
+<h2 id="instructions"> <span id="instructions_before">Click states to create your 2012 prediction</span> <span id="instructions_after">Click states to change party</span> </h2>            <div id="sidebar">
+                <div class="sidebar-info">
+                    <h3 id="sidebar_title">2012 prediction</h3>
+                    <div id="ec_tally">
+                        <h4 id="ec_name_d" class="ec_name">Obama</h4>
+                        <div id="ec_detail_d" class="ec_detail">
+                            <span id="ec_total_d" class="ec_total">0</span> electoral votes
+                            <div id="ec_win_d" class="ec_win"><img src="check.png" alt="Democrats win" /></div>
+                        </div>
+                        <h4 id="ec_name_r" class="ec_name">Romney</h4>
+                        <div id="ec_detail_r" class="ec_detail">
+                            <span id="ec_total_r" class="ec_total">0</span> electoral votes
+                            <div id="ec_win_r" class="ec_win"><img src="check.png" alt="Republicans win" /></div>
+                        </div>
+                        <h4 id="ec_name_t" class="ec_name">Tossup</h4>
+                        <div id="ec_detail_t" class="ec_detail">
+                            <span id="ec_total_t" class="ec_total">0</span> electoral votes
+                            <div id="ec_win_t" class="ec_win"><img src="check.png" alt="Other party wins" /></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
+                      <!--End main sidebar-info -->
+                  <div class="sidebar-info" >
+            <h3 id="sidebar_title">Share Your Map</h3>
+            <div class="share-wrap">
+            <a class="facebook-link" href="#">F</a>
+            <a class="twitter-link" href="#" data-lang="en">T</a>
+
+            <a class="copy-link"  data-toggle="modal" href="#copy-url-modal">Copy URL</a>
+            <div class="modal hide" id="copy-url-modal">
+                      <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>Copy the URL Below to Share Your 2012 Prediction</h3>
+              </div>
+                      <div class="modal-body">
+                <input type="text" id="copy-link-input" name="copy-link-input" />
+              </div>
+                      <div class="modal-footer"> <a href="#" class="btn" data-dismiss="modal">Close</a> </div>
+                    </div>
+                    </div>
+          </div>
+                  <div class="sidebar-info reset">
+            <h3 id="sidebar_title">Reset Map</h3>
+            <div class="dropdown btn-group" id="menu1"> <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#"> Choose Map <span class="caret"></span> </a>
+                      <ul class="dropdown-menu" style="right: -10px; left: auto; padding:10px;">
+                                      <li><a href="calc.html#states=lrGSpRqGBlvGnqBlKp" id="use-ap-projections">2012 AP Projections</a></li>
+
+      <li class="divider"></li>
+                <li><a href="calc.html#states=lqGCqBqGBlGGCqBlGp">2008 Election Results</a></li>
+                <li><a href="calc.html#states=lpGmplqGBlmClqBlCp">2004 Election Results</a></li>
+                <li><a href="calc.html#states=lpGmpBqGBllGlqBlCp">2000 Election Results</a></li>
+                <li><a href="calc.html#states=mFGCpCGGClqGmGBBCF">1996 Election Results</a></li>
+                <li><a href="calc.html#states=lGGqpCGGCBqGmqBBCF">1992 Election Results</a></li>
+                <li><a href="calc.html#states=llmmlBlpBllmlpBlmF">1988 Election Results</a></li>
+                <li><a href="calc.html#states=llmlllllBlllllllll">1984 Election Results</a></li>
+                <li><a href="calc.html#states=llmqlllBBlllllBllB">1980 Election Results</a></li>
+                <li><a href="calc.html#states=BBqGlmBFGllmCmFFlF">1976 Election Results</a></li>
+                <li><a href="calc.html#states=llmllllpllllllllll">1972 Election Results</a></li>
+                <li><a href="calc.html#states=RBCullWGJllmlmBpmB">1968 Election Results</a></li>
+                <li><a href="calc.html#states=pGGCGGqGCGGGGGCGGG">1964 Election Results</a></li>
+                
+              </ul>
+                    </div>
+          </div>
+                </div>
+            <div id="map"></div>
+            <div id="chart"></div>
+            <div class="clear"></div>
+            <h2 id="ap_projection_attribution" class="attribution">2012 Associated Press projection shown</h2>
+        </div>
+        
+
+</div>
+
+	</div>
+	
+
+
+<!-- ClickTale Bottom part -->
+
+<script type="text/javascript">
+		
+        $(document).ready(function(){
+    $('#copy-url-modal').modal({show: false}),
+	$('#copy-url-modal').on('show', function() {
+        // Update contents of text field
+        $('#copy-link-input').val(window.location.href);
+    }),
+	$('.dropdown-toggle').dropdown()
+});</script>
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-5do3OH0wrSfK6"
+};
+</script>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
+<!-- End Quantcast tag --></body>
+</html>

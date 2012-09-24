@@ -1,0 +1,141 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title>2012 Political Map Center | PBS NewsHour</title>
+	<meta name="description" content="The map features an electoral college calculator which includes historical data going back to the 1964 election" />
+	<meta name="author" content="map, politics, 2012 election, electoral college calculator" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png" />
+	 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Safari (iOS) settings -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+<meta property="og:title" content="PBS NewsHour Map Center | Electoral Calculator" /> 
+		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
+		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.0/dojo/dojo.js"></script>
+        <script type="text/javascript" src="lib/highcharts.js"></script>
+        <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
+        <script src="js/libs/modernizr-2.0.6.min.js"></script>
+        <script type="text/javascript">//<![CDATA[
+            // Defining helper functions here
+            
+            // Namespace factory
+            var namespace=function(c,f,b){var e=c.split(f||"."),g=b||window,d,a;for(d=0,a=e.length;d<a;d++){g=g[e[d]]=g[e[d]]||{}}return g};
+        //]]></script>
+        <!-- Map Center core -->
+        <script type="text/javascript" src="lib/maps/states_only.js"></script>
+        <script type="text/javascript" src="lib/map_center/usps_fips.js"></script>
+        <script type="text/javascript" src="lib/map_center/navigation.js"></script>
+        <script type="text/javascript" src="lib/map_center/main.js"></script>
+        <!-- Individual Map Center modules -->
+        <script type="text/javascript" src="lib/map_center/modules/electoral_college.js"></script>
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/modules/electoral_college.css" />
+</head>
+<body>
+		<div id="head-pbs">
+    
+  
+</div>
+
+<div id="container">
+
+	
+	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
+<div id="content">
+ <div id="nav_outermost" class="clearfix">
+            <div id="nav_outer">
+                <div id="nav-main-prev" class="nav_control">&laquo;</div>
+                <div id="nav-main">
+                    <div id="nav_container"><!-- Navigation options now loaded in lib/map_center/navigation.js --></div>
+                </div>
+                <div id="nav-main-next" class="nav_control">&raquo;</div>
+            </div>
+            <div id="nav_toggle" class="open"><a href="#">Close</a></div>
+        </div>
+        <div id="view_info">
+            <h1>Electoral results</h1>
+            <div id="view_tabs">
+                <div class="view_tab view_tab_more view_tab_active"><a href="#" id="view_tab_more_shown" class="view_tab_option">2008</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                    <ul id="view_tab_more_menu">
+                        <li style="display: none;"><a href="#" class="view_tab_option">2008</a></li>
+                        <li><a href="#" class="view_tab_option">2004</a></li>
+                        <li><a href="#" class="view_tab_option">2000</a></li>
+                        <li><a href="#" class="view_tab_option">1996</a></li>
+                        <li><a href="#" class="view_tab_option">1992</a></li>
+                        <li><a href="#" class="view_tab_option">1988</a></li>
+                        <li><a href="#" class="view_tab_option">1984</a></li>
+                        <li><a href="#" class="view_tab_option">1980</a></li>
+                        <li><a href="#" class="view_tab_option">1976</a></li>
+                        <li><a href="#" class="view_tab_option">1972</a></li>
+                        <li><a href="#" class="view_tab_option">1968</a></li>
+                        <li><a href="#" class="view_tab_option">1964</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="content_area">
+            <div id="sidebar" class="historical">
+                <div class="sidebar-info">
+                    <h3 id="sidebar_title">Electoral results</h3>
+                    <div id="ec_tally">
+                        <h4 id="ec_name_d" class="ec_name">Democrats</h4>
+                        <div id="ec_detail_d" class="ec_detail">
+                            <span id="ec_total_d" class="ec_total">0</span> electoral votes
+                            <div id="ec_win_d" class="ec_win"><img src="check.png" alt="Democrats win" /></div>
+                        </div>
+                        <h4 id="ec_name_r" class="ec_name">Republicans</h4>
+                        <div id="ec_detail_r" class="ec_detail">
+                            <span id="ec_total_r" class="ec_total">0</span> electoral votes
+                            <div id="ec_win_r" class="ec_win"><img src="check.png" alt="Republicans win" /></div>
+                        </div>
+                        <h4 id="ec_name_t" class="ec_name">Tossup</h4>
+                        <div id="ec_detail_t" class="ec_detail">
+                            <span id="ec_total_t" class="ec_total">0</span> electoral votes
+                            <div id="ec_win_t" class="ec_win"><img src="check.png" alt="Other party wins" /></div>
+                        </div>
+                    </div>
+                </div>
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
+            </div>
+            <div id="map"></div>
+            <div id="chart"></div>
+            <div class="clear"></div>
+            <h2 class="attribution">Source: AP, <a href="http://www.fec.gov/pubrec/electionresults.shtml">Federal Election Commission</a>, <a href="http://clerk.house.gov/member_info/electionInfo/index.aspx">U.S. House of Representatives</a></h2>
+        </div>
+
+</div>
+
+	</div>
+	
+
+
+<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
+
+<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
+
+</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
+
+</script><!-- ClickTale end of Bottom part -->
+
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-5do3OH0wrSfK6"
+};
+</script>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
+<!-- End Quantcast tag --></body>
+</html>

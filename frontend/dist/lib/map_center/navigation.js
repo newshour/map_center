@@ -123,6 +123,7 @@ $(document).ready(function() {
     
     var currentFilename = getFilename(window.location.href);
     var isBroadcast = currentFilename.indexOf('-broadcast') != -1;
+    var isMobile = currentFilename.indexOf('-mobile') != -1;
     
     $('#nav_container').empty();
     for (var i = 0, length = navObjects.length; i < length; i++) {
@@ -130,6 +131,8 @@ $(document).ready(function() {
         
         if (isBroadcast) {
             var navObjectHref = navObject.href.replace('.html', '-broadcast.html');
+        } else if (isMobile) {
+            var navObjectHref = navObject.href.replace('.html', '-mobile.html');
         } else {
             var navObjectHref = navObject.href;
         }
