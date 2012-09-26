@@ -167,6 +167,8 @@ $map_module = (isset($_GET['map_module']) && array_search($_GET['map_module'], $
 $static_maps_type = (isset($_GET['static_maps_type']) && isset($STATIC_VIEWS_ATTRIB[$_GET['static_maps_type']])) ? $_GET['static_maps_type'] : 'diversity';
 $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_MAX_INDEX[$static_maps_type]) && (int) $_GET['static_maps_index'] <= $STATIC_VIEWS_MAX_INDEX[$static_maps_type]) ? (int) $_GET['static_maps_index'] : 0;
 
+$nobranding = (isset($_GET['nobranding']) && (bool) $_GET['nobranding']) ? true : false;
+
 $instructions = null;
 if ($map_module == 'electoral_college') {
     $instructions = 'Click states to change party<br /><span class="smaller" id="ap_projection_attribution">(AP projection shown)</span>';
@@ -197,7 +199,9 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="embed.css" />
+      <?php if ($nobranding) { ?>
         <link rel="stylesheet" type="text/css" href="nobranding.css" />
+      <?php } ?>
         <script type="text/javascript" src="respond.min.js"></script>
         <!-- JS libraries -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
