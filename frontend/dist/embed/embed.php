@@ -197,6 +197,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="embed.css" />
+        <link rel="stylesheet" type="text/css" href="nobranding.css" />
         <script type="text/javascript" src="respond.min.js"></script>
         <!-- JS libraries -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>

@@ -322,7 +322,7 @@ a img {border: 0;}
         font-size: 0.75em;  /* 12px / 16px -- context set */
     }
 	
-	#emheader {width:100%; background-color:#162147; border-bottom:4px solid #b00402;  background-image:url(bg.jpg); background-repeat:no-repeat;}
+	#emheader { width:100%; background-color:#162147; border-bottom:4px solid #b00402;  background-image:url(bg.jpg); background-repeat:no-repeat;}
 	#emlogo {width:100%; float:left; max-width:659px; max-height:60px;}
 	#emlogo img {width:96%;  margin:0px 2% 0 2%;}
 	#emtitle { width: 50%; float:left;  max-width:227px;}
