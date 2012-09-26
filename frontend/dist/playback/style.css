@@ -8,13 +8,7 @@
   float: left;
   width: 560px;
 }
-.video-container h1 {
-  font-weight: 500;
-  text-transform: uppercase;
-  color: #8b080d;
-  margin: 0;
-  padding: 10px;
-}
+
 .map-container {
   width: 560px;
 }
@@ -25,3 +19,10 @@ iframe {
 .map-embed {
   height: 700px;
 }
+
+
+
+.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
+ .title { background-image: url('/newshour/images/primary2/common/logo.png'); float: left; background-repeat:no-repeat; width:100%;}
+
+.segment-info h2 {}
