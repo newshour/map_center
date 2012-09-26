@@ -1,0 +1,14 @@
+.wrapper {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+iframe {
+  width: 560px;
+  height: 315px;
+  float: left;
+}
+
+.map-embed {
+  height: 700px;
+}
