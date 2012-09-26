@@ -1,14 +1,27 @@
 .wrapper {
+  font-family: "Helvetica Neue";
   width: 1200px;
   margin: 0 auto;
 }
-
+.video-container,
+.map-container {
+  float: left;
+  width: 560px;
+}
+.video-container h1 {
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #8b080d;
+  margin: 0;
+  padding: 10px;
+}
+.map-container {
+  width: 560px;
+}
 iframe {
   width: 560px;
   height: 315px;
-  float: left;
 }
-
 .map-embed {
   height: 700px;
 }
