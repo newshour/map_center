@@ -1,28 +1,67 @@
+/*********************************************************
+* General
+*/
+
 .wrapper {
-  font-family: "Helvetica Neue";
-  width: 1200px;
+  font-family: "Helvetica Neue", sans-serif;
+  width: 1100px;
   margin: 0 auto;
 }
+
+iframe {
+  width: 100%;
+}
+
 .video-container,
 .map-container {
   float: left;
-  width: 560px;
 }
 
-.map-container {
-  width: 560px;
+/*********************************************************
+* Video
+*/
+
+.video-container {
+  width: 700px;
 }
-iframe {
-  width: 560px;
-  height: 315px;
+.video-embed {
+  height: 450px;
+}
+
+/*********************************************************
+* Map
+*/
+.map-container {
+  width: 400px;
 }
 .map-embed {
+  width: 400px;
   height: 700px;
 }
 
 
+/*********************************************************
+* Metadata
+*/
 
-.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
- .title { background-image: url('/newshour/images/primary2/common/logo.png'); float: left; background-repeat:no-repeat; width:100%;}
+.metadata {
+  padding: 20px;
+  border: 1px solid #CCC;
+  margin-top: -10px;
+  border-radius: 0 0 3px 3px;
+}
 
-.segment-info h2 {}
+.ir { 
+  display: block; 
+  text-indent: -999em;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  text-align: left;
+  direction: ltr; 
+}
+ .title { 
+  background-image: url('/newshour/images/primary2/common/logo.png'); 
+  float: left;
+  background-repeat:no-repeat;
+  width:100%;
+}
