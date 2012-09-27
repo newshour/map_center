@@ -4,8 +4,8 @@
 
 .wrapper {
   font-family: "Helvetica Neue", sans-serif;
-  width: 1100px;
-  margin: 0 auto;
+  width: 1150px;
+  margin: 40px auto;
 }
 
 iframe {
@@ -22,20 +22,46 @@ iframe {
 */
 
 .video-container {
-  width: 700px;
+  width: 600px;
+  position: relative;
+  z-index: 1000;
 }
 .video-embed {
-  height: 450px;
+  height: 400px;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.small-video {
+  -webkit-transform: scale( 0.6, 0.6 );
+  -webkit-transform-origin: 0 0;
+  -moz-transform: scale( 0.6, 0.6 );
+  -moz-transform-origin: 0 0;
 }
 
 /*********************************************************
 * Map
 */
 .map-container {
-  width: 400px;
+  width: 550px;
+  opacity: 0.2;
+  margin-left: -50px;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.map-container.live,
+.map-container:hover {
+  opacity: 1;
+  margin-left: 0;
 }
 .map-embed {
-  width: 400px;
+  width: 550px;
   height: 700px;
 }
 
@@ -49,6 +75,8 @@ iframe {
   border: 1px solid #CCC;
   margin-top: -10px;
   border-radius: 0 0 3px 3px;
+  background: #FFF;
+  box-shadow: 0 5px 10px -4px #CCC;
 }
 
 .ir { 
@@ -59,9 +87,10 @@ iframe {
   text-align: left;
   direction: ltr; 
 }
- .title { 
+
+.title { 
   background-image: url('/newshour/images/primary2/common/logo.png'); 
   float: left;
-  background-repeat:no-repeat;
-  width:100%;
+  background-repeat: no-repeat;
+  width: 100%;
 }

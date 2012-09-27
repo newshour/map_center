@@ -5,13 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Playback</title>
   <meta name="viewport" content="width=device-width" />
-
+  <script src="/map_center/shared/lib/popcorn-complete-1.3.js"></script>
+  <script src="script.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="wrapper">
     <div class="video-container">
-      <iframe class="video-embed" src="http://www.youtube.com/embed/IkGgUVlXNIk" frameborder="0" allowfullscreen></iframe>
+      <div id="media" class="video-embed"></div>
       <div class="metadata">
         <h1 class="ir title">PBS NewsHour</h1>
         <div class="segment-info">
@@ -25,6 +26,7 @@
       <iframe class="map-embed" src="/map_center/frontend/dist/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=08general&nobranding=1" scrolling="no" frameborder="0"></iframe>
     </div>
   </div>
+
 </body>
 </html>
 

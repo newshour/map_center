@@ -1,7 +1,28 @@
-#emheader {
-    display: none;
+/*********************************************************
+* General
+*/
+
+#content {
+  background: none;
 }
 
+#emheader {
+  display: none;
+}
+
+/*********************************************************
+* Map title
+*/
 #view_info h1 {
-    margin-top: 0;
+  margin-top: 10px;
+}
+#view_info h1:before {
+  float: left;
+  margin-right: 5px;
+  content: "Map";
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 6px 10px;
+  background: #8B080D;
+  color: #FFF;
 }
