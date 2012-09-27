@@ -99,6 +99,7 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
+            "frontend/dist/lib/map_center/modules/shared/lib/popcorn.ie8.js",
             "frontend/dist/lib/map_center/modules/shared/lib/*.js",
             "frontend/dist/lib/map_center/modules/shared/livemap_status.js",
             "frontend/dist/lib/map_center/modules/shared/livemap_connection.js",
@@ -109,6 +110,7 @@ module.exports = function(grunt) {
       },
       playback: {
         src: [
+            "frontend/dist/lib/map_center/modules/shared/lib/popcorn.ie8.js",
             "frontend/dist/lib/map_center/modules/shared/lib/popcorn*.js",
             "frontend/dist/lib/map_center/modules/shared/livemap_status.js",
             "frontend/dist/lib/map_center/modules/shared/livemap_popcorn.js",
