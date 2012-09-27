@@ -5,25 +5,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Playback</title>
   <meta name="viewport" content="width=device-width" />
-  <script src="/map_center/shared/lib/popcorn-complete-1.3.js"></script>
-  <script src="script.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  <script src="../lib/map_center/modules/livemap-playback.js"></script>
   <link rel="stylesheet" href="style.css" />
+  <script type="application/json" id="live-map-data">[{"timeStamp":2976,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=unemployment&nobranding=1"}},{"timeStamp":113908,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=oh&static_maps_type=unemployment&nobranding=1"}},{"timeStamp":140619,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=oh&static_maps_type=08general&nobranding=1"}},{"timeStamp":162227,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=oh&static_maps_type=unemployment&nobranding=1"}},{"timeStamp":176465,"mapState":{"href":"http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&map_view=ia&static_maps_type=unemployment&nobranding=1"}}]</script>
 </head>
 <body>
   <div class="wrapper">
     <div class="video-container">
-      <div id="media" class="video-embed"></div>
+      <div id="live-map-media" class="video-embed" data-youtube-url="http://www.youtube.com/watch?v=IkGgUVlXNIk"></div>
       <div class="metadata">
         <h1 class="ir title">PBS NewsHour</h1>
         <div class="segment-info">
           <h2>Map Center: What Swing States Say About Jobs and the Economy</h2>
-          <p>Aired Dec. 3, 1998 </p>
+          <p>Aired Aug. 28, 2012</p>
         </div>
       </div>
     </div>
 
     <div class="map-container">
-      <iframe class="map-embed" src="/map_center/frontend/dist/embed/embed.php?map_module=static_maps&map_view=us_all&static_maps_type=08general&nobranding=1" scrolling="no" frameborder="0"></iframe>
+      <iframe id="live-map-frame" class="map-embed" src="http://www.pbs.org/newshour/vote2012/map/embed/embed.php?map_module=static_maps&amp;map_view=us_all&amp;static_maps_type=unemployment&amp;nobranding=1" scrolling="no" frameborder="0"></iframe>
     </div>
   </div>
 
