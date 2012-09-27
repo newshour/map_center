@@ -1,7 +1,7 @@
 /*jshint evil:true */
 var express = require("express");
 var fs = require("fs");
-var io = require("socket.io-client");
+var io = require("./socket.io-client");
 var optimist = require("optimist");
 
 var app = express();
@@ -19,12 +19,18 @@ var argParser = optimist
     .describe("v", "Periodically print connection status")
     .boolean("v")
     .alias("v", "verbose")
+    .describe("t", "Transport mechanism")
+    .alias("t", "transport")
+    .default("t", "websocket")
     .check(function(args) {
         if (typeof args.c !== "number") {
             throw "c must be a number";
         }
         if (typeof args.p !== "number") {
             throw "p must be a number";
+        }
+        if (!~["websocket", "xhr-polling"].indexOf(args.t)) {
+            throw "unrecognized transport";
         }
     });
 var argv = argParser.argv;
@@ -128,9 +134,16 @@ var handlers = {
     }
 };
 
-
 for (idx = 0; idx < clientCount; ++idx) {
     connection = new this.liveMap.Connection();
+    // WARNING
+    // This method of forcing the socket's transport is undocumented and may
+    // not function in future versions of Socket.io. It is necessary because
+    // the server's supported transports will be given priority over those
+    // declared by the client, so the supported method (i.e. specifying the
+    // transports in the socket's construtor) will result in clients using
+    // WebSockets regardless.
+    connection._socket.transports = [argv.t];
     connection.connect();
     connection.on("connect", handlers.connect.bind(connection));
     connection.on("disconnect", handlers.disconnect.bind(connection));
