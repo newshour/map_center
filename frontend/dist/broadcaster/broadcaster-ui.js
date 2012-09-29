@@ -556,7 +556,7 @@ $(document).ready(function() {
     (function() {
         for (var elementId in categories) {
             if (categories.hasOwnProperty(elementId)) {
-                var $firstChild = categories[elementId].$element.children().first();
+                var $firstChild = categories[elementId].$element.children('ul').first();
                 var $firstChildLink = $firstChild.find('a').first();
                 var firstChildValue = $firstChildLink.attr('href').substring(1);
                 categories[elementId].active = firstChildValue;
