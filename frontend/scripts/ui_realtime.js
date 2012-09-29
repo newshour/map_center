@@ -12,14 +12,6 @@
     var connection = new liveMap.Connection();
     var urlMatch;
 
-    function updateIframe(status) {
-        if (status.href !== "unavailable") {
-            $("#live-map-frame").attr("src", status.href);
-        } else {
-            $("#live-map-frame").attr("src", "about:blank");
-        }
-    }
-
     function unavailableHandler(event) {
         $("#backend-controls").show();
         $("#sidebar").append("<strong>Service unavailable.</strong>");
@@ -67,17 +59,6 @@
 
             liveMap.popcorn(popcorn, {
                 ignore: false
-            });
-        });
-
-        $("#map svg").click(function() {
-            // attach map click handlers
-            $ui.buttons.showLive.show();
-            $ui.status.text("Now editing.");
-            connection.off("updateMap", liveMap.status.set);
-
-            liveMap.popcorn(popcorn, {
-                ignore: true
             });
         });
 
@@ -158,20 +139,20 @@
         $ui.container.append($ui.status, $ui.buttons.start, $ui.buttons.stop);
         $ui.buttons.stop.hide();
 
+        function emitUpdate(event, status) {
+            connection.emit("updateMap", status);
+        }
         $ui.buttons.start.on("click", function() {
             $ui.buttons.start.hide();
             $ui.buttons.stop.show();
-            $("#frame-options").on("click.broadcast", "a", function(event) {
-                connection.emit("updateMap", {
-                    href: $(event.target).attr("href")
-                });
-            });
+
+            liveMap.status.on("change", emitUpdate);
         });
         $ui.buttons.stop.on("click", function() {
             $ui.buttons.stop.hide();
             $ui.buttons.start.show();
 
-            $("#frame-options").off("click.broadcast");
+            liveMap.status.off("change", emitUpdate);
         });
 
         // Generate hyperlinks to backend OAuth services. Derive the URL from
@@ -184,42 +165,6 @@
         }).join(" | ");
 
         $ui.loginOptions.append($(linkHtml)).prependTo(document.body);
-
-        // Send status messages as frame updates
-        $('#live-map-frame').load(function() {
-            try {
-                var subWindow = this.contentWindow;
-                var frameLocation = subWindow.location.href;
-                if (frameLocation) {
-                    liveMap.status.set({
-                        href: subWindow.location.href
-                    });
-                    // Bind hashchange event so we can still pick
-                    // it up
-                    $(subWindow.document).ready(function() {
-                        if ('onhashchange' in subWindow) {
-                            $(subWindow).bind('hashchange', function() {
-                                liveMap.status.set({
-                                    href: subWindow.location.href
-                                });
-                            });
-                        }
-                    });
-                } else {
-                    // Chrome doesn't actually throw anything and just
-                    // sets frameLocation to undefined, so we need to
-                    // check for that and throw something (_anything_)
-                    // ourselves to trigger the catch block below.
-                    throw true;
-                }
-            } catch(e) {
-                // liveMap.status.set({
-                //     href: "unavailable"
-                // });
-
-                // Do nothing
-            }
-        });
 
         connection.on("updateMap", liveMap.status.set);
         connection.on("reconnecting", function() {
@@ -254,17 +199,16 @@
 
         urlMatch = window.location.search.match(/(?:^\?|&)networked(?:=([^&]+))?(&|$)/i);
 
-        // Change iframe URL whenever a link gets clicked
-        $("#frame-options").on("click", "a", function(event) {
+        // When we click the .big-red-button, send out the next update.
+        var $broadcasterQueued = $('#broadcaster-queued');
+        var $broadcasterQueueForm = $('#broadcaster-queue');
+        function fireNextChange(event) {
             liveMap.status.set({
-                href: $(event.target).attr("href")
+                href: $broadcasterQueued.val()
             });
             event.preventDefault();
-        });
-
-        liveMap.status.on("change", function(event, status) {
-            updateIframe(status);
-        });
+        }
+        $broadcasterQueueForm.submit(fireNextChange);
 
         // Do not initiate a connection if the pattern does not match
         if (!urlMatch) {
