@@ -37,7 +37,7 @@ var argv = argParser.argv;
 
 var clientCount = argv.c;
 // The interval that clients send "heartbeat" messages to the server
-var heartbeatInterval = 25*1000;
+var heartbeatInterval = 120*1000;
 var idx;
 var Connection;
 var connection;
