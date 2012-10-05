@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Map Center second-screen viewer</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="../lib/map_center/modules/livemap.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var $mapFrame = $('#live-map-frame');
+                liveMap.status.on("change", function(event, status) {
+                    if (status.href !== "unavailable") {
+                        $mapFrame.attr("src", status.href);
+                    } else {
+                        $mapFrame.attr("src", "about:blank");
+                    }
+                });
+            });
+        </script>
+        <style type="text/css">
+            #backend-controls {display: none;}
+            #live-map-frame {width: 800px; height: 500px; border: 0;}
+        </style>
+    </head>
+    <body>
+        <div id="backend-controls">
+            <h2>Backend connection controls</h2>
+            <div id="sidebar"></div>
+        </div>
+        <div id="map-content">
+            <h2>Map content</h2>
+            <iframe id="live-map-frame" scrolling="no"></iframe>
+        </div>
+    </body>
+</html>
