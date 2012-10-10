@@ -1,0 +1,43 @@
+#! /bin/bash
+# /etc/init.d/mapcenter-runner
+
+### BEGIN INIT INFO
+# Provides:		mapcenter-runner
+# Required-Start:	$syslog $remote_fs redis-server
+# Required-Stop:	$syslog $remote_fs redis-server
+# Should-Start:		$local_fs
+# Should-Stop:		$local_fs
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Short-Description:	MapCenter service
+### END INIT INFO
+
+# The user designated to run the Node.js service
+NODE_USER=noder
+
+case "$1" in
+  start)
+    # Set the maximum number of open file descriptors to a number at least as
+    # large as the expected number of simultaneous clients. While it would be
+    # more appropriate to set this value inside the startup script itself, an
+    # open bug in Debian prevents any ulimits from being set with
+    # `start-stop-daemon`
+    # Bug Report:
+    #   http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=302079
+    # StackExchange discussion:
+    #   http://superuser.com/questions/454465/make-ulimits-work-with-start-stop-daemon
+    ulimit -n 40960
+
+    # Initiate the startup script as the designated Node.js user
+    start-stop-daemon --start --startas /bin/bash --user $NODE_USER --background --chuid $NODE_USER:users -- /home/$NODE_USER/startup.sh
+    ;;
+  stop)
+    start-stop-daemon --stop --user $NODE_USER
+    ;;
+  *)
+    echo "Usage: /etc/init.d/mapcenter-runner {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0

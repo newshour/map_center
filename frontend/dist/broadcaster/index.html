@@ -1,0 +1,608 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Broadcaster options</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="../lib/map_center/modules/livemap.js"></script>
+        <script type="text/javascript" src="broadcaster-ui.js"></script>
+        <style type="text/css">
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+            .queue-item {
+                width: 75%;
+                border: 0;
+                border-bottom: 1px solid #000;
+                padding-bottom: 0.5em;
+            }
+            .big-red-button {
+                border: 1px solid #000;
+                background-color: #900;
+                color: #fff;
+                padding: 0.5em;
+            }
+            .category ul {
+                margin-top: 0;
+                margin-right: 0;
+                margin-bottom: 0;
+                margin-left: 2em;
+                padding: 0;
+            }
+            .category li {
+                display: inline-block;
+                margin-top: 0;
+                margin-right: 1em;
+                margin-bottom: 0;
+                margin-left: 0;
+                padding: 0;
+            }
+                .category li:hover, .configurator .state-vote:hover {background-color: #fcc;}
+                .category li a {
+                    display: block;
+                    padding: 0.5em;
+                    width: 100%;
+                    height: 100%;
+                }
+            .active, .active:hover {background-color: #cfc !important;}
+            
+            .configurator, .configurator thead, .configurator tbody, .configurator th, .configurator td, .configurator tr {display: block;}
+            .configurator {
+                -moz-columns: 4;
+                -webkit-columns: 4;
+                columns: 4;
+                margin-left: 2em;
+            }
+            .configurator thead {display: none;}
+            .configurator tr {margin-right: 3em;}
+                .configurator td {
+                    display: inline-block;
+                    margin: 0;
+                    padding: 0;
+                }
+                    .configurator td a {
+                        display: block;
+                        padding: 0.25em;
+                        width: 100%;
+                        height: 100%;
+                    }
+                .configurator .state-name {width: 12em;}
+        </style>
+    </head>
+    <body>
+        <form class="queue-main" id="broadcaster-queue">
+            <input type="text" id="broadcaster-queued" name="broadcaster-queued" class="queue-item" />
+            <button id="broadcaster-fire" name="broadcaster-fire" class="big-red-button">Fire</button>
+        </form>
+        <div id="backend-controls">
+            <h3>Backend controls:</h3>
+            <div id="sidebar"></div>
+        </div>
+        <div class="map-select">
+            <div class="category" id="map-select-module">
+                <h4>Map type:</h4>
+                <ul>
+                    <li><a href="#static_maps">Data sets</a></li>
+                    <li><a href="#electoral_college">Electoral College calculator</a></li>
+                    <li><a href="#past_primaries">Past primaries</a></li>
+                </ul>
+            </div>
+            <div class="category" id="map-select-view">
+                <h4>View:</h4>
+                <ul>
+                    <li><a href="#us_all">All states</a></li>
+                    <li><a href="#al">Ala.</a></li>
+                    <li><a href="#ak">Alaska</a></li>
+                    <li><a href="#az">Ariz.</a></li>
+                    <li><a href="#ar">Ark.</a></li>
+                    <li><a href="#ca">Calif.</a></li>
+                    <li><a href="#co">Colo.</a></li>
+                    <li><a href="#ct">Conn.</a></li>
+                    <li><a href="#de">Del.</a></li>
+                    <li><a href="#fl">Fla.</a></li>
+                    <li><a href="#ga">Ga.</a></li>
+                    <li><a href="#hi">Hawaii</a></li>
+                    <li><a href="#id">Idaho</a></li>
+                    <li><a href="#il">Ill.</a></li>
+                    <li><a href="#in">Ind.</a></li>
+                    <li><a href="#ia">Iowa</a></li>
+                    <li><a href="#ks">Kan.</a></li>
+                    <li><a href="#ky">Ky.</a></li>
+                    <li><a href="#la">La.</a></li>
+                    <li><a href="#me">Maine</a></li>
+                    <li><a href="#md">Md.</a></li>
+                    <li><a href="#ma">Mass.</a></li>
+                    <li><a href="#mi">Mich.</a></li>
+                    <li><a href="#mn">Minn.</a></li>
+                    <li><a href="#ms">Miss.</a></li>
+                    <li><a href="#mo">Mo.</a></li>
+                    <li><a href="#mt">Mont.</a></li>
+                    <li><a href="#ne">Neb.</a></li>
+                    <li><a href="#nv">Nev.</a></li>
+                    <li><a href="#nh">N.H.</a></li>
+                    <li><a href="#nj">N.J.</a></li>
+                    <li><a href="#nm">N.M.</a></li>
+                    <li><a href="#ny">N.Y.</a></li>
+                    <li><a href="#nc">N.C.</a></li>
+                    <li><a href="#nd">N.D.</a></li>
+                    <li><a href="#oh">Ohio</a></li>
+                    <li><a href="#ok">Okla.</a></li>
+                    <li><a href="#or">Ore.</a></li>
+                    <li><a href="#pa">Pa.</a></li>
+                    <li><a href="#ri">R.I.</a></li>
+                    <li><a href="#sc">S.C.</a></li>
+                    <li><a href="#sd">S.D.</a></li>
+                    <li><a href="#tn">Tenn.</a></li>
+                    <li><a href="#tx">Texas</a></li>
+                    <li><a href="#ut">Utah</a></li>
+                    <li><a href="#vt">Vt.</a></li>
+                    <li><a href="#va">Va.</a></li>
+                    <li><a href="#wa">Wash.</a></li>
+                    <li><a href="#dc">D.C.</a></li>
+                    <li><a href="#wv">W.Va.</a></li>
+                    <li><a href="#wi">Wis.</a></li>
+                    <li><a href="#wy">Wyo.</a></li>
+                </ul>
+            </div>
+            <div class="category" id="map-select-type">
+                <h4>Category:</h4>
+                <ul>
+                    <li><a href="#08general">2008 general election results</a></li>
+                    <li><a href="#bachelors">Bachelor's degree holders 25 and older</a></li>
+                    <li><a href="#diversity">Diversity index</a></li>
+                    <li><a href="#ethnicity">Ethnicity</a></li>
+                    <li><a href="#evangelical">Evangelical Protestants</a></li>
+                    <li><a href="#foreclosures">Foreclosures</a></li>
+                    <li><a href="#income">Median household income</a></li>
+                    <li><a href="#patchwork_types">Patchwork Nation community types</a></li>
+                    <li><a href="#population_density">Population density</a></li>
+                    <li><a href="#primary_winners">Primary winners</a></li>
+                    <li><a href="#senate_six">Senate Six</a></li>
+                    <li><a href="#social_security">Social Security recipients</a></li>
+                    <li><a href="#unemployment">Unemployment rate</a></li>
+                    <li><a href="#unemployment_change">Unemployment change</a></li>
+                    <li><a href="#unions">Union workers</a></li>
+                    <li><a href="#voter_id">Voter ID laws</a></li>
+                </ul>
+            </div>
+            <div class="category" id="map-select-index-ethnicity">
+                <h4>Subcategory:</h4>
+                <ul>
+                    <li><a href="#0">White</a></li>
+                    <li><a href="#1">Black</a></li>
+                    <li><a href="#2">Hispanic</a></li>
+                    <li><a href="#3">Asian</a></li>
+                    <li><a href="#4">Native Hawaiian or Other Pacific Islander</a></li>
+                    <li><a href="#5">American Indian or Alaska Native</a></li>
+                </ul>
+            </div>
+            <div class="category" id="map-select-index-foreclosures">
+                <h4>Subcategory:</h4>
+                <ul>
+                    <li><a href="#3">Sales</a></li>
+                    <li><a href="#1">2009&ndash;2011 rate change</a></li>
+                    <li><a href="#2">2007&ndash;2011 rate change</a></li>
+                </ul>
+            </div>
+            <div class="category" id="map-select-index-unions">
+                <h4>Subcategory:</h4>
+                <ul>
+                    <li><a href="#0">Membership</a></li>
+                    <li><a href="#1">Representation</a></li>
+                </ul>
+            </div>
+            <div class="category" id="map-select-electoral-presets">
+                <h4>Preset scenario:</h4>
+                <ul>
+                    <li><a href="#lrGSpRqGBlvGnqBlKp" data-year="2012">2012 AP Projections</a></li>
+                    <li><a href="#lqGCqBqGBlGGCqBlGp" data-year="2008">2008 Election Results</a></li>
+                    <li><a href="#lpGmplqGBlmClqBlCp" data-year="2004">2004 Election Results</a></li>
+                    <li><a href="#lpGmpBqGBllGlqBlCp" data-year="2000">2000 Election Results</a></li>
+                    <li><a href="#mFGCpCGGClqGmGBBCF" data-year="1996">1996 Election Results</a></li>
+                    <li><a href="#lGGqpCGGCBqGmqBBCF" data-year="1992">1992 Election Results</a></li>
+                    <li><a href="#llmmlBlpBllmlpBlmF" data-year="1988">1988 Election Results</a></li>
+                    <li><a href="#llmlllllBlllllllll" data-year="1984">1984 Election Results</a></li>
+                    <li><a href="#llmqlllBBlllllBllB" data-year="1980">1980 Election Results</a></li>
+                    <li><a href="#BBqGlmBFGllmCmFFlF" data-year="1976">1976 Election Results</a></li>
+                    <li><a href="#llmllllpllllllllll" data-year="1972">1972 Election Results</a></li>
+                    <li><a href="#RBCullWGJllmlmBpmB" data-year="1968">1968 Election Results</a></li>
+                    <li><a href="#pGGCGGqGCGGGGGCGGG" data-year="1964">1964 Election Results</a></li>
+                </ul>
+            </div>
+            <div id="map-select-electoral-states">
+                <h4>Custom scenario:</h4>
+                <table class="configurator">
+                    <thead>
+                        <tr>
+                            <th>State/vote</th>
+                            <th><abbr title="Republican">R</abbr></th>
+                            <th><abbr title="Democratic">D</abbr></th>
+                            <th><abbr title="Tossup">T</abbr></th>
+                            <th><abbr title="Off/empty">O</abbr></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="state-name">Alabama</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Alaska</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Arizona</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Arkansas</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">California</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Colorado</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Connecticut</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Delaware</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">District of Columbia</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Florida</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Georgia</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Hawaii</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Idaho</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Illinois</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Indiana</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Iowa</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Kansas</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Kentucky</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Louisiana</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Maine popular vote (3)</td>
+                            <td class="state-vote"><a href="#rep" data-state="Maine" data-votes="3" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" data-state="Maine" data-votes="3" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" data-state="Maine" data-votes="3" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" data-state="Maine" data-votes="3" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Maine fourth vote (1)</td>
+                            <td class="state-vote"><a href="#rep" data-state="Maine" data-votes="1" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" data-state="Maine" data-votes="1" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" data-state="Maine" data-votes="1" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" data-state="Maine" data-votes="1" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Maryland</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Massachusetts</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Michigan</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Minnesota</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Mississippi</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Missouri</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Montana</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Nebraska popular vote (3)</td>
+                            <td class="state-vote"><a href="#rep" data-state="Nebraska" data-votes="3" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" data-state="Nebraska" data-votes="3" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" data-state="Nebraska" data-votes="3" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" data-state="Nebraska" data-votes="3" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Nebraska fourth vote (1)</td>
+                            <td class="state-vote"><a href="#rep" data-state="Nebraska" data-votes="1" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" data-state="Nebraska" data-votes="1" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" data-state="Nebraska" data-votes="1" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" data-state="Nebraska" data-votes="1" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Nebraska fifth vote (1)</td>
+                            <td class="state-vote"><a href="#rep" data-state="Nebraska" data-votes="1" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" data-state="Nebraska" data-votes="1" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" data-state="Nebraska" data-votes="1" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" data-state="Nebraska" data-votes="1" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Nevada</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">New Hampshire</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">New Jersey</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">New Mexico</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">New York</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">North Carolina</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">North Dakota</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Ohio</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Oklahoma</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Oregon</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Pennsylvania</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Rhode Island</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">South Carolina</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">South Dakota</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Tennessee</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Texas</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Utah</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Vermont</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Virginia</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Washington</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">West Virginia</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Wisconsin</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                        <tr>
+                            <td class="state-name">Wyoming</td>
+                            <td class="state-vote"><a href="#rep" title="Republican">R</a></td>
+                            <td class="state-vote"><a href="#dem" title="Democratic">D</a></td>
+                            <td class="state-vote"><a href="#toss" title="Tossup">T</a></td>
+                            <td class="state-vote"><a href="#off" title="Off/empty">O</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

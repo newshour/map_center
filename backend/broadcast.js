@@ -14,7 +14,10 @@ var socketEventHandlers = {
     connection: noop
 };
 var longestEvent = 2*60*60*1000;
-var tickInterval = 2*1000;
+var intervals = {
+    tick: 2*1000,
+    clientCountUpdate: 30*1000
+};
 
 var handlerGenerators;
 
@@ -64,7 +67,7 @@ var tick = function() {
 
         if (!activeBroadcast) {
             setHandlers("offAir", null, function(err) {
-                setTimeout(tick, tickInterval);
+                setTimeout(tick, intervals.tick);
             });
         } else {
 
@@ -78,7 +81,7 @@ var tick = function() {
         lowerTimestamp: now - longestEvent,
         // The upper timestamp should be greater than the tick interval to
         // account for the delay in retrieving broadcasts
-        upperTimestamp: now + tickInterval*2,
+        upperTimestamp: now + intervals.tick*2,
         expandReplays: true
     }, findActiveBroadcast);
 };
@@ -268,11 +271,20 @@ exports.initialize = function(httpServer, newBroadcastSchedule) {
         });
     }).on("connection", function(socket) {
 
+        socketServer.of("/broadcaster")
+            .emit("clientCount", socketServer.sockets.clients().length);
+
         socket.on("updateMap", function() {
             var args = Array.prototype.slice.call(arguments);
             socketEventHandlers.updateMap.apply(socket, args);
         });
     });
+
+    // Emit the client count to broadcasters on a regular interval
+    setInterval(function() {
+        socketServer.of("/broadcaster")
+            .emit("clientCount", socketServer.sockets.clients().length);
+    }, intervals.clientCountUpdate);
 
     tick();
 };

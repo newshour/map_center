@@ -35,8 +35,8 @@
             //   the default value found in lib/map_center/main.js.
             var nhmc_config = {
                 defaultAttributes: {
-                    'fill': '#fff',  // default county/state fill
-                    'stroke': '#b2b4b3'  // county/state stroke
+                    'fill': '#f1efef',  // default county/state fill
+                    'stroke': '#fff'  // county/state stroke
                 },
                 cityLabels: {
                     backgroundOpacity: 0.75,
@@ -50,9 +50,11 @@
                 }
             };
             
+            // Archival results of Wisconsin governor recall election
             var nhmcOtherVotesConfig = {
-                blankMap: true,
-                tooltipsEnabled: false
+                autoRefresh: false,
+                dataPath: 'http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/other_votes_archive/20120605-wi_recall/',
+                flyoutsEnabled: true
             };
         //]]></script>
         <!-- Map Center core -->
@@ -67,10 +69,7 @@
         <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
         <link rel="stylesheet" type="text/css" href="lib/map_center/modules/live.css" />
                 <link rel="stylesheet" type="text/css" href="lib/map_center/modules/nh-broadcast.css" />
-              <style type="text/css">
-			  .candidate_big .candidate_name {			line-height:.9em;
-			  }
-			  </style>
+              
 
 	
     </head><body>
@@ -93,7 +92,7 @@
             <div id="nav_toggle" class="open" style="margin-left: 370px !important;"><a href="#">Close</a></div>
         </div>
         <div id="view_info">
-            <h1>Results</h1>
+            <h1 style="z-index:1;">Results</h1>
             <div id="view_tabs">
                 <div class="view_tab view_tab_more view_tab_active"><a href="#wi" id="view_tab_more_shown" class="view_tab_option">Wisconsin</a><!--<a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>-->
                     <ul id="view_tab_more_menu">
@@ -184,20 +183,48 @@
                                 <div class="candidate_color">&nbsp;</div>
                                 <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                                 <div class="candidate_name">
-                                    <span class="candidate_name_first">Firstname</span><br />
                                     <span class="candidate_name_last">Lastname</span>
                                 </div>
+                                <div class="candidate_votes"></div>
                                 <div class="candidate_won"><img src="lib/images/won.png" /></div>
                                 <div class="clear"></div>
                             </div>
-                           
+                            <div class="candidate_small">
+                                <div class="candidate_color">&nbsp;</div>
+                                <div class="candidate_name">
+                                    <span class="candidate_name_first">Firstname</span>
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <div class="candidate_votes"></div>
+                            </div>
                         </div>
                         <div id="legend_candidates"></div>
                     </div>
                 </div>
                 <input name="map_view" id="map_view" type="hidden" value="wi" />
             </div>
-          
+            <div id="tooltip_template">
+                <div class="tooltip_content">
+                    <h2 class="tooltip_name"></h2>
+                    <h3 class="tooltip_title"><span class="tooltip_precincts_reporting">0</span> of <span class="tooltip_precincts_total">0</span> reporting</h3>
+                    <!--
+                        Other <span> classes you might be interested in:
+                            tooltip_precincts_percent
+                    -->
+                    <div class="tooltip_templates">
+                        <div class="tooltip_candidate">
+                            <div class="tooltip_candidate_color">&nbsp;</div>
+                            <div class="tooltip_candidate_name">
+                                <span class="tooltip_candidate_name_first">Firstname</span>
+                                <span class="tooltip_candidate_name_last">Lastname</span>
+                            </div>
+                            <div class="tooltip_candidate_vote_count"></div>
+                            <div class="tooltip_candidate_votes"></div>
+                        </div>
+                    </div>
+                    <div class="tooltip_candidates"></div>
+                </div>
+            </div>
             <div id="map"></div>
             <div id="chart"></div>
             <div class="clear"></div>

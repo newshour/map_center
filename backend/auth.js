@@ -1,3 +1,5 @@
+var fs = require("fs");
+var path = require("path");
 var _ = require("underscore");
 var express = require("express");
 var passport = require("passport");
@@ -5,11 +7,22 @@ var RedisStore = require("connect-redis")(express);
 var TwitterStrategy = require("passport-twitter").Strategy;
 var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
-// Credentials, stored in non-version-controlled files
-var CREDS = {
-    twitter: require("./credentials/oauth/twitter.json"),
-    google: require("./credentials/oauth/google.json")
-};
+// Credentials are loaded at run time from non-version-controlled files
+var CREDS = {};
+var credentialsDir = path.join(__dirname, "credentials/oauth");
+
+// Load JSON files with OAuth credentials
+// TODO: Remove hard-coded references to specific OAuth providers to promote
+// simpler addition/deletion of providers
+fs.readdirSync(credentialsDir)
+    // Ignore non-json files
+    .filter(function(fileName) {
+        return (/\.json$/i).test(fileName);
+    }).map(function(fileName) {
+        return require(path.join(credentialsDir, fileName));
+    }).forEach(function(contents) {
+        CREDS[contents.serviceName] = contents;
+    });
 
 // Dynamically generating a secret in this way means one less file will have to
 // be managed outside of the repository. The drawback is that, in the event of
