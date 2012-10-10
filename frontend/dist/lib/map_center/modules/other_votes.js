@@ -43,6 +43,7 @@ $(document).one('coreInitialized', function() {
             "Scott Walker": "lib/images/state_races/wi/walker.jpg"
         },
         condenseCandidates: false,
+        dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
         defaultRaceNames: {},
         flyoutsEnabled: false,
         friendlyRaceNames: {
@@ -959,7 +960,7 @@ $(document).one('coreInitialized', function() {
     // This gets called every so often to update our copy of the data.
     var getMapData = function(state) {
         $.ajax({
-            url: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/' + state + '_general.json',
+            url: config.dataPath + state + '_general.json',
             dataType: 'jsonp',
             jsonpCallback: state.toUpperCase(),
             success: function(data) {
