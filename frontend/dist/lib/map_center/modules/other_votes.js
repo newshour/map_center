@@ -34,21 +34,13 @@ $(document).one('coreInitialized', function() {
         candidateColors: {
            "No Preference": "#000000",
            "Other": "#838282",
-           // June 5: Wisconsin governor recall election
-           "Tom Barrett": "#000099",
-           "Scott Walker": "#990000"
         },
-        candidateImages: {
-            "Tom Barrett": "lib/images/state_races/wi/barrett.jpg",
-            "Scott Walker": "lib/images/state_races/wi/walker.jpg"
-        },
+        candidateImages: {},
         condenseCandidates: false,
         dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
         defaultRaceNames: {},
         flyoutsEnabled: false,
-        friendlyRaceNames: {
-            "President - GOP": "President (R)"
-        },
+        friendlyRaceNames: {},
         randomColors: [
             // ColorBrewer Set2 with eight classes
             "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3",
