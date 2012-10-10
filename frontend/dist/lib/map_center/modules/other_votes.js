@@ -34,8 +34,18 @@ $(document).one('coreInitialized', function() {
         candidateColors: {
            "No Preference": "#000000",
            "Other": "#838282",
+           // President
+           "Barack Obama": "#000099",
+           "Mitt Romney": "#990000",
+           // Ballot issues/propositions/etc.
+           "Yes": "#b2df8a",
+           "For": "#b2df8a",
+           "No": "#1f78b4",
+           "Against": "#1f78b4"
         },
-        candidateImages: {},
+        candidateImages: {
+            "Mitt Romney": "lib/images/results/romney.jpg",
+        },
         condenseCandidates: false,
         dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
         defaultRaceNames: {},
