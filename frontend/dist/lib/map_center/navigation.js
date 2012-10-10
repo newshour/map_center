@@ -99,8 +99,8 @@ $(document).ready(function() {
 	}, {
         featured: false,
         title: "Wisconsin recall results",
-        href: "other_votes.html",
-        id: "other_votes"
+        href: "wi_recall.html",
+        id: "wi_recall"
     }, {
         featured: false,
         title: "Embed Map",
