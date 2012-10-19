@@ -496,6 +496,161 @@ $(document).one('coreInitialized', function() {
         }
     };
     
+    var defaultTooltipRenderer = function(data, raceNumber) {
+        return function() {
+            var thisMapViewName = $('#map_view').val();
+            
+            // If we're using flyout tooltips, highlight the selected area.
+            if (config.flyoutsEnabled) {
+                this.setStroke({
+                    color: config.strokeHighlight,
+                    width: 3
+                });
+                this.moveToFront();
+                
+                // Just to make sure the cities aren't covered up in the
+                // process, move all of those to the front again.
+                var cityPaths = nhmc.geo.usGeo[nhmc.config.USPSToState[thisMapViewName.toUpperCase()]].cityPaths;
+                for (var cityName in cityPaths) {
+                    var path = cityPaths[cityName];
+                    path.moveToFront();
+                }
+            }
+            
+            // Figure out the identifiers for the selected area.
+            var thisFIPS = '';
+            var thisState = '';
+            var thisCounty = '';
+            if (this.nhmcData.county_fips != undefined) {
+                thisFIPS = this.nhmcData.county_fips;
+                thisCounty = nhmc.config.FIPSToCounty[thisFIPS][1];
+                thisState = nhmc.config.FIPSToCounty[thisFIPS][0];
+            } else if (this.nhmcData.county != undefined) {
+                thisState = nhmc.config.USPSToState[
+                    $('#map_view').val().toUpperCase()
+                ];
+                thisCounty = this.nhmcData.county;
+                thisFIPS = nhmc.config.countyToFIPS[thisState][thisCounty];
+            } else {
+                thisState = this.nhmcData.state;
+            }
+            
+            // Start building the tooltip element. Much like in the legend
+            // (see above), we'll be using a lot of cloning to allow for
+            // templating and such.
+            var tooltip = $('<div id="tooltip"></div>').appendTo('body');
+            if (config.flyoutsEnabled) {tooltip.addClass('tooltip_flyout');}
+            var tooltipContent = $('#tooltip_template .tooltip_content')
+                .clone().appendTo('#tooltip');
+            
+            // Add the title (human-friendly name of the selected area) for
+            // the tooltip.
+            if (this.nhmcData.county != undefined) {
+                tooltipContent.find('.tooltip_name').text(thisCounty);
+            } else if (thisCounty != '') {
+                tooltipContent.find('.tooltip_name')
+                    .text(thisCounty + ', ' + thisState);
+            } else {
+                tooltipContent.find('.tooltip_name').text(thisState);
+            }
+            
+            // Get the results for this specific area (or default to an
+            // empty object if we don't have any).
+            var areaName = thisCounty != '' ? thisFIPS : thisState;
+            var areaResults = currentRaceData.areas[areaName] || {
+                "data": [],
+                "precincts": [0, 0]
+            };
+            
+            // Display this area's precinct metadata.
+            var precinctsPercent = (100 * (
+                areaResults.precincts[0] / areaResults.precincts[1]
+            )).toFixed(1);
+            if (isNaN(precinctsPercent)) {precinctsPercent = '0.0';}
+            tooltipContent.find('.tooltip_precincts_percent')
+                .text(precinctsPercent);
+            tooltipContent.find('.tooltip_precincts_reporting')
+                .text(areaResults.precincts[0]);
+            tooltipContent.find('.tooltip_precincts_total')
+                .text(areaResults.precincts[1]);
+            
+            // If there are any precincts reporting in this area, show a
+            // breakdown of the results.
+            if (areaResults.precincts[0] != 0) {
+                // Total the votes cast in this area so we can figure out
+                // percentages for each candidate.
+                var areaTotalVotes = 0;
+                for (var i = 0, length = areaResults.data.length; i < length; i++) {
+                    areaTotalVotes += areaResults.data[i][1];
+                }
+                
+                // Clear out the list of candidates...
+                var tooltipCandidates = tooltipContent.find('.tooltip_candidates');
+                tooltipCandidates.empty();
+                
+                // ...and fill it back up.
+                for (var i = 0, length = areaResults.data.length; i < length; i++) {
+                    var candidateId = areaResults.data[i][0];
+                    
+                    // What's the candidate's last name?
+                    var candidateName = data.candidates[candidateId];
+                    var candidateNameParts = candidateName.split(' ');
+                    var candidateLastName = candidateNameParts[
+                        candidateNameParts.length - 1
+                    ];
+                    
+                    // Add the candidate's entry to this tooltip.
+                    var tooltipEntry = tooltipContent
+                        .find('.tooltip_templates .tooltip_candidate')
+                        .clone().appendTo(tooltipCandidates);
+                    
+                    // Add a color (if applicable) to the candidate's
+                    // entry.
+                    tooltipEntry.find('.tooltip_candidate_color').css(
+                        'background-color',
+                        getColor(
+                            candidateId, thisMapViewName, raceNumber
+                        )
+                    );
+                    
+                    // What percentage of the total votes in this area did
+                    // the candidate receive?
+                    var candidateVotePercent = 100 * (
+                        areaResults.data[i][1] / areaTotalVotes
+                    );
+                    if (areaTotalVotes == 0) {candidateVotePercent = 0;}
+                    
+                    // Fill in vote numbers for the candidate.
+                    tooltipEntry.find('.tooltip_candidate_vote_count')
+                        .text(formatThousands(areaResults.data[i][1]));
+                    tooltipEntry.find('.tooltip_candidate_votes')
+                        .text(Math.round(candidateVotePercent) + '%');
+                    
+                    // And--last, but not least--the name.
+                    tooltipEntry.find('.tooltip_candidate_name_first')
+                        .text(candidateNameParts.slice(0, -1).join(' '));
+                    tooltipEntry.find('.tooltip_candidate_name_last')
+                        .text(candidateLastName);
+                    if (candidateLastName.toLowerCase() == 'preference') {
+                        var candidateFirstNameElem = tooltipEntry
+                            .find('.tooltip_candidate_name_first');
+                        if (candidateFirstNameElem.length != 0) {
+                            candidateFirstNameElem.show();
+                        } else {
+                            tooltipEntry
+                                .find('.tooltip_candidate_name_last')
+                                .text(candidateNameParts.join(' '));
+                        }
+                    }
+                }
+            }
+            
+            // If we're on a touch device, add a close button so the user
+            // can get rid of this thing when they're done with it.
+            if (Modernizr.touch) {nhmc.tooltips.addClose();}
+        }
+    };
+    
     // Show a particular race from within our overall state data object. This
     // includes rendering the legend and coloring the map areas.
     var displayRaceData = function(data, raceNumber) {
@@ -676,155 +831,7 @@ $(document).one('coreInitialized', function() {
         
         // Now to figure out the tooltips.
         if (config.tooltipsEnabled) {
-            nhmc.tooltips.render = function() {
-                // If we're using flyout tooltips, highlight the selected area.
-                if (config.flyoutsEnabled) {
-                    this.setStroke({
-                        color: config.strokeHighlight,
-                        width: 3
-                    });
-                    this.moveToFront();
-                    
-                    // Just to make sure the cities aren't covered up in the
-                    // process, move all of those to the front again.
-                    for (var i in nhmc.geo.usGeo[nhmc.config.USPSToState[$('#map_view').val().toUpperCase()]].cityPaths) {
-                        var path = nhmc.geo.usGeo[nhmc.config.USPSToState[$('#map_view').val().toUpperCase()]].cityPaths[i];
-                        path.moveToFront();
-                    }
-                }
-                
-                // Figure out the identifiers for the selected area.
-                var thisFIPS = '';
-                var thisState = '';
-                var thisCounty = '';
-                if (this.nhmcData.county_fips != undefined) {
-                    thisFIPS = this.nhmcData.county_fips;
-                    thisCounty = nhmc.config.FIPSToCounty[thisFIPS][1];
-                    thisState = nhmc.config.FIPSToCounty[thisFIPS][0];
-                } else if (this.nhmcData.county != undefined) {
-                    thisState = nhmc.config.USPSToState[
-                        $('#map_view').val().toUpperCase()
-                    ];
-                    thisCounty = this.nhmcData.county;
-                    thisFIPS = nhmc.config.countyToFIPS[thisState][thisCounty];
-                } else {
-                    thisState = this.nhmcData.state;
-                }
-                
-                // Start building the tooltip element. Much like in the legend
-                // (see above), we'll be using a lot of cloning to allow for
-                // templating and such.
-                var tooltip = $('<div id="tooltip"></div>').appendTo('body');
-                if (config.flyoutsEnabled) {tooltip.addClass('tooltip_flyout');}
-                var tooltipContent = $('#tooltip_template .tooltip_content')
-                    .clone().appendTo('#tooltip');
-                
-                // Add the title (human-friendly name of the selected area) for
-                // the tooltip.
-                if (this.nhmcData.county != undefined) {
-                    tooltipContent.find('.tooltip_name').text(thisCounty);
-                } else if (thisCounty != '') {
-                    tooltipContent.find('.tooltip_name')
-                        .text(thisCounty + ', ' + thisState);
-                } else {
-                    tooltipContent.find('.tooltip_name').text(thisState);
-                }
-                
-                // Get the results for this specific area (or default to an
-                // empty object if we don't have any).
-                var areaName = thisCounty != '' ? thisFIPS : thisState;
-                var areaResults = currentRaceData.areas[areaName] || {
-                    "data": [],
-                    "precincts": [0, 0]
-                };
-                
-                // Display this area's precinct metadata.
-                var precinctsPercent = (100 * (
-                    areaResults.precincts[0] / areaResults.precincts[1]
-                )).toFixed(1);
-                if (isNaN(precinctsPercent)) {precinctsPercent = '0.0';}
-                tooltipContent.find('.tooltip_precincts_percent')
-                    .text(precinctsPercent);
-                tooltipContent.find('.tooltip_precincts_reporting')
-                    .text(areaResults.precincts[0]);
-                tooltipContent.find('.tooltip_precincts_total')
-                    .text(areaResults.precincts[1]);
-                
-                // If there are any precincts reporting in this area, show a
-                // breakdown of the results.
-                if (areaResults.precincts[0] != 0) {
-                    // Total the votes cast in this area so we can figure out
-                    // percentages for each candidate.
-                    var areaTotalVotes = 0;
-                    for (var i = 0, length = areaResults.data.length; i < length; i++) {
-                        areaTotalVotes += areaResults.data[i][1];
-                    }
-                    
-                    // Clear out the list of candidates...
-                    var tooltipCandidates = tooltipContent.find('.tooltip_candidates');
-                    tooltipCandidates.empty();
-                    
-                    // ...and fill it back up.
-                    for (var i = 0, length = areaResults.data.length; i < length; i++) {
-                        var candidateId = areaResults.data[i][0];
-                        
-                        // What's the candidate's last name?
-                        var candidateName = data.candidates[candidateId];
-                        var candidateNameParts = candidateName.split(' ');
-                        var candidateLastName = candidateNameParts[
-                            candidateNameParts.length - 1
-                        ];
-                        
-                        // Add the candidate's entry to this tooltip.
-                        var tooltipEntry = tooltipContent
-                            .find('.tooltip_templates .tooltip_candidate')
-                            .clone().appendTo(tooltipCandidates);
-                        
-                        // Add a color (if applicable) to the candidate's
-                        // entry.
-                        tooltipEntry.find('.tooltip_candidate_color').css(
-                            'background-color',
-                            getColor(
-                                candidateId, $('#map_view').val(), raceNumber
-                            )
-                        );
-                        
-                        // What percentage of the total votes in this area did
-                        // the candidate receive?
-                        var candidateVotePercent = 100 * (
-                            areaResults.data[i][1] / areaTotalVotes
-                        );
-                        if (areaTotalVotes == 0) {candidateVotePercent = 0;}
-                        
-                        // Fill in vote numbers for the candidate.
-                        tooltipEntry.find('.tooltip_candidate_vote_count')
-                            .text(formatThousands(areaResults.data[i][1]));
-                        tooltipEntry.find('.tooltip_candidate_votes')
-                            .text(Math.round(candidateVotePercent) + '%');
-                        
-                        // And--last, but not least--the name.
-                        tooltipEntry.find('.tooltip_candidate_name_first')
-                            .text(candidateNameParts.slice(0, -1).join(' '));
-                        tooltipEntry.find('.tooltip_candidate_name_last')
-                            .text(candidateLastName);
-                        if (candidateLastName.toLowerCase() == 'preference') {
-                            var candidateFirstNameElem = tooltipEntry
-                                .find('.tooltip_candidate_name_first');
-                            if (candidateFirstNameElem.length != 0) {
-                                candidateFirstNameElem.show();
-                            } else {
-                                tooltipEntry
-                                    .find('.tooltip_candidate_name_last')
-                                    .text(candidateNameParts.join(' '));
-                            }
-                        }
-                    }
-                }
-                
-                // If we're on a touch device, add a close button so the user
-                // can get rid of this thing when they're done with it.
-                if (Modernizr.touch) {nhmc.tooltips.addClose();}
-            };
+            nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
         }
         
         // Add some touch-specific modifications if we're using flyout (i.e.,
