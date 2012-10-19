@@ -34,9 +34,6 @@ $(document).one('coreInitialized', function() {
         candidateColors: {
            "No Preference": "#000000",
            "Other": "#838282",
-           // President
-           "Barack Obama": "#000099",
-           "Mitt Romney": "#990000",
            // Ballot issues/propositions/etc.
            "Yes": "#b2df8a",
            "For": "#b2df8a",
@@ -111,6 +108,10 @@ $(document).one('coreInitialized', function() {
             "Question - 1 - Yes Same Sex Mrg": "Allow same-sex marriage",
             "Amendment - 1 - No Same Sex Marriage": "Ban same-sex marriage"
         },
+        partyColors: {  // Use APEO party abbreviations
+            "Dem": "#283891",
+            "GOP": "#9f1c20"
+        },
         randomColors: [
             // ColorBrewer Set2 with eight classes
             "#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3",
@@ -121,7 +122,7 @@ $(document).one('coreInitialized', function() {
         ],
         showCandidates: {},
         showRaces: [],
-        strokeHighlight: "#9F1C20",
+        strokeHighlight: "#000000",
         tooltipsEnabled: true
     };
     if (typeof(nhmcOtherVotesConfig) != 'undefined') {
@@ -201,16 +202,36 @@ $(document).one('coreInitialized', function() {
         return timeStringParts.join('');
     };
     var numericalSort = function(a, b) {
-        return parseInt(a, 10) - parseInt(b, 10);
+        // FIXME: Make this sort by names in some intelligent way.
+        var numA = parseInt(a, 10);
+        var numB = parseInt(b, 10);
+        if (isNaN(numA) || isNaN(numB)) {
+            if (a < b) {return -1;}
+            else if (a > b) {return 1;}
+            else {return 0;}
+        }
+        else {return numA - numB;}
     };
     
     // Color assignments
     var colorAssignments = {};
     var colorsUsed = {};
-    var getColor = function(candidateName, state, raceNumber) {
+    var getColor = function(candidateId, state, raceNumber) {
+        var candidateName = latestData[state].candidates[candidateId];
+        if (latestData[state].parties && latestData[state].parties[candidateId]) {
+            var candidateParty = latestData[state].parties[candidateId];
+        } else {
+            // FIXME: Figure out how to look up parties.
+            var candidateParty = "";
+        }
+        
         if (config.candidateColors[candidateName]) {
             // If we have a specific color defined for this candidate, use it.
             return config.candidateColors[candidateName];
+        } else if (config.partyColors[candidateParty]) {
+            // If we have a specific color defined for this candidate's party,
+            // use it.
+            return config.partyColors[candidateParty];
         } else {
             // Otherwise, we need to select a "random" color for the candidate.
             // This color should remain consistent for at least as long as this
@@ -377,7 +398,6 @@ $(document).one('coreInitialized', function() {
     };
     
     var liveDataInit = function(data) {
-        // debugger;
         // Get the currently displayed race number.
         var initialRaceNumber = $('#view_tab_options_more_shown').attr('href')
             .split('-')[1];
@@ -494,8 +514,7 @@ $(document).one('coreInitialized', function() {
                 var areaFill = nhmc.config.defaultAttributes.fill;
             } else {
                 var areaFill = getColor(
-                    data.candidates[candidateId],
-                    $('#map_view').val(), raceNumber
+                    candidateId, $('#map_view').val(), raceNumber
                 );
             }
             
@@ -591,8 +610,7 @@ $(document).one('coreInitialized', function() {
             legendEntry.find('.candidate_color').css(
                 'background-color',
                 getColor(
-                    data.candidates[candidateId],
-                    $('#map_view').val(), raceNumber
+                    candidateId, $('#map_view').val(), raceNumber
                 )
             );
             legendEntry.find('.candidate_vote_count').text(
@@ -767,8 +785,7 @@ $(document).one('coreInitialized', function() {
                         tooltipEntry.find('.tooltip_candidate_color').css(
                             'background-color',
                             getColor(
-                                data.candidates[candidateId],
-                                $('#map_view').val(), raceNumber
+                                candidateId, $('#map_view').val(), raceNumber
                             )
                         );
                         
@@ -1019,19 +1036,91 @@ $(document).one('coreInitialized', function() {
         $('#legend').show();
     };
     
+    var normalizeNationalData = function(rawData) {
+        var normData = $.extend(true, {}, rawData);
+        
+        // Start filling in the things we don't already have
+        normData.candidates = {};
+        normData.raceNames = {};
+        normData.races = {};
+        
+        for (var stateName in rawData.areas) {
+            var stateRaces = rawData.areas[stateName];
+            for (var raceName in stateRaces) {
+                var raceData = stateRaces[raceName];
+                var newRaceId = raceName.replace(/[- ._]/g, '_');
+                normData.raceNames[newRaceId] = raceName;
+                
+                if (typeof(normData.races[newRaceId]) == 'undefined') {
+                    normData.races[newRaceId] = {
+                        areas: {},
+                        breakdown: [],  // We'll deal with this later.
+                        candidateTotals: {},
+                        precincts: [0, 0],
+                        winners: {}
+                    }
+                }
+                
+                normData.races[newRaceId].areas[stateName] = {
+                    data: raceData.breakdown,
+                    precincts: raceData.precincts
+                };
+                
+                for (var i = 0, length = raceData.breakdown.length; i < length; i++) {
+                    var candidateId = raceData.breakdown[i][0];
+                    normData.candidates[candidateId] = candidateId;  // same as name
+                    var candidateTotal = raceData.breakdown[i][1];
+                    if (typeof(normData.races[newRaceId].candidateTotals[candidateId]) == 'undefined') {
+                        normData.races[newRaceId].candidateTotals[candidateId] = 0;
+                    }
+                    normData.races[newRaceId].candidateTotals[candidateId] += candidateTotal;
+                }
+                
+                normData.races[newRaceId].precincts[0] += raceData.precincts[0];
+                normData.races[newRaceId].precincts[1] += raceData.precincts[1];
+                
+                normData.races[newRaceId].winners[stateName] = raceData.winner;
+            }
+        }
+        
+        // Generate and sort the breakdown.
+        for (var raceId in normData.races) {
+            var raceData = normData.races[raceId];
+            for (var candidateId in raceData.candidateTotals) {
+                raceData.breakdown.push([candidateId, raceData.candidateTotals[candidateId]]);
+            }
+            raceData.breakdown.sort(function(a, b) {
+                return b[1] - a[1];
+            });
+        }
+        
+        return normData;
+    };
+    
     // This gets called every so often to update our copy of the data.
     var getMapData = function(state) {
+        if (state.indexOf('_') > -1) {
+            var stateNormalized = state.substring(0, state.indexOf('_'));
+        } else {
+            var stateNormalized = state;
+        }
         $.ajax({
-            url: config.dataPath + state + '_general.json',
+            url: config.dataPath + stateNormalized + '_general.json',
             dataType: 'jsonp',
-            jsonpCallback: state.toUpperCase(),
+            jsonpCallback: stateNormalized.toUpperCase(),
             success: function(data) {
-                if (config.condenseCandidates) {
-                    latestData[state] = condenseCandidates(data);
-                } else {
-                    latestData[state] = data;
+                var normData = $.extend(true, {}, data);
+                if (stateNormalized == 'us') {
+                    normData = normalizeNationalData(normData);
                 }
-                latestFullData[state] = data;
+                
+                if (config.condenseCandidates) {
+                    latestData[state] = condenseCandidates(normData);
+                } else {
+                    latestData[state] = normData;
+                }
+                
+                latestFullData[state] = normData;
                 liveDataInit(latestData[state]);
                 $(document).trigger('mapDataRetrieved', [state]);
             }
