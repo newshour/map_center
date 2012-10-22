@@ -35,6 +35,12 @@ var argParser = optimist
     });
 var argv = argParser.argv;
 
+// By default, the Agent in Node's HTTP module will limit the number of
+// concurrent sockets to 5. Remove this restriction by re-setting the limit to
+// Infinity.
+// http://nodejs.org/docs/v0.8.12/api/http.html#http_agent_maxsockets
+require("http").globalAgent.maxSockets = Infinity;
+
 var clientCount = argv.c;
 // The interval that clients send "heartbeat" messages to the server
 var heartbeatInterval = 25*1000;
