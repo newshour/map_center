@@ -67,7 +67,7 @@ try {
   process.exit();
 }
 eval(clientFileContents);
-
+// Alias for convenience
 Connection = this.liveMap.Connection;
 
 if (argv.h) {
@@ -81,8 +81,10 @@ if (argv.h) {
 // socket's construtor) will result in clients using WebSockets regardless.
 io.transports = [argv.t];
 
+// Outputting data immediately could have adverse effects on the simulation, so
+// it is stored in memory. This simple webserver allows the process to output
+// its data on demand when prompted with a utility like `curl`.
 app.listen(argv.p, "127.0.0.1");
-
 app.get("/dump", function(req, res) {
 
     var attr;
