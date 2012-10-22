@@ -75,6 +75,12 @@ if (argv.h) {
     process.exit();
 }
 
+// Force the socket's transport mechanism. This is necessary because the
+// server's supported transports will be given priority over those declared by
+// the client, so the supported method (i.e.  specifying the transports in the
+// socket's construtor) will result in clients using WebSockets regardless.
+io.transports = [argv.t];
+
 app.listen(argv.p, "127.0.0.1");
 
 app.get("/dump", function(req, res) {
@@ -239,7 +245,6 @@ tests.iorequest = function() {
 // Test for timeout with Socket.io-client "handshake" method
 // Status: PASS
 tests.handshake = function() {
-    io.transports = [argv.t];
     function connectClient(idx) {
         var connection = new io.Socket({
             host: "50.56.87.187",
@@ -264,7 +269,6 @@ tests.handshake = function() {
 // Test for timeout with Socket.io-client directly
 // Status: FAIL
 tests.socketio = function() {
-    io.transports = [argv.t];
     function connectClient(idx) {
         var connection = new io.Socket({
             host: "50.56.87.187",
@@ -272,7 +276,6 @@ tests.socketio = function() {
             idx: idx,
             "auto connect": false
         });
-        //connection.transports = [argv.t];
 
         connection.connect();
         connection.on("connect", function() {
@@ -293,15 +296,6 @@ tests.socketio = function() {
 tests.liveMap = function() {
     function connectClient(idx) {
         var connection = new Connection({ idx: idx });
-
-        // WARNING
-        // This method of forcing the socket's transport is undocumented and
-        // may not function in future versions of Socket.io. It is necessary
-        // because the server's supported transports will be given priority
-        // over those declared by the client, so the supported method (i.e.
-        // specifying the transports in the socket's construtor) will result in
-        // clients using WebSockets regardless.
-        connection._socket.transports = [argv.t];
 
         connection.connect();
         connection.on("connect", handlers.connect.bind(connection));
