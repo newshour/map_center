@@ -156,7 +156,6 @@ var handlers = {
 var tests = {};
 
 // Test for timeout with hmlhttprequest library directly
-// Status: PASS
 tests.xmlhttprequest = function() {
     var XMLHttpRequest = require('socket.io-client/node_modules/xmlhttprequest').XMLHttpRequest;
     var noop = function() {};
@@ -201,7 +200,6 @@ tests.xmlhttprequest = function() {
 };
 
 // Test for timeout with io.util.request
-// Status: PASS
 tests.iorequest = function() {
     var noop = function() {};
     function connectClient(opts) {
@@ -245,7 +243,6 @@ tests.iorequest = function() {
 };
 
 // Test for timeout with Socket.io-client "handshake" method
-// Status: PASS
 tests.handshake = function() {
     function connectClient(idx) {
         var connection = new io.Socket({
@@ -269,7 +266,6 @@ tests.handshake = function() {
 };
 
 // Test for timeout with Socket.io-client directly
-// Status: FAIL
 tests.socketio = function() {
     function connectClient(idx) {
         var connection = new io.Socket({
@@ -294,7 +290,6 @@ tests.socketio = function() {
 };
 
 // Test with liveMap.connection library
-// Status: FAIL
 tests.liveMap = function() {
     function connectClient(idx) {
         var connection = new Connection({ idx: idx });
