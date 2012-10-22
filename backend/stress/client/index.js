@@ -1,7 +1,7 @@
 /*jshint evil:true */
 var express = require("express");
 var fs = require("fs");
-var io = require("./socket.io-client");
+var io = require("socket.io-client");
 var optimist = require("optimist");
 
 var app = express();

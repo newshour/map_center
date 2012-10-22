@@ -1,3 +1,0 @@
-[submodule "backend/stress/client/socket.io-client"]
-	path = backend/stress/client/socket.io-client
-	url = https://github.com/jugglinmike/socket.io-client
