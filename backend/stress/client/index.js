@@ -303,7 +303,7 @@ tests.liveMap = function() {
 
         // Disperse connections across the heartbeat interval in order to avoid
         // synchronizing client heartbeats
-        setTimeout(connectClient, 0.1*heartbeatInterval*(idx/clientCount), idx);
+        setTimeout(connectClient, heartbeatInterval*(idx/clientCount), idx);
     }
 };
 
