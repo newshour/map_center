@@ -43,7 +43,7 @@ require("http").globalAgent.maxSockets = Infinity;
 
 var clientCount = argv.c;
 // The interval that clients send "heartbeat" messages to the server
-var heartbeatInterval = 25*1000;
+var heartbeatInterval = 3*60*1000;
 var idx;
 var Connection;
 var connection;
