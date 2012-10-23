@@ -92,9 +92,9 @@
         <div id="view_info">
             <h1 style="z-index:1;">Live results</h1>
             <div id="view_tabs">
-                <div class="view_tab view_tab_more view_tab_active"><a href="#wi" id="view_tab_more_shown" class="view_tab_option">Wisconsin</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S.</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                     <ul id="view_tab_more_menu">
-                        <li><a href="#us_all" class="view_tab_option">U.S.</a></li>
+                        <li style="display: none;"><a href="#us_all" class="view_tab_option">U.S.</a></li>
                         <li><a href="#al" class="view_tab_option">Alabama</a></li>
                         <!--
                         <li><a href="#ak" class="view_tab_option">Alaska</a></li>
@@ -147,7 +147,7 @@
                         <li><a href="#wa" class="view_tab_option">Washington</a></li>
                         <li><a href="#dc" class="view_tab_option">Washington, D.C.</a></li>
                         <li><a href="#wv" class="view_tab_option">West Virginia</a></li>
-                        <li style="display: none;"><a href="#wi" class="view_tab_option">Wisconsin</a></li>
+                        <li><a href="#wi" class="view_tab_option">Wisconsin</a></li>
                         <li><a href="#wy" class="view_tab_option">Wyoming</a></li>
                     </ul>
                 </div>
@@ -194,7 +194,7 @@
                         <div id="legend_candidates"></div>
                     </div>
                 </div>
-                <input name="map_view" id="map_view" type="hidden" value="wi" />
+                <input name="map_view" id="map_view" type="hidden" value="us_all" />
             </div>
             <div id="tooltip_template">
                 <div class="tooltip_content">
