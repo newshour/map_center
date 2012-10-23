@@ -593,10 +593,23 @@ $(document).one('coreInitialized', function() {
                 $('#view_tab_options_more_menu').append(elem);
             }
             
-            // Select the first race (lowest race number).
-            initialRaceNumber = newRaces.numbers[0];
-            $('#view_tab_options_more_shown')
-                .text(newRaces.names[initialRaceNumber])
+            // Select the previously shown race if available; otherwise, show
+            // the presidential results.
+            var $shownRace = $('#view_tab_options_more_shown');
+            var currentRaceName = $shownRace.text();
+            if (currentRaceName.slice(0, "U.S. House".length) == "U.S. House") {
+                currentRaceName = "U.S. House 1";
+            }
+            var currentRaceNumber = newRaces.nameLookup[currentRaceName];
+            if (currentRaceNumber) {
+                // Yay, we found it!
+                initialRaceNumber = currentRaceNumber;
+            } else {
+                // Select the first race (lowest race number).
+                initialRaceNumber = newRaces.numbers[0];
+            }
+            
+            $shownRace.text(newRaces.names[initialRaceNumber])
                 .attr('href', [
                     '#', newState.toLowerCase(), '-', initialRaceNumber
                 ].join(''));
@@ -631,6 +644,7 @@ $(document).one('coreInitialized', function() {
         var newRaces = (function() {
             var races = {
                 names: {},
+                nameLookup: {},
                 numbers: []
             };
             races.numbers = Object.keys(data.raceNames).sort(numericalSort);
@@ -641,6 +655,7 @@ $(document).one('coreInitialized', function() {
                     raceName = config.friendlyRaceNames[raceName];
                 }
                 races.names[raceNumber] = raceName;
+                races.nameLookup[raceName] = raceNumber;
             }
             return races;
         })();
@@ -1607,7 +1622,7 @@ $(document).one('coreInitialized', function() {
             renderLegendItem(legendObjs[i]);
         }
         
-        // FIXME: Fix the tooltip renderer or write a new one.
+        // FIXME: Fix the event handlers or write new ones.
         if (config.tooltipsEnabled) {
             nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
             nhmc.tooltips.click = function() {
