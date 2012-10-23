@@ -1450,9 +1450,95 @@ $(document).one('coreInitialized', function() {
             if (lastLegendObj.lastName == 'Other') {
                 lastLegendObj.bigElem = false;
             }
-        })();} else {  // House, but this could in theory work for other races
+        })();} else {(function() {  // House, but this could in theory work for other races
+            var precincts = [0, 0];
             
-        }
+            var republicanVotes = 0;
+            var democraticVotes = 0;
+            var thirdPartyVotes = 0;
+            
+            var republicanSeats = 0;
+            var democraticSeats = 0;
+            var thirdPartySeats = 0;
+            
+            for (var stateName in data.areas) {
+                var raceNameStart = raceNumber;
+                for (var raceName in data.areas[stateName]) {
+                    if (raceName.slice(0, raceNameStart.length) == raceNameStart) {
+                        var stateData = data.areas[stateName][raceName];
+                        
+                        if (stateData.winner) {
+                            var winnerParty = data.parties[stateName][stateData.winner];
+                            if (winnerParty == 'GOP') {
+                                republicanSeats += 1;
+                            } else if (winnerParty == 'Dem') {
+                                democraticSeats += 1;
+                            } else {
+                                thirdPartySeats += 1;
+                            }
+                        }
+                        
+                        precincts[0] += stateData.precincts[0];
+                        precincts[1] += stateData.precincts[1];
+                        
+                        for (var i = 0, length = stateData.breakdown.length; i < length; i++) {
+                            var candidateName = stateData.breakdown[i][0];
+                            var candidateVotes = stateData.breakdown[i][1];
+                            
+                            var candidateParty = data.parties[stateName][candidateName];
+                            if (candidateParty && candidateParty == 'GOP') {
+                                republicanVotes += candidateVotes;
+                            } else if (candidateParty && candidateParty == 'Dem') {
+                                democraticVotes += candidateVotes;
+                            } else {
+                                thirdPartyVotes += candidateVotes;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            renderPrecincts.apply(renderPrecincts, precincts);
+            
+            // Create the three legend objects and sort by total seats held.
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Republicans',
+                photo: false,
+                votePercent: republicanSeats,
+                voteTotal: formatThousands(republicanVotes, 0),
+                winner: false,
+                color: config.partyColors["GOP"]
+            });
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Democrats',
+                photo: false,
+                votePercent: democraticSeats,
+                voteTotal: formatThousands(democraticVotes, 0),
+                winner: false,
+                color: config.partyColors["Dem"]
+            });
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Other',
+                photo: false,
+                votePercent: thirdPartySeats,
+                voteTotal: formatThousands(thirdPartyVotes, 0),
+                winner: false,
+                color: config.partyColors['thirdParty']
+            });
+            legendObjs.sort(function(a, b) {
+                return b.votePercent - a.votePercent;
+            });
+            var lastLegendObj = legendObjs[legendObjs.length - 1];
+            if (lastLegendObj.lastName == 'Other') {
+                lastLegendObj.bigElem = false;
+            }
+        })();}
         // Render the legend items.
         var renderLegendItem = function(itemObj) {
             // bigElem: Boolean
