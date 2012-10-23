@@ -14,6 +14,10 @@ $(document).one('coreInitialized', function() {
     var usGeo = nhmc.geo.usGeo;
     var FIPSToCounty = nhmc.config.FIPSToCounty;
     
+    nhmc.config.stateToUSPS["Alaska"] = "AK_EMPTY";
+    nhmc.config.USPSToState["AK"] = "Alaska";
+    nhmc.config.USPSToState["AK_EMPTY"] = "Alaska";
+    
     // Local storage for results data
     var latestData = {};
     var latestFullData = {};
@@ -570,7 +574,6 @@ $(document).one('coreInitialized', function() {
     
     var liveDataInit = function(data) {
         // Get the currently displayed race number.
-        // FIXME: Be able to persist by name, too.
         var initialRaceNumber = $('#view_tab_options_more_shown').attr('href')
             .split('-')[1];
         
@@ -1044,7 +1047,6 @@ $(document).one('coreInitialized', function() {
     
     var nationalDataInit = function(data) {
         // Render the race menu if necessary.
-        // FIXME: Be able to persist by name, too.
         var initialRaceInfo = $('#view_tab_options_more_shown').attr('href')
             .substring(1).split('-');
         var initialRaceState = initialRaceInfo[0];
@@ -1622,11 +1624,13 @@ $(document).one('coreInitialized', function() {
             renderLegendItem(legendObjs[i]);
         }
         
-        // FIXME: Fix the event handlers or write new ones.
+        // FIXME: Consider customizing the tooltip renderer, at least in the
+        // case of the House.
         if (config.tooltipsEnabled) {
             nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
             nhmc.tooltips.click = function() {
-                alert(this.nhmcData.state);
+                var thisMapView = nhmc.config.stateToUSPS[this.nhmcData.state].toLowerCase();
+                $('.view_tab_more .view_tab_option[href="#' + thisMapView + '"]').last().click();
             };
         }
         
