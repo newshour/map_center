@@ -1066,10 +1066,20 @@ $(document).one('coreInitialized', function() {
                 $('#view_tab_options_more_menu').append(elem);
             }
             
-            // Select the first race (lowest race number).
-            initialRaceNumber = newRaces.numbers[0];
-            $('#view_tab_options_more_shown')
-                .text(newRaces.names[initialRaceNumber])
+            // Select the previously shown race if available; otherwise, show
+            // the presidential results.
+            var $shownRace = $('#view_tab_options_more_shown');
+            var currentRaceName = $shownRace.text();
+            if (currentRaceName.slice(0, "Governor".length) == "Governor") {
+                initialRaceNumber = "Governor";
+            } else if (currentRaceName.slice(0, "U.S. Senate".length) == "U.S. Senate") {
+                initialRaceNumber = "U.S. Senate";
+            } else if (currentRaceName.slice(0, "U.S. House".length) == "U.S. House") {
+                initialRaceNumber = "U.S. House";
+            } else {
+                initialRaceNumber = "President";
+            }
+            $shownRace.text(newRaces.names[initialRaceNumber])
                 .attr('href', [
                     '#us_all-', initialRaceNumber
                 ].join(''));
