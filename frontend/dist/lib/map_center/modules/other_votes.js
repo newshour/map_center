@@ -849,6 +849,7 @@ $(document).one('coreInitialized', function() {
         // Now to figure out the tooltips.
         if (config.tooltipsEnabled) {
             nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
+            nhmc.tooltips.click = null;
         }
         
         // Add some touch-specific modifications if we're using flyout (i.e.,
@@ -870,7 +871,8 @@ $(document).one('coreInitialized', function() {
         
         // Assuming everything's good to go with tooltips (i.e., there aren't
         // any already), let's bind their event handlers!
-        if (config.tooltipsEnabled && nhmc.tooltips.hoverHandlerTokens.length == 0) {
+        if (config.tooltipsEnabled) {
+            nhmc.tooltips.unbindHover();
             nhmc.tooltips.init();
         }
         
@@ -1134,7 +1136,6 @@ $(document).one('coreInitialized', function() {
             currentRaceData.winners[stateName] = stateData.winner;
         }
         
-        // FIXME: Render the legend and color the states.
         $('#legend_candidates').empty();
         // Create the legend objects and color the appropriate states.
         var legendObjs = [
@@ -1539,6 +1540,7 @@ $(document).one('coreInitialized', function() {
                 lastLegendObj.bigElem = false;
             }
         })();}
+        
         // Render the legend items.
         var renderLegendItem = function(itemObj) {
             // bigElem: Boolean
@@ -1598,13 +1600,17 @@ $(document).one('coreInitialized', function() {
         // FIXME: Fix the tooltip renderer or write a new one.
         if (config.tooltipsEnabled) {
             nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
+            nhmc.tooltips.click = function() {
+                alert(this.nhmcData.state);
+            };
         }
         
-        // FIXME: Customize other event handlers based on interface.
-        
-        // FIXME: Bind tooltip handlers and other event handlers, including
-        // "Other" tooltip handler.
-        nhmc.tooltips.init();
+        // Assuming everything's good to go with tooltips (i.e., there aren't
+        // any already), let's bind their event handlers!
+        if (config.tooltipsEnabled) {
+            nhmc.tooltips.unbindHover();
+            nhmc.tooltips.init();
+        }
     };
     
     $('.view_tab_more').delegate('.view_tab_option:not(#view_tab_more_shown)', 'click', function() {

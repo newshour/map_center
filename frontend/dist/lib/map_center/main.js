@@ -794,6 +794,7 @@ nhmc.tooltips.render = function() {
     '<p>' + '</p>' + 
     '</div>');
 };
+nhmc.tooltips.click = null;
 nhmc.tooltips.position = function(e) {
     var tooltip = $('#tooltip');
     
@@ -828,14 +829,20 @@ nhmc.tooltips.bindHover = function() {
         if (typeof(child.getShape) == 'undefined' || child.getShape().type != "path") {continue;}
         
         if (touchCapable) {
-            var renderToken = child.connect('onmouseenter', child, nhmc.tooltips.render);
-            nhmc.tooltips.hoverHandlerTokens.push(renderToken);
-            
-            var positionToken = child.connect('onmouseenter', child, nhmc.tooltips.position);
-            nhmc.tooltips.hoverHandlerTokens.push(positionToken);
-            
-            var unbindToken = child.connect('onmouseenter', child, nhmc.tooltips.unbindHover);
-            nhmc.tooltips.hoverHandlerTokens.push(unbindToken);
+            if (nhmc.tooltips.click) {
+                // FIXME: These should be replaced with click handlers.
+                var clickToken = child.connect('onclick', child, nhmc.tooltips.click);
+                nhmc.tooltips.hoverHandlerTokens.push(clickToken);
+            } else {
+                var renderToken = child.connect('onmouseenter', child, nhmc.tooltips.render);
+                nhmc.tooltips.hoverHandlerTokens.push(renderToken);
+                
+                var positionToken = child.connect('onmouseenter', child, nhmc.tooltips.position);
+                nhmc.tooltips.hoverHandlerTokens.push(positionToken);
+                
+                var unbindToken = child.connect('onmouseenter', child, nhmc.tooltips.unbindHover);
+                nhmc.tooltips.hoverHandlerTokens.push(unbindToken);
+            }
         } else {
             var renderToken = child.connect('onmouseenter', child, nhmc.tooltips.render);
             nhmc.tooltips.hoverHandlerTokens.push(renderToken);
@@ -848,6 +855,11 @@ nhmc.tooltips.bindHover = function() {
             
             var positionToken = child.connect('onmousemove', nhmc.tooltips.position);
             nhmc.tooltips.hoverHandlerTokens.push(positionToken);
+            
+            if (nhmc.tooltips.click) {
+                var clickToken = child.connect('onclick', child, nhmc.tooltips.click);
+                nhmc.tooltips.hoverHandlerTokens.push(clickToken);
+            }
         }
     }
 };
@@ -858,20 +870,6 @@ nhmc.tooltips.unbindHover = function() {
 };
 nhmc.tooltips.init = function() {
     nhmc.tooltips.bindHover();
-    // function manageTooltips(e) {
-    //     nhmc.tooltips.render();
-    //     nhmc.tooltips.unbindHover();
-    //     nhmc.tooltips.addClose();
-    //     nhmc.tooltips.position(e);
-    // }
-    // for (var i in nhmc.surface.children) {
-    //     var child = nhmc.surface.children[i];
-    // 
-    //     if (typeof(child.getShape) == 'undefined' || child.getShape().type != "path") {continue;}
-    //     
-    //     var manageToken = child.connect('onclick', null, manageTooltips);
-    //     nhmc.cleanup.clickHandlerTokens.push(manageToken);
-    // }
 };
 
 nhmc.ctrl.renderLegend = function(title, items) {
