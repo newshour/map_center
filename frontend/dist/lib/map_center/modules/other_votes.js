@@ -29,6 +29,18 @@ $(document).one('coreInitialized', function() {
     var config = {
         autoRefresh: true,
         autoRefreshDelay: 1000 * 15,
+        balanceOfPowerStart: {
+            governor: {
+                republican: 26, // 29 - (IN + ND + UT)
+                democratic: 13, // 20 - (DE + MO + MT + NH + NC + WA + WV)
+                thirdParty: 1   // 1
+            },
+            senate: {
+                republican: 0,
+                democratic: 0,
+                thirdParty: 0
+            }
+        },
         bigCandidates: 3,
         blankMap: false,
         candidateColors: {
@@ -438,10 +450,13 @@ $(document).one('coreInitialized', function() {
             // Start building the tooltip element. Much like in the legend
             // (see above), we'll be using a lot of cloning to allow for
             // templating and such.
-            var tooltip = $('<div id="tooltip"></div>').appendTo('body');
+            var tooltip = $('#tooltip');
+            if (tooltip) {tooltip.remove();}
+            
+            tooltip = $('<div id="tooltip"></div>').appendTo('body');
             if (config.flyoutsEnabled) {tooltip.addClass('tooltip_flyout');}
             var tooltipContent = $('#tooltip_template .tooltip_content')
-                .clone().appendTo('#tooltip');
+                .clone().appendTo(tooltip);
             
             // Add the title (human-friendly name of the selected area) for
             // the tooltip.
@@ -470,9 +485,9 @@ $(document).one('coreInitialized', function() {
             tooltipContent.find('.tooltip_precincts_percent')
                 .text(precinctsPercent);
             tooltipContent.find('.tooltip_precincts_reporting')
-                .text(areaResults.precincts[0]);
+                .text(formatThousands(areaResults.precincts[0], 0));
             tooltipContent.find('.tooltip_precincts_total')
-                .text(areaResults.precincts[1]);
+                .text(formatThousands(areaResults.precincts[1], 0));
             
             // If there are any precincts reporting in this area, show a
             // breakdown of the results.
@@ -1008,6 +1023,380 @@ $(document).one('coreInitialized', function() {
         }
     };
     
+    var nationalDataInit = function(data) {
+        // Render the race menu if necessary.
+        // FIXME: Be able to persist by name, too.
+        var initialRaceInfo = $('#view_tab_options_more_shown').attr('href')
+            .substring(1).split('-');
+        var initialRaceState = initialRaceInfo[0];
+        var initialRaceNumber = initialRaceInfo[1];
+        var renderNationalRaceMenu = function() {
+            // Clear out the existing race menu.
+            $('#view_tab_options_more_menu').empty();
+            
+            var newRaces = {
+                numbers: [
+                    "President",
+                    "Governor",
+                    "U.S. Senate",
+                    "U.S. House"
+                ],
+                names: {
+                    "President": "President",
+                    "Governor": "Governor",
+                    "U.S. Senate": "U.S. Senate",
+                    "U.S. House": "U.S. House"
+                }
+            };
+            
+            // Fill it back up.
+            for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
+                var raceNumber = newRaces.numbers[i];
+                var raceName = newRaces.names[raceNumber];
+                
+                var elem = $('<li><a class="view_tab_option"></a></li>');
+                var elemLink = elem.children('.view_tab_option');
+                elemLink.attr('href', [
+                    '#us_all-', raceNumber
+                ].join('')).text(raceName);
+                $('#view_tab_options_more_menu').append(elem);
+            }
+            
+            // Select the first race (lowest race number).
+            initialRaceNumber = newRaces.numbers[0];
+            $('#view_tab_options_more_shown')
+                .text(newRaces.names[initialRaceNumber])
+                .attr('href', [
+                    '#us_all-', initialRaceNumber
+                ].join(''));
+        };
+        if (initialRaceState != 'us_all') {renderNationalRaceMenu();}
+        
+        // Render the date/time information and selected race from this data.
+        $('#last_updated').text(formatDate.apply(formatDate, data.lastUpdated));
+        
+        displayNationalRaceData(data, initialRaceNumber);
+        
+        // Mark the page as containing test data if applicable.
+        if (data.test && $('#test_data').length == 0) {
+            $('#view_info h1').append(' <span id="test_data">(test)</span>');
+        } else if (!data.test) {
+            $('#test_data').remove();
+        }
+    };
+    
+    var displayNationalRaceData = function(data, raceNumber) {
+        nhmc.cleanup.clearPathColors();
+        
+        // Get the data into a more useful form.
+        currentRaceData = {
+            areas: {},
+            breakdown: [],
+            precincts: [0, 0],
+            winners: {}
+        };
+        for (var stateName in data.areas) {
+            var stateData = data.areas[stateName][raceNumber];
+            if (typeof(stateData) == 'undefined') {continue;}
+            
+            currentRaceData.areas[stateName] = {
+                data: stateData.breakdown,
+                precincts: stateData.precincts
+            };
+            
+            currentRaceData.precincts[0] += stateData.precincts[0];
+            currentRaceData.precincts[1] += stateData.precincts[1];
+            
+            currentRaceData.winners[stateName] = stateData.winner;
+        }
+        
+        // FIXME: Render the legend and color the states.
+        $('#legend_candidates').empty();
+        // Create the legend objects and color the appropriate states.
+        var legendObjs = [
+            // {
+            //     bigElem: Boolean
+            //     firstName: String
+            //     lastName: String
+            //     photo: String (including empty)
+            //     votePercent: String
+            //     voteTotal: String
+            //     winner: Boolean
+            //     color: String (hex color)
+            // }
+        ];
+        if (raceNumber == 'President') {(function() {
+            renderPrecincts.apply(renderPrecincts, data.electoralData["United States"].precincts);
+            
+            var fullNames = {};
+            var parties = {};
+            
+            var republicanStates = [];
+            var democraticStates = [];
+            var thirdPartyStates = [];
+            
+            for (var stateName in data.electoralData) {
+                if (stateName == 'United States') {continue;}
+                var stateElectoralData = data.electoralData[stateName];
+                
+                // Help us figure out people's full names for later (when we
+                // need to look them up from just last names).
+                for (var i = 0, length = stateElectoralData.breakdown.length; i < length; i++) {
+                    var candElectoralData = stateElectoralData.breakdown[i];
+                    if (fullNames[candElectoralData[0]]) {continue;}
+                    
+                    var candPopularData = currentRaceData.areas[stateName].data[i];
+                    if (candElectoralData[1] == candPopularData[1]) {
+                        // This should be the same person.
+                        fullNames[candElectoralData[0]] = candPopularData[0];
+                        parties[candElectoralData[0]] = data.parties[stateName][candPopularData[0]];
+                    }
+                }
+                
+                // Set state colors, but only if they're called for the candidate.
+                if (stateElectoralData.winner) {
+                    var winnerParty = data.parties[stateName][fullNames[stateElectoralData.winner]];
+                    if (winnerParty == 'GOP') {
+                        republicanStates.push(stateName);
+                    } else if (winnerParty == 'Dem') {
+                        democraticStates.push(stateName);
+                    } else {
+                        thirdPartyStates.push(stateName);
+                    }
+                }
+            }
+            nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
+            nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
+            nhmc.ctrl.setStateColors(thirdPartyStates, '#ffb90f');
+            
+            var stillBigElems = true;
+            var seenGOP = false;
+            var seenDem = false;
+            var nationalBreakdown = data.electoralData['United States'].breakdown;
+            var otherPopularVotes = 0;
+            var otherElectoralVotes = 0;
+            for (var i = 0, length = nationalBreakdown.length; i < length; i++) {
+                if (stillBigElems && (i >= config.bigCandidates || (seenGOP && seenDem))) {
+                    stillBigElems = false;
+                }
+                
+                var firstName = '';
+                var lastName = nationalBreakdown[i][0];
+                
+                var popularVotes = nationalBreakdown[i][1];
+                var electoralVotes = nationalBreakdown[i][2];
+                if (!stillBigElems) {
+                    otherPopularVotes += popularVotes;
+                    otherElectoralVotes += electoralVotes;
+                    continue;
+                }
+                
+                var party = parties[lastName];
+                if (party == 'GOP') {seenGOP = true;}
+                else if (party == 'Dem') {seenDem = true;}
+                
+                var fullName = fullNames[lastName];
+                if (fullName) {
+                    var lowercaseFullName = fullName.toLowerCase().trim();
+                    if (lowercaseFullName == 'no preference' || lowercaseFullName == 'none of these candidates') {
+                        lastName = fullName;
+                    } else {
+                        var nameParts = fullName.split(' ');
+                        firstName = nameParts.slice(0, -1).join(' ');
+                        lastName = nameParts[nameParts.length - 1];
+                    }
+                }
+                
+                var legendObj = {
+                    bigElem: stillBigElems,
+                    firstName: firstName,
+                    lastName: lastName,
+                    photo: config.candidateImages[fullName],
+                    votePercent: electoralVotes.toString(),
+                    voteTotal: formatThousands(popularVotes, 0),
+                    winner: lastName == data.electoralData['United States'].winner,
+                    color: config.partyColors[party] || '#ffb90f'
+                };
+                legendObjs.push(legendObj);
+            }
+            
+            legendObjs.push({
+                isOther: true,
+                bigElem: false,
+                firstName: '',
+                lastName: "Other",
+                photo: false,
+                votePercent: otherElectoralVotes.toString(),
+                voteTotal: formatThousands(otherPopularVotes, 0),
+                winner: false,
+                color: '#ffb90f'
+            });
+        })();} else if (raceNumber == 'Governor') {(function() {
+            var republicanStates = [];
+            var democraticStates = [];
+            var thirdPartyStates = [];
+            
+            var precincts = [0, 0];
+            
+            var republicanVotes = 0;
+            var democraticVotes = 0;
+            var thirdPartyVotes = 0;
+            
+            for (var stateName in data.areas) {
+                var stateData = data.areas[stateName]["Governor"];
+                if (!stateData) {continue;}
+                
+                // Set state colors, but only if they're called for the candidate.
+                if (stateData.winner) {
+                    var winnerParty = data.parties[stateName][stateData.winner];
+                    if (winnerParty == 'GOP') {
+                        republicanStates.push(stateName);
+                    } else if (winnerParty == 'Dem') {
+                        democraticStates.push(stateName);
+                    } else {
+                        thirdPartyStates.push(stateName);
+                    }
+                }
+                
+                precincts[0] += stateData.precincts[0];
+                precincts[1] += stateData.precincts[1];
+                
+                for (var i = 0, length = stateData.breakdown.length; i < length; i++) {
+                    var candidateName = stateData.breakdown[i][0];
+                    var candidateVotes = stateData.breakdown[i][1];
+                    
+                    var candidateParty = data.parties[stateName][candidateName];
+                    if (candidateParty && candidateParty == 'GOP') {
+                        republicanVotes += candidateVotes;
+                    } else if (candidateParty && candidateParty == 'Dem') {
+                        democraticVotes += candidateVotes;
+                    } else {
+                        thirdPartyVotes += candidateVotes;
+                    }
+                }
+            }
+            
+            renderPrecincts.apply(renderPrecincts, precincts);
+            
+            nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
+            nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
+            nhmc.ctrl.setStateColors(thirdPartyStates, '#ffb90f');
+            
+            // Create the three legend objects and sort by total seats held.
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Republicans',
+                photo: false,
+                votePercent: config.balanceOfPowerStart.governor.republican + republicanStates.length,
+                voteTotal: formatThousands(republicanVotes, 0),
+                winner: false,
+                color: config.partyColors["GOP"]
+            });
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Democrats',
+                photo: false,
+                votePercent: config.balanceOfPowerStart.governor.democratic + democraticStates.length,
+                voteTotal: formatThousands(democraticVotes, 0),
+                winner: false,
+                color: config.partyColors["Dem"]
+            });
+            legendObjs.push({
+                // It's mathematically impossible in this election for the
+                // "Other" category to be anything other than third place, but
+                // we'll add a check for it after the sort anyway just to be
+                // thorough.
+                bigElem: true,
+                firstName: '',
+                lastName: 'Other',
+                photo: false,
+                votePercent: config.balanceOfPowerStart.governor.thirdParty + thirdPartyStates.length,
+                voteTotal: formatThousands(thirdPartyVotes, 0),
+                winner: false,
+                color: '#ffb90f'
+            });
+            legendObjs.sort(function(a, b) {
+                return b.votePercent - a.votePercent;
+            });
+            var lastLegendObj = legendObjs[legendObjs.length - 1];
+            if (lastLegendObj.lastName == 'Other') {
+                lastLegendObj.bigElem = false;
+            }
+        })();} else if (raceNumber == 'U.S. Senate') {
+            
+        } else {  // House, but this could in theory work for other races
+            
+        }
+        // Render the legend items.
+        var renderLegendItem = function(itemObj) {
+            // bigElem: Boolean
+            if (itemObj.bigElem) {
+                var $itemElem = $('#legend_templates .candidate_big').clone();
+            } else {
+                var $itemElem = $('#legend_templates .candidate_small').clone();
+            }
+            $itemElem.appendTo('#legend_candidates');
+            if (itemObj.isOther) {$itemElem.addClass('legend_candidate_other');}
+            
+            // firstName: String
+            $itemElem.find('.candidate_name').find('.candidate_name_first')
+                .text(itemObj.firstName);
+            
+            // lastName: String
+            $itemElem.find('.candidate_name').find('.candidate_name_last')
+                .text(itemObj.lastName);
+            
+            // photo: String (including empty)
+            var fullName = (itemObj.firstName + ' ' + itemObj.lastName).trim();
+            var fullNameEscaped = fullName.replace(/ /g, '_')
+            if (itemObj.photo) {
+                var candidateImage = $('#legend_images .candidate_image_' + fullNameEscaped);
+                if (candidateImage.length) {
+                    $itemElem.find('.candidate_image')
+                        .replaceWith(candidateImage.clone());
+                } else {
+                    $itemElem.find('.candidate_image')
+                        .attr('src', itemObj.photo)
+                        .addClass('candidate_image_' + fullNameEscaped)
+                        .clone().appendTo('#legend_images');
+                }
+            } else {
+                $itemElem.find('.candidate_image').hide();
+            }
+            
+            // votePercent: String
+            $itemElem.find('.candidate_votes').text(itemObj.votePercent);
+            
+            // voteTotal: String
+            $itemElem.find('.candidate_vote_count').text(itemObj.voteTotal);
+            
+            // winner: Boolean
+            if (itemObj.winner) {
+                $itemElem.find('.candidate_won').show();
+                $itemElem.addClass('candidate_winner');
+            }
+            
+            // color: String (hex color)
+            $itemElem.find('.candidate_color').css('background-color', itemObj.color);
+        };
+        for (var i = 0, length = legendObjs.length; i < length; i++) {
+            renderLegendItem(legendObjs[i]);
+        }
+        
+        // FIXME: Fix the tooltip renderer or write a new one.
+        if (config.tooltipsEnabled) {
+            nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
+        }
+        
+        // FIXME: Customize other event handlers based on interface.
+        
+        // FIXME: Bind tooltip handlers and other event handlers, including
+        // "Other" tooltip handler.
+        nhmc.tooltips.init();
+    };
+    
     $('.view_tab_more').delegate('.view_tab_option:not(#view_tab_more_shown)', 'click', function() {
         $(document).one('drawingComplete', function() {
             sidebarInit();
@@ -1026,7 +1415,11 @@ $(document).one('coreInitialized', function() {
         var state = mapParams[0];
         var raceNumber = mapParams[1];
         $('#view_tab_options_more_shown').attr('href', $(this).attr('href'));
-        displayRaceData(latestData[state], raceNumber);
+        if (state == 'us_all') {
+            displayNationalRaceData(latestData[state], raceNumber);
+        } else {
+            displayRaceData(latestData[state], raceNumber);
+        }
     });
     
     var sidebarInit = function() {
@@ -1069,19 +1462,26 @@ $(document).one('coreInitialized', function() {
             dataType: 'jsonp',
             jsonpCallback: stateNormalized.toUpperCase(),
             success: function(data) {
-                var normData = $.extend(true, {}, data);
-                if (stateNormalized == 'us') {
-                    normData = normalizeNationalData(normData);
-                }
-                
                 if (config.condenseCandidates) {
-                    latestData[state] = condenseCandidates(normData);
+                    latestData[state] = condenseCandidates(data);
                 } else {
-                    latestData[state] = normData;
+                    latestData[state] = data;
                 }
                 
-                latestFullData[state] = normData;
-                liveDataInit(latestData[state]);
+                latestFullData[state] = data;
+                
+                if (stateNormalized != 'us') {
+                    liveDataInit(latestData[state]);
+                } else {
+                    latestData[state].candidates = {}
+                    for (var stateName in latestData[state].parties) {
+                        for (var candidateName in latestData[state].parties[stateName]) {
+                            latestData[state].candidates[candidateName] = candidateName;
+                        }
+                    }
+                    nationalDataInit(latestData[state]);
+                }
+                
                 $(document).trigger('mapDataRetrieved', [state]);
             }
         });
