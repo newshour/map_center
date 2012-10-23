@@ -221,7 +221,6 @@ $(document).one('coreInitialized', function() {
         if (latestData[state].parties && latestData[state].parties[candidateId]) {
             var candidateParty = latestData[state].parties[candidateId];
         } else {
-            // FIXME: Figure out how to look up parties.
             var candidateParty = "";
         }
         
@@ -397,105 +396,6 @@ $(document).one('coreInitialized', function() {
         }
     };
     
-    var liveDataInit = function(data) {
-        // Get the currently displayed race number.
-        var initialRaceNumber = $('#view_tab_options_more_shown').attr('href')
-            .split('-')[1];
-        
-        // Get ready to render the race menu again if we need to.
-        var newState = $('#map_view').val();
-        var renderMenu = function() {
-            // Clear out the existing race menu.
-            $('#view_tab_options_more_menu').empty();
-            
-            // Fill it back up.
-            for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
-                var raceNumber = newRaces.numbers[i];
-                var raceName = newRaces.names[raceNumber];
-                
-                var elem = $('<li><a class="view_tab_option"></a></li>');
-                var elemLink = elem.children('.view_tab_option');
-                elemLink.attr('href', [
-                    '#', newState.toLowerCase(), '-', raceNumber
-                ].join('')).text(raceName);
-                $('#view_tab_options_more_menu').append(elem);
-            }
-            
-            // Select the first race (lowest race number).
-            initialRaceNumber = newRaces.numbers[0];
-            $('#view_tab_options_more_shown')
-                .text(newRaces.names[initialRaceNumber])
-                .attr('href', [
-                    '#', newState.toLowerCase(), '-', initialRaceNumber
-                ].join(''));
-        };
-        
-        // Compare the current and proposed contents of the race menu to see if
-        // they differ. If they do, render the race menu.
-        var oldRaces = (function() {
-            var races = {
-                names: {},
-                numbers: []
-            };
-            $('#view_tab_options_more_menu .view_tab_option')
-            .each(function(i, elem) {
-                var stateRaceId = $(elem).attr('href').substring(1);
-                var stateRaceIdComponents = stateRaceId.split('-');
-                
-                // If the races in the menu aren't from the same state that's
-                // currently showing, we immediately know the comparison between
-                // old and new race names and numbers is going to fail. There's
-                // no reason to keep going through this loop.
-                var oldState = stateRaceIdComponents[0];
-                if (oldState != newState) {return false;}
-                
-                var raceNumber = stateRaceIdComponents[1];
-                races.numbers.push(raceNumber);
-                races.names[raceNumber] = $(elem).text();
-            });
-            races.numbers.sort(numericalSort);  // Remember, sorts are in place.
-            return races;
-        })();
-        var newRaces = (function() {
-            var races = {
-                names: {},
-                numbers: []
-            };
-            races.numbers = Object.keys(data.raceNames).sort(numericalSort);
-            for (var i = 0, length = races.numbers.length; i < length; i++) {
-                var raceNumber = races.numbers[i];
-                var raceName = data.raceNames[raceNumber];
-                if (config.friendlyRaceNames[raceName]) {
-                    raceName = config.friendlyRaceNames[raceName];
-                }
-                races.names[raceNumber] = raceName;
-            }
-            return races;
-        })();
-        for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
-            var oldRaceNumber = oldRaces.numbers[i];
-            var newRaceNumber = newRaces.numbers[i];
-            if (newRaceNumber != oldRaceNumber) {
-                // We know there's a mismatch between what's currently shown and
-                // what's in this data set. Go ahead and render the menu and
-                // break out of here already.
-                renderMenu();
-                break;
-            }
-        }
-        
-        // Render the date/time information and selected race from this data.
-        $('#last_updated').text(formatDate.apply(formatDate, data.lastUpdated));
-        displayRaceData(data, initialRaceNumber);
-        
-        // Mark the page as containing test data if applicable.
-        if (data.test && $('#test_data').length == 0) {
-            $('#view_info h1').append(' <span id="test_data">(test)</span>');
-        } else if (!data.test) {
-            $('#test_data').remove();
-        }
-    };
-    
     var defaultTooltipRenderer = function(data, raceNumber) {
         return function() {
             var thisMapViewName = $('#map_view').val();
@@ -648,6 +548,106 @@ $(document).one('coreInitialized', function() {
             // If we're on a touch device, add a close button so the user
             // can get rid of this thing when they're done with it.
             if (Modernizr.touch) {nhmc.tooltips.addClose();}
+        }
+    };
+    
+    var liveDataInit = function(data) {
+        // Get the currently displayed race number.
+        // FIXME: Be able to persist by name, too.
+        var initialRaceNumber = $('#view_tab_options_more_shown').attr('href')
+            .split('-')[1];
+        
+        // Get ready to render the race menu again if we need to.
+        var newState = $('#map_view').val();
+        var renderMenu = function() {
+            // Clear out the existing race menu.
+            $('#view_tab_options_more_menu').empty();
+            
+            // Fill it back up.
+            for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
+                var raceNumber = newRaces.numbers[i];
+                var raceName = newRaces.names[raceNumber];
+                
+                var elem = $('<li><a class="view_tab_option"></a></li>');
+                var elemLink = elem.children('.view_tab_option');
+                elemLink.attr('href', [
+                    '#', newState.toLowerCase(), '-', raceNumber
+                ].join('')).text(raceName);
+                $('#view_tab_options_more_menu').append(elem);
+            }
+            
+            // Select the first race (lowest race number).
+            initialRaceNumber = newRaces.numbers[0];
+            $('#view_tab_options_more_shown')
+                .text(newRaces.names[initialRaceNumber])
+                .attr('href', [
+                    '#', newState.toLowerCase(), '-', initialRaceNumber
+                ].join(''));
+        };
+        
+        // Compare the current and proposed contents of the race menu to see if
+        // they differ. If they do, render the race menu.
+        var oldRaces = (function() {
+            var races = {
+                names: {},
+                numbers: []
+            };
+            $('#view_tab_options_more_menu .view_tab_option')
+            .each(function(i, elem) {
+                var stateRaceId = $(elem).attr('href').substring(1);
+                var stateRaceIdComponents = stateRaceId.split('-');
+                
+                // If the races in the menu aren't from the same state that's
+                // currently showing, we immediately know the comparison between
+                // old and new race names and numbers is going to fail. There's
+                // no reason to keep going through this loop.
+                var oldState = stateRaceIdComponents[0];
+                if (oldState != newState) {return false;}
+                
+                var raceNumber = stateRaceIdComponents[1];
+                races.numbers.push(raceNumber);
+                races.names[raceNumber] = $(elem).text();
+            });
+            races.numbers.sort(numericalSort);  // Remember, sorts are in place.
+            return races;
+        })();
+        var newRaces = (function() {
+            var races = {
+                names: {},
+                numbers: []
+            };
+            races.numbers = Object.keys(data.raceNames).sort(numericalSort);
+            for (var i = 0, length = races.numbers.length; i < length; i++) {
+                var raceNumber = races.numbers[i];
+                var raceName = data.raceNames[raceNumber];
+                if (config.friendlyRaceNames[raceName]) {
+                    raceName = config.friendlyRaceNames[raceName];
+                }
+                races.names[raceNumber] = raceName;
+            }
+            return races;
+        })();
+        for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
+            var oldRaceNumber = oldRaces.numbers[i];
+            var newRaceNumber = newRaces.numbers[i];
+            if (newRaceNumber != oldRaceNumber) {
+                // We know there's a mismatch between what's currently shown and
+                // what's in this data set. Go ahead and render the menu and
+                // break out of here already.
+                renderMenu();
+                break;
+            }
+        }
+        
+        // Render the date/time information and selected race from this data.
+        $('#last_updated').text(formatDate.apply(formatDate, data.lastUpdated));
+        displayRaceData(data, initialRaceNumber);
+        
+        // Mark the page as containing test data if applicable.
+        if (data.test && $('#test_data').length == 0) {
+            $('#view_info h1').append(' <span id="test_data">(test)</span>');
+        } else if (!data.test) {
+            $('#test_data').remove();
         }
     };
     
@@ -1043,65 +1043,18 @@ $(document).one('coreInitialized', function() {
         $('#legend').show();
     };
     
-    var normalizeNationalData = function(rawData) {
-        var normData = $.extend(true, {}, rawData);
-        
-        // Start filling in the things we don't already have
-        normData.candidates = {};
-        normData.raceNames = {};
-        normData.races = {};
-        
-        for (var stateName in rawData.areas) {
-            var stateRaces = rawData.areas[stateName];
-            for (var raceName in stateRaces) {
-                var raceData = stateRaces[raceName];
-                var newRaceId = raceName.replace(/[- ._]/g, '_');
-                normData.raceNames[newRaceId] = raceName;
-                
-                if (typeof(normData.races[newRaceId]) == 'undefined') {
-                    normData.races[newRaceId] = {
-                        areas: {},
-                        breakdown: [],  // We'll deal with this later.
-                        candidateTotals: {},
-                        precincts: [0, 0],
-                        winners: {}
-                    }
-                }
-                
-                normData.races[newRaceId].areas[stateName] = {
-                    data: raceData.breakdown,
-                    precincts: raceData.precincts
-                };
-                
-                for (var i = 0, length = raceData.breakdown.length; i < length; i++) {
-                    var candidateId = raceData.breakdown[i][0];
-                    normData.candidates[candidateId] = candidateId;  // same as name
-                    var candidateTotal = raceData.breakdown[i][1];
-                    if (typeof(normData.races[newRaceId].candidateTotals[candidateId]) == 'undefined') {
-                        normData.races[newRaceId].candidateTotals[candidateId] = 0;
-                    }
-                    normData.races[newRaceId].candidateTotals[candidateId] += candidateTotal;
-                }
-                
-                normData.races[newRaceId].precincts[0] += raceData.precincts[0];
-                normData.races[newRaceId].precincts[1] += raceData.precincts[1];
-                
-                normData.races[newRaceId].winners[stateName] = raceData.winner;
-            }
+    var renderPrecincts = function(precinctsReporting, totalPrecincts) {
+        if (totalPrecincts == 0) {
+            $('#precincts_reporting, #precincts_total, #precincts_percent').text('0');
+            return;
         }
-        
-        // Generate and sort the breakdown.
-        for (var raceId in normData.races) {
-            var raceData = normData.races[raceId];
-            for (var candidateId in raceData.candidateTotals) {
-                raceData.breakdown.push([candidateId, raceData.candidateTotals[candidateId]]);
-            }
-            raceData.breakdown.sort(function(a, b) {
-                return b[1] - a[1];
-            });
+        $('#precincts_reporting').text(formatThousands(precinctsReporting, 0));
+        $('#precincts_total').text(formatThousands(totalPrecincts, 0));
+        var $precinctsPercent = $('#precincts_percent');
+        $precinctsPercent.text((100 * precinctsReporting / totalPrecincts).toFixed(1));
+        if ($precinctsPercent.length && $precinctsPercent.text() == '100.0' && precinctsReporting != totalPrecincts) {
+            $precinctsPercent.text('99.9');
         }
-        
-        return normData;
     };
     
     // This gets called every so often to update our copy of the data.
