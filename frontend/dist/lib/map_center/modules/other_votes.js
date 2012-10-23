@@ -31,14 +31,14 @@ $(document).one('coreInitialized', function() {
         autoRefreshDelay: 1000 * 15,
         balanceOfPowerStart: {
             governor: {
-                republican: 26, // 29 - (IN + ND + UT)
-                democratic: 13, // 20 - (DE + MO + MT + NH + NC + WA + WV)
-                thirdParty: 1   // 1
+                republican: 26,  // 29 - (IN + ND + UT)
+                democratic: 13,  // 20 - (DE + MO + MT + NH + NC + WA + WV)
+                thirdParty: 1    // 1
             },
             senate: {
-                republican: 0,
-                democratic: 0,
-                thirdParty: 0
+                republican: 30,  // 51 - (CA + DE + FL + HI + MD + MI + MN + MO + MT + NE + NJ + NM + NY + ND + OH + PA + RI + VA + WA + WV + WI)
+                democratic: 37,  // 47 - (AZ + IN + ME + MA + MS + NV + TN + UT + TX + WY)
+                thirdParty: 0    // 2 - (CT + VT)
             }
         },
         bigCandidates: 3,
@@ -122,7 +122,9 @@ $(document).one('coreInitialized', function() {
         },
         partyColors: {  // Use APEO party abbreviations
             "Dem": "#283891",
-            "GOP": "#9f1c20"
+            "GOP": "#9f1c20",
+            // For other use
+            "thirdParty": "#ffb90f"
         },
         randomColors: [
             // ColorBrewer Set2 with eight classes
@@ -1097,7 +1099,29 @@ $(document).one('coreInitialized', function() {
         };
         for (var stateName in data.areas) {
             var stateData = data.areas[stateName][raceNumber];
-            if (typeof(stateData) == 'undefined') {continue;}
+            if (typeof(stateData) == 'undefined') {
+                if (raceNumber == "U.S. Senate") {
+                    // Some of these are showing up as "U.S. Senate - 2012" and
+                    // other weird variants instead of just "U.S. Senate".
+                    // Because we know there aren't any states with multiple
+                    // Senate races (except, IIRC, for one that's for just a
+                    // couple of months that we aren't worrying about), we just
+                    // look for any race that starts with "U.S. Senate" and
+                    // assume that's the one.
+                    var raceNameStart = "U.S. Senate";
+                    for (var raceName in data.areas[stateName]) {
+                        if (raceName.slice(0, raceNameStart.length) == raceNameStart) {
+                            stateData = data.areas[stateName][raceName];
+                            break;
+                        }
+                    }
+                    if (typeof(stateData) == 'undefined') {
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+            }
             
             currentRaceData.areas[stateName] = {
                 data: stateData.breakdown,
@@ -1167,7 +1191,7 @@ $(document).one('coreInitialized', function() {
             }
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
-            nhmc.ctrl.setStateColors(thirdPartyStates, '#ffb90f');
+            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors['thirdParty']);
             
             var stillBigElems = true;
             var seenGOP = false;
@@ -1215,7 +1239,7 @@ $(document).one('coreInitialized', function() {
                     votePercent: electoralVotes.toString(),
                     voteTotal: formatThousands(popularVotes, 0),
                     winner: lastName == data.electoralData['United States'].winner,
-                    color: config.partyColors[party] || '#ffb90f'
+                    color: config.partyColors[party] || config.partyColors['thirdParty']
                 };
                 legendObjs.push(legendObj);
             }
@@ -1229,7 +1253,7 @@ $(document).one('coreInitialized', function() {
                 votePercent: otherElectoralVotes.toString(),
                 voteTotal: formatThousands(otherPopularVotes, 0),
                 winner: false,
-                color: '#ffb90f'
+                color: config.partyColors['thirdParty']
             });
         })();} else if (raceNumber == 'Governor') {(function() {
             var republicanStates = [];
@@ -1280,7 +1304,7 @@ $(document).one('coreInitialized', function() {
             
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
-            nhmc.ctrl.setStateColors(thirdPartyStates, '#ffb90f');
+            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors['thirdParty']);
             
             // Create the three legend objects and sort by total seats held.
             legendObjs.push({
@@ -1315,7 +1339,7 @@ $(document).one('coreInitialized', function() {
                 votePercent: config.balanceOfPowerStart.governor.thirdParty + thirdPartyStates.length,
                 voteTotal: formatThousands(thirdPartyVotes, 0),
                 winner: false,
-                color: '#ffb90f'
+                color: config.partyColors['thirdParty']
             });
             legendObjs.sort(function(a, b) {
                 return b.votePercent - a.votePercent;
@@ -1324,9 +1348,109 @@ $(document).one('coreInitialized', function() {
             if (lastLegendObj.lastName == 'Other') {
                 lastLegendObj.bigElem = false;
             }
-        })();} else if (raceNumber == 'U.S. Senate') {
+        })();} else if (raceNumber == 'U.S. Senate') {(function() {
+            var republicanStates = [];
+            var democraticStates = [];
+            var thirdPartyStates = [];
             
-        } else {  // House, but this could in theory work for other races
+            var precincts = [0, 0];
+            
+            var republicanVotes = 0;
+            var democraticVotes = 0;
+            var thirdPartyVotes = 0;
+            
+            for (var stateName in data.areas) {
+                // Some of these are showing up as "U.S. Senate - 2012" and
+                // other weird variants instead of just "U.S. Senate". Because
+                // we know there aren't any states with multiple Senate races
+                // (except, IIRC, for one that's for just a couple of months
+                // that we aren't worrying about), we just look for any race
+                // that starts with "U.S. Senate" and assume that's the one.
+                var stateData = false;
+                var raceNameStart = "U.S. Senate";
+                for (var raceName in data.areas[stateName]) {
+                    if (raceName.slice(0, raceNameStart.length) == raceNameStart) {
+                        stateData = data.areas[stateName][raceName];
+                        break;
+                    }
+                }
+                if (!stateData) {continue;}
+                
+                // Set state colors, but only if they're called for the candidate.
+                if (stateData.winner) {
+                    var winnerParty = data.parties[stateName][stateData.winner];
+                    if (winnerParty == 'GOP') {
+                        republicanStates.push(stateName);
+                    } else if (winnerParty == 'Dem') {
+                        democraticStates.push(stateName);
+                    } else {
+                        thirdPartyStates.push(stateName);
+                    }
+                }
+                
+                precincts[0] += stateData.precincts[0];
+                precincts[1] += stateData.precincts[1];
+                
+                for (var i = 0, length = stateData.breakdown.length; i < length; i++) {
+                    var candidateName = stateData.breakdown[i][0];
+                    var candidateVotes = stateData.breakdown[i][1];
+                    
+                    var candidateParty = data.parties[stateName][candidateName];
+                    if (candidateParty && candidateParty == 'GOP') {
+                        republicanVotes += candidateVotes;
+                    } else if (candidateParty && candidateParty == 'Dem') {
+                        democraticVotes += candidateVotes;
+                    } else {
+                        thirdPartyVotes += candidateVotes;
+                    }
+                }
+            }
+            
+            renderPrecincts.apply(renderPrecincts, precincts);
+            
+            nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
+            nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
+            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors['thirdParty']);
+            
+            // Create the three legend objects and sort by total seats held.
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Republicans',
+                photo: false,
+                votePercent: config.balanceOfPowerStart.senate.republican + republicanStates.length,
+                voteTotal: formatThousands(republicanVotes, 0),
+                winner: false,
+                color: config.partyColors["GOP"]
+            });
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Democrats',
+                photo: false,
+                votePercent: config.balanceOfPowerStart.senate.democratic + democraticStates.length,
+                voteTotal: formatThousands(democraticVotes, 0),
+                winner: false,
+                color: config.partyColors["Dem"]
+            });
+            legendObjs.push({
+                bigElem: true,
+                firstName: '',
+                lastName: 'Other',
+                photo: false,
+                votePercent: config.balanceOfPowerStart.senate.thirdParty + thirdPartyStates.length,
+                voteTotal: formatThousands(thirdPartyVotes, 0),
+                winner: false,
+                color: config.partyColors['thirdParty']
+            });
+            legendObjs.sort(function(a, b) {
+                return b.votePercent - a.votePercent;
+            });
+            var lastLegendObj = legendObjs[legendObjs.length - 1];
+            if (lastLegendObj.lastName == 'Other') {
+                lastLegendObj.bigElem = false;
+            }
+        })();} else {  // House, but this could in theory work for other races
             
         }
         // Render the legend items.
