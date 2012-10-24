@@ -1626,6 +1626,7 @@ $(document).one('coreInitialized', function() {
             renderLegendItem(legendObjs[i]);
         }
         
+        // Tooltip time!
         if (config.tooltipsEnabled) {
             nhmc.tooltips.click = function() {
                 var thisMapView = nhmc.config.stateToUSPS[this.nhmcData.state].toLowerCase();
@@ -1636,6 +1637,23 @@ $(document).one('coreInitialized', function() {
             } else {
                 nhmc.tooltips.render = $.noop;
             }
+        }
+        
+        // Add some touch-specific modifications if we're using flyout (i.e.,
+        // broadcast touch-specific) tooltips.
+        if (config.tooltipsEnabled && config.flyoutsEnabled) {
+            // Positioning should be handled in the page styles.
+            nhmc.tooltips.position = $.noop;
+            
+            nhmc.tooltips.destroy = function() {
+                $('#tooltip').remove();
+                for (var i = 0, length = nhmc.surface.children.length; i < length; i++) {
+                    var child = nhmc.surface.children[i];
+                    if (typeof(child.nhmcData) != 'undefined') {
+                        child.setStroke(nhmc.config.defaultAttributes.stroke);
+                    }
+                }
+            };
         }
         
         // Assuming everything's good to go with tooltips (i.e., there aren't
