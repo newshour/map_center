@@ -1200,7 +1200,7 @@ $(document).one('coreInitialized', function() {
                     if (fullNames[candElectoralData[0]]) {continue;}
                     
                     var candPopularData = currentRaceData.areas[stateName].data[i];
-                    if (candElectoralData[1] == candPopularData[1]) {
+                    if (candElectoralData[1] == candPopularData[1] || candPopularData[0].slice(-(candElectoralData[0].length)) == candElectoralData[0]) {
                         // This should be the same person.
                         fullNames[candElectoralData[0]] = candPopularData[0];
                         parties[candElectoralData[0]] = data.parties[stateName][candPopularData[0]];
