@@ -428,10 +428,12 @@ $(document).one('coreInitialized', function() {
                 
                 // Just to make sure the cities aren't covered up in the
                 // process, move all of those to the front again.
-                var cityPaths = nhmc.geo.usGeo[nhmc.config.USPSToState[thisMapViewName.toUpperCase()]].cityPaths;
-                for (var cityName in cityPaths) {
-                    var path = cityPaths[cityName];
-                    path.moveToFront();
+                if (thisMapViewName != 'us_all') {
+                    var cityPaths = nhmc.geo.usGeo[nhmc.config.USPSToState[thisMapViewName.toUpperCase()]].cityPaths;
+                    for (var cityName in cityPaths) {
+                        var path = cityPaths[cityName];
+                        path.moveToFront();
+                    }
                 }
             }
             
@@ -1624,14 +1626,16 @@ $(document).one('coreInitialized', function() {
             renderLegendItem(legendObjs[i]);
         }
         
-        // FIXME: Consider customizing the tooltip renderer, at least in the
-        // case of the House.
         if (config.tooltipsEnabled) {
-            nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
             nhmc.tooltips.click = function() {
                 var thisMapView = nhmc.config.stateToUSPS[this.nhmcData.state].toLowerCase();
                 $('.view_tab_more .view_tab_option[href="#' + thisMapView + '"]').last().click();
             };
+            if (raceNumber == 'President' || raceNumber == 'Governor' || raceNumber == 'U.S. Senate') {
+                nhmc.tooltips.render = defaultTooltipRenderer(data, raceNumber);
+            } else {
+                nhmc.tooltips.render = $.noop;
+            }
         }
         
         // Assuming everything's good to go with tooltips (i.e., there aren't
@@ -1653,6 +1657,12 @@ $(document).one('coreInitialized', function() {
         nhmc.ctrl.hashParams({"map_view": mapValue});
         $('#view_tab_more_shown').attr('href', $('#view_tab_more_menu .view_tab_option[href="#' + mapValue + '"]').attr('href'));
         nhmc.ctrl.zoomToState(mapValue);
+        
+        if (mapValue == 'us_all') {
+            $('#other_back_link').hide();
+        } else {
+            $('#other_back_link').show();
+        }
     });
     
     $('.view_tab_options_more').delegate('.view_tab_option:not(#view_tab_options_more_shown)', 'click', function() {
@@ -1745,6 +1755,11 @@ $(document).one('coreInitialized', function() {
         $('#live_refresh_on').removeClass('live_refresh_inactive').addClass('live_refresh_active');
         $('#live_refresh_off').removeClass('live_refresh_active').addClass('live_refresh_inactive');
     }
+    
+    $('#other_back_link a').click(function() {
+        $('.view_tab_more .view_tab_option[href="#us_all"]').last().click();
+        return false;
+    });
     
     // Support enabling and disabling auto-refresh. (Doubt we'll ever use
     // these, but you never know.)

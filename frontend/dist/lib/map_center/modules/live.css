@@ -160,6 +160,12 @@
     cursor: default;
 }
 
+#other_back_link {
+    margin-left: 17em;
+    font-size: 12pt;
+    display: none;
+}
+
 #updated_info {
     color: #666;
     font-size: 10pt;
