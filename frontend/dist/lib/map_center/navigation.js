@@ -93,11 +93,6 @@ $(document).ready(function() {
         id: "voter_id"
     }, {
         featured: false,
-        title: "Senate Six",
-        href: "senate_six.html",
-        id: "senate"
-	}, {
-        featured: false,
         title: "Wisconsin recall results",
         href: "wi_recall.html",
         id: "wi_recall"
