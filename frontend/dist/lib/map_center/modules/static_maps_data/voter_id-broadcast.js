@@ -5,7 +5,7 @@ var nhmcStatic = {
         "Other ID laws": "#465686"
     },
     "areaLists": {
-        "Require photo ID": ["Kansas", "Tennessee", "Indiana", "Pennsylvania", "Georgia"],
-        "Other ID laws": ["Idaho", "South Dakota", "Louisiana", "Michigan", "Florida", "Hawaii", "Alaska", "Washington", "Montana", "North Dakota", "Utah", "Colorado", "Arizona", "Texas", "Oklahoma", "Missouri", "Arkansas", "Alabama", "Kentucky", "Ohio", "Virginia", "South Carolina", "Delaware", "Rhode Island", "Connecticut", "New Hampshire"]
+        "Require photo ID": ["Kansas", "Tennessee", "Indiana", "Georgia"],
+        "Other ID laws": ["Pennsylvania", "Idaho", "South Dakota", "Louisiana", "Michigan", "Florida", "Hawaii", "Alaska", "Washington", "Montana", "North Dakota", "Utah", "Colorado", "Arizona", "Texas", "Oklahoma", "Missouri", "Arkansas", "Alabama", "Kentucky", "Ohio", "Virginia", "South Carolina", "Delaware", "Rhode Island", "Connecticut", "New Hampshire"]
     }
 };
