@@ -54,7 +54,19 @@ $(document).one('coreInitialized', function() {
            "Yes": "#b2df8a",
            "For": "#b2df8a",
            "No": "#1f78b4",
-           "Against": "#1f78b4"
+           "Against": "#1f78b4",
+           // Independent candidates with no party affiliation that would color
+           // them based on config.partyColors
+           "Gloria La Riva": '#ffb90f',
+           "Tom Stevens": '#ffb90f',
+           "Tom Hoefling": '#ffb90f',
+           "Merlin Miller": '#ffb90f',
+           "Peta Lindsay": '#ffb90f',
+           "Rocky Anderson": '#ffb90f',
+           "Randall Terry": '#ffb90f',
+           "Don Wills": '#ffb90f',
+           "Joel Otto": '#ffb90f',
+           "Richard Grayson": '#ffb90f',
         },
         candidateImages: {
             "Mitt Romney": "lib/images/results/romney.jpg",
@@ -128,7 +140,22 @@ $(document).one('coreInitialized', function() {
             "Dem": "#283891",
             "GOP": "#9f1c20",
             // For other use
-            "thirdParty": "#ffb90f"
+            "thirdParty": "#ffb90f",
+            // All others are tossup/third-party/independent
+            '': '#ffb90f', 'Lib': '#ffb90f', 'NPA': '#ffb90f',
+            'AmC': '#ffb90f', 'JP': '#ffb90f', 'AIP': '#ffb90f',
+            'UST': '#ffb90f', 'WYC': '#ffb90f', 'ATP': '#ffb90f',
+            'PAG': '#ffb90f', 'Grn': '#ffb90f', 'SWP': '#ffb90f',
+            'Cnl': '#ffb90f', 'PEC': '#ffb90f', 'Oth': '#ffb90f',
+            'NLP': '#ffb90f', 'RP': '#ffb90f', 'Mnt': '#ffb90f',
+            'SEP': '#ffb90f', 'DCG': '#ffb90f', 'AmP': '#ffb90f',
+            'LUn': '#ffb90f', 'WTP': '#ffb90f', 'Obj': '#ffb90f',
+            'GRP': '#ffb90f', 'AmE': '#ffb90f', 'Soc': '#ffb90f',
+            'Una': '#ffb90f', 'CST': '#ffb90f', 'IAP': '#ffb90f',
+            'Con': '#ffb90f', 'Prg': '#ffb90f', 'IGr': '#ffb90f',
+            'PSL': '#ffb90f', 'NPD': '#ffb90f', 'Pro': '#ffb90f',
+            'Inp': '#ffb90f', 'PFP': '#ffb90f', 'IPD': '#ffb90f',
+            'Ind': '#ffb90f', 'NMI': '#ffb90f'
         },
         randomColors: [
             // ColorBrewer Set2 with eight classes
@@ -850,6 +877,8 @@ $(document).one('coreInitialized', function() {
                         ).addClass('candidate_image_' + candidateId).clone()
                         .appendTo('#legend_images');
                 }
+            } else {
+                legendEntry.find('.candidate_image').hide();
             }
             
             // Check whether AP has called the race in favor of this candidate.
@@ -1188,6 +1217,7 @@ $(document).one('coreInitialized', function() {
             var republicanStates = [];
             var democraticStates = [];
             var thirdPartyStates = [];
+            var reportingStates = [];
             
             for (var stateName in data.electoralData) {
                 if (stateName == 'United States') {continue;}
@@ -1217,11 +1247,14 @@ $(document).one('coreInitialized', function() {
                     } else {
                         thirdPartyStates.push(stateName);
                     }
+                } else if (stateElectoralData.precincts[0] > 0) {
+                    reportingStates.push(stateName);
                 }
             }
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
-            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors['thirdParty']);
+            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors["thirdParty"]);
+            nhmc.ctrl.setStateColors(reportingStates, '#ffffff');
             
             var stillBigElems = true;
             var seenGOP = false;
@@ -1289,6 +1322,7 @@ $(document).one('coreInitialized', function() {
             var republicanStates = [];
             var democraticStates = [];
             var thirdPartyStates = [];
+            var reportingStates = [];
             
             var precincts = [0, 0];
             
@@ -1310,6 +1344,8 @@ $(document).one('coreInitialized', function() {
                     } else {
                         thirdPartyStates.push(stateName);
                     }
+                } else if (stateData.precincts[0] > 0) {
+                    reportingStates.push(stateName);
                 }
                 
                 precincts[0] += stateData.precincts[0];
@@ -1334,7 +1370,8 @@ $(document).one('coreInitialized', function() {
             
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
-            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors['thirdParty']);
+            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors["thirdParty"]);
+            nhmc.ctrl.setStateColors(reportingStates, '#ffffff');
             
             // Create the three legend objects and sort by total seats held.
             legendObjs.push({
@@ -1382,6 +1419,7 @@ $(document).one('coreInitialized', function() {
             var republicanStates = [];
             var democraticStates = [];
             var thirdPartyStates = [];
+            var reportingStates = [];
             
             var precincts = [0, 0];
             
@@ -1416,6 +1454,8 @@ $(document).one('coreInitialized', function() {
                     } else {
                         thirdPartyStates.push(stateName);
                     }
+                } else if (stateData.precincts[0] > 0) {
+                    reportingStates.push(stateName);
                 }
                 
                 precincts[0] += stateData.precincts[0];
@@ -1440,7 +1480,8 @@ $(document).one('coreInitialized', function() {
             
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
-            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors['thirdParty']);
+            nhmc.ctrl.setStateColors(thirdPartyStates, config.partyColors["thirdParty"]);
+            nhmc.ctrl.setStateColors(reportingStates, '#ffffff');
             
             // Create the three legend objects and sort by total seats held.
             legendObjs.push({
