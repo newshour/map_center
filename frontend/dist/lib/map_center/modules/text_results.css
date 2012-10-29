@@ -1,0 +1,160 @@
+/* v1.0 | 20080212  - eric meyer reset */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+}
+
+#results-state-select {
+    margin-bottom: 1em;
+}
+
+#results-state-label {
+    margin:15px;
+    font:20px/1 bold Arial, Helvetica, sans-serif;
+    color:#b92424;
+    text-transform: uppercase;
+}
+
+.state-dropdown {
+    color:#666666;
+    border: 1px solid #4E4868;
+    font-size:16px;
+    background-color: #EBEBEB;
+    font-size:16px;
+    width: 247px;
+}
+
+body {
+    font:20px/1 bold Arial, Helvetica, sans-serif;
+    color:#777;
+    text-align:left;
+    margin:3px;
+}
+
+li {
+    display:inline;
+    font-size: 16px;
+    font-weight:bold;
+}
+
+h2 {
+    color:#2e3646;
+    text-transform:uppercase;
+    padding:10px 15px 0px 15px;
+    border-top:#d0cfcf 1px solid;
+}
+
+.timestamp {
+    padding:15px; 
+    font-size: 11px;
+    color:#908f8f;
+}
+
+.race-wrap {
+    padding:3px 0px;
+    border-top:1px solid #d0cfcf;
+    border-bottom:1px solid #d0cfcf;
+    margin-top:10px;
+}
+
+.race {
+    padding: 8px 15px 6px 15px;
+    ;
+    background-color:#f0f0f0;
+    color:#2e3646;
+}
+
+.title {
+    text-transform:uppercase;
+    float:left;
+    font-size:20px;
+}
+
+ul {
+    overflow:hidden;
+    position:relative;
+}
+
+li.precincts {
+    float:right;
+    text-align: left;
+    width:60px;
+    font-size:10px;
+    margin-right:10px;
+    text-transform:uppercase;
+    line-height:92%;
+}
+
+li.percent {
+    float:right;
+    text-align:right;
+    font-size:24px;
+    margin-top:-3px;
+}
+
+.candidates { padding:0px 0px; }
+
+.candidates ul { padding:4px 15px 2px 15px; ; }
+
+.name {
+    float:left;
+    margin-right:10px;
+    font-size:18px;
+}
+
+.gop { color:#b92424; }
+
+.dem { color:#1c549e; }
+
+.ind { color:#9d9b67; }
+
+ul.odd { background-color:#f0f0f0; }
+
+.votes {
+    font-size: 13px;
+    color:#908f8f;
+    text-transform:uppercase;
+    float:left;
+    margin-top:4px;
+}
+
+.win ul { color:#777 !important; }
+
+.winner.gop {
+    color:#b92424 !important;
+    background-image:url('http://www.pbs.org/newshour/vote2010/images/check.gif');
+    padding-left: 43px;
+    background-position:15px 3px;
+    background-repeat:no-repeat;
+    margin-bottom:1px;
+}
+.winner.dem {
+    color:#b92424 !important;
+    background-image:url('http://www.pbs.org/newshour/vote2010/images/check.gif');
+    padding-left: 43px;
+    background-position:15px 3px;
+    background-repeat:no-repeat;
+    margin-bottom:1px;
+}
+.winner.ind {
+    color:#b92424 !important;
+    background-image:url('http://www.pbs.org/newshour/vote2010/images/check.gif');
+    padding-left: 43px;
+    background-position:15px 3px;
+    background-repeat:no-repeat;
+    margin-bottom:1px;
+}
+
+.winner .name {
+    font-size:19px;
+    margin-top:0px;
+}
+
+.winner .votes { margin-top:4px; }
+
+.winner.dem { color:#1c549e !important; }
+
+.winner.ind { color:#9d9b67 !important; }\
