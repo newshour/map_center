@@ -244,16 +244,49 @@ $(document).one('coreInitialized', function() {
         // Done!
         return timeStringParts.join('');
     };
-    var numericalSort = function(a, b) {
-        // FIXME: Make this sort by names in some intelligent way.
-        var numA = parseInt(a, 10);
-        var numB = parseInt(b, 10);
-        if (isNaN(numA) || isNaN(numB)) {
-            if (a < b) {return -1;}
-            else if (a > b) {return 1;}
-            else {return 0;}
+    function startsWith(string, starting) {
+        return string.slice(0, starting.length) === starting;
+    }
+    var endingNumber = /^(.*?)(\d+)$/;
+    var raceNameSort = function(a, b) {
+        // President, governor, Senate, House, other
+        if (a.name === 'President') {
+            return -100;
+        } else if (b.name === 'President') {
+            return 100;
         }
-        else {return numA - numB;}
+        
+        if (a.name === 'Governor') {
+            return -90;
+        } else if (b.name === 'Governor') {
+            return 90;
+        }
+        
+        if (a.name === 'U.S. Senate') {
+            return -80;
+        } else if (b.name === 'U.S. Senate') {
+            return 80;
+        }
+        
+        if (startsWith(a.name, 'U.S. House') && !startsWith(b.name, 'U.S. House')) {
+            return -70;
+        } else if (!startsWith(a.name, 'U.S. House') && startsWith(b.name, 'U.S. House')) {
+            return 70;
+        }
+        
+        var aMatches = endingNumber.exec(a.name);
+        var bMatches = endingNumber.exec(b.name);
+        if ((aMatches && bMatches) && (aMatches[1] === bMatches[1])) {
+            return parseInt(aMatches[2], 10) - parseInt(bMatches[2], 10);
+        }
+        
+        if (a.name < b.name) {
+            return -1;
+        } else if (a.name > b.name) {
+            return 1;
+        } else {
+            return 0;
+        }
     };
     
     // Color assignments
@@ -601,9 +634,13 @@ $(document).one('coreInitialized', function() {
             $('#view_tab_options_more_menu').empty();
             
             // Fill it back up.
-            for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
-                var raceNumber = newRaces.numbers[i];
-                var raceName = newRaces.names[raceNumber];
+            var raceNameLookup = {};
+            var raceNumberLookup = {};
+            for (var i = 0, length = newRaces.length; i < length; i++) {
+                var raceNumber = newRaces[i].number;
+                var raceName = newRaces[i].name;
+                raceNumberLookup[raceName] = raceNumber;
+                raceNameLookup[raceNumber] = raceName;
                 
                 var elem = $('<li><a class="view_tab_option"></a></li>');
                 var elemLink = elem.children('.view_tab_option');
@@ -617,19 +654,19 @@ $(document).one('coreInitialized', function() {
             // the presidential results.
             var $shownRace = $('#view_tab_options_more_shown');
             var currentRaceName = $shownRace.text();
-            if (currentRaceName.slice(0, "U.S. House".length) == "U.S. House") {
+            if (startsWith(currentRaceName, "U.S. House")) {
                 currentRaceName = "U.S. House 1";
             }
-            var currentRaceNumber = newRaces.nameLookup[currentRaceName];
+            var currentRaceNumber = raceNumberLookup[currentRaceName];
             if (currentRaceNumber) {
                 // Yay, we found it!
                 initialRaceNumber = currentRaceNumber;
             } else {
                 // Select the first race (lowest race number).
-                initialRaceNumber = newRaces.numbers[0];
+                initialRaceNumber = newRaces[0].number;
             }
             
-            $shownRace.text(newRaces.names[initialRaceNumber])
+            $shownRace.text(raceNameLookup[initialRaceNumber])
                 .attr('href', [
                     '#', newState.toLowerCase(), '-', initialRaceNumber
                 ].join(''));
@@ -638,10 +675,7 @@ $(document).one('coreInitialized', function() {
         // Compare the current and proposed contents of the race menu to see if
         // they differ. If they do, render the race menu.
         var oldRaces = (function() {
-            var races = {
-                names: {},
-                numbers: []
-            };
+            var races = [];
             $('#view_tab_options_more_menu .view_tab_option')
             .each(function(i, elem) {
                 var stateRaceId = $(elem).attr('href').substring(1);
@@ -655,34 +689,33 @@ $(document).one('coreInitialized', function() {
                 if (oldState != newState) {return false;}
                 
                 var raceNumber = stateRaceIdComponents[1];
-                races.numbers.push(raceNumber);
-                races.names[raceNumber] = $(elem).text();
+                races.push({
+                    name: $(elem).text(),
+                    number: raceNumber
+                });
             });
-            races.numbers.sort(numericalSort);  // Remember, sorts are in place.
+            races.sort(raceNameSort);  // Remember, sorts are in place.
             return races;
         })();
         var newRaces = (function() {
-            var races = {
-                names: {},
-                nameLookup: {},
-                numbers: []
-            };
-            races.numbers = Object.keys(data.raceNames).sort(numericalSort);
-            for (var i = 0, length = races.numbers.length; i < length; i++) {
-                var raceNumber = races.numbers[i];
+            var races = [];
+            for (var raceNumber in data.raceNames) {
                 var raceName = data.raceNames[raceNumber];
                 if (config.friendlyRaceNames[raceName]) {
                     raceName = config.friendlyRaceNames[raceName];
                 }
-                races.names[raceNumber] = raceName;
-                races.nameLookup[raceName] = raceNumber;
+                races.push({
+                    name: raceName,
+                    number: raceNumber
+                });
             }
+            races.sort(raceNameSort);
             return races;
         })();
-        for (var i = 0, length = newRaces.numbers.length; i < length; i++) {
-            var oldRaceNumber = oldRaces.numbers[i];
-            var newRaceNumber = newRaces.numbers[i];
-            if (newRaceNumber != oldRaceNumber) {
+        for (var i = 0, length = newRaces.length; i < length; i++) {
+            var oldRace = oldRaces[i];
+            var newRace = newRaces[i];
+            if (typeof(oldRace) == 'undefined' || newRace.number != oldRace.number) {
                 // We know there's a mismatch between what's currently shown and
                 // what's in this data set. Go ahead and render the menu and
                 // break out of here already.
