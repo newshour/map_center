@@ -1794,7 +1794,7 @@ $(document).one('coreInitialized', function() {
             dataType: 'jsonp',
             jsonpCallback: stateNormalized.toUpperCase(),
             success: function(data) {
-                if (config.condenseCandidates) {
+                if (config.condenseCandidates && stateNormalized != 'us') {
                     latestData[state] = condenseCandidates(data);
                 } else {
                     latestData[state] = data;
