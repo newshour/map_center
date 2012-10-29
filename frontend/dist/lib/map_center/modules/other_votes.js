@@ -71,7 +71,7 @@ $(document).one('coreInitialized', function() {
         candidateImages: {
             "Mitt Romney": "lib/images/results/romney.jpg",
         },
-        condenseCandidates: false,
+        condenseCandidates: true,
         dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
         defaultRaceNames: {},
         flyoutsEnabled: false,
@@ -165,8 +165,6 @@ $(document).one('coreInitialized', function() {
             "#1b9e77", "#d95f02", "#7570b3", "#e7298a",
             "#66a61e", "#e6ab02", "#a6761d", "#666666"
         ],
-        showCandidates: {},
-        showRaces: [],
         strokeHighlight: "#000000",
         tooltipsEnabled: true
     };
@@ -327,118 +325,108 @@ $(document).one('coreInitialized', function() {
     // In case we need to condense candidates (i.e., group some into an "Other"
     // category), this is how to do it.
     var condenseCandidates = function(data) {
-        if (config.showRaces.length != 0) {
-            var condensedData = {
-                "candidates": {},
-                "lastUpdated": raceData.lastUpdated,
-                "races": {},
-                "raceNames": {},
-                "test": raceData.test
-            };
-            // Make sure we don't inadvertently modify our original data
-            $.extend(condensedData.candidates, data.candidates);
-            
-            // Be ready for "Other" where we need it.
-            var otherCandidateId = "OTHER_CONDENSED";
-            condensedData.candidates[otherCandidateId] = "Other";
-            
-            for (var i = 0, length = config.showRaces.length; i < length; i++) {
-                var raceName = config.showRaces[i];
-                var raceNumber = null;
-                // Store the names of all desired races.
-                for (var possibleRaceNumber in raceData.raceNames) {
-                    if (raceData.raceNames[possibleRaceNumber] === raceName) {
-                        raceNumber = possibleRaceNumber;
-                        condensedData.raceNames[raceNumber] = raceName;
-                        break;
-                    }
-                }
-                if (raceNumber) {
-                    if (config.showCandidates[raceName] && !$.isEmptyObject(config.showCandidates[raceName])) {
-                        var oldRaceData = raceData.races[raceNumber];
-                        var newRaceData = {
-                            "areas": {},
-                            "breakdown": [],
-                            "precincts": oldRaceData.precincts,
-                            "winners": {}
-                        };
-                        
-                        // Keep a list of all of the candidate IDs we want to
-                        // leave intact.
-                        var showCandidateIds = [];
-                        for (var j = 0, jLength = config.showCandidates[raceName].length; j < jLength; j++) {
-                            var candidateName = config.showCandidates[raceName][j];
-                            var candidateId = '';
-                            for (var possibleCandidateId in data.candidates) {
-                                if (data.candidates[possibleCandidateId] === candidateName) {
-                                    candidateId = possibleCandidateId;
-                                    showCandidateIds.push(candidateId);
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        // Build new area objects.
-                        for (var areaName in oldRaceData.areas) {
-                            var oldAreaData = oldRaceData.areas[areaName];
-                            var newAreaData = {
-                                "data": [],
-                                "precincts": oldAreaData.precincts
-                            };
-                            
-                            var otherTotal = 0;
-                            var otherCount = 0;
-                            for (var j = 0, jLength = oldAreaData.raceData.length; j < jLength; j++) {
-                                var candidateId = oldAreaData.data[j][0];
-                                var candidateVotes = oldAreaData.data[j][1];
-                                
-                                if (showCandidateIds.indexOf(candidateId) != -1) {
-                                    // Keep this one.
-                                    newAreaData.raceData.push([
-                                        candidateId, candidateVotes
-                                    ]);
-                                } else {
-                                    // Save it for later.
-                                    otherTotal += candidateVotes;
-                                    otherCount += 1;
-                                }
-                            }
-                            
-                            // Add the "Other" entry at the end if necessary.
-                            if (otherCount > 0) {
-                                newAreaData.raceData.push([
-                                    otherCandidateId, otherTotal
-                                ]);
-                            }
-                            
-                            // Store this and move on to the next one.
-                            newRaceData.areas[areaName] = newAreaData;
-                        }
-                        
-                        // Change the called winner in each area to "Other" if
-                        // necessary.
-                        for (var areaName in oldRaceData.winners) {
-                            var candidateId = oldRaceData.winners[areaName];
-                            if (showCandidateIds.indexOf(candidateId) != -1) {
-                                newRaceData.winners[areaName] = candidateId;
-                            } else {
-                                newRaceData.winners[areaName] = otherCandidateId;
-                            }
-                        }
-                        
-                        // The breakdown for the race is the same as that for
-                        // the current state being displayed.
-                        newRaceData.breakdown = newRaceData.areas[nhmc.config.USPSToState[$('#map_view').val().toUpperCase()]].data;
-                        
-                        // Store this race and move on to the next one.
-                        condensedData.races[raceNumber] = newRaceData;
-                    }
+        var condensedData = {
+            "candidates": {},
+            "lastUpdated": data.lastUpdated,
+            "parties": {},
+            "races": {},
+            "raceNames": {},
+            "test": data.test
+        };
+        // Make sure we don't inadvertently modify our original data.
+        $.extend(condensedData.candidates, data.candidates);
+        $.extend(condensedData.parties, data.parties);
+        $.extend(condensedData.raceNames, data.raceNames);
+        
+        // Be ready for "Other" where we need it.
+        var otherCandidateId = "OTHER_CONDENSED";
+        condensedData.candidates[otherCandidateId] = "Other";
+        
+        // Get the list of races to show.
+        var racesToShow = $.extend([], config.showRaces);
+        if (racesToShow.length == 0) {
+            for (var possibleRaceNumber in data.raceNames) {
+                racesToShow.push(data.raceNames[possibleRaceNumber]);
+            }
+        }
+        
+        for (var i = 0, length = racesToShow.length; i < length; i++) {
+            var raceName = racesToShow[i];
+            var raceNumber = null;
+            // Store the names of all desired races.
+            for (var possibleRaceNumber in data.raceNames) {
+                if (data.raceNames[possibleRaceNumber] === raceName) {
+                    raceNumber = possibleRaceNumber;
+                    condensedData.raceNames[raceNumber] = raceName;
+                    break;
                 }
             }
-            return condensedData;
-        } else {
-            return data;
+            if (raceNumber) {
+                var oldData = data.races[raceNumber];
+                var newData = {
+                    "areas": {},
+                    "breakdown": [],
+                    "precincts": oldData.precincts,
+                    "winners": oldData.winners
+                };
+                
+                // Keep a list of all of the candidate IDs we want to
+                // leave intact.
+                var showCandidateIds = [];
+                for (var candidateId in data.candidates) {
+                    var candidateName = data.candidates[candidateId];
+                    var candidateParty = data.parties[candidateId];
+                    if (candidateParty == "Dem" || candidateParty == "GOP" || candidateName == "Yes" || candidateName == "No" || candidateName == "For" || candidateName == "Against") {
+                        showCandidateIds.push(candidateId);
+                    }
+                }
+                
+                // Build new area objects.
+                for (var areaName in oldData.areas) {
+                    var oldAreaData = oldData.areas[areaName];
+                    var newAreaData = {
+                        "data": [],
+                        "precincts": oldAreaData.precincts
+                    };
+                    
+                    var otherTotal = 0;
+                    var otherCount = 0;
+                    for (var j = 0, jLength = oldAreaData.data.length; j < jLength; j++) {
+                        var candidateId = oldAreaData.data[j][0];
+                        var candidateVotes = oldAreaData.data[j][1];
+                        
+                        if (showCandidateIds.indexOf(candidateId) != -1 || j < config.bigCandidates) {
+                            // Keep this one.
+                            newAreaData.data.push([
+                                candidateId, candidateVotes
+                            ]);
+                        } else {
+                            // Save it for later.
+                            otherTotal += candidateVotes;
+                            otherCount += 1;
+                        }
+                    }
+                    
+                    // Add the "Other" entry at the end if necessary.
+                    if (otherCount > 0) {
+                        newAreaData.data.push([
+                            otherCandidateId, otherTotal
+                        ]);
+                    }
+                    
+                    // Store this and move on to the next one.
+                    newData.areas[areaName] = newAreaData;
+                }
+                
+                // The breakdown for the race is the same as that for
+                // the current state being displayed.
+                newData.breakdown = newData.areas[nhmc.config.USPSToState[$('#map_view').val().toUpperCase()]].data;
+                
+                // Store this race and move on to the next one.
+                condensedData.races[raceNumber] = newData;
+            }
         }
+        return condensedData;
     };
     
     var defaultTooltipRenderer = function(data, raceNumber) {
@@ -719,6 +707,7 @@ $(document).one('coreInitialized', function() {
     // includes rendering the legend and coloring the map areas.
     var displayRaceData = function(data, raceNumber) {
         nhmc.cleanup.clearPathColors();
+        var currentMapView = $('#map_view').val();
         var raceData = data.races[raceNumber];
         currentRaceData = raceData;
         if (typeof(raceData) == 'undefined') {return;}
@@ -733,7 +722,7 @@ $(document).one('coreInitialized', function() {
                 var areaFill = nhmc.config.defaultAttributes.fill;
             } else {
                 var areaFill = getColor(
-                    candidateId, $('#map_view').val(), raceNumber
+                    candidateId, currentMapView, raceNumber
                 );
             }
             
@@ -747,13 +736,12 @@ $(document).one('coreInitialized', function() {
                 if (candidateId == raceData.areas[areaId].data[0][0]
                         && raceData.areas[areaId].data[0][1] != 0
                         && raceData.areas[areaId].precincts[0] != 0) {
-                    var mapView = $('#map_view').val();
-                    if (mapView == 'us_counties') {
+                    if (currentMapView == 'us_counties') {
                         var countyPath = countyGeo[areaId];
                         if (countyPath != undefined) {
                             countyPath.setFill(areaFill);
                         }
-                    } else if (mapView == 'us_all') {
+                    } else if (currentMapView == 'us_all') {
                         var statePath = usGeo[areaId].statePath;
                         if (statePath != undefined) {
                             statePath.setFill(areaFill);
@@ -798,6 +786,36 @@ $(document).one('coreInitialized', function() {
         
         // Go through every candidate to render its legend entry and color its
         // respective map areas.
+        if (config.condenseCandidates) {
+            for (var areaId in raceData.areas) {
+                if (raceData.areas[areaId].data[0][1] != 0
+                        && raceData.areas[areaId].precincts[0] != 0) {
+                    if (currentMapView == 'us_counties') {
+                        var countyPath = countyGeo[areaId];
+                        if (countyPath != undefined) {
+                            countyPath.setFill(config.candidateColors["Other"]);
+                        }
+                    } else if (currentMapView == 'us_all') {
+                        var statePath = usGeo[areaId].statePath;
+                        if (statePath != undefined) {
+                            statePath.setFill(config.candidateColors["Other"]);
+                        }
+                    } else {
+                        var FIPSData = FIPSToCounty[areaId];
+                        if (FIPSData != undefined) {
+                            var state = FIPSData[0];
+                            var county = FIPSData[1];
+                            if (usGeo[state] != undefined) {
+                                var stateCountyPath = usGeo[state].countyPaths[county];
+                                if (stateCountyPath != undefined) {
+                                    stateCountyPath.setFill(config.candidateColors["Other"]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         for (var i = 0, length = raceData.breakdown.length; i < length; i++) {
             var candidateId = raceData.breakdown[i][0];
             
