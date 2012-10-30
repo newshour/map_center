@@ -167,7 +167,11 @@ $(document).ready(function() {
     if (isBroadcast) {$('#nav_toggle a').click();}  // Close it now!
     $('.nav_option a').click(function() {
         // avoid iOS switch to Safari from app view
-        parent.location = $(this).attr('href');
+        if (typeof(self) == 'undefined') {
+            parent.location = $(this).attr('href');
+        } else {
+            self.location = $(this).attr('href');
+        }
         return false;
     });
 });
