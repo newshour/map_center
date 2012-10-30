@@ -183,6 +183,7 @@
     position: absolute;
     width: 160px;
 	-webkit-box-shadow: 0 0 10px #949494;
+    z-index: 9001;
 }
     #other_tooltip h3 {
         clear: both;

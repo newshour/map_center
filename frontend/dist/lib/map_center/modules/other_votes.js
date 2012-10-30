@@ -1267,6 +1267,7 @@ $(document).one('coreInitialized', function() {
             renderPrecincts.apply(renderPrecincts, data.electoralData["United States"].precincts);
             
             var fullNames = {};
+            data.fullNames = fullNames;
             var parties = {};
             
             var republicanStates = [];
@@ -1317,6 +1318,7 @@ $(document).one('coreInitialized', function() {
             var nationalBreakdown = data.electoralData['United States'].breakdown;
             var otherPopularVotes = 0;
             var otherElectoralVotes = 0;
+            data.electoralData['United States'].othersBreakdown = [];
             for (var i = 0, length = nationalBreakdown.length; i < length; i++) {
                 if (stillBigElems && (i >= config.bigCandidates || (seenGOP && seenDem))) {
                     stillBigElems = false;
@@ -1330,7 +1332,10 @@ $(document).one('coreInitialized', function() {
                 if (!stillBigElems) {
                     otherPopularVotes += popularVotes;
                     otherElectoralVotes += electoralVotes;
-                    continue;
+                    if (config.condenseCandidates) {
+                        data.electoralData['United States'].othersBreakdown.push(nationalBreakdown[i]);
+                        continue;
+                    }
                 }
                 
                 var party = parties[lastName];
@@ -1362,17 +1367,20 @@ $(document).one('coreInitialized', function() {
                 legendObjs.push(legendObj);
             }
             
-            legendObjs.push({
-                isOther: true,
-                bigElem: false,
-                firstName: '',
-                lastName: "Other",
-                photo: false,
-                votePercent: otherElectoralVotes.toString(),
-                voteTotal: formatThousands(otherPopularVotes, 0),
-                winner: false,
-                color: config.partyColors['thirdParty']
-            });
+            if (config.condenseCandidates) {
+                data.electoralData['United States'].othersTotal = otherPopularVotes;
+                legendObjs.push({
+                    isOther: true,
+                    bigElem: false,
+                    firstName: '',
+                    lastName: "Other",
+                    photo: false,
+                    votePercent: otherElectoralVotes.toString(),
+                    voteTotal: formatThousands(otherPopularVotes, 0),
+                    winner: false,
+                    color: config.partyColors['thirdParty']
+                });
+            }
         })();} else if (raceNumber == 'Governor') {(function() {
             var republicanStates = [];
             var democraticStates = [];
@@ -1758,6 +1766,156 @@ $(document).one('coreInitialized', function() {
             nhmc.tooltips.unbindHover();
             nhmc.tooltips.init();
         }
+        
+        if (raceNumber == 'President') {(function() {
+            // Give the user a way to see all of the "Other" results if we've
+            // condensed some of the candidates into that entry.
+            if (config.tooltipsEnabled && config.condenseCandidates && config.hoverExpandOther) {
+                // Find the "Other" legend entry.
+                var otherElement = $('.candidate_small').filter(function(i) {
+                    var candidateName = $(this).find('.candidate_name');
+                    if (candidateName.find('.candidate_name_last').text() == 'Other' && candidateName.find('.candidate_name_first').text() == '') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                
+                // Render this using the template we used for the area tooltips.
+                var otherTooltip = {};
+                otherTooltip.xOffset = nhmc.tooltips.xOffset;
+                otherTooltip.yOffset = nhmc.tooltips.yOffset;
+                otherTooltip.render = function(e) {
+                    $('#other_tooltip').remove();
+                    
+                    var tooltip = $('<div id="other_tooltip"></div>')
+                        .appendTo('body');
+                    if (config.flyoutsEnabled) {tooltip.addClass('tooltip_flyout');}
+                    var tooltipContent = $('#tooltip_template .tooltip_content')
+                        .clone().appendTo('#other_tooltip');
+                    
+                    // Add the title, of course, and get rid of the precincts
+                    // information (since that's already elsewhere in the legend).
+                    tooltipContent.find('.tooltip_name').text('Other candidates');
+                    tooltipContent.find('.tooltip_precincts_reporting').parent()
+                        .remove();
+                    
+                    // Clear out the list of candidates...
+                    var tooltipCandidates = tooltipContent.find('.tooltip_candidates');
+                    tooltipCandidates.empty();
+                    
+                    // ...and fill it back up.
+                    var raceResults = data.electoralData['United States'].othersBreakdown;
+                    for (var i = 0, length = raceResults.length; i < length; i++) {
+                        var candidateId = raceResults[i][0];
+                        
+                        // Is this candidate already shown in the legend?
+                        var candidateName = data.fullNames[candidateId];
+                        // What's the candidate's last name?
+                        var candidateNameParts = candidateName.split(' ');
+                        var candidateLastName = candidateNameParts[
+                            candidateNameParts.length - 1
+                        ];
+                        
+                        // Add the candidate's entry to this tooltip.
+                        var tooltipEntry = tooltipContent
+                            .find('.tooltip_templates .tooltip_candidate')
+                            .clone().appendTo(tooltipCandidates);
+                        
+                        // Add the "Other" color to the candidate's entry if
+                        // needed.
+                        tooltipEntry.find('.tooltip_candidate_color').css(
+                            'background-color',
+                            config.candidateColors['Other']
+                        );
+                        
+                        // What percentage of the total votes in this state did
+                        // the candidate receive?
+                        var candidateVotePercent = 100 * (
+                            raceResults[i][1] / data.electoralData['United States'].othersTotal
+                        );
+                        if (data.electoralData['United States'].othersTotal == 0) {candidateVotePercent = 0;}
+                        
+                        // Fill in vote numbers for the candidate.
+                        tooltipEntry.find('.tooltip_candidate_vote_count')
+                            .text(formatThousands(raceResults[i][1]));
+                        tooltipEntry.find('.tooltip_candidate_votes')
+                            .text(Math.round(candidateVotePercent) + '%');
+                        
+                        // And--last, but not least--the name.
+                        tooltipEntry.find('.tooltip_candidate_name_first')
+                            .text(candidateNameParts.slice(0, -1).join(' '));
+                        tooltipEntry.find('.tooltip_candidate_name_last')
+                            .text(candidateLastName);
+                        if (candidateLastName.toLowerCase() == 'preference') {
+                            var candidateFirstNameElem = tooltipEntry
+                                .find('.tooltip_candidate_name_first');
+                            if (candidateFirstNameElem.length != 0) {
+                                candidateFirstNameElem.show()
+                            } else {
+                                tooltipEntry
+                                    .find('.tooltip_candidate_name_last')
+                                    .text(candidateNameParts.join(' '));
+                            }
+                        }
+                    }
+                    
+                    // If we're on a touch device, add a close button so the user
+                    // can get rid of this thing when they're done with it.
+                    if (Modernizr.touch) {otherTooltip.addClose();}
+                    
+                    otherTooltip.position(e);
+                };
+                if (config.tooltipsEnabled && config.flyoutsEnabled) {
+                    otherTooltip.position = $.noop;
+                } else {
+                    otherTooltip.position = function(e) {
+                        var tooltip = $('#other_tooltip');
+                        if (e.pageX + tooltip.width() + otherTooltip.yOffset <= $('body').width()) {
+                            tooltip.css('left', (e.pageX + otherTooltip.yOffset) + 'px');
+                        } else {
+                            tooltip.css('left', (e.pageX - otherTooltip.yOffset - tooltip.width()) + 'px');
+                        }
+                        if (e.pageY - tooltip.height() - otherTooltip.xOffset < 0) {
+                            tooltip.css('top', (e.pageY - otherTooltip.xOffset) + 'px');
+                        } else {
+                            tooltip.css('top', (e.pageY - otherTooltip.xOffset - tooltip.height()) + 'px');
+                        }
+                    };
+                }
+                otherTooltip.addClose = function() {
+                    $('<a href="#" id="other_tooltip_close" class="ui-icon ui-icon-closethick">Close</a>').prependTo('#other_tooltip').click(function() {
+                        otherTooltip.destroy();
+                        otherTooltip.bindHover();
+                        return false;
+                    });
+                };
+                otherTooltip.destroy = function() {
+                    $('#other_tooltip').remove();
+                };
+                otherTooltip.bindHover = function() {
+                    if (Modernizr && Modernizr.touch) {var touchCapable = true;}
+                    else {var touchCapable = false;}
+                    
+                    if (touchCapable) {
+                        otherElement.mouseenter(otherTooltip.render);
+                        otherElement.mouseenter(otherTooltip.unbindHover);
+                    } else {
+                        otherElement.mouseenter(otherTooltip.render);
+                        otherElement.mouseleave(otherTooltip.destroy);
+                        otherElement.mousemove(otherTooltip.position);
+                    }
+                };
+                otherTooltip.unbindHover = function() {
+                    otherElement.unbind('mouseenter');
+                    otherElement.unbind('mouseleave');
+                    otherElement.unbind('mousemove');
+                };
+                
+                // bind tooltip events
+                otherTooltip.bindHover();
+            }
+        })();}
     };
     
     $('.view_tab_more').delegate('.view_tab_option:not(#view_tab_more_shown)', 'click', function() {
