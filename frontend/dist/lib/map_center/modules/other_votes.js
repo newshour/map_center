@@ -136,6 +136,7 @@ $(document).one('coreInitialized', function() {
             "Question - 1 - Yes Same Sex Mrg": "Allow same-sex marriage",
             "Amendment - 1 - No Same Sex Marriage": "Ban same-sex marriage"
         },
+        hoverExpandOther: true,
         partyColors: {  // Use APEO party abbreviations
             "Dem": "#283891",
             "GOP": "#9f1c20",
@@ -419,6 +420,7 @@ $(document).one('coreInitialized', function() {
                     var oldAreaData = oldData.areas[areaName];
                     var newAreaData = {
                         "data": [],
+                        "others": [],
                         "precincts": oldAreaData.precincts
                     };
                     
@@ -437,6 +439,9 @@ $(document).one('coreInitialized', function() {
                             // Save it for later.
                             otherTotal += candidateVotes;
                             otherCount += 1;
+                            newAreaData.others.push([
+                                candidateId, candidateVotes
+                            ]);
                         }
                     }
                     
@@ -454,6 +459,7 @@ $(document).one('coreInitialized', function() {
                 // The breakdown for the race is the same as that for
                 // the current state being displayed.
                 newData.breakdown = newData.areas[nhmc.config.USPSToState[$('#map_view').val().toUpperCase()]].data;
+                newData.othersBreakdown = newData.areas[nhmc.config.USPSToState[$('#map_view').val().toUpperCase()]].others;
                 
                 // Store this race and move on to the next one.
                 condensedData.races[raceNumber] = newData;
@@ -1005,7 +1011,7 @@ $(document).one('coreInitialized', function() {
                 // Add the title, of course, and get rid of the precincts
                 // information (since that's already elsewhere in the legend).
                 tooltipContent.find('.tooltip_name').text('Other candidates');
-                tooltipContent.find('.tooltip_precincts_percent').parent()
+                tooltipContent.find('.tooltip_precincts_reporting').parent()
                     .remove();
                 
                 // Clear out the list of candidates...
@@ -1013,59 +1019,57 @@ $(document).one('coreInitialized', function() {
                 tooltipCandidates.empty();
                 
                 // ...and fill it back up.
-                var raceResults = currentRaceData.breakdown;
+                var raceResults = currentRaceData.othersBreakdown;
                 for (var i = 0, length = raceResults.length; i < length; i++) {
                     var candidateId = raceResults[i][0];
                     
                     // Is this candidate already shown in the legend?
                     var candidateName = data.candidates[candidateId];
-                    if (config.showCandidates.indexOf(candidateName) == -1) {
-                        // What's the candidate's last name?
-                        var candidateNameParts = candidateName.split(' ');
-                        var candidateLastName = candidateNameParts[
-                            candidateNameParts.length - 1
-                        ];
-                        
-                        // Add the candidate's entry to this tooltip.
-                        var tooltipEntry = tooltipContent
-                            .find('.tooltip_templates .tooltip_candidate')
-                            .clone().appendTo(tooltipCandidates);
-                        
-                        // Add the "Other" color to the candidate's entry if
-                        // needed.
-                        tooltipEntry.find('.tooltip_candidate_color').css(
-                            'background-color',
-                            config.candidateColors['Other']
-                        );
-                        
-                        // What percentage of the total votes in this state did
-                        // the candidate receive?
-                        var candidateVotePercent = 100 * (
-                            raceResults[i][1] / stateTotalVotes
-                        );
-                        if (areaTotalVotes == 0) {candidateVotePercent = 0;}
-                        
-                        // Fill in vote numbers for the candidate.
-                        tooltipEntry.find('.tooltip_candidate_vote_count')
-                            .text(formatThousands(raceResults[i][1]));
-                        tooltipEntry.find('.tooltip_candidate_votes')
-                            .text(Math.round(candidateVotePercent) + '%');
-                        
-                        // And--last, but not least--the name.
-                        tooltipEntry.find('.tooltip_candidate_name_first')
-                            .text(candidateNameParts.slice(0, -1).join(' '));
-                        tooltipEntry.find('.tooltip_candidate_name_last')
-                            .text(candidateLastName);
-                        if (candidateLastName.toLowerCase() == 'preference') {
-                            var candidateFirstNameElem = tooltipEntry
-                                .find('.tooltip_candidate_name_first');
-                            if (candidateFirstNameElem.length != 0) {
-                                candidateFirstNameElem.show()
-                            } else {
-                                tooltipEntry
-                                    .find('.tooltip_candidate_name_last')
-                                    .text(candidateNameParts.join(' '));
-                            }
+                    // What's the candidate's last name?
+                    var candidateNameParts = candidateName.split(' ');
+                    var candidateLastName = candidateNameParts[
+                        candidateNameParts.length - 1
+                    ];
+                    
+                    // Add the candidate's entry to this tooltip.
+                    var tooltipEntry = tooltipContent
+                        .find('.tooltip_templates .tooltip_candidate')
+                        .clone().appendTo(tooltipCandidates);
+                    
+                    // Add the "Other" color to the candidate's entry if
+                    // needed.
+                    tooltipEntry.find('.tooltip_candidate_color').css(
+                        'background-color',
+                        config.candidateColors['Other']
+                    );
+                    
+                    // What percentage of the total votes in this state did
+                    // the candidate receive?
+                    var candidateVotePercent = 100 * (
+                        raceResults[i][1] / stateTotalVotes
+                    );
+                    if (stateTotalVotes == 0) {candidateVotePercent = 0;}
+                    
+                    // Fill in vote numbers for the candidate.
+                    tooltipEntry.find('.tooltip_candidate_vote_count')
+                        .text(formatThousands(raceResults[i][1]));
+                    tooltipEntry.find('.tooltip_candidate_votes')
+                        .text(Math.round(candidateVotePercent) + '%');
+                    
+                    // And--last, but not least--the name.
+                    tooltipEntry.find('.tooltip_candidate_name_first')
+                        .text(candidateNameParts.slice(0, -1).join(' '));
+                    tooltipEntry.find('.tooltip_candidate_name_last')
+                        .text(candidateLastName);
+                    if (candidateLastName.toLowerCase() == 'preference') {
+                        var candidateFirstNameElem = tooltipEntry
+                            .find('.tooltip_candidate_name_first');
+                        if (candidateFirstNameElem.length != 0) {
+                            candidateFirstNameElem.show()
+                        } else {
+                            tooltipEntry
+                                .find('.tooltip_candidate_name_last')
+                                .text(candidateNameParts.join(' '));
                         }
                     }
                 }
