@@ -5,7 +5,7 @@ root.nhmcStatic = {}
 # import data from remote summary file
 state_data = 'https://nh-ltm.s3.amazonaws.com/summary.js'
 root.state_rollups = []
-state_counts = []
+state_counts = {}
 video_counts = []
 key_ranges = []
 
@@ -53,6 +53,8 @@ setMapData = ->
     'decimalPlaces' : 0
     'suffix' : '%'
     'areas' : state_counts
+  
+  $(document).trigger 'ltmDataLoaded'
 
 root.fireOverlay = (state) ->
   root.VideoDashboard.fetchState(this.nhmcData.state)
@@ -81,8 +83,21 @@ root.nhmcStaticTooltipFormatter = (thisFIPS, thisState, thisCounty, countyOnly, 
   tooltipText.push('</div>')
   return tooltipText.join('');
   
-# set click handlers on loaded states
+# set click handlers on loaded states, but only after both the Map Center core
+# and the LTM data are loaded
+coreInitialized = false
+ltmDataLoaded = false
 $(document).one 'coreInitialized', ->
+  coreInitialized = true
+  if ltmDataLoaded
+    $(document).trigger 'ltmInitialized'
+
+$(document).one 'ltmDataLoaded', ->
+  ltmDataLoaded = true
+  if coreInitialized
+    $(document).trigger 'ltmInitialized'
+
+$(document).one 'ltmInitialized', ->
   for state in state_rollups
     nhmc.geo.usGeo[state.name].statePath.connect(
       'onclick',
