@@ -49,9 +49,8 @@ buildStates = (states) ->
 setMapData = ->
   root.nhmcStatic = 
     'breaks' : key_ranges
-    'colors' : ['#ffffcc', '#bae4bc', '#7bccc4', '#43a2c', '#0868ac']
+    'colors' : ['#ffffcc', '#bae4bc', '#7bccc4', '#43a2cc', '#0868ac']
     'decimalPlaces' : 0
-    'suffix' : '%'
     'areas' : state_counts
   
   $(document).trigger 'ltmDataLoaded'
