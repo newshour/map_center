@@ -1090,7 +1090,7 @@ $(document).one('coreInitialized', function() {
                     } else {
                         tooltip.css('left', (e.pageX - otherTooltip.yOffset - tooltip.width()) + 'px');
                     }
-                    if (e.pageY + tooltip.height() - otherTooltip.xOffset <= $('body').height()) {
+                    if (e.pageY - tooltip.height() - otherTooltip.xOffset < 0) {
                         tooltip.css('top', (e.pageY - otherTooltip.xOffset) + 'px');
                     } else {
                         tooltip.css('top', (e.pageY - otherTooltip.xOffset - tooltip.height()) + 'px');
