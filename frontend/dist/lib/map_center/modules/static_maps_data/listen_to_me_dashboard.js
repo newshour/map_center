@@ -185,7 +185,6 @@
     };
     return browseStates = function() {
       var i, state, _i, _len;
-      console.log(state_rollups);
       for (_i = 0, _len = state_rollups.length; _i < _len; _i++) {
         state = state_rollups[_i];
         i = $('<div\>', {
@@ -207,7 +206,6 @@
       return $('.state-select').bind('click', function() {
         var new_state;
         new_state = $(this).attr('data-state');
-        console.log(new_state);
         return VideoDashboard.fetchState(new_state);
       });
     };

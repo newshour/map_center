@@ -136,7 +136,6 @@ namespace 'VideoDashboard', (exports) ->
     
   browseStates = ->
     # add current states to list
-    console.log state_rollups
     for state in state_rollups
       i = $('<div\>', { class: 'state-select' })
       i.attr('data-state', state.name)
@@ -153,7 +152,6 @@ namespace 'VideoDashboard', (exports) ->
     
     $('.state-select').bind 'click', ->
       new_state = $(this).attr('data-state')
-      console.log new_state
       VideoDashboard.fetchState(new_state) 
       
       
