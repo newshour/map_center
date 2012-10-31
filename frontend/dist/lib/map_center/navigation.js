@@ -6,7 +6,7 @@ $(document).ready(function() {
     	title: "Listen To Me Election Videos",
         href: "listen_to_me.html",
         id: "past"
-    }, {	
+    }, {
         featured: false,
         title: "Past primary and caucus results",
         href: "past_primaries.html",
