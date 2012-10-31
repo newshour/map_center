@@ -20,7 +20,7 @@
   $.ajax({
     url: state_data,
     dataType: 'jsonp',
-    cache: false,
+    cache: true,
     jsonpCallback: 'showSummary',
     success: function(data) {
       buildStates(data);
@@ -59,7 +59,7 @@
       state_counts["" + state.name] = state.count;
     }
     max = _.max(video_counts);
-    return key_ranges = (function() {
+    key_ranges = (function() {
       var _j, _results;
       _results = [];
       for (x = _j = 1; _j <= 5; x = ++_j) {
@@ -67,6 +67,7 @@
       }
       return _results;
     })();
+    return root.VideoDashboard.init();
   };
 
   setMapData = function() {

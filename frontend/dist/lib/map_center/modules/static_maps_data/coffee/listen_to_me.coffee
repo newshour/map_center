@@ -12,7 +12,7 @@ key_ranges = []
 $.ajax
   url: state_data
   dataType: 'jsonp'
-  cache: false
+  cache: true
   jsonpCallback: 'showSummary'
   success : (data) =>
     buildStates(data)
@@ -44,6 +44,8 @@ buildStates = (states) ->
   (state_counts["#{state.name}"] = state.count) for state in state_rollups  
   max = _.max(video_counts)
   key_ranges = (Math.round((x/max)*100) for x in [1..5])
+  # Initialize dashboard after data load
+  root.VideoDashboard.init()
   
 # find data bounds set map painting config vars
 setMapData = ->
