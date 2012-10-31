@@ -99,6 +99,7 @@
     background-repeat: no-repeat;
     padding-left: 35px; }
   #tm-video-overlay #view-port-zone {
+    background-color: black;
     height: 374px;
     width: 100%; }
     #tm-video-overlay #view-port-zone #video-meta-panel {
