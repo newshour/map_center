@@ -17,6 +17,8 @@ $(document).one('coreInitialized', function() {
     nhmc.config.stateToUSPS["Alaska"] = "AK_EMPTY";
     nhmc.config.USPSToState["AK"] = "Alaska";
     nhmc.config.USPSToState["AK_EMPTY"] = "Alaska";
+    nhmc.config.FIPSToCounty['02000'] = ['Alaska', 'Alaska'];
+    nhmc.config.countyToFIPS['Alaska']['Alaska'] = '02000';
     
     // Local storage for results data
     var latestData = {};
