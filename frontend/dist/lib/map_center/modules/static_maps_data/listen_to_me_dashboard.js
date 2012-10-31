@@ -28,7 +28,7 @@
         id = $(this).attr('data-content-id');
         return showcasePanel(id);
       });
-      $('#close-overlay').bind('click', function() {
+      $('#close-overlay').live('click', function() {
         $('#video-drop iframe').remove();
         return $('#tm-video-overlay').fadeOut(200);
       });
@@ -126,10 +126,10 @@
       total_pages: 0,
       current_page: 0,
       init: function() {
-        $('#page-cntrl-lft').bind('click', function() {
+        $('#page-cntrl-lft').live('click', function() {
           return paginate.prevPage();
         });
-        return $('#page-cntrl-rgt').bind('click', function() {
+        return $('#page-cntrl-rgt').live('click', function() {
           return paginate.nextPage();
         });
       },

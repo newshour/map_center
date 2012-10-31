@@ -17,7 +17,7 @@ namespace 'VideoDashboard', (exports) ->
       id = $(this).attr('data-content-id')
       showcasePanel(id)
     #close overlay control
-    $('#close-overlay').bind 'click', ->
+    $('#close-overlay').live 'click', ->
       # kill video if overlay's closed
       $('#video-drop iframe').remove()
       $('#tm-video-overlay').fadeOut 200
@@ -95,9 +95,9 @@ namespace 'VideoDashboard', (exports) ->
     
     init : ->
       # set control handlers
-      $('#page-cntrl-lft').bind 'click', ->
+      $('#page-cntrl-lft').live 'click', ->
         paginate.prevPage()
-      $('#page-cntrl-rgt').bind 'click', ->
+      $('#page-cntrl-rgt').live 'click', ->
         paginate.nextPage()
       
     reset : ->
