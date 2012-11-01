@@ -39,6 +39,12 @@ if (!Array.prototype.indexOf) {
         return -1;
     }
 }
+// Add String.trim support for removing extraneous whitespace
+if(!String.prototype.trim) {
+    String.prototype.trim = function () {
+        return this.replace(/^\s+|\s+$/g,'');
+    };
+}
 
 // declare namespaces
 namespace("nhmc");
