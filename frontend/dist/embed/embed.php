@@ -1,6 +1,6 @@
 <?php
 $VALID_VIEW_NAMES = array("us_all", "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj", "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt", "va", "wa", "dc", "wv", "wi", "wy", "ak_08general");
-$VALID_MODULES = array("static_maps", "past_primaries", "electoral_college");
+$VALID_MODULES = array("static_maps", "past_primaries", "electoral_college", "general_election");
 $LIVE_VIEWS_NEEDS_EMPTY = array(
     "al" => false,
     "ak" => true,
@@ -139,7 +139,8 @@ $MAP_TITLES = array(
     "unions" => "Unions: <span class=\"static_map_name\"></span>",
     "voter_id" => "Voter ID laws",
     "past_primaries" => "Past results",
-    "electoral_college" => "Electoral calculator"
+    "electoral_college" => "Electoral calculator",
+    "general_election" => "Live results"
 );
 $SIDEBAR_TITLES = array(
     "08general" => "Win margin in general election",
@@ -159,7 +160,8 @@ $SIDEBAR_TITLES = array(
     "unions" => "",
     "voter_id" => "States with voter ID laws",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",
-    "electoral_college" => "2012 prediction"
+    "electoral_college" => "2012 prediction",
+    "general_election" => "<span id=\"precincts_title\"><span id=\"precincts_percent\">0</span>% precincts reporting</span><span id=\"custom_title\"></span>"
 );
 
 $map_view = (isset($_GET['map_view']) && array_search($_GET['map_view'], $VALID_VIEW_NAMES)) ? $_GET['map_view'] : 'us_all';
@@ -177,6 +179,8 @@ $sidebar_title = (isset($SIDEBAR_TITLES[$map_module])) ? $SIDEBAR_TITLES[$map_mo
 $attrib = (isset($STATIC_VIEWS_ATTRIB[$static_maps_type])) ? $STATIC_VIEWS_ATTRIB[$static_maps_type] : null;
 
 if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
+    $map_view = $map_view . '_empty';
+} else if ($map_module == 'general_election' && $map_view == 'ak') {
     $map_view = $map_view . '_empty';
 }
 
@@ -331,7 +335,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <script type="text/javascript" src="../lib/map_center/usps_fips.js"></script>
         <script type="text/javascript" src="../lib/map_center/main.js"></script>
         
-      <?php if ($map_view == 'us_all') { ?>
+      <?php if ($map_view == 'us_all' || $map_module == 'general_election') { ?>
         <script type="text/javascript" src="../lib/maps/states_only.js"></script>
       <?php } ?>
         
@@ -341,6 +345,8 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <script type="text/javascript" src="../lib/map_center/modules/static_maps_data/<?php echo $static_maps_type; ?>.js"></script>
       <?php } elseif ($map_module == 'past_primaries') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/live.js"></script>
+      <?php } elseif ($map_module == 'general_election') { ?>
+        <script type="text/javascript" src="../lib/map_center/modules/other_votes.js"></script>
       <?php } elseif ($map_module == 'electoral_college') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/electoral_college.js"></script>
       <?php } ?>
@@ -377,6 +383,9 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                         <div id="sidebar" class="cf">
                             <h3 id="sidebar_title" class="static_map_name"><?php echo $sidebar_title; ?></h3>
                             <div id="legend">
+                                <?php if ($map_module == 'general_election') { ?>
+                                  <div id="other_back_link"><a href="#">Back to U.S.</a></div>
+                                <?php } ?>
                                 <div id="legend_templates">
                                     <!-- Static maps -->
                                   <?php if ($map_module == 'static_maps') { ?>
@@ -411,11 +420,84 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <div class="candidate_vote_count"></div>
                                         <div class="candidate_votes"></div>
                                     </div>
+                                  <?php } elseif ($map_module == 'general_election') { ?>
+                                    <div class="candidate_big">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first"></span>
+                                            <span class="candidate_name_last"></span>
+                                        </div>
+                                        <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                        
+                                        <!-- .candidate_vote_count gives the total number of votes cast; .candidate_votes expresses that vote as a percentage. -->
+                                        <div class="candidate_votes"></div>
+                                        <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span> votes</div>
+
+                                        <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="candidate_small">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first">Firstname</span>
+                                            <span class="candidate_name_last">Lastname</span>
+                                        </div>
+                                        <div class="candidate_vote_count"></div>
+                                        <div class="candidate_votes"></div>
+                                    </div>
+                                    <div class="national_candidate_big">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first"></span>
+                                            <span class="candidate_name_last"></span>
+                                        </div>
+                                        <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                        
+                                        <!-- .candidate_vote_count is unused; .candidate_votes shows the number of seats won. -->
+                                        <div class="candidate_votes"></div>
+                                        <div class="candidate_vote_count_wrapper">seats won</div>
+
+                                        <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="national_candidate_small">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first">Firstname</span>
+                                            <span class="candidate_name_last">Lastname</span>
+                                        </div>
+                                        <div class="candidate_vote_count_wrapper"></div>
+                                        <div class="candidate_votes"></div>
+                                    </div>
+                                    <div class="national_presidential_candidate_big">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first"></span>
+                                            <span class="candidate_name_last"></span>
+                                        </div>
+                                        <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                        
+                                        <!-- .candidate_vote_count is the popular vote; .candidate_votes is the number of electoral votes won. -->
+                                        <div class="candidate_votes"></div>
+                                        <div class="candidate_vote_count_wrapper">electoral votes<div><span class="candidate_vote_count"></span> votes</div></div>
+
+                                        <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="national_presidential_candidate_small">
+                                        <div class="candidate_color">&nbsp;</div>
+                                        <div class="candidate_name">
+                                            <span class="candidate_name_first">Firstname</span>
+                                            <span class="candidate_name_last">Lastname</span>
+                                        </div>
+                                        <div class="candidate_vote_count"></div>
+                                        <div class="candidate_votes"></div>
+                                    </div>
                                   <?php } ?>
                                 </div>
                               <?php if ($map_module == 'static_maps') { ?>
                                 <div id="legend_entries"></div>
-                              <?php } elseif ($map_module == 'past_primaries') { ?>
+                              <?php } elseif ($map_module == 'past_primaries' || $map_module == 'general_election') { ?>
                                 <div id="legend_candidates"></div>
                               <?php } elseif ($map_module == 'electoral_college') { ?>
                                 <div id="ec_tally">
@@ -458,7 +540,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                             Source: <a href="<?php echo $attrib['href']; ?>" target="_blank"><?php echo $attrib['text']; ?></a>
                           <?php } ?>
                         </h2>
-                      <?php } elseif ($map_module == 'past_primaries') { ?>
+                      <?php } elseif ($map_module == 'past_primaries' || $map_module == 'general_election') { ?>
                         <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
                       <?php } ?>
                     </div>
@@ -470,6 +552,103 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                   <?php } ?>
                 </div>
             </div> 
+        </div>
+        <div class="hidden">
+          <?php if ($map_module == 'general_election') { ?>
+            <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S.</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
+                <ul id="view_tab_more_menu">
+                    <li style="display: none;"><a href="#us_all" class="view_tab_option">U.S.</a></li>
+                    <li><a href="#al" class="view_tab_option">Alabama</a></li>
+                    <!--
+                    <li><a href="#ak" class="view_tab_option">Alaska</a></li>
+                    -->
+                    <li><a href="#ak_empty" class="view_tab_option">Alaska</a></li>
+                    <li><a href="#az" class="view_tab_option">Arizona</a></li>
+                    <li><a href="#ar" class="view_tab_option">Arkansas</a></li>
+                    <li><a href="#ca" class="view_tab_option">California</a></li>
+                    <li><a href="#co" class="view_tab_option">Colorado</a></li>
+                    <li><a href="#ct" class="view_tab_option">Connecticut</a></li>
+                    <li><a href="#de" class="view_tab_option">Delaware</a></li>
+                    <li><a href="#fl" class="view_tab_option">Florida</a></li>
+                    <li><a href="#ga" class="view_tab_option">Georgia</a></li>
+                    <li><a href="#hi" class="view_tab_option">Hawaii</a></li>
+                    <li><a href="#id" class="view_tab_option">Idaho</a></li>
+                    <li><a href="#il" class="view_tab_option">Illinois</a></li>
+                    <li><a href="#in" class="view_tab_option">Indiana</a></li>
+                    <li><a href="#ia" class="view_tab_option">Iowa</a></li>
+                    <li><a href="#ks" class="view_tab_option">Kansas</a></li>
+                    <li><a href="#ky" class="view_tab_option">Kentucky</a></li>
+                    <li><a href="#la" class="view_tab_option">Louisiana</a></li>
+                    <li><a href="#me" class="view_tab_option">Maine</a></li>
+                    <li><a href="#md" class="view_tab_option">Maryland</a></li>
+                    <li><a href="#ma" class="view_tab_option">Massachusetts</a></li>
+                    <li><a href="#mi" class="view_tab_option">Michigan</a></li>
+                    <li><a href="#mn" class="view_tab_option">Minnesota</a></li>
+                    <li><a href="#ms" class="view_tab_option">Mississippi</a></li>
+                    <li><a href="#mo" class="view_tab_option">Missouri</a></li>
+                    <li><a href="#mt" class="view_tab_option">Montana</a></li>
+                    <li><a href="#ne" class="view_tab_option">Nebraska</a></li>
+                    <li><a href="#nv" class="view_tab_option">Nevada</a></li>
+                    <li><a href="#nh" class="view_tab_option">New Hampshire</a></li>
+                    <li><a href="#nj" class="view_tab_option">New Jersey</a></li>
+                    <li><a href="#nm" class="view_tab_option">New Mexico</a></li>
+                    <li><a href="#ny" class="view_tab_option">New York</a></li>
+                    <li><a href="#nc" class="view_tab_option">North Carolina</a></li>
+                    <li><a href="#nd" class="view_tab_option">North Dakota</a></li>
+                    <li><a href="#oh" class="view_tab_option">Ohio</a></li>
+                    <li><a href="#ok" class="view_tab_option">Oklahoma</a></li>
+                    <li><a href="#or" class="view_tab_option">Oregon</a></li>
+                    <li><a href="#pa" class="view_tab_option">Pennsylvania</a></li>
+                    <li><a href="#ri" class="view_tab_option">Rhode Island</a></li>
+                    <li><a href="#sc" class="view_tab_option">South Carolina</a></li>
+                    <li><a href="#sd" class="view_tab_option">South Dakota</a></li>
+                    <li><a href="#tn" class="view_tab_option">Tennessee</a></li>
+                    <li><a href="#tx" class="view_tab_option">Texas</a></li>
+                    <li><a href="#ut" class="view_tab_option">Utah</a></li>
+                    <li><a href="#vt" class="view_tab_option">Vermont</a></li>
+                    <li><a href="#va" class="view_tab_option">Virginia</a></li>
+                    <li><a href="#wa" class="view_tab_option">Washington</a></li>
+                    <li><a href="#dc" class="view_tab_option">Washington, D.C.</a></li>
+                    <li><a href="#wv" class="view_tab_option">West Virginia</a></li>
+                    <li><a href="#wi" class="view_tab_option">Wisconsin</a></li>
+                    <li><a href="#wy" class="view_tab_option">Wyoming</a></li>
+                </ul>
+            </div>
+            <div class="view_tab view_tab_options_more view_tab_always_active"><a href="#" id="view_tab_options_more_shown" class="view_tab_option"></a><a href="#" id="view_tab_options_more_toggle"><img src="arrow-down.png" /></a>
+                <ul id="view_tab_options_more_menu">
+                </ul>
+            </div>
+            <div id="tooltip_template">
+                <div class="tooltip_content">
+                    <h3 class="tooltip_name"></h3>
+                    <p class="tooltip_title"><span class="tooltip_precincts_reporting">0</span> of <span class="tooltip_precincts_total">0</span> precincts reporting</p>
+                    <!--
+                        Other <span> classes you might be interested in:
+                            tooltip_precincts_percent
+                    -->
+                    <div class="tooltip_templates">
+                        <table>
+                            <tr class="tooltip_candidate">
+                                <td class="tooltip_candidate_name">
+                                    <span class="tooltip_candidate_name_first">Firstname</span>
+                                    <span class="tooltip_candidate_name_last">Lastname</span>
+                                </td>
+                                <td class="tooltip_candidate_vote_count"></td>
+                                <td class="tooltip_candidate_votes"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table class="tooltip_candidate_table">
+                        <thead>
+                            <th>Candidate</th>
+                            <th>Votes</th>
+                            <th>Vote %</th>
+                        </thead>
+                        <tbody class="tooltip_candidates"></tbody>
+                    </table>
+                </div>
+            </div>
+          <?php } ?>
         </div>
     </body>
 </html>
