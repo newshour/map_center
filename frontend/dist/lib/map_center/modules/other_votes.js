@@ -1959,7 +1959,15 @@ $(document).one('coreInitialized', function() {
     $('.view_tab_more').delegate('.view_tab_option:not(#view_tab_more_shown)', 'click', function() {
         $(document).one('drawingComplete', function() {
             sidebarInit();
-            getMapData(mapValue);
+            if (latestData[mapValue]) {
+                if (mapValue.substring(0, mapValue.indexOf('_')) == 'us') {
+                    nationalDataInit(latestData[mapValue]);
+                } else {
+                    liveDataInit(latestData[mapValue]);
+                }
+            } else {
+                getMapData(mapValue);
+            }
         });
         
         var mapValue = $(this).attr('href').substring(1);
