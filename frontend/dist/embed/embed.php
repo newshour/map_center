@@ -430,7 +430,9 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                                         
                                         <!-- .candidate_vote_count gives the total number of votes cast; .candidate_votes expresses that vote as a percentage. -->
-                                        <div class="candidate_votes"></div>
+                                        <div class="candidate_vote_wrapper">
+                                            <div class="candidate_votes"></div>
+                                        </div>
                                         <div class="candidate_vote_count_wrapper"><span class="candidate_vote_count"></span> votes</div>
 
                                         <div class="candidate_won"><img src="lib/images/won.png" /></div>
@@ -454,8 +456,10 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                                         
                                         <!-- .candidate_vote_count is unused; .candidate_votes shows the number of seats won. -->
-                                        <div class="candidate_votes"></div>
-                                        <div class="candidate_vote_count_wrapper">seats won</div>
+                                        <div class="candidate_vote_wrapper">
+                                            <div class="candidate_votes"></div>
+                                            <div class="candidate_vote_count_wrapper">seats won</div>
+                                        </div>
 
                                         <div class="candidate_won"><img src="lib/images/won.png" /></div>
                                         <div class="clear"></div>
@@ -478,8 +482,11 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
                                         
                                         <!-- .candidate_vote_count is the popular vote; .candidate_votes is the number of electoral votes won. -->
-                                        <div class="candidate_votes"></div>
-                                        <div class="candidate_vote_count_wrapper">electoral votes<div><span class="candidate_vote_count"></span> votes</div></div>
+                                        <div class="candidate_vote_wrapper">
+                                            <div class="candidate_votes"></div>
+                                            <div class="candidate_vote_count_wrapper">electoral votes<div></div></div>
+                                        </div>
+                                        <p><span class="candidate_vote_count"></span> votes</p>
 
                                         <div class="candidate_won"><img src="lib/images/won.png" /></div>
                                         <div class="clear"></div>

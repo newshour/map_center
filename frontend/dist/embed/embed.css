@@ -294,7 +294,15 @@ a img {border: 0;}
             color: #666;
         }
     
-    #other_back_link {display: none;}
+    #other_back_link {
+        display: none;
+        margin-bottom: 1em;
+        text-align: center;
+    }
+        #other_back_link a {
+            color: #666;
+            text-decoration: none;
+        }
 
 .ui-dialog {  /* Sets own context to 12px per em */
     font-size: 0.75em;  /* 12px / 16px -- context set */
@@ -398,11 +406,12 @@ a img {border: 0;}
         .tooltip_candidate_vote_count {display: none;}
 }
 @media screen and (min-width: 350px) and (max-width: 799px) {
-    .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
+    .candidate_big .candidate_vote_wrapper, .national_candidate_big .candidate_vote_wrapper, .national_presidential_candidate_big .candidate_vote_wrapper {
         position: absolute;
         right: 15%;
         text-align: right;
-        top: 10%;
+        top: 0;
+        width: 3em;
     }
 	#emtitle h2 {font-size:1.4em;}
 
