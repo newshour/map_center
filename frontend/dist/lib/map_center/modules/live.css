@@ -34,8 +34,6 @@
     overflow: hidden;
     text-transform: uppercase;
 	padding: 10px;
-    left: 0;
-    top: 273px;
     width: 200px;
 }
     #tooltip.tooltip_flyout h3 {
@@ -183,7 +181,7 @@
     
     padding: 5px;
     position: absolute;
-    width: 160px;
+    width: 220px;
 	-webkit-box-shadow: 0 0 10px #949494;
     z-index: 9001;
 }

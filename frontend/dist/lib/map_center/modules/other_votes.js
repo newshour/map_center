@@ -970,7 +970,7 @@ $(document).one('coreInitialized', function() {
         // broadcast touch-specific) tooltips.
         if (config.tooltipsEnabled && config.flyoutsEnabled) {
             // Positioning should be handled in the page styles.
-            nhmc.tooltips.position = $.noop;
+            // nhmc.tooltips.position = $.noop;
             
             nhmc.tooltips.destroy = function() {
                 $('#tooltip').remove();
@@ -1784,9 +1784,6 @@ $(document).one('coreInitialized', function() {
         // Add some touch-specific modifications if we're using flyout (i.e.,
         // broadcast touch-specific) tooltips.
         if (config.tooltipsEnabled && config.flyoutsEnabled) {
-            // Positioning should be handled in the page styles.
-            nhmc.tooltips.position = $.noop;
-            
             nhmc.tooltips.destroy = function() {
                 $('#tooltip').remove();
                 for (var i = 0, length = nhmc.surface.children.length; i < length; i++) {
@@ -1904,23 +1901,23 @@ $(document).one('coreInitialized', function() {
                     
                     otherTooltip.position(e);
                 };
-                if (config.tooltipsEnabled && config.flyoutsEnabled) {
-                    otherTooltip.position = $.noop;
-                } else {
-                    otherTooltip.position = function(e) {
-                        var tooltip = $('#other_tooltip');
-                        if (e.pageX + tooltip.width() + otherTooltip.yOffset <= $('body').width()) {
-                            tooltip.css('left', (e.pageX + otherTooltip.yOffset) + 'px');
-                        } else {
-                            tooltip.css('left', (e.pageX - otherTooltip.yOffset - tooltip.width()) + 'px');
-                        }
-                        if (e.pageY - tooltip.height() - otherTooltip.xOffset < 0) {
-                            tooltip.css('top', (e.pageY - otherTooltip.xOffset) + 'px');
-                        } else {
-                            tooltip.css('top', (e.pageY - otherTooltip.xOffset - tooltip.height()) + 'px');
-                        }
-                    };
-                }
+                otherTooltip.position = function(e) {
+                    var tooltip = $('#other_tooltip');
+                    var bodyWidth = $('body').width();
+                    var bodyHeight = $('body').height();
+                    var tooltipWidth = tooltip.width();
+                    var tooltipHeight = tooltip.height();
+                    if (e.pageX + tooltipWidth + otherTooltip.yOffset <= bodyWidth) {
+                        tooltip.css('left', (e.pageX + otherTooltip.yOffset) + 'px');
+                    } else {
+                        tooltip.css('left', (e.pageX - otherTooltip.yOffset - tooltipWidth) + 'px');
+                    }
+                    if (e.pageY - tooltipHeight - otherTooltip.xOffset < 0) {
+                        tooltip.css('top', (e.pageY - otherTooltip.xOffset) + 'px');
+                    } else {
+                        tooltip.css('top', (e.pageY - otherTooltip.xOffset - tooltipHeight) + 'px');
+                    }
+                };
                 otherTooltip.addClose = function() {
                     $('<a href="#" id="other_tooltip_close" class="ui-icon ui-icon-closethick">Close</a>').prependTo('#other_tooltip').click(function() {
                         otherTooltip.destroy();

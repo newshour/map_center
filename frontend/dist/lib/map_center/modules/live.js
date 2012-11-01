@@ -386,10 +386,6 @@ $(document).one('coreInitialized', function() {
                 if (Modernizr.touch) {nhmc.tooltips.addClose();}
             };
             
-            nhmc.tooltips.position = function(e) {
-                // Set the position in the page's styles.
-            };
-            
             nhmc.tooltips.destroy = function() {
                 $('#tooltip').remove();
                 for (var i = 0, length = nhmc.surface.children.length; i < length; i++) {

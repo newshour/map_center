@@ -804,15 +804,19 @@ nhmc.tooltips.click = null;
 nhmc.tooltips.position = function(e) {
     var tooltip = $('#tooltip');
     
-    if (e.pageX + tooltip.width() + nhmc.tooltips.yOffset <= $('body').width()) {
+    var bodyWidth = $('body').width();
+    var bodyHeight = $('body').height();
+    var tooltipWidth = tooltip.width();
+    var tooltipHeight = tooltip.height();
+    if ((e.pageX + tooltipWidth + nhmc.tooltips.yOffset <= bodyWidth) || (e.pageX - tooltipWidth - nhmc.tooltips.yOffset < 0)) {
         tooltip.css('left', (e.pageX + nhmc.tooltips.yOffset) + 'px');
     } else {
-        tooltip.css('left', (e.pageX - nhmc.tooltips.yOffset - tooltip.width()) + 'px');
+        tooltip.css('left', (e.pageX - nhmc.tooltips.yOffset - tooltipWidth) + 'px');
     }
-    if (e.pageY + tooltip.height() - nhmc.tooltips.xOffset <= $('body').height()) {
+    if ((e.pageY + tooltipHeight - nhmc.tooltips.xOffset <= bodyHeight) || (e.pageY - tooltipHeight - nhmc.tooltips.xOffset < 0)) {
         tooltip.css('top', (e.pageY - nhmc.tooltips.xOffset) + 'px');
     } else {
-        tooltip.css('top', (e.pageY - nhmc.tooltips.xOffset - tooltip.height()) + 'px');
+        tooltip.css('top', (e.pageY - nhmc.tooltips.xOffset - tooltipHeight) + 'px');
     }
 };
 nhmc.tooltips.addClose = function() {
