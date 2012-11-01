@@ -10,8 +10,10 @@
 
 }
 
+#tooltip, #tooltip_automated {width: 220px;}
 #tooltip_results thead, .tooltip_candidate_table thead, #tooltip_automated_results thead, .tooltip_automated_candidate_table thead {font-weight: bold;}
-    .tooltip_results_candidate, .tooltip_candidate_table .tooltip_candidate_name, .tooltip_automated_results_candidate, .tooltip_automated_candidate_table .tooltip_automated_candidate_name {width: 75%;}
+    .tooltip_results_candidate, .tooltip_candidate_table .tooltip_candidate_name, .tooltip_automated_results_candidate, .tooltip_automated_candidate_table .tooltip_automated_candidate_name {padding-right: 1em;}
+    .tooltip_results_candidate, .tooltip_candidate_table .tooltip_candidate_vote_count, .tooltip_automated_results_candidate, .tooltip_automated_candidate_table .tooltip_automated_candidate_vote_count {padding-right: 1em;}
 
 .view_tab {
     float: right;
@@ -52,7 +54,7 @@
         }
         #tooltip.tooltip_flyout .flyout_candidate_name, #tooltip.tooltip_flyout .tooltip_candidate_name {float: left;}
         #tooltip.tooltip_flyout .flyout_candidate_name_first, #tooltip.tooltip_flyout .tooltip_candidate_name_first {display: none;}
-        #tooltip.tooltip_flyout .flyout_candidate_votes, #tooltip.tooltip_flyout .tooltip_candidate_votes {display: none;}
+        #tooltip.tooltip_flyout .flyout_candidate_votes, #tooltip.tooltip_flyout .tooltip_candidate_votes {text-align: right;}
         #tooltip.tooltip_flyout .flyout_candidate_vote_count, #tooltip.tooltip_flyout .tooltip_candidate_vote_count {text-align: right;}
 #flyout, #tooltip_template {display: none;}
     .flyout_templates, .tooltip_templates {display: none;}
