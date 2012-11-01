@@ -75,6 +75,9 @@ $(document).one('coreInitialized', function() {
             "Mitt Romney": "lib/images/results/romney.jpg"
         },
         condenseCandidates: true,
+        customSidebarTitles: {
+            "President": "270 needed to win"
+        },
         dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
         defaultRaceNames: {},
         flyoutsEnabled: false,
@@ -806,6 +809,8 @@ $(document).one('coreInitialized', function() {
         };
         
         // Show how many precincts are reporting for this race.
+        $('#custom_title').hide();
+        $('#precincts_title').show();
         var precinctsPercent = (
             100 * raceData.precincts[0] / raceData.precincts[1]
         ).toFixed(1);
@@ -1267,7 +1272,8 @@ $(document).one('coreInitialized', function() {
             // }
         ];
         if (raceNumber == 'President') {(function() {
-            renderPrecincts.apply(renderPrecincts, data.electoralData["United States"].precincts);
+            $('#custom_title').show().text(config.customSidebarTitles["President"]);
+            $('#precincts_title').hide();
             
             var fullNames = {};
             data.fullNames = fullNames;
@@ -1435,6 +1441,8 @@ $(document).one('coreInitialized', function() {
             }
             
             renderPrecincts.apply(renderPrecincts, precincts);
+            $('#custom_title').hide();
+            $('#precincts_title').show();
             
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
@@ -1546,6 +1554,8 @@ $(document).one('coreInitialized', function() {
             }
             
             renderPrecincts.apply(renderPrecincts, precincts);
+            $('#custom_title').hide();
+            $('#precincts_title').show();
             
             nhmc.ctrl.setStateColors(republicanStates, config.partyColors["GOP"]);
             nhmc.ctrl.setStateColors(democraticStates, config.partyColors["Dem"]);
@@ -1639,6 +1649,8 @@ $(document).one('coreInitialized', function() {
             }
             
             renderPrecincts.apply(renderPrecincts, precincts);
+            $('#custom_title').hide();
+            $('#precincts_title').show();
             
             // Create the three legend objects and sort by total seats held.
             legendObjs.push({
