@@ -71,7 +71,8 @@ $(document).one('coreInitialized', function() {
            "Richard Grayson": '#ffb90f',
         },
         candidateImages: {
-            "Mitt Romney": "lib/images/results/romney.jpg",
+            "Barack Obama": "lib/images/results/obama.jpg",
+            "Mitt Romney": "lib/images/results/romney.jpg"
         },
         condenseCandidates: true,
         dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
