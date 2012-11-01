@@ -109,8 +109,8 @@
         .candidate_won {
             display: none;
             position: absolute;
-            right: 5px;
-            top: -25px;
+            right: -10px;
+            top: 25px;
         }
         
         .candidate_big .candidate_name, .national_candidate_big .candidate_name, .national_presidential_candidate_big .candidate_name {
@@ -171,7 +171,7 @@
     font-size: 10pt;
     padding: 0 0 0 25px;
 }
-#map {width:675px; padding:20px 0 0 0; margin: 0 0 0 8px;} 
+#map {width:695px; padding:20px 0 0 0; margin: 0 0 0 8px;} 
 
 #pbs-head {display:none;}
 #sidebar {width:260px !important;}
