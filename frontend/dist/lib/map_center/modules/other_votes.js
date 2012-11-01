@@ -1455,7 +1455,7 @@ $(document).one('coreInitialized', function() {
                 firstName: '',
                 lastName: 'Republicans',
                 photo: false,
-                votePercent: config.balanceOfPowerStart.governor.republican + republicanStates.length,
+                votePercent: republicanStates.length,
                 voteTotal: formatThousands(republicanVotes, 0),
                 winner: false,
                 color: config.partyColors["GOP"]
@@ -1465,7 +1465,7 @@ $(document).one('coreInitialized', function() {
                 firstName: '',
                 lastName: 'Democrats',
                 photo: false,
-                votePercent: config.balanceOfPowerStart.governor.democratic + democraticStates.length,
+                votePercent: democraticStates.length,
                 voteTotal: formatThousands(democraticVotes, 0),
                 winner: false,
                 color: config.partyColors["Dem"]
@@ -1479,7 +1479,7 @@ $(document).one('coreInitialized', function() {
                 firstName: '',
                 lastName: 'Other',
                 photo: false,
-                votePercent: config.balanceOfPowerStart.governor.thirdParty + thirdPartyStates.length,
+                votePercent: thirdPartyStates.length,
                 voteTotal: formatThousands(thirdPartyVotes, 0),
                 winner: false,
                 color: config.partyColors['thirdParty']
@@ -1568,7 +1568,7 @@ $(document).one('coreInitialized', function() {
                 firstName: '',
                 lastName: 'Republicans',
                 photo: false,
-                votePercent: config.balanceOfPowerStart.senate.republican + republicanStates.length,
+                votePercent: republicanStates.length,
                 voteTotal: formatThousands(republicanVotes, 0),
                 winner: false,
                 color: config.partyColors["GOP"]
@@ -1578,7 +1578,7 @@ $(document).one('coreInitialized', function() {
                 firstName: '',
                 lastName: 'Democrats',
                 photo: false,
-                votePercent: config.balanceOfPowerStart.senate.democratic + democraticStates.length,
+                votePercent: democraticStates.length,
                 voteTotal: formatThousands(democraticVotes, 0),
                 winner: false,
                 color: config.partyColors["Dem"]
@@ -1588,7 +1588,7 @@ $(document).one('coreInitialized', function() {
                 firstName: '',
                 lastName: 'Other',
                 photo: false,
-                votePercent: config.balanceOfPowerStart.senate.thirdParty + thirdPartyStates.length,
+                votePercent: thirdPartyStates.length,
                 voteTotal: formatThousands(thirdPartyVotes, 0),
                 winner: false,
                 color: config.partyColors['thirdParty']
@@ -1695,10 +1695,30 @@ $(document).one('coreInitialized', function() {
         // Render the legend items.
         var renderLegendItem = function(itemObj) {
             // bigElem: Boolean
-            if (itemObj.bigElem) {
-                var $itemElem = $('#legend_templates .candidate_big').clone();
+            if (raceNumber == 'President') {
+                if (itemObj.bigElem) {
+                    var $itemElem = $('#legend_templates .national_presidential_candidate_big').clone();
+                } else {
+                    var $itemElem = $('#legend_templates .national_presidential_candidate_small').clone();
+                }
+            } else if (raceNumber == 'Governor') {
+                if (itemObj.bigElem) {
+                    var $itemElem = $('#legend_templates .national_candidate_big').clone();
+                } else {
+                    var $itemElem = $('#legend_templates .national_candidate_small').clone();
+                }
+            } else if (raceNumber == 'U.S. Senate') {
+                if (itemObj.bigElem) {
+                    var $itemElem = $('#legend_templates .national_candidate_big').clone();
+                } else {
+                    var $itemElem = $('#legend_templates .national_candidate_small').clone();
+                }
             } else {
-                var $itemElem = $('#legend_templates .candidate_small').clone();
+                if (itemObj.bigElem) {
+                    var $itemElem = $('#legend_templates .national_candidate_big').clone();
+                } else {
+                    var $itemElem = $('#legend_templates .national_candidate_small').clone();
+                }
             }
             $itemElem.appendTo('#legend_candidates');
             if (itemObj.isOther) {$itemElem.addClass('legend_candidate_other');}

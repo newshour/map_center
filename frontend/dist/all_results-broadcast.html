@@ -173,6 +173,7 @@
                         <div id="legend_templates">
                             <!-- These templates are cloned as necessary into #legend_candidates, and then their contents are set for their specific candidates. Change these to affect the markup for all of them. -->
                             <!-- .candidate_big is for the top three candidates (or however many are set in lib/map_center/modules/live.js, line 19); .candidate_small is for the rest. -->
+                            <!-- Legend items for the national results maps use the .national_* versions, except for the presidential race, which uses the .national_presidential_* versions. -->
                             <div class="candidate_big">
                                 <div class="candidate_color">&nbsp;</div>
                                 <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
@@ -184,6 +185,46 @@
                                 <div class="clear"></div>
                             </div>
                             <div class="candidate_small">
+                                <div class="candidate_color">&nbsp;</div>
+                                <div class="candidate_name">
+                                    <span class="candidate_name_first">Firstname</span>
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <div class="candidate_votes"></div>
+                            </div>
+                            <div class="national_candidate_big">
+                                <div class="candidate_color">&nbsp;</div>
+                                <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                <div class="candidate_name">
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <!-- .candidate_vote_count is unused; .candidate_votes shows the number of seats won. -->
+                                <div class="candidate_votes"></div>
+                                <div class="candidate_vote_count_wrapper">seats won</div>
+                                <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="national_candidate_small">
+                                <div class="candidate_color">&nbsp;</div>
+                                <div class="candidate_name">
+                                    <span class="candidate_name_first">Firstname</span>
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <div class="candidate_votes"></div>
+                            </div>
+                            <div class="national_presidential_candidate_big">
+                                <div class="candidate_color">&nbsp;</div>
+                                <img class="candidate_image" src="candidate_placeholder_50x75.png" width="66" height="69" />
+                                <div class="candidate_name">
+                                    <span class="candidate_name_last">Lastname</span>
+                                </div>
+                                <!-- .candidate_vote_count is unused; .candidate_votes is the number of electoral votes won. -->
+                                <div class="candidate_votes"></div>
+                                <div class="candidate_vote_count_wrapper">electoral votes</div>
+                                <div class="candidate_won"><img src="lib/images/won.png" /></div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="national_presidential_candidate_small">
                                 <div class="candidate_color">&nbsp;</div>
                                 <div class="candidate_name">
                                     <span class="candidate_name_first">Firstname</span>

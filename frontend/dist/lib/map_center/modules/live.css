@@ -60,11 +60,11 @@
 #legend_candidates {margin-bottom: 10px;}
 #legend_templates {display: none;}
     
-    .candidate_big, .candidate_small {
+    .candidate_big, .candidate_small, .national_candidate_big, .national_candidate_small, .national_presidential_candidate_big, .national_presidential_candidate_small {
         position: relative;
 		font-family:Arial, Helvetica, sans-serif;
     }
-    .candidate_big {
+    .candidate_big, .national_candidate_big, .national_presidential_candidate_big {
 		        padding: 0px 5px 5px 30px;
 
         background-color: #efefef;
@@ -81,7 +81,7 @@
 		url('../../images/bg-big.jpg');
 		background-repeat:repeat-x;
     }
-    .candidate_small {
+    .candidate_small, .national_candidate_small, .national_presidential_candidate_small {
 		        padding: 5px 5px 5px 10px;
 
         background-color: #d1d0d0;
@@ -105,7 +105,7 @@
             top: -1%;
             width: 25px;
         }
-		.candidate_small .candidate_color {width:15px; }
+		.candidate_small .candidate_color, .national_candidate_small .candidate_color, .national_presidential_candidate_small .candidate_color {width:15px; }
         .candidate_won {
             display: none;
             position: absolute;
@@ -113,7 +113,7 @@
             top: -25px;
         }
         
-        .candidate_big .candidate_name {
+        .candidate_big .candidate_name, .national_candidate_big .candidate_name, .national_presidential_candidate_big .candidate_name {
 			text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
             font-size: 1.4em;
             font-weight: bold;
@@ -121,7 +121,7 @@
 			line-height:1.1em;
 			margin:2px 0 2px 0;
         }
-        .candidate_big .candidate_votes {
+        .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
             text-align: left;
 			color:#9f1c20;
 			font-weight:bold;
@@ -130,19 +130,19 @@
 
 
         }
-		.candidate_big .vote_wrap { width:200px; overflow:visible; height:69px; }
-        .candidate_big .candidate_vote_count {
+		.candidate_big .vote_wrap, .national_candidate_big .vote_wrap, .national_presidential_candidate_big .vote_wrap { width:200px; overflow:visible; height:69px; }
+        .candidate_big .candidate_vote_count, .national_candidate_big .candidate_vote_count, .national_presidential_candidate_big .candidate_vote_count {
 						margin:0 0 0 2px;
 						
 				
 
 			
         }
-		.candidate_big .candidate_vote_count_wrapper {font-size:1em;}
+		.candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {font-size:1em;}
         
-        .candidate_small .candidate_name {float: left;}
-        .candidate_small .candidate_votes {text-align: right; font-weight:bold;}
-        .candidate_small .candidate_vote_count {
+        .candidate_small .candidate_name, .national_candidate_small .candidate_name, .national_presidential_candidate_small .candidate_name {float: left;}
+        .candidate_small .candidate_votes, .national_candidate_small .candidate_votes, .national_presidential_candidate_small .candidate_votes {text-align: right; font-weight:bold;}
+        .candidate_small .candidate_vote_count, .national_candidate_small .candidate_vote_count, .national_presidential_candidate_small .candidate_vote_count {
             float: left;
             font-size: 0.85em;
             margin-top: 0.125em;
