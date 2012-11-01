@@ -1293,6 +1293,7 @@ $(document).one('coreInitialized', function() {
                         // This should be the same person.
                         fullNames[candElectoralData[0]] = candPopularData[0];
                         parties[candElectoralData[0]] = data.parties[stateName][candPopularData[0]];
+                        latestData['us_all'].parties[fullNames[candElectoralData[0]]] = data.parties[stateName][candPopularData[0]];
                     }
                 }
                 
@@ -1422,6 +1423,7 @@ $(document).one('coreInitialized', function() {
                     var candidateVotes = stateData.breakdown[i][1];
                     
                     var candidateParty = data.parties[stateName][candidateName];
+                    latestData['us_all'].parties[candidateName] = data.parties[stateName][candidateName];
                     if (candidateParty && candidateParty == 'GOP') {
                         republicanVotes += candidateVotes;
                     } else if (candidateParty && candidateParty == 'Dem') {
@@ -1532,6 +1534,7 @@ $(document).one('coreInitialized', function() {
                     var candidateVotes = stateData.breakdown[i][1];
                     
                     var candidateParty = data.parties[stateName][candidateName];
+                    latestData['us_all'].parties[candidateName] = data.parties[stateName][candidateName];
                     if (candidateParty && candidateParty == 'GOP') {
                         republicanVotes += candidateVotes;
                     } else if (candidateParty && candidateParty == 'Dem') {
