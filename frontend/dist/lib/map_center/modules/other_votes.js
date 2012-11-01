@@ -1810,7 +1810,7 @@ $(document).one('coreInitialized', function() {
             // condensed some of the candidates into that entry.
             if (config.tooltipsEnabled && config.condenseCandidates && config.hoverExpandOther) {
                 // Find the "Other" legend entry.
-                var otherElement = $('.candidate_small').filter(function(i) {
+                var otherElement = $('.national_presidential_candidate_small').filter(function(i) {
                     var candidateName = $(this).find('.candidate_name');
                     if (candidateName.find('.candidate_name_last').text() == 'Other' && candidateName.find('.candidate_name_first').text() == '') {
                         return true;
