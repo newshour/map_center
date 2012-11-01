@@ -394,6 +394,8 @@ a img {border: 0;}
 @media screen and (max-width: 499px) {
     .candidate_big .candidate_name_first, .national_candidate_big .candidate_name_first, .national_presidential_candidate_big .candidate_name_first {display: none;}
     #tooltip, #other_tooltip, #tooltip_automated {width: 7em;}  /* 112px / 16px */
+        .tooltip_candidate_table thead {display: none;}
+        .tooltip_candidate_vote_count {display: none;}
 }
 @media screen and (min-width: 350px) and (max-width: 799px) {
     .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {

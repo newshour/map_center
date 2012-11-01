@@ -640,9 +640,9 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                     </div>
                     <table class="tooltip_candidate_table">
                         <thead>
-                            <th>Candidate</th>
-                            <th>Votes</th>
-                            <th>Vote %</th>
+                            <th class="tooltip_candidate_name">Candidate</th>
+                            <th class="tooltip_candidate_vote_count">Votes</th>
+                            <th class="tooltip_candidate_votes">Vote %</th>
                         </thead>
                         <tbody class="tooltip_candidates"></tbody>
                     </table>
