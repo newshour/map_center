@@ -20,7 +20,6 @@
   $.ajax({
     url: state_data,
     dataType: 'jsonp',
-    cache: true,
     jsonpCallback: 'showSummary',
     success: function(data) {
       buildStates(data);
@@ -72,7 +71,7 @@
 
   setMapData = function() {
     root.nhmcStatic = {
-      'breaks': key_ranges,
+      'breaks': [5, 10, 15, 20, 10000],
       'colors': ['#ffffcc', '#bae4bc', '#7bccc4', '#43a2cc', '#0868ac'],
       'decimalPlaces': 0,
       'areas': state_counts
