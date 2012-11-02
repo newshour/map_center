@@ -170,6 +170,7 @@ $static_maps_type = (isset($_GET['static_maps_type']) && isset($STATIC_VIEWS_ATT
 $static_maps_index = (isset($_GET['static_maps_index']) && isset($STATIC_VIEWS_MAX_INDEX[$static_maps_type]) && (int) $_GET['static_maps_index'] <= $STATIC_VIEWS_MAX_INDEX[$static_maps_type]) ? (int) $_GET['static_maps_index'] : 0;
 
 $nobranding = (isset($_GET['nobranding']) && (bool) $_GET['nobranding']) ? true : false;
+$aspect = (isset($_GET['aspect']) && (bool) $_GET['aspect']) ? true : false;
 
 $instructions = null;
 if ($map_module == 'electoral_college') {
@@ -202,7 +203,11 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
         <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+      <?php if ($aspect) { ?>
+        <link rel="stylesheet" type="text/css" href="embed-aspect.css" />
+      <?php } else { ?>
         <link rel="stylesheet" type="text/css" href="embed.css" />
+      <?php } ?>
       <?php if ($nobranding) { ?>
         <link rel="stylesheet" type="text/css" href="nobranding.css" />
       <?php } ?>
@@ -334,6 +339,10 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                     $('#instructions .smaller').css('visibility', 'hidden');
                 });
             });
+          <?php } elseif ($map_module == 'general_election') { ?>
+            var nhmcOtherVotesConfig = {
+                hoverExpandOther: false
+            };
           <?php } ?>
         </script>
         <!-- Map Center core -->
