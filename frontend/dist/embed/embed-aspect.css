@@ -377,32 +377,6 @@ a img {border: 0;}
     #sidebar {
         font-size: 0.6em;
     }
-    
-    .candidate_big, .national_candidate_big, .national_presidential_candidate_big {
-        font-size: 1em;
-    }
-    .candidate_big .candidate_name_first, .national_candidate_big .candidate_name_first, .national_presidential_candidate_big .candidate_name_first {
-        display: none;
-    }
-    .candidate_big p, .national_candidate_big p, .national_presidential_candidate_big p {
-        display: none;
-    }
-    .candidate_big .candidate_image, .national_candidate_big .candidate_image, .national_presidential_candidate_big .candidate_image {
-        display: none;
-    }
-    .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
-        display: inline-block;
-        font-size: 1.5em;
-    }
-    .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
-        display: none;
-    }
-    .candidate_small .candidate_vote_count, .national_candidate_small .candidate_vote_count, .national_presidential_candidate_small .candidate_vote_count {
-        display: none;
-    }
-    #content_area h2 {
-        width: 55%;
-    }
 }
 
 @media screen and (max-width: 599px) {
@@ -415,13 +389,6 @@ a img {border: 0;}
     .candidate_big p, .national_candidate_big p, .national_presidential_candidate_big p {
         display: none;
     }
-    .candidate_big .candidate_image, .national_candidate_big .candidate_image, .national_presidential_candidate_big .candidate_image {
-        display: none;
-    }
-    .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
-        display: inline-block;
-        font-size: 1.5em;
-    }
     .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
         display: none;
     }
@@ -433,21 +400,28 @@ a img {border: 0;}
     }
 }
 
-@media screen and (min-width: 600px) and (max-width: 749px) {
-    .candidate_big .candidate_name_first, .national_candidate_big .candidate_name_first, .national_presidential_candidate_big .candidate_name_first {
-        display: none;
-    }
-    .candidate_big p, .national_candidate_big p, .national_presidential_candidate_big p {
-        margin-bottom: 0;
-        margin-top: 0.25em;
-        font-size: 0.75em;
-    }
+@media screen and (max-width: 999px) {
     .candidate_big .candidate_image, .national_candidate_big .candidate_image, .national_presidential_candidate_big .candidate_image {
         display: none;
     }
     .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
         display: inline-block;
+    }
+}
+
+@media screen and (max-width: 749px) {
+    .candidate_big .candidate_name_first, .national_candidate_big .candidate_name_first, .national_presidential_candidate_big .candidate_name_first {
+        display: none;
+    }
+    .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
         font-size: 1.5em;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 999px) {
+    .candidate_big p, .national_candidate_big p, .national_presidential_candidate_big p {
+        margin-bottom: 0;
+        margin-top: 0.25em;
     }
     .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
         display: inline-block;
@@ -457,26 +431,13 @@ a img {border: 0;}
     }
 }
 
-@media screen and (min-width: 750px) and (max-width: 849px) {
+@media screen and (min-width: 600px) and (max-width: 749px) {
     .candidate_big p, .national_candidate_big p, .national_presidential_candidate_big p {
-        margin-bottom: 0;
-        margin-top: 0.25em;
-    }
-    .candidate_big .candidate_image, .national_candidate_big .candidate_image, .national_presidential_candidate_big .candidate_image {
-        display: none;
-    }
-    .candidate_big .candidate_votes, .national_candidate_big .candidate_votes, .national_presidential_candidate_big .candidate_votes {
-        display: inline-block;
-    }
-    .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
-        display: inline-block;
         font-size: 0.75em;
-        padding-left: 0.5em;
-        width: 7em;
     }
 }
 
-@media screen and (min-width: 850px) and (max-width: 999px) {
+@media screen and (min-width: 750px) and (max-width: 849px) {
     .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
         font-size: 0.75em;
     }
