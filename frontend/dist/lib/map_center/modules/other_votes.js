@@ -1340,6 +1340,7 @@ $(document).one('coreInitialized', function() {
             var seenGOP = false;
             var seenDem = false;
             var nationalBreakdown = data.electoralData['United States'].breakdown;
+            var allPopularVotes = 0;
             var otherPopularVotes = 0;
             var otherElectoralVotes = 0;
             data.electoralData['United States'].othersBreakdown = [];
@@ -1353,6 +1354,7 @@ $(document).one('coreInitialized', function() {
                 
                 var popularVotes = nationalBreakdown[i][1];
                 var electoralVotes = nationalBreakdown[i][2];
+                allPopularVotes += popularVotes;
                 if (!stillBigElems) {
                     otherPopularVotes += popularVotes;
                     otherElectoralVotes += electoralVotes;
@@ -1391,6 +1393,7 @@ $(document).one('coreInitialized', function() {
                 legendObjs.push(legendObj);
             }
             
+            data.electoralData['United States'].popularTotal = allPopularVotes;
             if (config.condenseCandidates) {
                 data.electoralData['United States'].othersTotal = otherPopularVotes;
                 legendObjs.push({
@@ -1881,9 +1884,9 @@ $(document).one('coreInitialized', function() {
                         // What percentage of the total votes in this state did
                         // the candidate receive?
                         var candidateVotePercent = 100 * (
-                            raceResults[i][1] / data.electoralData['United States'].othersTotal
+                            raceResults[i][1] / data.electoralData['United States'].popularTotal
                         );
-                        if (data.electoralData['United States'].othersTotal == 0) {candidateVotePercent = 0;}
+                        if (data.electoralData['United States'].popularTotal == 0) {candidateVotePercent = 0;}
                         
                         // Fill in vote numbers for the candidate.
                         tooltipEntry.find('.tooltip_candidate_vote_count')
