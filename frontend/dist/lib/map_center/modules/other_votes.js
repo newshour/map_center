@@ -822,9 +822,9 @@ $(document).one('coreInitialized', function() {
             100 * raceData.precincts[0] / raceData.precincts[1]
         ).toFixed(1);
         if (isNaN(precinctsPercent)) {precinctsPercent = '0.0';}
-        $('#precincts_percent').text(precinctsPercent);
-        $('#precincts_reporting').text(raceData.precincts[0]);
-        $('#precincts_total').text(raceData.precincts[1]);
+        $('.precincts_percent').text(precinctsPercent);
+        $('.precincts_reporting').text(raceData.precincts[0]);
+        $('.precincts_total').text(raceData.precincts[1]);
         
         // Start rendering the template.
         // 
@@ -2026,12 +2026,12 @@ $(document).one('coreInitialized', function() {
     
     var renderPrecincts = function(precinctsReporting, totalPrecincts) {
         if (totalPrecincts == 0) {
-            $('#precincts_reporting, #precincts_total, #precincts_percent').text('0');
+            $('.precincts_reporting, .precincts_total, .precincts_percent').text('0');
             return;
         }
-        $('#precincts_reporting').text(formatThousands(precinctsReporting, 0));
-        $('#precincts_total').text(formatThousands(totalPrecincts, 0));
-        var $precinctsPercent = $('#precincts_percent');
+        $('.precincts_reporting').text(formatThousands(precinctsReporting, 0));
+        $('.precincts_total').text(formatThousands(totalPrecincts, 0));
+        var $precinctsPercent = $('.precincts_percent');
         $precinctsPercent.text((100 * precinctsReporting / totalPrecincts).toFixed(1));
         if ($precinctsPercent.length && $precinctsPercent.text() == '100.0' && precinctsReporting != totalPrecincts) {
             $precinctsPercent.text('99.9');
