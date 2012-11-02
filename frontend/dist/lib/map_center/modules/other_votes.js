@@ -635,9 +635,10 @@ $(document).one('coreInitialized', function() {
     };
     
     var liveDataInit = function(data) {
+        var $selectedRaceTab = $('#view_tab_options_more_shown');
+        
         // Get the currently displayed race number.
-        var initialRaceNumber = $('#view_tab_options_more_shown').attr('href')
-            .split('-')[1];
+        var initialRaceNumber = $selectedRaceTab.attr('href').split('-')[1];
         
         // Get ready to render the race menu again if we need to.
         var newState = $('#map_view').val();
@@ -682,6 +683,8 @@ $(document).one('coreInitialized', function() {
                 .attr('href', [
                     '#', newState.toLowerCase(), '-', initialRaceNumber
                 ].join(''));
+            
+            $(document).trigger('raceMenuRendered');
         };
         
         // Compare the current and proposed contents of the race menu to see if
@@ -724,6 +727,7 @@ $(document).one('coreInitialized', function() {
             races.sort(raceNameSort);
             return races;
         })();
+        var didRenderMenu = false;
         for (var i = 0, length = newRaces.length; i < length; i++) {
             var oldRace = oldRaces[i];
             var newRace = newRaces[i];
@@ -732,12 +736,15 @@ $(document).one('coreInitialized', function() {
                 // what's in this data set. Go ahead and render the menu and
                 // break out of here already.
                 renderMenu();
+                didRenderMenu = true;
                 break;
             }
         }
+        if (!didRenderMenu) {$(document).trigger('raceMenuRendered');}
         
         // Render the date/time information and selected race from this data.
         $('#last_updated').text(formatDate.apply(formatDate, data.lastUpdated));
+        initialRaceNumber = $selectedRaceTab.attr('href').split('-')[1];
         displayRaceData(data, initialRaceNumber);
         
         // Mark the page as containing test data if applicable.
@@ -1140,9 +1147,10 @@ $(document).one('coreInitialized', function() {
     };
     
     var nationalDataInit = function(data) {
+        var $selectedRaceTab = $('#view_tab_options_more_shown')
+        
         // Render the race menu if necessary.
-        var initialRaceInfo = $('#view_tab_options_more_shown').attr('href')
-            .substring(1).split('-');
+        var initialRaceInfo = $selectedRaceTab.attr('href').substring(1).split('-');
         var initialRaceState = initialRaceInfo[0];
         var initialRaceNumber = initialRaceInfo[1];
         var renderNationalRaceMenu = function() {
@@ -1194,12 +1202,18 @@ $(document).one('coreInitialized', function() {
                 .attr('href', [
                     '#us_all-', initialRaceNumber
                 ].join(''));
+            
+            $(document).trigger('raceMenuRendered');
         };
         if (initialRaceState != 'us_all') {renderNationalRaceMenu();}
+        else {$(document).trigger('raceMenuRendered');}
         
         // Render the date/time information and selected race from this data.
         $('#last_updated').text(formatDate.apply(formatDate, data.lastUpdated));
         
+        initialRaceInfo = $selectedRaceTab.attr('href').substring(1).split('-');
+        initialRaceState = initialRaceInfo[0];
+        initialRaceNumber = initialRaceInfo[1];
         displayNationalRaceData(data, initialRaceNumber);
         
         // Mark the page as containing test data if applicable.
@@ -1981,10 +1995,14 @@ $(document).one('coreInitialized', function() {
     });
     
     $('.view_tab_options_more').delegate('.view_tab_option:not(#view_tab_options_more_shown)', 'click', function() {
-        var mapParams = $(this).attr('href').substring(1).split('-');
+        var $thisElem = $(this);
+        
+        nhmc.ctrl.hashParams({"race_name": encodeURIComponent($thisElem.text()).replace(/%20/g, '+')});
+        
+        var mapParams = $thisElem.attr('href').substring(1).split('-');
         var state = mapParams[0];
         var raceNumber = mapParams[1];
-        $('#view_tab_options_more_shown').attr('href', $(this).attr('href'));
+        $('#view_tab_options_more_shown').attr('href', $thisElem.attr('href'));
         if (state == 'us_all') {
             displayNationalRaceData(latestData[state], raceNumber);
         } else {
@@ -2111,6 +2129,7 @@ $(document).one('coreInitialized', function() {
         
         var newHashParams = nhmc.ctrl.hashParams();
         var hashMapView = newHashParams['map_view'];
+        var hashRaceName = newHashParams['race_name'];
         
         if (typeof(hashMapView) != 'undefined' && currentMapView != hashMapView) {
             // Make sure it's a map view that's actually available to the user.
@@ -2125,6 +2144,26 @@ $(document).one('coreInitialized', function() {
         } else {
             sidebarInit();
             getMapData(currentMapView);
+        }
+        
+        if (typeof(hashRaceName) != 'undefined') {
+            $(document).one('raceMenuRendered', function() {
+                var unescapedRaceName = decodeURIComponent(hashRaceName.toString().replace(/\+/g, '%20'));
+                var selectedRaceOption = $('.view_tab_option:not(#view_tab_options_more_shown)').filter(function() {
+                    if (startsWith($(this).text(), unescapedRaceName)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }).first();
+                if (selectedRaceOption.length != 0) {
+                    selectedRaceOption.click();
+                } else {
+                    nhmc.ctrl.hashParams({
+                        "race_name": encodeURIComponent($('#view_tab_options_more_shown').text()).replace(/%20/g, '+')
+                    });
+                }
+            });
         }
     };
     parseHash();

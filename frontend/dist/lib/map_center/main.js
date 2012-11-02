@@ -110,7 +110,7 @@ nhmc.config.cityLabels = {
 nhmc.config.hashParams = {
     assignment: '=',
     delimiter: '|',
-    regexp: new RegExp(/([\d\w=+-]+)/g)
+    regexp: new RegExp(/([\d\w=+-.\%]+)/g)
 };
 
 nhmc.ctrl.addCity = function(cityName, cityData, existingCities) {
