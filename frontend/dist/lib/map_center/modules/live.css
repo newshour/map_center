@@ -241,6 +241,6 @@ padding:4px;        text-align: center;
 				
             }
         .candidate_vote_count { font-size: 1.4em; margin-left: -10px;}
-        .candidate_vote_count_wrapper {font-size: .6em;  color: rgb(159,28,32) ; margin-top: -10px;}
+        .candidate_vote_count_wrapper {font-size: .6em;  color: rgb(159,28,32);}
         .candidate_vote_count_wrapper div {font-size: 1.1em;  color: #444; margin-top: 5px; margin-left: 109px;}
         span#custom_title {font-size: 1.4em;}
