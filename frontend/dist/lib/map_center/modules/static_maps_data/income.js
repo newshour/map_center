@@ -1,3 +1,71 @@
+// Overriding legend break text
+(function() {
+    var formatThousands = function(value, decimalPlaces, alwaysDecimalize) {
+        // Set default decimal formatting values if undefined
+        decimalPlaces = (typeof decimalPlaces == 'undefined') ? 1 : decimalPlaces;
+        alwaysDecimalize = (typeof alwaysDecimalize == 'undefined') ? false : alwaysDecimalize;
+        
+        var wholePart = Math.floor(Math.abs(value)) + '';  // coerce to string
+        
+        var signPart = '';
+        if (value < 0) {signPart = '-';}
+        
+        var decimalPart = '';
+        if (alwaysDecimalize || value % 1 != 0) {
+            decimalPart = (Math.abs(value) % 1).toFixed(decimalPlaces);
+            decimalPart = decimalPart.substring(1);  // remove leading zero
+        }
+        
+        var withCommas = wholePart;
+        var commasToAdd = Math.floor(withCommas.length / 3);
+        if (withCommas.length % 3 == 0) {commasToAdd -= 1;}
+        for (var i = 0; i < commasToAdd; i++) {
+            var firstComma = withCommas.indexOf(',');
+            if (firstComma >= 0) {
+                withCommas = withCommas.substring(0, firstComma-3) +
+                    ',' + withCommas.substring(firstComma-3);
+            } else {
+                withCommas = withCommas.substring(0, withCommas.length-3) +
+                    ',' + withCommas.substring(withCommas.length-3);
+            }
+        }
+        return signPart + withCommas + decimalPart;
+    };
+    window.nhmcStaticBreakFormatter = function(thisBreak, prevBreak, isLastBreak, breakPrefix, breakSuffix, breakDecimals) {
+        if (isLastBreak) {
+            return '&gt;' + breakPrefix + formatThousands(prevBreak, breakDecimals) + breakSuffix;
+        } else if (prevBreak != null) {
+            return breakPrefix + formatThousands(prevBreak, breakDecimals) + breakSuffix + '&ndash;' + breakPrefix + formatThousands(thisBreak, breakDecimals) + breakSuffix;
+        } else {
+            return '&le;' + breakPrefix + formatThousands(thisBreak, breakDecimals) + breakSuffix;
+        }
+    };
+    window.nhmcStaticTooltipFormatter = function(thisFIPS, thisState, thisCounty, countyOnly, currentData) {
+        var tooltipText = [];
+        if (countyOnly) {
+            tooltipText.push('<p>' + thisCounty + ': <br />');
+        } else if (thisCounty != '') {
+            tooltipText.push('<p>' + thisCounty + ', ' + thisState + ': <br />');
+        } else {
+            tooltipText.push('<p>' + thisState + ': <br />');
+        }
+        
+        if (thisFIPS != '') {
+            if (typeof(currentData.areas[thisFIPS]) == 'undefined') {
+                tooltipText.push('Unavailable');
+            } else {
+                tooltipText.push((currentData.prefix || '') + formatThousands(currentData.areas[thisFIPS], currentData.decimalPlaces || 0) + (currentData.suffix || '') + '</p>');
+            }
+        } else {
+            if (typeof(currentData.areas[thisState]) == 'undefined') {
+                tooltipText.push('Unavailable');
+            } else {
+                tooltipText.push((currentData.prefix || '') + formatThousands(currentData.areas[thisState], currentData.decimalPlaces || 0) + (currentData.suffix || '') + '</p>');
+            }
+        }
+        return tooltipText.join('');
+    };
+})();
 var nhmcStatic = {
     "breaks": [33000, 37000, 41000, 44000, 48000, 55000, 1000000],
     "colors": ["#edf8e9", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#005a32"],
