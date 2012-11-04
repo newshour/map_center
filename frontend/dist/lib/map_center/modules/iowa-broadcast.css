@@ -14,6 +14,8 @@
     margin-bottom:0;
     background-color: #bbb;
     background-image: none;
+    -webkit-box-shadow: none;
+          box-shadow: none;
 }
 .view_tab_active {
     background-color: #bbb;
