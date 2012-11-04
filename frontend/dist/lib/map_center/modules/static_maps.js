@@ -283,7 +283,8 @@ $(document).one('coreInitialized', function() {
             // Make sure it's a map view that's actually available to the user
             var selectedMapOption = $('.view_tab_more .view_tab_option[href="#' + hashMapView + '"]').last();
             if (selectedMapOption.length != 0) {
-                selectedMapOption.click();
+                $('#view_tab_more_menu li').show();
+                selectedMapOption.click().parent().hide();
             } else {
                 nhmc.ctrl.hashParams({"map_view": currentMapView});
             }
