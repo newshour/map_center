@@ -75,3 +75,6 @@ span#custom_title { font-size: 1.3em;}
 span.candidate_name_last { font-size: 1.1em;}
 #sidebar {width: 280px !important;}
 .candidate_image {width: 85px; height: 85px;}
+body {background-image: url('../../images/bg-broadcast.png'); background-repeat: repeat-x; background-color: #bbb; background-position: top;}
+#container {background-color: #fff;}
+#vote2012-map {background-image: url('../../images/bg-broadcast.png'); background-repeat: repeat-x; background-position: top; width: 1000px;}
