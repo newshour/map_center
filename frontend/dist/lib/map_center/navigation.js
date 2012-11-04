@@ -8,11 +8,6 @@ $(document).ready(function() {
         id: "past"
     }, {
         featured: false,
-        title: "Past primary and caucus results",
-        href: "past_primaries.html",
-        id: "past"
-    }, {
-        featured: false,
         title: "State winners",
         href: "primary_winners.html",
         id: "winners"
@@ -31,6 +26,16 @@ $(document).ready(function() {
         title: "2008 general election",
         href: "08general.html",
         id: "08general"
+    }, {
+        featured: false,
+        title: "Primary and caucus results",
+        href: "past_primaries.html",
+        id: "past"
+    }, {
+        featured: false,
+        title: "Poll closings",
+        href: "poll_closing.html",
+        id: "polls"
     }, {
         featured: false,
         title: "Unemployed",
