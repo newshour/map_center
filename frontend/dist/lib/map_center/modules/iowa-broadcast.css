@@ -74,6 +74,7 @@
 span#custom_title { font-size: 1.3em;}
 span.candidate_name_last { font-size: 1.1em;}
 #sidebar {width: 280px !important;}
+#map {width: 710px; height: 450px;}
 .candidate_image {width: 85px; height: 85px;}
 body {background-image: url('../../images/bg-broadcast.png'); background-repeat: repeat-x; background-color: #bbb; background-position: top;}
 #container {background-color: #fff;}
