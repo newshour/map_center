@@ -395,6 +395,7 @@ a img {border: 0;}
     .candidate_small .candidate_vote_count, .national_candidate_small .candidate_vote_count, .national_presidential_candidate_small .candidate_vote_count {
         display: none;
     }
+    .tooltip_candidate_vote_count {display: none;}
     #content_area h2 {
         width: 55%;
     }
