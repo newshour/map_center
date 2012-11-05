@@ -20,7 +20,7 @@
             <ul class="candidates">
             {{#candidates}}
                 <li>
-                    <ul class="{{#winner}}winner {{party}}{{/winner}}{{^winner}}ind{{/winner}}{{#isOdd}} odd{{/isOdd}}">
+                    <ul class="{{party}}{{#winner}} winner{{/winner}}{{#isOdd}} odd{{/isOdd}}">
                         <li class="name">{{name}}</li>
                         <li class="votes">({{voteCount}} votes)</li>
                         <li class="percent">{{percentVotes}}%</li>

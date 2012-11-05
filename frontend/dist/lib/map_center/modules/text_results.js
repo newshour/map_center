@@ -182,12 +182,19 @@ $(document).ready(function() {
                 
                 var candidateContext = {
                     winner: false,
-                    party: data.parties[stateName][candidateName].toLowerCase(),
                     isOdd: !!(i % 2),
                     name: candidateName,
                     voteCount: candidateVotes,
                     percentVotes: 0,
                 };
+                
+                if (data.parties[stateName][candidateName] === "GOP") {
+                    candidateContext.party = "gop";
+                } else if (data.parties[stateName][candidateName] === "Dem") {
+                    candidateContext.party = "dem";
+                } else {
+                    candidateContext.party = "ind";
+                }
                 
                 totalVotes += candidateVotes;
                 if (raceData.winner === candidateName) {
