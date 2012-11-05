@@ -4,7 +4,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     padding: 0;
     border: 0;
     outline: 0;
-    font-size: 100%;
+    font-size: 62.5%;
 }
 
 #results-state-select {
@@ -13,7 +13,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 #results-state-label {
     margin:15px;
-    font:20px/1 bold Arial, Helvetica, sans-serif;
+    font:2em/1 bold Arial, Helvetica, sans-serif;
     color:#b92424;
     text-transform: uppercase;
 }
@@ -21,14 +21,14 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 .state-dropdown {
     color:#666666;
     border: 1px solid #4E4868;
-    font-size:16px;
+    font-size:1.6em;
     background-color: #EBEBEB;
     font-size:16px;
     width: 247px;
 }
 
 body {
-    font:20px/1 bold Arial, Helvetica, sans-serif;
+    font:2em/1 bold Arial, Helvetica, sans-serif;
     color:#777;
     text-align:left;
     margin:3px;
@@ -36,7 +36,7 @@ body {
 
 li {
     display:inline;
-    font-size: 16px;
+    font-size: 1.6em;
     font-weight:bold;
 }
 
@@ -49,7 +49,7 @@ h2 {
 
 .timestamp {
     padding:15px; 
-    font-size: 11px;
+    font-size: 1.1em;
     color:#908f8f;
 }
 
@@ -70,19 +70,21 @@ h2 {
 .title {
     text-transform:uppercase;
     float:left;
-    font-size:20px;
+    font-size:2.6em;
 }
+
+.state {font-size: 2em;}
 
 ul {
     overflow:hidden;
     position:relative;
 }
 
-li.precincts {
+.precincts {
     float:right;
     text-align: left;
     width:60px;
-    font-size:10px;
+    font-size:1.1em;
     margin-right:10px;
     text-transform:uppercase;
     line-height:92%;
@@ -91,7 +93,7 @@ li.precincts {
 li.percent {
     float:right;
     text-align:right;
-    font-size:24px;
+    font-size:2.6em;
     margin-top:-3px;
 }
 
@@ -99,10 +101,11 @@ li.percent {
 
 .candidates ul { padding:4px 15px 2px 15px; ; }
 
+
 .name {
     float:left;
     margin-right:10px;
-    font-size:18px;
+    font-size:1.8em;
 }
 
 .gop { color:#b92424; }
@@ -114,11 +117,12 @@ li.percent {
 ul.odd { background-color:#f0f0f0; }
 
 .votes {
-    font-size: 13px;
+    font-size: 1.1em;
     color:#908f8f;
     text-transform:uppercase;
     float:left;
     margin-top:4px;
+    font-weight: normal;
 }
 
 .win ul { color:#777 !important; }
@@ -127,7 +131,7 @@ ul.odd { background-color:#f0f0f0; }
     color:#b92424 !important;
     background-image:url('http://www.pbs.org/newshour/vote2010/images/check.gif');
     padding-left: 43px;
-    background-position:15px 3px;
+    background-position:5px 3px;
     background-repeat:no-repeat;
     margin-bottom:1px;
 }
@@ -135,7 +139,7 @@ ul.odd { background-color:#f0f0f0; }
     color:#b92424 !important;
     background-image:url('http://www.pbs.org/newshour/vote2010/images/check.gif');
     padding-left: 43px;
-    background-position:15px 3px;
+    background-position:5px 3px;
     background-repeat:no-repeat;
     margin-bottom:1px;
 }
@@ -143,13 +147,13 @@ ul.odd { background-color:#f0f0f0; }
     color:#b92424 !important;
     background-image:url('http://www.pbs.org/newshour/vote2010/images/check.gif');
     padding-left: 43px;
-    background-position:15px 3px;
+    background-position:5px 3px;
     background-repeat:no-repeat;
     margin-bottom:1px;
 }
 
 .winner .name {
-    font-size:19px;
+    font-size:1.9em;
     margin-top:0px;
 }
 
