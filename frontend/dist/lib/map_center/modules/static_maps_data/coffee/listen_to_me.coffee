@@ -50,7 +50,7 @@ buildStates = (states) ->
 setMapData = ->
   root.nhmcStatic = 
     'breaks' : [5, 10, 15, 20, 10000]
-    'colors' : ['#ffffcc', '#bae4bc', '#7bccc4', '#43a2cc', '#0868ac']
+    'colors' : ['#ccebc5', '#7bccc4', '#4eb3d3', '#2b8cbe', '#08589e']
     'decimalPlaces' : 0
     'areas' : state_counts
   
