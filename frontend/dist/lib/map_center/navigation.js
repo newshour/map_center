@@ -103,6 +103,11 @@ $(document).ready(function() {
         id: "patchwork"
     }, {
         featured: false,
+        title: "NewsHour election stories",
+        href: "correspondents.html",
+        id: "correspondents"
+    }, {
+        featured: false,
         title: "Voter ID laws",
         href: "voter_id.html",
         id: "voter_id"
