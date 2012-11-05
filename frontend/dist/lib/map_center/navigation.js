@@ -2,10 +2,10 @@ $(document).ready(function() {
     // Change the contents of the navObjects array to change the contents of
     //  the top navigation.
     var navObjects = [{
-    	featured: true,
-    	title: "Listen To Me Election Videos",
-        href: "listen_to_me.html",
-        id: "past"
+        featured: true,
+        title: "Live election results",
+        href: "all_results.html",
+        id: "all_results"
     }, {
         featured: false,
         title: "State winners",
@@ -16,6 +16,11 @@ $(document).ready(function() {
         title: "Electoral College calculator",
         href: "calc.html#states=lrGSpRqGBlvGnqBlKp",
         id: "electoral"
+    }, {
+        featured: false,
+        title: "Listen To Me Election Videos",
+        href: "listen_to_me.html",
+        id: "past"
     }, {
         featured: false,
         title: "Historical results",
