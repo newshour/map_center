@@ -759,6 +759,7 @@ $(document).one('coreInitialized', function() {
     // includes rendering the legend and coloring the map areas.
     var displayRaceData = function(data, raceNumber) {
         nhmc.cleanup.clearPathColors();
+        $('#instructions').css('visibility', 'hidden');
         var currentMapView = $('#map_view').val();
         var raceData = data.races[raceNumber];
         currentRaceData = raceData;
@@ -1226,6 +1227,8 @@ $(document).one('coreInitialized', function() {
     
     var displayNationalRaceData = function(data, raceNumber) {
         nhmc.cleanup.clearPathColors();
+        var $instructions = $('#instructions');
+        $instructions.css('visibility', 'visible');
         
         // Get the data into a more useful form.
         currentRaceData = {
@@ -1286,6 +1289,7 @@ $(document).one('coreInitialized', function() {
             // }
         ];
         if (raceNumber == 'President') {(function() {
+            $instructions.text("Click states for results");
             $('#custom_title').show().text(config.customSidebarTitles["President"]);
             $('#precincts_title').hide();
             
@@ -1409,6 +1413,7 @@ $(document).one('coreInitialized', function() {
                 });
             }
         })();} else if (raceNumber == 'Governor') {(function() {
+            $instructions.text("Click states for results");
             var republicanStates = [];
             var democraticStates = [];
             var thirdPartyStates = [];
@@ -1509,6 +1514,7 @@ $(document).one('coreInitialized', function() {
                 lastLegendObj.bigElem = false;
             }
         })();} else if (raceNumber == 'U.S. Senate') {(function() {
+            $instructions.text("Click states for results");
             var republicanStates = [];
             var democraticStates = [];
             var thirdPartyStates = [];
@@ -1618,6 +1624,7 @@ $(document).one('coreInitialized', function() {
                 lastLegendObj.bigElem = false;
             }
         })();} else {(function() {  // House, but this could in theory work for other races
+            $instructions.text("Click states for House race details");
             var precincts = [0, 0];
             
             var republicanVotes = 0;
