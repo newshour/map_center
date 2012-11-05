@@ -547,7 +547,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         </div>
                                     </div>
                                 </div>
-                                <a href="calc.html#states=lrGSpRqGBlvGnqBlKp" id="use-ap-projections" style="display: none;">2012 AP Projections</a>
+                                <a href="calc.html#states=lrGSpBqGBlrGnqBlKt" id="use-ap-projections" style="display: none;">2012 AP Projections</a>
                               <?php } ?>
                             </div>
                             <input name="map_view" id="map_view" type="hidden" value="<?php echo $map_view; ?>" />

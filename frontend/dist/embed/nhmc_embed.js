@@ -160,7 +160,7 @@ var embedNHMC = function(embedWidth, mapModule, mapView, staticMapsType, staticM
         iframeSrc += "&static_maps_index=" + staticMapsIndex;
     }
     if (mapModule == 'electoral_college') {
-        iframeSrc += "#states=lrGSpRqGBlvGnqBlKp";
+        iframeSrc += "#states=lrGSpBqGBlrGnqBlKt";
     }
     
     if (!justReturnMarkup) {

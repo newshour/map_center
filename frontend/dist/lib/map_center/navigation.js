@@ -14,7 +14,7 @@ $(document).ready(function() {
     }, {
         featured: false,
         title: "Electoral College calculator",
-        href: "calc.html#states=lrGSpRqGBlvGnqBlKp",
+        href: "calc.html#states=lrGSpBqGBlrGnqBlKt",
         id: "electoral"
     }, {
         featured: false,
