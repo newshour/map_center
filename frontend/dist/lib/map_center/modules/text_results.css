@@ -90,7 +90,7 @@ ul {
     line-height:92%;
 }
 
-li.percent {
+.percent {
     float:right;
     text-align:right;
     font-size:2.6em;
