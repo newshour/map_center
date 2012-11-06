@@ -217,7 +217,18 @@ a img {border: 0;}
                     }
                     .candidate_big .candidate_vote_count, .national_candidate_big .candidate_vote_count, .national_presidential_candidate_big .candidate_vote_count {
                         margin: 0 0 0 0.111111em;  /* 2px / 18px */
+                        font-size: 1.4em;
                     }
+                    .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
+                        color: #9f1c20;
+                        font-size: 0.6em;
+                    }
+                        .candidate_big .candidate_vote_count_wrapper p, .national_candidate_big .candidate_vote_count_wrapper p, .national_presidential_candidate_big .candidate_vote_count_wrapper p {
+                            font-size: 1.1em;
+                            color: #444;
+                            margin-top: 0.5em;
+                        }
+                
                 .candidate_small, .national_candidate_small, .national_presidential_candidate_small {  /* Sets own context to 14px per em */
                     background-color: #d1d0d0;
                     clear: both;
@@ -489,6 +500,9 @@ a img {border: 0;}
             margin-right: -0.833333em;  /* -10px / 12px */
             margin-top: 0;
             padding: 0.5em;
+        }
+        .candidate_big p, .national_candidate_big p, .national_presidential_candidate_big p {
+            margin-left: 4.5em;
         }
     
     #map_container {
