@@ -387,7 +387,12 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
     	                <div id="emlogo"><a href="http://www.pbs.org/newshour/vote2012/map/" target="_blank"><img src="logo.png"></a></div>
                     </div>
                     <div id="view_info">
-                        <h1><?php echo $map_title; ?></h1>
+                        <h1>
+                          <?php if ($nobranding) { ?>
+                            <a class="full-map-link" href="http://www.pbs.org/newshour/vote2012/map" target="_blank">View full map</a>
+                          <?php } ?>
+                            <?php echo $map_title; ?>
+                        </h1>
                       <?php if ($map_module == 'general_election') { ?>
                         <div id="other_back_link"><a href="#">Back to U.S.</a></div>
                       <?php } ?>
