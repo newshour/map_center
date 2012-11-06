@@ -462,6 +462,10 @@ a img {border: 0;}
     }
 }
 
+@media screen and (max-width: 640px) {
+    #updated_info {display: none;}
+}
+
 @media screen and (min-width: 750px) and (max-width: 849px) {
     .candidate_big .candidate_vote_count_wrapper, .national_candidate_big .candidate_vote_count_wrapper, .national_presidential_candidate_big .candidate_vote_count_wrapper {
         font-size: 0.75em;
