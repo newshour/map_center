@@ -388,6 +388,9 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                     </div>
                     <div id="view_info">
                         <h1><?php echo $map_title; ?></h1>
+                      <?php if ($map_module == 'general_election') { ?>
+                        <div id="other_back_link"><a href="#">Back to U.S.</a></div>
+                      <?php } ?>
                     </div>
                     <div id="content_area">
                       <?php if ($instructions) { ?>
@@ -400,9 +403,6 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                         <div id="sidebar" class="cf">
                             <h3 id="sidebar_title" class="static_map_name"><?php echo $sidebar_title; ?></h3>
                             <div id="legend">
-                                <?php if ($map_module == 'general_election') { ?>
-                                  <div id="other_back_link"><a href="#">Back to U.S.</a></div>
-                                <?php } ?>
                                 <div id="legend_templates">
                                     <!-- Static maps -->
                                   <?php if ($map_module == 'static_maps') { ?>

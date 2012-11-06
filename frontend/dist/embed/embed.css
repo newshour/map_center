@@ -87,13 +87,14 @@ a img {border: 0;}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-= THE GOOD STUFF -=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-#view_info h1 {
-    color: #8b080d;
-    font-size: 1.375em;  /* 22px / 16px */
-    /* line-height: 1.25em; */  /* 28px / 22px */
-    margin: 0.5em 0.5em 0 0.5em;  /* 5px / 16px */
-    padding: 0;
-}
+#view_info {position: relative;}
+    #view_info h1 {
+        color: #8b080d;
+        font-size: 1.375em;  /* 22px / 16px */
+        /* line-height: 1.25em; */  /* 28px / 22px */
+        margin: 0.5em 0.5em 0 0.5em;  /* 5px / 16px */
+        padding: 0;
+    }
 #content {background-color:#f8f8f8;}
 
 #content_area {
@@ -308,7 +309,10 @@ a img {border: 0;}
     #other_back_link {
         display: none;
         margin-bottom: 1em;
+        position: absolute;
+        right: 0;
         text-align: center;
+        top: 0;
     }
         #other_back_link a {
             color: #666;
