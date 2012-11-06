@@ -62,7 +62,7 @@ path {cursor: pointer;}
         left: 0;
         right: 0;
         top: 0;
-		padding:0 1em 1em 1em;
+		padding:1em 1em 1em 1em;
 		background-image:url(map-bg.png); 
 		background-repeat:repeat-x;
 		-webkit-border-radius: 5px;
@@ -70,6 +70,7 @@ path {cursor: pointer;}
         border-radius: 5px;
         margin:0 2%;
         border:1px solid #d3d1d1;
+        background-color: #f1f1f1;
     }
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=- GENERAL ELEMENT STYLES =-=-=-=-=-=-=-=-=-=-=-=- */
@@ -399,7 +400,7 @@ a img {border: 0;}
     #sidebar {
         font-size: 0.6em;
     }
-    #updated_info {display: none;}
+    
 }
 
 @media screen and (max-width: 599px) {

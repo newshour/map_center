@@ -62,32 +62,20 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 360px;) {
-    /* Style adjustments for viewports that meet the condition */
-    label#results-state-label {font-size: 1.5em;}
-}
-@media screen and (min-width: 361px) and (max-width: 1099px) {
-    /* Style adjustments for viewports that meet the condition */
-    label#results-state-label {font-size: .9em;}
-}
 
 
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-       only screen and (min-resolution: 144dpi) {
-    /* Style adjustments for high resolution devices */
-}
 </style>
 
     </head>
     <body>
-  <div id="pattern" class="pattern cf">
-    <div class="c">
+  
       <div id="container">
     <div id="dummy"></div>
-    <div id="element">
+    <div id="element" class="cf">
         <iframe src="http://www.pbs.org/newshour/vote2012/.map/embed/embed.php?nobranding=1&aspect=1&map_module=general_election" scrolling="no" frameborder="0" style="border: 0px none transparent;"></iframe>
     </div>
+    <div style="clear:both:"></div>
 </div>
     <div id="text-results">
         <form id="results-state-select" name="results-state-select">
