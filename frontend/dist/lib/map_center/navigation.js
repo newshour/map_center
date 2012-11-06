@@ -123,6 +123,11 @@ $(document).ready(function() {
         id: "wi_recall"
     }, {
         featured: false,
+        title: "Follow live",
+        href: "watch_live.html?networked=true",
+        id: "watch_live"
+    }, {
+        featured: false,
         title: "Embed Map",
         href: "embed/index.html",
         id: "embed"
