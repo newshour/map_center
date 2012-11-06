@@ -417,7 +417,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                         <div id="other_back_link"><a href="#">Back to U.S.</a></div>
                       <?php } ?>
                     </div>
-                    <div id="content_area">
+                    <div id="content_area" class="cf">
                       <?php if ($instructions) { ?>
                         <h2 id="instructions"><?php echo $instructions; ?></h2>
                       <?php } ?>
