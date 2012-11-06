@@ -1,6 +1,6 @@
 <?php
 $VALID_VIEW_NAMES = array("us_all", "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia", "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj", "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt", "va", "wa", "dc", "wv", "wi", "wy", "ak_08general");
-$VALID_MODULES = array("static_maps", "past_primaries", "electoral_college", "general_election");
+$VALID_MODULES = array("static_maps", "past_primaries", "electoral_college", "wi_recall", "general_election");
 $LIVE_VIEWS_NEEDS_EMPTY = array(
     "al" => false,
     "ak" => true,
@@ -140,7 +140,8 @@ $MAP_TITLES = array(
     "voter_id" => "Voter ID laws",
     "past_primaries" => "Past results",
     "electoral_college" => "Electoral calculator",
-    "general_election" => "Live results"
+    "general_election" => "Live results",
+    "wi_recall" => "Recall results"
 );
 $SIDEBAR_TITLES = array(
     "08general" => "Win margin in general election",
@@ -161,7 +162,8 @@ $SIDEBAR_TITLES = array(
     "voter_id" => "States with voter ID laws",
     "past_primaries" => "<span id=\"precincts_percent\">0</span>% precincts reporting",
     "electoral_college" => "2012 prediction",
-    "general_election" => "<span id=\"precincts_title\"><span id=\"precincts_percent\">0</span>% precincts reporting</span><span id=\"custom_title\"></span>"
+    "general_election" => "<span id=\"precincts_title\"><span class=\"precincts_percent\">0</span>% precincts reporting</span><span id=\"custom_title\"></span>",
+    "wi_recall" => "<span class=\"precincts_percent\">0</span>% precincts reporting",
 );
 
 $map_view = (isset($_GET['map_view']) && array_search($_GET['map_view'], $VALID_VIEW_NAMES)) ? $_GET['map_view'] : 'us_all';
@@ -185,6 +187,8 @@ if ($map_module == 'past_primaries' && $LIVE_VIEWS_NEEDS_EMPTY[$map_view]) {
     $map_view = $map_view . '_empty';
 } else if ($map_module == 'general_election' && $map_view == 'ak') {
     $map_view = $map_view . '_empty';
+} else if ($map_module == 'wi_recall') {
+    $map_view = 'wi';
 }
 
 if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_view == 'ak') {
@@ -346,6 +350,21 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                 },
                 hoverExpandOther: false
             };
+          <?php } elseif ($map_module == 'wi_recall') { ?>
+            // Archival results of Wisconsin governor recall election
+            var nhmcOtherVotesConfig = {
+                autoRefresh: false,
+                candidateColors: {
+                   "Tom Barrett": "#000099",
+                   "Scott Walker": "#990000"
+                },
+                candidateImages: {
+                    "Tom Barrett": "lib/images/state_races/wi/barrett.jpg",
+                    "Scott Walker": "lib/images/state_races/wi/walker.jpg"
+                },
+                condenseCandidates: false,
+                dataPath: 'http://www.pbs.org/newshour/vote2012/map/lib/map_center/modules/other_votes_archive/20120605-wi_recall/'
+            };
           <?php } ?>
         </script>
         <!-- Map Center core -->
@@ -362,7 +381,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
         <script type="text/javascript" src="../lib/map_center/modules/static_maps_data/<?php echo $static_maps_type; ?>.js"></script>
       <?php } elseif ($map_module == 'past_primaries') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/live.js"></script>
-      <?php } elseif ($map_module == 'general_election') { ?>
+      <?php } elseif ($map_module == 'general_election' || $map_module == 'wi_recall') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/other_votes.js"></script>
       <?php } elseif ($map_module == 'electoral_college') { ?>
         <script type="text/javascript" src="../lib/map_center/modules/electoral_college.js"></script>
@@ -442,7 +461,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                         <div class="candidate_vote_count"></div>
                                         <div class="candidate_votes"></div>
                                     </div>
-                                  <?php } elseif ($map_module == 'general_election') { ?>
+                                  <?php } elseif ($map_module == 'general_election' || $map_module == 'wi_recall') { ?>
                                     <div class="candidate_big">
                                         <div class="candidate_color">&nbsp;</div>
                                         <div class="candidate_name">
@@ -526,7 +545,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                                 </div>
                               <?php if ($map_module == 'static_maps') { ?>
                                 <div id="legend_entries"></div>
-                              <?php } elseif ($map_module == 'past_primaries' || $map_module == 'general_election') { ?>
+                              <?php } elseif ($map_module == 'past_primaries' || $map_module == 'general_election' || $map_module == 'wi_recall') { ?>
                                 <div id="legend_candidates"></div>
                               <?php } elseif ($map_module == 'electoral_college') { ?>
                                 <div id="ec_tally">
@@ -569,7 +588,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
                             Source: <a href="<?php echo $attrib['href']; ?>" target="_blank"><?php echo $attrib['text']; ?></a>
                           <?php } ?>
                         </h2>
-                      <?php } elseif ($map_module == 'past_primaries' || $map_module == 'general_election') { ?>
+                      <?php } elseif ($map_module == 'past_primaries' || $map_module == 'general_election' || $map_module == 'wi_recall') { ?>
                         <h2 id="updated_info">All data from AP | Last updated <span id="last_updated"></span></h2>
                       <?php } ?>
                     </div>
@@ -583,7 +602,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
             </div> 
         </div>
         <div class="hidden">
-          <?php if ($map_module == 'general_election') { ?>
+          <?php if ($map_module == 'general_election' || $map_module == 'wi_recall') { ?>
             <div class="view_tab view_tab_more view_tab_active"><a href="#us_all" id="view_tab_more_shown" class="view_tab_option">U.S.</a><a href="#" id="view_tab_more_toggle"><img src="arrow-down.png" /></a>
                 <ul id="view_tab_more_menu">
                     <li style="display: none;"><a href="#us_all" class="view_tab_option">U.S.</a></li>
