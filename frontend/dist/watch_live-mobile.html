@@ -1,0 +1,96 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title>2012 Political Map Center | PBS NewsHour</title>
+    <meta name="description" content="Follow along with PBS NewsHour correspondent Hari Sreenivasan as he talks to public media reporters about the 2012 general election" />
+    <meta name="author" content="map, politics, 2012 election" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Safari (iOS) settings -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+<meta property="og:title" content="PBS NewsHour Map Center | Education Maps" /> 
+		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
+		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="lib/jquery.roto.min.js"></script>
+        <script type="text/javascript" src="lib/map_center/navigation.js"></script>
+        <script type="text/javascript" src="lib/map_center/modules/livemap.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var $mapFrame = $('#live-map-frame');
+                liveMap.status.on("change", function(event, status) {
+                    if (status.href !== "unavailable") {
+                        $mapFrame.attr("src", status.href);
+                    } else {
+                        $mapFrame.attr("src", "about:blank");
+                    }
+                });
+            });
+        </script>
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="lib/map_center/main.css" />
+        <style type="text/css">
+            #backend-controls {display: none;}
+            #live-map-frame {width: 990px; height: 600px; border: 0;}
+        </style>
+    </head><body>
+		<div id="head-pbs">
+    
+  
+</div>
+
+<div id="container">
+
+	
+	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
+<div id="content">
+ <div id="nav_outermost" class="clearfix">
+            <div id="nav_outer">
+                <div id="nav-main-prev" class="nav_control">&laquo;</div>
+                <div id="nav-main">
+                    <div id="nav_container"><!-- Navigation options now loaded in lib/map_center/navigation.js --></div>
+                </div>
+                <div id="nav-main-next" class="nav_control">&raquo;</div>
+            </div>
+            <div id="nav_toggle" class="open"><a href="#">Close</a></div>
+        </div>
+        <div id="view_info">
+            <h1>Follow live</h1>
+            <div id="backend-controls">
+                <div id="sidebar"></div>
+            </div>
+        </div>
+        <iframe id="live-map-frame" scrolling="no"></iframe>
+</div>
+
+	</div>
+	
+
+
+<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
+
+<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
+
+</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
+
+</script><!-- ClickTale end of Bottom part -->
+
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-5do3OH0wrSfK6"
+};
+</script>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
+<!-- End Quantcast tag --></body>
+</html>
