@@ -191,7 +191,7 @@ ul.odd { background-color:#f0f0f0; }
 @media only screen and (max-width: 639px;) {
     /* Style adjustments for viewports that meet the condition */
     h2#updated_info {display: none;}
-    #text-results { padding-top: 40px;}
+    #text-results { padding-top: 50px;}
         label#results-state-label {font-size: .7em;}
 
     
