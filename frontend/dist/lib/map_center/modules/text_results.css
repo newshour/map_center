@@ -34,6 +34,7 @@ body { background-image: url('http://www.pbs.org/newshour/vote2012/map/lib/image
     color:#777;
     text-align:left;
     margin:0px;
+    padding: 3px;
     background-color: #fff;
 }
 
@@ -165,7 +166,25 @@ ul.odd { background-color:#f0f0f0; }
 
 .winner.dem { color:#1c549e !important; }
 
-.winner.ind { color:#9d9b67 !important; }\
+.winner.ind { color:#9d9b67 !important; }
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
 
 
 

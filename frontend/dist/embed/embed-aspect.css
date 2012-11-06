@@ -399,6 +399,7 @@ a img {border: 0;}
     #sidebar {
         font-size: 0.6em;
     }
+    #updated_info {display: none;}
 }
 
 @media screen and (max-width: 599px) {
