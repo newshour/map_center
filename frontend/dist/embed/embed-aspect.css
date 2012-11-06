@@ -339,10 +339,17 @@ a img {border: 0;}
         right: 0;
         text-align: center;
         top: 0;
+
+    
+
     }
         #other_back_link a {
-            color: #666;
-            text-decoration: none;
+            background: none repeat scroll 0 0 #8B080D;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 6px 10px;
+    text-decoration: none;
         }
 
 .ui-dialog {  /* Sets own context to 12px per em */
