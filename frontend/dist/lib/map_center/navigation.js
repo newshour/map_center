@@ -98,6 +98,11 @@ $(document).ready(function() {
         id: "diversity"
     }, {
         featured: false,
+        title: "Social Security",
+        href: "social_security.html",
+        id: "social_security"
+    }, {
+        featured: false,
         title: "Patchwork Nation counties",
         href: "patchwork_types.html",
         id: "patchwork"
