@@ -345,6 +345,7 @@ if ($map_module == 'static_maps' && $static_maps_type == '08general' && $map_vie
             });
           <?php } elseif ($map_module == 'general_election') { ?>
             var nhmcOtherVotesConfig = {
+                bigCandidates: 2,
                 customSidebarTitles: {
                     "President": "270 to win"
                 },
