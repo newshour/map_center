@@ -63,7 +63,7 @@ path {cursor: pointer;}
         right: 0;
         top: 0;
 		padding:1em 1em 1em 1em;
-		background-image:url(map-bg.png); 
+        background-color: #e2e2e2;
 		background-repeat:repeat-x;
 		-webkit-border-radius: 5px;
         -moz-border-radius: 5px;
