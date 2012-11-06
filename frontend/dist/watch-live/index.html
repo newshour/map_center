@@ -1,8 +1,25 @@
 <!doctype html>
-<html>
-    <head>
-        <title>Map Center second-screen viewer</title>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title>2012 Political Map Center | PBS NewsHour</title>
+	<meta name="description" content="Follow along with PBS NewsHour correspondent Hari Sreenivasan as he talks to public media reporters about the 2012 general election" />
+	<meta name="author" content="map, politics, 2012 election" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+        <!-- Safari (iOS) settings -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- Internet Explorer settings, including Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+<meta property="og:title" content="PBS NewsHour Map Center | Education Maps" /> 
+		<meta property="og:description" content="The NewsHour’s Vote 2012 Map Center offers up-to-the-minute results from New Hampshire’s primary, plus results from past contests, unemployment data and an Electoral College calculator." />
+		<meta property="og:image" content="http://www.pbs.org/newshour/vote2012/map/lib/images/fb.jpg" />        <!-- JS libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="../lib/jquery.roto.min.js"></script>
+        <script type="text/javascript" src="../lib/map_center/navigation.js"></script>
         <script type="text/javascript" src="../lib/map_center/modules/livemap.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -16,19 +33,151 @@
                 });
             });
         </script>
+        <!-- Styles (see lib/map_center/main.js and lib/map_center/main.css) -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/overcast/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="../lib/map_center/main.css" />
         <style type="text/css">
             #backend-controls {display: none;}
-            #live-map-frame {width: 800px; height: 500px; border: 0;}
+            #live-map-frame {width: 990px; height: 600px; border: 0;}
         </style>
-    </head>
-    <body>
-        <div id="backend-controls">
-            <h2>Backend connection controls</h2>
-            <div id="sidebar"></div>
+    </head><body>
+		<div id="head-pbs">
+    <!--#include virtual="/newshour/scripts2/common/header_pbs_hp.html" -->
+  
+</div>
+
+<div id="container">
+
+	<header>
+	<div id="social-links" class="clearfix">
+
+	<ul>
+		<li> <a href="http://www.facebook.com/newshour"><img src="/newshour/images/primary2/common/facebook.png" /> Facebook</a></li>
+		<li> <a href="http://www.twitter.com/newshour"><img src="/newshour/images/primary2/common/twitter.png" /> Twitter</a></li>
+		<li> <a href="http://www.youtube.com/pbsnewshour"><img src="/newshour/images/primary2/common/youtube.png" /> YouTube</a></li>
+		<li> <a href="http://newshour.tumblr.com"><img src="/newshour/images/primary2/common/tumblr.png" /> Tumblr</a></li>
+	</ul>
+</div>
+
+	</header>
+	<div id="main" role="main">
+	<nav class="clearfix">
+		<ul>
+			<li class="logo ir"><a href="http://www.pbs.org/newshour/">PBS NewsHour</a></li>
+			<!--#include virtual="/newshour/scripts2/common/nav-short.html" -->
+
+		</ul>
+	</nav>
+	<div id="vote2012-map" class="clearfix"><div class="ir title">Vote 2012</div><div class="ir map">Map Center</div></div>
+<div id="content">
+ <div id="nav_outermost" class="clearfix">
+            <div id="nav_outer">
+                <div id="nav-main-prev" class="nav_control">&laquo;</div>
+                <div id="nav-main">
+                    <div id="nav_container"><!-- Navigation options now loaded in lib/map_center/navigation.js --></div>
+                </div>
+                <div id="nav-main-next" class="nav_control">&raquo;</div>
+            </div>
+            <div id="nav_toggle" class="open"><a href="#">Close</a></div>
         </div>
-        <div id="map-content">
-            <h2>Map content</h2>
-            <iframe id="live-map-frame" scrolling="no"></iframe>
+        <div id="view_info">
+            <h1>Follow live</h1>
+            <div id="backend-controls">
+                <div id="sidebar"></div>
+            </div>
         </div>
-    </body>
+        <iframe id="live-map-frame" scrolling="no"></iframe>
+</div>
+<div id="featured-content" class="clearfix">
+	<div id="popular">
+	<h3>Most Popular</h3>
+	<!--#include virtual="/newshour/scripts/adminfiles/feeds/popular-politics.html" -->
+	</div>
+	<div class="slideshow"><h3>Politics</h3>
+	<!--#include virtual="/newshour/scripts/adminfiles/feeds/politics1.html" -->
+
+	</div>
+	<div class="slideshow"><!--#include virtual="/newshour/scripts/adminfiles/feeds/politics2.html" -->
+</div>
+	<div class="ad"><p>Support For PBS Provided by</p><!--#include virtual="/newshour/scripts2/common/ad_300x250.html" --></div>
+</div>
+	</div>
+	<footer>
+	<div id="topics-list" class="clearfix">
+		<div class="title"><h3>Topics</h3></div>	
+
+        				<ul>
+   	    		<li><a href="http://www.pbs.org/newshour/topic/entertainment/">Arts &amp; Entertainment</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/business/">Business &amp; Economy</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/education/">Education</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/environment/">Environment</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/government_programs/">Government Programs</a></li>
+       		</ul>
+            <ul>
+
+            	<li><a href="http://www.pbs.org/newshour/topic/health/">Health</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/remember/">In Memoriam</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/international/">International Orgs.</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/law/">Law</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/media/">Media</a></li>
+            </ul>
+
+            <ul>
+            	<li><a href="http://www.pbs.org/newshour/topic/military/">Military</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/politics/">Politics</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/religion/">Religion</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/science/">Science &amp; Technology</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/social_issues/">Social Issues</a></li>
+
+            </ul>
+            <ul>            	
+                <li><a href="http://www.pbs.org/newshour/topic/sports/">Sports</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/terrorism/">Terrorism</a></li>
+                <li><a href="http://www.pbs.org/newshour/topic/transportation/">Transportation</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/white_house/">U.S Presidency</a></li>
+				<li><a href="http://www.pbs.org/newshour/topic/weather/">Weather &amp; Natural Disasters</a></li>
+
+            </ul>  
+        </div>
+    <div id="footer-sub">
+
+    	<div class="copyright">Copyright 1996-<script type="text/JavaScript">var today = new Date(); document.write(today.getFullYear());</script> MacNeil/Lehrer Productions. All Rights Reserved.</div> 
+    		<ul class="column5">            	
+                <li><a href="http://www.pbs.org/newshour/aboutus/">About Us</a></li>
+                <li>/</li>
+                <li><a href="http://www.pbs.org/newshour/letters.html">Feedback</a></li>
+                <li>/</li>
+				<li><a href="http://www.pbs.org/newshour/subscriptions.html">Subscriptions and Feeds</a></li>
+				<li>/</li>
+                <li><a href="http://www.pbs.org/aboutsite/aboutsite_privacy.html">Privacy</a></li>
+<li>/</li>
+				<!--<li><a href="http://www.pbs.org/newshour/aboutus/faq.html">FAQ</a></li>-->
+				<li class="end"><a href="http://www.pbs.org/newshour/aboutus/openings/">Job Openings</a></li>
+            </ul>
+    </div>   
+	<div id="footer-sub-sub">Support the kind of journalism done by the NewsHour...<a href="http://www.pbs.org/newshour/pledge.html">Become a member of your local PBS station.</a></div>
+
+	</footer>
+</div> 
+<!--! end of #container -->
+
+<!-- ClickTale Bottom part --><div id="ClickTaleDiv" style="display: none;"></div>
+
+<script type="text/javascript">if(document.location.protocol!='https:')  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
+
+</script><script type="text/javascript">if(typeof ClickTale=='function') ClickTale(38304,1,"www");
+
+</script><!-- ClickTale end of Bottom part -->
+
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+_qoptions={
+qacct:"p-5do3OH0wrSfK6"
+};
+</script>
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-5do3OH0wrSfK6.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/> </noscript>
+<!-- End Quantcast tag --></body>
 </html>
