@@ -62,7 +62,18 @@ $(document).ready(function() {
             "Referendum - 74 - Same-Sex Marriage": "Allow same-sex marriage",
             "Question - 6 - Allow Same Sex Marriage": "Allow same-sex marriage",
             "Question - 1 - Yes Same Sex Mrg": "Allow same-sex marriage",
-            "Amendment - 1 - No Same Sex Marriage": "Ban same-sex marriage"
+            "Amendment - 1 - No Same Sex Marriage": "Ban same-sex marriage",
+            "Issue - 5 - Medical Marijuana": "Medical marijuana",
+            "Amendment - 64 - Legalize Marijuana": "Legalize marijuana",
+            "Question - 3 - Yes Medical Marijuana": "Medical marijuana",
+            "Referendum - 124 - Reform Medical Marijuana": "Medical marijuana",
+            "Measure - 80 - Legalize Marijuana": "Legalize marijuana",
+            "Initiative - 502 - Legalize Marijuana": "Legalize marijuana",
+            "Amendment - 6 - No Mandatory Health Care": "No mandatory health care",
+            "Amendment - 1 - No Mandatory Health Coverage": "No mandatory health coverage",
+            "Proposition - E - Prohibit Health Exchange": "No health exchange",
+            "Referendum - 122 - No Mandatory Health Ins": "No mandatory health insurance",
+            "Amendment - A - Health Services Rights": "No mandatory health care"
         }
     };
     
