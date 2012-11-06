@@ -1,0 +1,78 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+<title>PBS NewsHour</title>
+<meta name="description" content="This widget provides presidential election results" />
+<meta name="author" content="map, politics, 2012 election, election results" />
+<link rel="stylesheet" href="/newshour/scripts2/style/convention-hp.css" />
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
+<!-- Safari (iOS) settings -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=0.3125, maximum-scale=10.0" />
+<!-- Internet Explorer settings, including Chrome Frame -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+<!-- JS libraries -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://www.pbs.org/newshour/vote2012/map/lib/highcharts.js"></script>
+<script type="text/javascript" src="results-hp-widget.js"></script>
+<script src="http://www.pbs.org/newshour/vote2012/map/js/libs/modernizr-2.0.6.min.js"></script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f51577608ba8f4a"></script>
+</head>
+<body>
+<div id="promo-wrap" class="clearfix">
+  <div class="reporting">
+    <p class="number"><span id="precincts-percent">26</span>%</p>
+    <p>reporting</p>
+  </div>
+  <div class="electoral">270 to Win</div>
+  <div class="candidate-wrap clearfix">
+    <div class="dem" >
+      <div class="clearfix">
+        <p>Barack Obama</p>
+        <p class="percent"><img src="obama.jpg" /><span id="obama-percent">0</span>%</p>
+        <p class="votes"><span id="obama-votes">0</span> <br />
+          votes</p>
+      </div>
+      <div class="bar">
+        <div id="obama-bar" class="number">
+          <p><span id="obama-electoral">0</span> <span><span id="obama-electoral-remaining">0</span> needed</span> </p>
+        </div>
+      </div>
+    </div>
+    <div class="rep">
+      <div class="clearfix">
+        <p>Mitt Romney</p>
+        <p class="percent"><img src="romney.jpg" /><span id="romney-percent">0</span>%</p>
+        <p class="votes"><span id="romney-votes">0</span> <br />
+          votes</p>
+      </div>
+      <div class="bar">
+        <div id="romney-bar" class="number">
+          <p> <span><span id="romney-electoral-remaining">0</span> needed</span> <span id="romney-electoral">0</span> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+    IDs for Senate part:
+        Seats won on Election Night:
+            #dem-senate-won
+            #rep-senate-won
+        Total seats held, including uncontested seats:
+            #dem-senate-total
+            #rep-senate-total
+    
+    IDs for House part:
+        #dem-house-total
+        #rep-house-total
+-->
+
+</body>
+</html>

@@ -4,8 +4,8 @@
         <title>Election results</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script type="text/javascript" src="http://www.pbs.org/newshour/multimedia/common_js/ICanHaz-0.9.min.js"></script>
-        <script type="text/javascript" src="/../lib/map_center/modules/text_results.js"></script>
-        <link rel="stylesheet" type="text/css" href="/../lib/map_center/modules/text_results.css" />
+        <script type="text/javascript" src="../lib/map_center/modules/text_results.js"></script>
+        <link rel="stylesheet" type="text/css" href="../lib/map_center/modules/text_results.css" />
         <!-- Templates follow -->
         <script id="races" type="text/html">
             <h2 class="state">{{stateName}}</h2>
@@ -31,10 +31,64 @@
         {{/races}}
         </script>
         <meta name = "viewport" content = "initial-scale = 1" />
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="libs/js/responsiveiframe.js"></script>
 
+<script>
+  $(document).ready(function(){
+    // Target your .container, .wrapper, .post, etc.
+    $(".main").fitVids();
+  });
+</script>
+<style type="text/css">
+#container {
+    display: inline-block;
+    position: relative;
+    width: 99%;
+}
+#dummy {
+    padding-top: 55%; /* 4:3 aspect ratio */
+}
+#element {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: silver; /* show me! */
+}
+#element iframe {
+  height: 100%;
+  width: 100%;
+}
+
+@media only screen and (max-width: 360px;) {
+    /* Style adjustments for viewports that meet the condition */
+    label#results-state-label {font-size: .8em;}
+}
+@media screen and (min-width: 361px) and (max-width: 1099px) {
+    /* Style adjustments for viewports that meet the condition */
+    label#results-state-label {font-size: 1.5em;}
+}
+
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min-resolution: 144dpi) {
+    /* Style adjustments for high resolution devices */
+}
+</style>
 
     </head>
-    <body>
+    <body style="max-width:1000px; margin:0 auto;">
+  <div id="pattern" class="pattern">
+    <div class="c">
+      <div id="container">
+    <div id="dummy"></div>
+    <div id="element">
+        <iframe src="http://www.pbs.org/newshour/vote2012/.map/embed/embed.php?nobranding=1&aspect=1&map_module=general_election" scrolling="no" frameborder="0" style="border: 0px none transparent;"></iframe>
+    </div>
+</div>
     <div id="text-results">
         <form id="results-state-select" name="results-state-select">
             <label for="results-state" id="results-state-label">Choose a state</label>

@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="libs/js/responsiveiframe.js"></script>
+
+<script>
+  $(document).ready(function(){
+    // Target your .container, .wrapper, .post, etc.
+    $(".main").fitVids();
+  });
+</script>
+<style type="text/css">
+#container {
+    display: inline-block;
+    position: relative;
+    width: 50%;
+}
+#dummy {
+    padding-top: 75%; /* 4:3 aspect ratio */
+}
+#element {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: silver /* show me! */
+}
+#element iframe {
+  height: 100%;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+  <div id="pattern" class="pattern">
+    <div class="c">
+      <div id="container">
+    <div id="dummy"></div>
+    <div id="element">
+        <iframe src="http://www.pbs.org/newshour/vote2012/.map/embed/embed.php?nobranding=1&aspect=1&map_module=general_election"></iframe>
+    </div>
+</div>
+      
+      <div class="sb">
+        <h3>Sidebar  (2nd in source order)</h3>
+        <p>Sed sit amet molestie diam. Etiam adipiscing dictum eros, vitae feugiat augue convallis sit amet. Nunc quis massa non dolor dictum condimentum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque turpis diam, tincidunt nec convallis vitae, dapibus vitae enim. Nam bibendum nisl in risus imperdiet vestibulum.</p>
+        <p>Sed sit amet molestie diam. Etiam adipiscing dictum eros, vitae feugiat augue convallis sit amet. Nunc quis massa non dolor dictum condimentum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque turpis diam, tincidunt nec convallis vitae, dapibus vitae enim. Nam bibendum nisl in risus imperdiet vestibulum.</p>
+      </div>
+    </div>
+  </div>
+  <!--End Pattern HTML-->
+  <div class="container"> 
+    <section class="pattern-description">
+      <h1>Main column with sidebar</h1>
+      <p>A basic (and common) layout. A main column of text with sidebar stacked underneath. When space becomes available the sidebar displays next to the main column.</p>
+    </section>
+    <footer role="contentinfo">   
+      <div>
+        <nav id="menu">
+          <a href="http://bradfrost.github.com/this-is-responsive/patterns.html">&larr;More Responsive Patterns</a>
+        </nav>
+      </div>
+    </footer>
+      <script src="jquery.fitvids.js"></script>
+      <script>
+        // Basic FitVids Test
+        $(".main").fitVids();
+        // Custom selector and No-Double-Wrapping Prevention Test
+        $(".main").fitVids({ customSelector: "iframe[src^='http://www.pbs.org/newshour/vote2012']"});
+      </script>
+    </body>
+</html>
