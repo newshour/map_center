@@ -27,7 +27,7 @@
 	.candidate_big {margin:0 0 5px 0 ; padding-left:30px;}
 	.candidate_big .candidate_name {
 			text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: bold;
             margin-top: 9px;
             text-align: left;
@@ -61,7 +61,8 @@
 
 #map {
     margin: 0 0 0 13px;
-    width: 680px;
+    width: 670px;
+    height: 425px;
 }
 
 #lower_secondary_nav { margin-top:50px;}
