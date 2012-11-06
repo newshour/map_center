@@ -52,7 +52,7 @@ $(document).ready(function() {
         },
         "map-select-view": {
             visible: function() {
-                return categories['map-select-module'].active !== 'electoral_college';
+                return categories['map-select-module'].active !== 'electoral_college' && categories['map-select-module'].active !== 'wi_recall';
             },
             active: null,
             $element: $('#map-select-view'),
@@ -90,6 +90,14 @@ $(document).ready(function() {
             $element: $('#map-select-index-unions'),
             urlName: 'static_maps_index'
         },
+        "map-select-index-election-race": {
+            visible: function() {
+                return categories['map-select-module'].active === 'general_election';
+            },
+            active: null,
+            $element: $('#map-select-index-election-race'),
+            urlName: '|race_name'
+        },
         "map-select-electoral-presets": {
             visible: function() {
                 return categories['map-select-module'].active === 'electoral_college';
@@ -125,7 +133,10 @@ $(document).ready(function() {
         var newUrl = config.baseUrl;
         for (var elementId in categories) {
             if (categories.hasOwnProperty(elementId) && categories[elementId].visible()) {
-                if (categories[elementId].urlName.substring(0, 1) !== '#') {
+                var firstChar = categories[elementId].urlName.substring(0, 1);
+                if (categories['map-select-module'].active === 'general_election' && categories[elementId].urlName === 'map_view') {
+                    newUrl += '#';
+                } else if (firstChar !== '#' && firstChar !== '|') {
                     newUrl += '&';
                 }
                 newUrl += categories[elementId].urlName + '=' + categories[elementId].active;
