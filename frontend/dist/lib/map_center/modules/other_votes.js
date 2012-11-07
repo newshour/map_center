@@ -55,8 +55,10 @@ $(document).one('coreInitialized', function() {
            // Ballot issues/propositions/etc.
            "Yes": "#b2df8a",
            "For": "#b2df8a",
+           "Approve": "#b2df8a",
            "No": "#1f78b4",
            "Against": "#1f78b4",
+           "Reject": "#1f78b4",
            // Independent candidates with no party affiliation that would color
            // them based on config.partyColors
            "Gloria La Riva": '#ffb90f',
@@ -78,7 +80,8 @@ $(document).one('coreInitialized', function() {
         customSidebarTitles: {
             "President": "270 needed to win"
         },
-        dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
+        // dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
+        dataPath: 'http://s3.amazonaws.com/newshourroot/nhmc_live_data_other/',
         defaultRaceNames: {},
         flyoutsEnabled: false,
         friendlyRaceNames: {

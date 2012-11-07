@@ -2,7 +2,8 @@ $(document).ready(function() {
     var config = {
         autoRefresh: true,
         autoRefreshDelay: 15 * 1000,
-        dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
+        // dataPath: 'http://www.pbs.org/newshour/vote2012/map/live_data_other/',
+        dataPath: 'http://s3.amazonaws.com/newshourroot/nhmc_live_data_other/',
         friendlyRaceNames: {
             "U.S. House - District 1": "U.S. House 1",
             "U.S. House - District 2": "U.S. House 2",
