@@ -19,6 +19,9 @@ var argParser = optimist
     .describe("v", "Periodically print connection status")
     .boolean("v")
     .alias("v", "verbose")
+    .describe("t", "Transport mechanism")
+    .alias("t", "transport")
+    .default("t", "websocket")
     .check(function(args) {
         if (typeof args.c !== "number") {
             throw "c must be a number";
@@ -26,11 +29,23 @@ var argParser = optimist
         if (typeof args.p !== "number") {
             throw "p must be a number";
         }
+        if (!~["websocket", "xhr-polling"].indexOf(args.t)) {
+            throw "unrecognized transport";
+        }
     });
 var argv = argParser.argv;
 
+// By default, the Agent in Node's HTTP module will limit the number of
+// concurrent sockets to 5. Remove this restriction by re-setting the limit to
+// Infinity.
+// http://nodejs.org/docs/v0.8.12/api/http.html#http_agent_maxsockets
+require("http").globalAgent.maxSockets = Infinity;
+
 var clientCount = argv.c;
+// The interval that clients send "heartbeat" messages to the server
+var heartbeatInterval = 3*60*1000;
 var idx;
+var Connection;
 var connection;
 var trialDelays = {};
 var counters = {
@@ -52,14 +67,24 @@ try {
   process.exit();
 }
 eval(clientFileContents);
+// Alias for convenience
+Connection = this.liveMap.Connection;
 
 if (argv.h) {
     optimist.showHelp();
     process.exit();
 }
 
-app.listen(argv.p, "127.0.0.1");
+// Force the socket's transport mechanism. This is necessary because the
+// server's supported transports will be given priority over those declared by
+// the client, so the supported method (i.e.  specifying the transports in the
+// socket's construtor) will result in clients using WebSockets regardless.
+io.transports = [argv.t];
 
+// Outputting data immediately could have adverse effects on the simulation, so
+// it is stored in memory. This simple webserver allows the process to output
+// its data on demand when prompted with a utility like `curl`.
+app.listen(argv.p, "127.0.0.1");
 app.get("/dump", function(req, res) {
 
     var attr;
@@ -128,12 +153,19 @@ var handlers = {
     }
 };
 
+function connectClient(idx) {
+    var connection = new Connection({ idx: idx });
 
-for (idx = 0; idx < clientCount; ++idx) {
-    connection = new this.liveMap.Connection();
     connection.connect();
     connection.on("connect", handlers.connect.bind(connection));
     connection.on("disconnect", handlers.disconnect.bind(connection));
+}
+
+for (idx = 0; idx < clientCount; ++idx) {
+
+    // Disperse connections across the heartbeat interval in order to avoid
+    // synchronizing client heartbeats
+    setTimeout(connectClient, heartbeatInterval*(idx/clientCount), idx);
 }
 
 if (argv.v) {
