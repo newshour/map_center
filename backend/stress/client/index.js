@@ -153,161 +153,20 @@ var handlers = {
     }
 };
 
-var tests = {};
+function connectClient(idx) {
+    var connection = new Connection({ idx: idx });
 
-// Test for timeout with hmlhttprequest library directly
-tests.xmlhttprequest = function() {
-    var XMLHttpRequest = require('socket.io-client/node_modules/xmlhttprequest').XMLHttpRequest;
-    var noop = function() {};
-    function connectClient(opts) {
-        var xhr = new XMLHttpRequest();
+    connection.connect();
+    connection.on("connect", handlers.connect.bind(connection));
+    connection.on("disconnect", handlers.disconnect.bind(connection));
+}
 
-        xhr.open('GET', opts.url, true);
-        xhr.onreadystatechange = function () {
+for (idx = 0; idx < clientCount; ++idx) {
 
-            if (xhr.readyState === 4) {
-                xhr.onreadystatechange = noop;
-
-                if (xhr.status === 200) {
-                    onComplete(xhr.responseText);
-                } else if (xhr.status === 403) {
-                    onError(xhr.responseText);
-                } else {
-                    onError(xhr.responseText);
-                }
-            }
-        };
-        xhr.send(null);
-    }
-    var onError = function() {
-        console.log("Error", arguments);
-    };
-    var onComplete = function() {
-        console.log("Complete", arguments);
-    };
-
-    for (idx = 0; idx < clientCount; ++idx) {
-
-        // Disperse connections across the heartbeat interval in order to avoid
-        // synchronizing client heartbeats
-        setTimeout(connectClient, 0.1*heartbeatInterval*(idx/clientCount),
-            {
-                url: "http://50.56.87.187:8000/socket.io/1/?t=" + new Date().getTime(),
-                idx: idx
-            }
-        );
-    }
-};
-
-// Test for timeout with io.util.request
-tests.iorequest = function() {
-    var noop = function() {};
-    function connectClient(opts) {
-        var xhr = io.util.request();
-
-        xhr.open('GET', opts.url, true);
-        xhr.onreadystatechange = function () {
-
-            if (xhr.readyState === 4) {
-                xhr.onreadystatechange = noop;
-
-                if (xhr.status === 200) {
-                    onComplete(xhr.responseText);
-                } else if (xhr.status === 403) {
-                    onError(xhr.responseText);
-                } else {
-                    onError(xhr.responseText);
-                }
-            }
-        };
-        xhr.send(null);
-    }
-    var onError = function() {
-        console.log("Error", arguments);
-    };
-    var onComplete = function() {
-        console.log("Complete", arguments);
-    };
-
-    for (idx = 0; idx < clientCount; ++idx) {
-
-        // Disperse connections across the heartbeat interval in order to avoid
-        // synchronizing client heartbeats
-        setTimeout(connectClient, 0.1*heartbeatInterval*(idx/clientCount),
-            {
-                url: "http://50.56.87.187:8000/socket.io/1/?t=" + new Date().getTime(),
-                idx: idx
-            }
-        );
-    }
-};
-
-// Test for timeout with Socket.io-client "handshake" method
-tests.handshake = function() {
-    function connectClient(idx) {
-        var connection = new io.Socket({
-            host: "50.56.87.187",
-            port: 8000,
-            idx: idx,
-            "auto connect": false
-        });
-
-        connection.handshake(function() {
-            console.log("connected", idx);
-        });
-    }
-
-    for (idx = 0; idx < clientCount; ++idx) {
-
-        // Disperse connections across the heartbeat interval in order to avoid
-        // synchronizing client heartbeats
-        setTimeout(connectClient, 0.1*heartbeatInterval*(idx/clientCount), idx);
-    }
-};
-
-// Test for timeout with Socket.io-client directly
-tests.socketio = function() {
-    function connectClient(idx) {
-        var connection = new io.Socket({
-            host: "50.56.87.187",
-            port: 8000,
-            idx: idx,
-            "auto connect": false
-        });
-
-        connection.connect();
-        connection.on("connect", function() {
-            console.log("connected", "is XHR?", !!this.transport.xhr);
-        });
-    }
-
-    for (idx = 0; idx < clientCount; ++idx) {
-
-        // Disperse connections across the heartbeat interval in order to avoid
-        // synchronizing client heartbeats
-        setTimeout(connectClient, 0.1*heartbeatInterval*(idx/clientCount), idx);
-    }
-};
-
-// Test with liveMap.connection library
-tests.liveMap = function() {
-    function connectClient(idx) {
-        var connection = new Connection({ idx: idx });
-
-        connection.connect();
-        connection.on("connect", handlers.connect.bind(connection));
-        connection.on("disconnect", handlers.disconnect.bind(connection));
-    }
-
-    for (idx = 0; idx < clientCount; ++idx) {
-
-        // Disperse connections across the heartbeat interval in order to avoid
-        // synchronizing client heartbeats
-        setTimeout(connectClient, heartbeatInterval*(idx/clientCount), idx);
-    }
-};
-
-tests.liveMap();
+    // Disperse connections across the heartbeat interval in order to avoid
+    // synchronizing client heartbeats
+    setTimeout(connectClient, heartbeatInterval*(idx/clientCount), idx);
+}
 
 if (argv.v) {
     setInterval(function() {
